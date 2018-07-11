@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class PlayTable {
+public class GamingTable {
 
     private final int tableNumber;
 

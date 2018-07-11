@@ -2,11 +2,7 @@ package zur.koeln.kickertool.player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,14 +25,13 @@ public class PlayerPool {
             ObjectMapper m = new ObjectMapper();
             try {
                 players = m.readValue(playerPoolFile, new TypeReference<List<Player>>() {
+                    // ?
                 });
             } catch (IOException e) {
-                System.out.println("Could not read player pool");
                 e.printStackTrace();
                 players = new LinkedList<>();
             }
         } else {
-            System.out.println("Did not find player pool file.");
             players = new LinkedList<>();
         }
 

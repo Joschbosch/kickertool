@@ -25,7 +25,7 @@ public class Player {
     public Player() {
     }
 
-    public Player(String name, String nickname) {
+    public Player(String name, String nickname) { 
         uid = UUID.randomUUID();
         this.name = name;
         this.nickname = nickname;

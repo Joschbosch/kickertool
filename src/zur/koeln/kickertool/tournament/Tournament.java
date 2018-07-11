@@ -1,12 +1,6 @@
 package zur.koeln.kickertool.tournament;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -38,7 +32,7 @@ public class Tournament {
     @JsonIgnore
     private Map<Player, TournamentStatistics> table = new HashMap<>();
 
-    private List<PlayTable> playtables = new LinkedList<>();
+    private List<GamingTable> playtables = new LinkedList<>();
 
     private List<Player> dummyPlayer = new LinkedList<>();
 
@@ -129,7 +123,7 @@ public class Tournament {
     public void startTournament() {
         if (!started) {
             for (int i = 1; i <= config.getTableCount(); i++) {
-                playtables.add(new PlayTable(i));
+                playtables.add(new GamingTable(i));
             }
             for (Player p : participants.values()) {
                 table.put(p, new TournamentStatistics(p));
@@ -151,7 +145,7 @@ public class Tournament {
 
     public Round newRound() {
         Round r = new Round(completeRounds.size() + ongoingRounds.size() + 1);
-        ongoingRounds.put(r.getRoundNo(), r);
+        ongoingRounds.put(Integer.valueOf(r.getRoundNo()), r);
         ongoingMatches.addAll(r.createMatches(getTable(), playtables, config));
         return r;
     }

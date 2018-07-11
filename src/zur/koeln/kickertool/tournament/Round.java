@@ -28,7 +28,7 @@ public class Round {
      * @param playtables
      * @return
      */
-    public List<Match> createMatches(List<TournamentStatistics> table, List<PlayTable> playtables,
+    public List<Match> createMatches(List<TournamentStatistics> table, List<GamingTable> playtables,
             TournamentConfiguration config) {
         table.removeIf(statistic -> statistic.getPlayer().isPausingTournement());
         while (table.size() > 3) {
@@ -46,9 +46,9 @@ public class Round {
                 table.remove(0);
             }
 
-            Match m = new Match(roundNo, home, visiting);
+            Match m = new Match(Integer.valueOf(roundNo), home, visiting);
 
-            for (PlayTable playtable : playtables) {
+            for (GamingTable playtable : playtables) {
                 if (playtable.isActive() && !playtable.isInUse()) {
                     m.setTable(playtable);
                     playtable.setInUse(true);

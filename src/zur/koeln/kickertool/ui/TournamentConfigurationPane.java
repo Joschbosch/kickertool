@@ -20,7 +20,7 @@ import zur.koeln.kickertool.tournament.TournamentConfiguration;
 
 public class TournamentConfigurationPane extends GridPane {
 
-    private TournamentController controller;
+    private final TournamentController controller;
 
     public TournamentConfigurationPane(TournamentController controller) {
         this.controller = controller;
@@ -32,7 +32,7 @@ public class TournamentConfigurationPane extends GridPane {
         final Label label = new Label(controller.getCurrentTournament().getName());
         label.setFont(new Font("Arial", 20));
         this.add(label, 0, 0);
-        GridPane.setColumnSpan(label, 2);
+        GridPane.setColumnSpan(label, Integer.valueOf(2));
         GridPane.setHalignment(label, HPos.CENTER);
 
         TournamentConfiguration config = controller.getCurrentTournament().getConfig();

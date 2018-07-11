@@ -26,7 +26,7 @@ public class RoundEntry extends GridPane {
             }
             GridPane.setHalignment(entry, HPos.CENTER);
             GridPane.setHgrow(entry, Priority.ALWAYS);
-            GridPane.setFillWidth(entry, true);
+            GridPane.setFillWidth(entry, Boolean.TRUE);
             this.add(entry, 1, i);
 
         }

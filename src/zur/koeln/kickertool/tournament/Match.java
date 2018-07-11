@@ -22,7 +22,7 @@ public class Match {
         HOME, VISITING, DRAW;
     }
 
-    private static int MATCH_COUNTER;
+    private static int matchCounter;
 
     private UUID matchID = UUID.randomUUID();
 
@@ -32,9 +32,9 @@ public class Match {
 
     private final Team visitingTeam;
 
-    private int matchNo = MATCH_COUNTER++;
+    private int matchNo = matchCounter++;
 
-    private PlayTable table;
+    private GamingTable table;
 
     private int scoreHome;
 
@@ -107,10 +107,10 @@ public class Match {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(String.format("\n%-25s vs. %-25sTable %s\t" + (matchComplete() ? "%s-%s : %s" : ""),
-                homeTeam.getP1().getName() + " / " + homeTeam.getP2().getName(),
-                visitingTeam.getP1().getName() + " / " + visitingTeam.getP2().getName(),
-                table != null ? table.getTableNumber() : "Not assigned", scoreHome, scoreVisiting, result));
+        //        builder.append(String.format("%n%-25s vs. %-25sTable %s\t" + (matchComplete() ? "%s-%s : %s" : ""),
+        //                homeTeam.getP1().getName() + " / " + homeTeam.getP2().getName(),
+        //                visitingTeam.getP1().getName() + " / " + visitingTeam.getP2().getName(),
+        //                table != null ? Integer.valueOf(table.getTableNumber()) : "Not assigned", Integer.valueOf(scoreHome), Integer.valueOf(scoreVisiting), result));
         return builder.toString();
     }
 
@@ -146,11 +146,11 @@ public class Match {
      * @return
      */
     public String getHomeTeamString() {
-        return homeTeam.getP1().getName() + " / " + homeTeam.getP2().getName();
+        return homeTeam.getP1().getName() + " / " + homeTeam.getP2().getName(); //$NON-NLS-1$
     }
 
     public String getVisitingTeamString() {
-        return visitingTeam.getP1().getName() + " / " + visitingTeam.getP2().getName();
+        return visitingTeam.getP1().getName() + " / " + visitingTeam.getP2().getName(); //$NON-NLS-1$
     }
 
 }

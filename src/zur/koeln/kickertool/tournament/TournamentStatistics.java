@@ -78,10 +78,10 @@ public class TournamentStatistics {
      */
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder("");
-        result.append(
-                String.format("\n %-20s\t %s\t%s\t%s\t%s\t%s\t%s" + (player.isPausingTournement() ? " (pausing)" : ""),
-                        player.getName(), matchesDone, matchesWon, matchesLost, matchesDraw, getGoalDiff(), points));
+        StringBuilder result = new StringBuilder(""); //$NON-NLS-1$
+        result.append(String.format("%n %-20s\t %s\t%s\t%s\t%s\t%s\t%s %s", player.getName(), Integer.valueOf(matchesDone), //$NON-NLS-1$
+                Integer.valueOf(matchesWon), Integer.valueOf(matchesLost), Integer.valueOf(matchesDraw),
+                Integer.valueOf(getGoalDiff()), Integer.valueOf(points), player.isPausingTournement() ? " (pausing)" : "")); //$NON-NLS-1$ //$NON-NLS-2$
 
         return result.toString();
 

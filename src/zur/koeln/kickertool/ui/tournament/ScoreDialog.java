@@ -6,12 +6,8 @@ package zur.koeln.kickertool.ui.tournament;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
 import javafx.util.StringConverter;
@@ -30,7 +26,7 @@ public class ScoreDialog<R> extends Dialog<R> {
 
         GridPane grid = new GridPane();
         Label header = new Label("Enter result for match:");
-        GridPane.setColumnSpan(header, 3);
+        GridPane.setColumnSpan(header, Integer.valueOf(3));
         grid.add(header, 0, 0);
 
         Label homeLabel = new Label(match.getHomeTeamString());
@@ -67,9 +63,9 @@ public class ScoreDialog<R> extends Dialog<R> {
     private Spinner<Integer> createScoreSpinner(TournamentController contoller) {
         Spinner<Integer> spinner = new Spinner<>();
         spinner.setEditable(false);
-        ObservableList<Integer> items = FXCollections.observableArrayList(0);
+        ObservableList<Integer> items = FXCollections.observableArrayList(Integer.valueOf(0));
         for (int i = 1; i <= contoller.getCurrentTournament().getConfig().getGoalsToWin(); i++) {
-            items.add(i);
+            items.add(Integer.valueOf(i));
         }
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<>(items);
         IntegerConverter converter = new IntegerConverter();
@@ -88,7 +84,7 @@ class IntegerConverter extends StringConverter<Integer> {
 
     @Override
     public Integer fromString(String string) {
-        return Integer.parseInt(string);
+        return Integer.valueOf(string);
     }
 
 }

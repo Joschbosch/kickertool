@@ -18,7 +18,7 @@ import zur.koeln.kickertool.ui.GUIState;
 public class TournamentController {
 
     private final PlayerPool playerpool;
-    private GUIController guiController;
+    private final GUIController guiController;
     private Tournament currentTournament;
 
     /**
@@ -162,7 +162,7 @@ public class TournamentController {
      */
     public void updateMatchResult(Match match, Integer scoreHome, Integer scoreVisiting) {
         try {
-            match.setResult(scoreHome, scoreVisiting);
+            match.setResult(scoreHome.intValue(), scoreVisiting.intValue());
             currentTournament.addMatchResult(match);
         } catch (MatchException e) {
             e.printStackTrace();
