@@ -19,14 +19,20 @@ public class TournamentController {
 
     private final PlayerPool playerpool;
     private final GUIController guiController;
+    private static TournamentController instance;
     private Tournament currentTournament;
 
     /**
      * 
      */
     public TournamentController(GUIController guiController) {
+        instance = this;
         playerpool = new PlayerPool();
         this.guiController = guiController;
+    }
+
+    public static TournamentController getInstance() {
+        return instance;
     }
 
     /**
