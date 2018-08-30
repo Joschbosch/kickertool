@@ -51,7 +51,7 @@ public class Tournament {
         if (!started) {
             if (!participants.containsKey(p.getUid())) {
                 participants.put(p.getUid(), p);
-                p.setPausingTournement(false);
+                p.setPausingTournament(false);
             }
         } else {
             if (!table.containsKey(p)) {
@@ -72,12 +72,12 @@ public class Tournament {
     }
 
     public void pausePlayer(Player p) {
-        p.setPausingTournement(true);
+        p.setPausingTournament(true);
         checkDummies();
     }
 
     public void unpausePlayer(Player p) {
-        p.setPausingTournement(false);
+        p.setPausingTournament(false);
         checkDummies();
     }
 
@@ -113,7 +113,7 @@ public class Tournament {
     private int getActivePlayerCount() {
         int count = 0;
         for (TournamentStatistics ts : table.values()) {
-            if (!ts.getPlayer().isPausingTournement() && !ts.getPlayer().isDummy()) {
+            if (!ts.getPlayer().isPausingTournament() && !ts.getPlayer().isDummy()) {
                 count++;
             }
         }
@@ -137,7 +137,7 @@ public class Tournament {
      * @param i
      */
     private void createDummyPlayer(int i) {
-        Player dummy = new Player("Dummy Player " + i, "Dummy" + i);
+        Player dummy = new Player("Dummy Player " + i);
         dummy.setDummy(true);
         table.put(dummy, new TournamentStatistics(dummy));
         dummyPlayer.add(dummy);
@@ -146,7 +146,7 @@ public class Tournament {
     public Round newRound() {
         Round r = new Round(completeRounds.size() + ongoingRounds.size() + 1);
         ongoingRounds.put(Integer.valueOf(r.getRoundNo()), r);
-        ongoingMatches.addAll(r.createMatches(getTable(), playtables, config));
+        ongoingMatches.addAll(r.createMatches(getTableCopySortedByPoints(), playtables, config));
         return r;
     }
 
@@ -174,7 +174,7 @@ public class Tournament {
         }
     }
 
-    public List<TournamentStatistics> getTable() {
+    public List<TournamentStatistics> getTableCopySortedByPoints() {
         List<TournamentStatistics> sorting = new LinkedList<>(table.values());
         Collections.sort(sorting, new Comparator<TournamentStatistics>() {
             @Override
@@ -221,7 +221,7 @@ public class Tournament {
     public void printTable() {
         System.out.println(String.format("\n%-20s\t%s\t%s\t%s\t%s\t%s\t%s", "Name", "Matches", "Win", "Loss", "Draw",
                 "GoalDiff", "Points"));
-        System.out.println(getTable());
+        System.out.println(getTableCopySortedByPoints());
     }
 
     /**

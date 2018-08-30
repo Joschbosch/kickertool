@@ -15,22 +15,20 @@ public class Player {
 
     private String name;
 
-    private String nickname;
-
     private boolean dummy;
 
     @JsonIgnore
-    private boolean pausingTournement = false;
+    private boolean pausingTournament = false;
 
     public Player() {
     }
 
-    public Player(String name, String nickname) { 
+    public Player(
+        String name) {
         uid = UUID.randomUUID();
         this.name = name;
-        this.nickname = nickname;
         dummy = false;
-        pausingTournement = false;
+        pausingTournament = false;
     }
 
     /*
@@ -40,7 +38,7 @@ public class Player {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof Player)) {
+        if (!(obj instanceof Player)) {
             return false;
         }
         return ((Player) obj).uid.equals(uid);

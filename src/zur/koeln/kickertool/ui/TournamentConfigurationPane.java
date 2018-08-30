@@ -72,7 +72,7 @@ public class TournamentConfigurationPane extends GridPane {
     private void createSpinnerAndLabel(int gridRow, String labelText, int minValue, int maxValue, int initialValue,
             String configKey) {
         Label label = new Label(labelText);
-        final Spinner<Integer> spinner = new Spinner<Integer>();
+        final Spinner<Integer> spinner = new Spinner<>();
         SpinnerValueFactory<Integer> valueFactory = //
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(minValue, maxValue, initialValue);
         spinner.setValueFactory(valueFactory);

@@ -15,7 +15,7 @@ import zur.koeln.kickertool.TournamentController;
 
 public class MainMenuPane extends GridPane {
 
-    private TournamentController controller;
+    private final TournamentController controller;
 
     public MainMenuPane(TournamentController controller) {
         this.controller = controller;
@@ -57,7 +57,6 @@ public class MainMenuPane extends GridPane {
         HBox tournamentBox = new HBox(newTournamentNameText, newTournamentButton);
         this.setAlignment(Pos.CENTER);
         this.add(tournamentBox, 0, 0);
-        // GridPane.setColumnSpan(btn, 2);
         GridPane.setHalignment(btn, HPos.CENTER);
         this.add(btn, 0, 1);
 

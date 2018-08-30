@@ -8,13 +8,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
@@ -26,11 +21,15 @@ import zur.koeln.kickertool.player.Player;
 
 public class PlayerPoolManagementPane extends StackPane {
 
-    private TournamentController controller;
+    private final TournamentController controller;
 
     public PlayerPoolManagementPane(TournamentController controller) {
         this.controller = controller;
+        createControls();
 
+    }
+
+    private void createControls() {
         final Label label = new Label("Player Pool");
         label.setFont(new Font("Arial", 20));
 
@@ -54,25 +53,9 @@ public class PlayerPoolManagementPane extends StackPane {
             }
         });
 
-        TableColumn<Player, String> nicknameCol = new TableColumn<>("Nickname");
-        nicknameCol.setCellValueFactory(new PropertyValueFactory<>("nickname"));
-        nicknameCol.setCellFactory(TextFieldTableCell.<Player>forTableColumn());
-        nicknameCol.setMinWidth(200);
-        nicknameCol.setSortable(false);
-        nicknameCol.setOnEditCommit((CellEditEvent<Player, String> event) -> {
-            TablePosition<Player, String> pos = event.getTablePosition();
-            String newNickName = event.getNewValue();
 
-            int row = pos.getRow();
-            Player player = event.getTableView().getItems().get(row);
-
-            player.setNickname(newNickName);
-            controller.playerEdited();
-
-        });
 
         table.getColumns().add(nameCol);
-        table.getColumns().add(nicknameCol);
 
         ObservableList<Player> data = FXCollections.observableArrayList();
         data.addAll(controller.getPlayerpool().getPlayers());
@@ -82,19 +65,15 @@ public class PlayerPoolManagementPane extends StackPane {
         final TextField nameText = new TextField();
         nameText.setPromptText("Name");
         nameText.setMaxWidth(nameCol.getPrefWidth());
-        final TextField nicknameText = new TextField();
-        nicknameText.setPromptText("Nickname");
-        nicknameText.setMaxWidth(nicknameCol.getPrefWidth());
 
         final Button addButton = new Button("Add");
         addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 if (!nameText.getText().isEmpty()) {
-                    Player newPlayer = new Player(nameText.getText(), nicknameText.getText());
+                    Player newPlayer = new Player(nameText.getText());
                     data.add(newPlayer);
                     nameText.clear();
-                    nicknameText.clear();
                     controller.addPlayer(newPlayer);
 
                 }
@@ -124,7 +103,7 @@ public class PlayerPoolManagementPane extends StackPane {
         });
 
         final HBox hBox = new HBox();
-        hBox.getChildren().addAll(nameText, nicknameText, addButton);
+        hBox.getChildren().addAll(nameText, addButton);
         hBox.setSpacing(3);
 
         final VBox vbox = new VBox();

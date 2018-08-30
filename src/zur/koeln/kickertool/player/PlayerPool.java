@@ -20,7 +20,7 @@ public class PlayerPool {
     }
 
     public void loadPlayerPool() {
-        File playerPoolFile = new File("playerpool.json");
+        File playerPoolFile = new File("playerpool.json"); //$NON-NLS-1$
         if (playerPoolFile.exists() && playerPoolFile.isFile()) {
             ObjectMapper m = new ObjectMapper();
             try {
@@ -38,7 +38,7 @@ public class PlayerPool {
     }
 
     public void savePlayerPool() {
-        File playerPoolFile = new File("playerpool.json");
+        File playerPoolFile = new File("playerpool.json"); //$NON-NLS-1$
         ObjectMapper m = new ObjectMapper();
         try {
             m.writeValue(playerPoolFile, players);
@@ -58,7 +58,7 @@ public class PlayerPool {
     }
 
     public void printPlayerPool() {
-        System.out.println(String.format("%s\t%s\t%s\t", "Name", "Nickname", "ID"));
+        System.out.println(String.format("%s\t%s\t%s\t", "Name", "Nickname", "ID")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         Collections.sort(players, new Comparator<Player>() {
 
             @Override
@@ -68,7 +68,7 @@ public class PlayerPool {
 
         });
         for (Player p : players) {
-            System.out.println(String.format("%s\t%s\t%s\t", p.getName(), p.getNickname(), p.getUid()));
+            System.out.println(String.format("%s\t%s\t%s\t", p.getName(), p.getUid())); //$NON-NLS-1$
         }
     }
 

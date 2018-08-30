@@ -15,11 +15,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import zur.koeln.kickertool.TournamentController;
+import zur.koeln.kickertool.player.Player;
 
 public class TournamentPane extends GridPane {
 
-    private MatchesTable matchesTable;
-    private ScoreTable scoreTable;
+    private final MatchesTable matchesTable;
+    private final ScoreTable scoreTable;
 
     public TournamentPane(TournamentController controller) {
         GridPane innerPane = new GridPane();
@@ -66,12 +67,29 @@ public class TournamentPane extends GridPane {
         innerPane.add(nextRoundButton, 0, 1);
 
         Button addPlayerButton = new Button("Add late Player");
-        Button removePlayer = new Button("Remove lazy Player");
-        Button pausePlayer = new Button("Pause Player");
-        Button unpausePlayer = new Button("Unpause Player");
+        addPlayerButton.setOnAction(e -> {
 
+            //            controller.addParticipantToTournament(null);
+            update();
+        });
+        Button pausePlayer = new Button("Pause Player");
+        pausePlayer.setOnAction(e -> {
+            Player selectedPlayer = scoreTable.getSelectedPlayer();
+            if (selectedPlayer != null && !selectedPlayer.isDummy()) {
+                controller.getCurrentTournament().pausePlayer(selectedPlayer);
+            }
+            update();
+        });
+        Button unpausePlayer = new Button("Unpause Player");
+        unpausePlayer.setOnAction(e -> {
+            Player selectedPlayer = scoreTable.getSelectedPlayer();
+            if (selectedPlayer != null && !selectedPlayer.isDummy()) {
+                controller.getCurrentTournament().unpausePlayer(selectedPlayer);
+            }
+            update();
+        });
         HBox buttonBox = new HBox();
-        buttonBox.getChildren().addAll(addPlayerButton, removePlayer, pausePlayer, unpausePlayer);
+        buttonBox.getChildren().addAll(addPlayerButton, pausePlayer, unpausePlayer);
 
         GridPane.setHalignment(buttonBox, HPos.CENTER);
         innerPane.add(buttonBox, 1, 1);

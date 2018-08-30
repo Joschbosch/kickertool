@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -19,6 +21,7 @@ public class Round {
 
     private final int roundNo;
 
+    @JsonIgnore
     private Random r = new Random();
 
     private List<Match> matches = new LinkedList<>();
@@ -30,7 +33,7 @@ public class Round {
      */
     public List<Match> createMatches(List<TournamentStatistics> table, List<GamingTable> playtables,
             TournamentConfiguration config) {
-        table.removeIf(statistic -> statistic.getPlayer().isPausingTournement());
+        table.removeIf(statistic -> statistic.getPlayer().isPausingTournament());
         while (table.size() > 3) {
             Team home;
             Team visiting;

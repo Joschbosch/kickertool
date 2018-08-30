@@ -16,13 +16,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import zur.koeln.kickertool.TournamentController;
+import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.TournamentStatistics;
 
 public class ScoreTable extends GridPane {
 
     private final TournamentController controller;
     private ObservableList<TournamentStatistics> tableData;
-    private TableView table;
+    private TableView<TournamentStatistics> table;
 
     public ScoreTable(TournamentController controller) {
 
@@ -35,7 +36,7 @@ public class ScoreTable extends GridPane {
      */
     private void createTable() {
 
-        tableData = FXCollections.observableArrayList(controller.getCurrentTournament().getTable());
+        tableData = FXCollections.observableArrayList(controller.getCurrentTournament().getTableCopySortedByPoints());
 
         table = new TableView();
         table.setEditable(false);
@@ -52,7 +53,12 @@ public class ScoreTable extends GridPane {
         playerCol.setCellValueFactory(new Callback<CellDataFeatures<TournamentStatistics, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<TournamentStatistics, String> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getPlayer().getName());
+                String playerString = p.getValue().getPlayer().getName();
+                if (p.getValue().getPlayer().isPausingTournament()) {
+                    playerString += " (pausing)";
+                }
+                return new ReadOnlyObjectWrapper(playerString);
+
             }
         });
         TableColumn matchesHeader = new TableColumn("Matches");
@@ -94,25 +100,6 @@ public class ScoreTable extends GridPane {
         
         this.add(table, 0, 0);
 
-        //
-
-        //        for (int i = 0; i < table.size(); i++) {
-        //            TournamentStatistics stat = table.get(i);
-        //            boolean darkRow = i % 2 == 0;
-        //            boolean inactive = stat.getPlayer().isPausingTournement();
-        //            int row = i + 1;
-        //            addLabel(String.valueOf(i + 1) + (i < 9 ? " " : ""), 0, row, darkRow, inactive);
-        //            addLabel(stat.getPlayer().getName(), 1, row, darkRow, inactive);
-        //            addLabel(String.valueOf(stat.getMatchesDone()), 2, row, darkRow, inactive);
-        //            addLabel(String.valueOf(stat.getMatchesWon()), 3, row, darkRow, inactive);
-        //            addLabel(String.valueOf(stat.getMatchesLost()), 4, row, darkRow, inactive);
-        //            addLabel(String.valueOf(stat.getMatchesDraw()), 5, row, darkRow, inactive);
-        //            addLabel(String.valueOf(stat.getGoals()), 6, row, darkRow, inactive);
-        //            addLabel(String.valueOf(stat.getGoalsConceded()), 7, row, darkRow, inactive);
-        //            addLabel(String.valueOf(stat.getGoalDiff()), 8, row, darkRow, inactive);
-        //            addLabel(String.valueOf(stat.getPoints()), 9, row, darkRow, inactive);
-        //
-        //        }
     }
 
     private void addLabel(String text, int col, int row, boolean dark, boolean inactive) {
@@ -135,7 +122,17 @@ public class ScoreTable extends GridPane {
     }
 
     public void update() {
+
+        tableData = FXCollections.observableArrayList(controller.getCurrentTournament().getTableCopySortedByPoints());
+        table.setItems(tableData);
         table.refresh();
         table.sort();
+    }
+
+    public Player getSelectedPlayer() {
+        if (table != null && table.getSelectionModel() != null && table.getSelectionModel().getSelectedItem() != null) {
+            return table.getSelectionModel().getSelectedItem().getPlayer();
+        }
+        return null;
     }
 }
