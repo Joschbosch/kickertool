@@ -8,9 +8,12 @@ import java.util.Collection;
 import lombok.Getter;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.player.PlayerPool;
+import zur.koeln.kickertool.tools.SimpleTimer;
+import zur.koeln.kickertool.tools.Timer;
 import zur.koeln.kickertool.tournament.Match;
 import zur.koeln.kickertool.tournament.MatchException;
 import zur.koeln.kickertool.tournament.Tournament;
+import zur.koeln.kickertool.tournament.TournamentConfigurationKeys;
 import zur.koeln.kickertool.ui.GUIController;
 import zur.koeln.kickertool.ui.GUIState;
 
@@ -21,6 +24,7 @@ public class TournamentController {
     private final GUIController guiController;
     private static TournamentController instance;
     private Tournament currentTournament;
+    private final Timer timer;
 
     /**
      * 
@@ -28,11 +32,24 @@ public class TournamentController {
     public TournamentController(GUIController guiController) {
         instance = this;
         playerpool = new PlayerPool();
+        timer = new SimpleTimer();
         this.guiController = guiController;
     }
 
     public static TournamentController getInstance() {
         return instance;
+    }
+
+    public void startStopwatch() {
+        timer.start();
+    }
+
+    public void stopStopwatch() {
+        timer.stop();
+    }
+
+    public void resetStopWatch() {
+        timer.reset();
     }
 
     /**
@@ -79,33 +96,39 @@ public class TournamentController {
         guiController.switchStateTo(GUIState.NEW_TOURNAMENT_CONFIG);
     }
 
+    public boolean isCurrentRoundComplete() {
+        return currentTournament.isCurrentRoundComplete();
+    }
+
     /**
      * @param configKey
      * @param newValue
      */
-    public void changedTournamentConfig(String configKey, Integer newValue) {
+    public void changedTournamentConfig(TournamentConfigurationKeys configKey, Integer newValue) {
         switch (configKey) {
-        case "tables":
-            currentTournament.getConfig().setTableCount(newValue.intValue());
+            case TABLES :
+                currentTournament.getConfig().setTableCount(newValue.intValue());
             break;
-        case "matchesToWin":
-            currentTournament.getConfig().setMatchesToWin(newValue.intValue());
+            case MATCHES_TO_WIN :
+                currentTournament.getConfig().setMatchesToWin(newValue.intValue());
             break;
-        case "goalsForWin":
-            currentTournament.getConfig().setGoalsToWin(newValue.intValue());
+            case GOALS_FOR_WIN :
+                currentTournament.getConfig().setGoalsToWin(newValue.intValue());
             break;
-        case "pointForWinner":
-            currentTournament.getConfig().setPointsForWinner(newValue.intValue());
+            case POINTS_FOR_WINNER :
+                currentTournament.getConfig().setPointsForWinner(newValue.intValue());
             break;
-        case "pointsForDraw":
-            currentTournament.getConfig().setPointsForDraw(newValue.intValue());
+            case POINTS_FOR_DRAW :
+                currentTournament.getConfig().setPointsForDraw(newValue.intValue());
             break;
-        case "minutesPerMatch":
-            currentTournament.getConfig().setMinutesPerMatch(newValue.intValue());
+            case MINUTES_PER_MATCH :
+                currentTournament.getConfig().setMinutesPerMatch(newValue.intValue());
             break;
-        case "randomRounds":
-            currentTournament.getConfig().setRandomRounds(newValue.intValue());
+            case RANDOM_ROUNDS :
+                currentTournament.getConfig().setRandomRounds(newValue.intValue());
             break;
+            default :
+                break;
         }
 
     }
@@ -130,6 +153,7 @@ public class TournamentController {
     public void startTournament() {
         currentTournament.startTournament();
         guiController.switchStateTo(GUIState.TOURNAMENT);
+        timer.setTimer(currentTournament.getConfig().getMinutesPerMatch());
     }
 
     /**
@@ -158,6 +182,7 @@ public class TournamentController {
      */
     public void nextRound() {
         currentTournament.newRound();
+        currentTournament.exportTournament();
         guiController.update();
     }
 

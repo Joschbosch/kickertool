@@ -15,7 +15,7 @@ import zur.koeln.kickertool.tournament.Round;
 
 public class MatchesTable extends GridPane {
 
-    private TournamentController controller;
+    private final TournamentController controller;
 
     public MatchesTable(TournamentController controller) {
         this.controller = controller;
@@ -31,7 +31,10 @@ public class MatchesTable extends GridPane {
         this.getChildren().clear();
 
         List<Round> rounds = new ArrayList<>(controller.getCurrentTournament().getCompleteRounds().values());
-        rounds.addAll(controller.getCurrentTournament().getOngoingRounds().values());
+        Round currentRound = controller.getCurrentTournament().getCurrentRound();
+        if (currentRound != null) {
+            rounds.add(currentRound);
+        }
 
         Collections.sort(rounds, new Comparator<Round>() {
 

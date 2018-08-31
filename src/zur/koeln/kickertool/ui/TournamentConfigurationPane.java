@@ -17,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import zur.koeln.kickertool.TournamentController;
 import zur.koeln.kickertool.tournament.TournamentConfiguration;
+import zur.koeln.kickertool.tournament.TournamentConfigurationKeys;
 
 public class TournamentConfigurationPane extends GridPane {
 
@@ -37,13 +38,13 @@ public class TournamentConfigurationPane extends GridPane {
 
         TournamentConfiguration config = controller.getCurrentTournament().getConfig();
 
-        createSpinnerAndLabel(1, "Number of tables", 1, 100, config.getTableCount(), "tables");
-        createSpinnerAndLabel(2, "Matches to win", 1, 100, config.getMatchesToWin(), "matchesToWin");
-        createSpinnerAndLabel(3, "Goals for win", 1, 100, config.getGoalsToWin(), "goalsForWin");
-        createSpinnerAndLabel(4, "Points for winner", 0, 100, config.getPointsForWinner(), "pointForWinner");
-        createSpinnerAndLabel(5, "Points for draw", 0, 100, config.getPointsForDraw(), "pointsForDraw");
-        createSpinnerAndLabel(6, "Minutes per match", 1, 100, config.getMinutesPerMatch(), "minutesPerMatch");
-        createSpinnerAndLabel(7, "Random rounds at start", 0, 100, config.getRandomRounds(), "randomRounds");
+        createSpinnerAndLabel(1, "Number of tables", 1, 100, config.getTableCount(), TournamentConfigurationKeys.TABLES);
+        createSpinnerAndLabel(2, "Matches to win", 1, 100, config.getMatchesToWin(), TournamentConfigurationKeys.MATCHES_TO_WIN);
+        createSpinnerAndLabel(3, "Goals for win", 1, 100, config.getGoalsToWin(), TournamentConfigurationKeys.GOALS_FOR_WIN);
+        createSpinnerAndLabel(4, "Points for winner", 0, 100, config.getPointsForWinner(), TournamentConfigurationKeys.POINTS_FOR_WINNER);
+        createSpinnerAndLabel(5, "Points for draw", 0, 100, config.getPointsForDraw(), TournamentConfigurationKeys.POINTS_FOR_DRAW);
+        createSpinnerAndLabel(6, "Minutes per match", 1, 100, config.getMinutesPerMatch(), TournamentConfigurationKeys.MINUTES_PER_MATCH);
+        createSpinnerAndLabel(7, "Random rounds at start", 0, 100, config.getRandomRounds(), TournamentConfigurationKeys.RANDOM_ROUNDS);
 
         Button back = new Button("Back");
         back.setOnAction(new EventHandler<ActionEvent>() {
@@ -70,7 +71,7 @@ public class TournamentConfigurationPane extends GridPane {
      * 
      */
     private void createSpinnerAndLabel(int gridRow, String labelText, int minValue, int maxValue, int initialValue,
-            String configKey) {
+        TournamentConfigurationKeys configKey) {
         Label label = new Label(labelText);
         final Spinner<Integer> spinner = new Spinner<>();
         SpinnerValueFactory<Integer> valueFactory = //

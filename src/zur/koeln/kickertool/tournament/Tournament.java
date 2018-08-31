@@ -1,8 +1,11 @@
 package zur.koeln.kickertool.tournament;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +20,14 @@ public class Tournament {
     private final TournamentConfiguration config = new TournamentConfiguration();
 
     private String name;
-
+    @JsonIgnore
     private boolean started = false;
 
     private Map<UUID, Player> participants = new HashMap<>();
 
     private Map<Integer, Round> completeRounds = new HashMap<>();
 
-    private Map<Integer, Round> ongoingRounds = new HashMap<>();
+    private Round currentRound;
 
     private List<Match> completeMatches = new LinkedList<>();
 
@@ -107,6 +110,8 @@ public class Tournament {
         }
     }
 
+
+
     /**
      * @return
      */
@@ -118,6 +123,15 @@ public class Tournament {
             }
         }
         return count;
+    }
+    public void exportTournament() {
+        File tournamentFile = new File("tournament.json"); //$NON-NLS-1$
+        ObjectMapper m = new ObjectMapper();
+        try {
+            m.writerWithDefaultPrettyPrinter().writeValue(tournamentFile, this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void startTournament() {
@@ -137,17 +151,33 @@ public class Tournament {
      * @param i
      */
     private void createDummyPlayer(int i) {
-        Player dummy = new Player("Dummy Player " + i);
+        Player dummy = new Player("Dummy Player " + i); //$NON-NLS-1$
         dummy.setDummy(true);
         table.put(dummy, new TournamentStatistics(dummy));
         dummyPlayer.add(dummy);
     }
 
     public Round newRound() {
-        Round r = new Round(completeRounds.size() + ongoingRounds.size() + 1);
-        ongoingRounds.put(Integer.valueOf(r.getRoundNo()), r);
-        ongoingMatches.addAll(r.createMatches(getTableCopySortedByPoints(), playtables, config));
-        return r;
+
+        if (isCurrentRoundComplete()) {
+            int nextRoundNumber = 1;
+            if (currentRound != null) {
+                currentRound.setScoreTableAtEndOfRound(getClonedTable());
+                completeRounds.put(Integer.valueOf(currentRound.getRoundNo()), currentRound);
+                nextRoundNumber = currentRound.getRoundNo() + 1;
+            }
+            Round newRound = new Round(nextRoundNumber);
+            currentRound = newRound;
+            ongoingMatches.addAll(newRound.createMatches(getTableCopySortedByPoints(), playtables, config));
+
+            return newRound;
+        }
+        return null;
+    }
+
+    private Map<Player, TournamentStatistics> getClonedTable() {
+
+        return null;
     }
 
     public void addMatchResult(Match m) throws MatchException {
@@ -218,9 +248,9 @@ public class Tournament {
         return result;
     }
 
+    @SuppressWarnings("nls")
     public void printTable() {
-        System.out.println(String.format("\n%-20s\t%s\t%s\t%s\t%s\t%s\t%s", "Name", "Matches", "Win", "Loss", "Draw",
-                "GoalDiff", "Points"));
+        System.out.println(String.format("%n%-20s\t%s\t%s\t%s\t%s\t%s\t%s", "Name", "Matches", "Win", "Loss", "Draw", "GoalDiff", "Points"));
         System.out.println(getTableCopySortedByPoints());
     }
 
@@ -230,4 +260,9 @@ public class Tournament {
     public void printMatches() {
         System.out.println(getMatches());
     }
+
+    public boolean isCurrentRoundComplete() {
+        return ongoingMatches.isEmpty();
+    }
+
 }

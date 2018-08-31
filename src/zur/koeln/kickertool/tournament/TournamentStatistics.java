@@ -86,4 +86,10 @@ public class TournamentStatistics {
         return result.toString();
 
     }
+
+    public TournamentStatistics cloneStatistics() {
+        TournamentStatistics clone = new TournamentStatistics(player);
+        return null;
+
+    }
 }
