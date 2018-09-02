@@ -2,6 +2,7 @@ package zur.koeln.kickertool.uifxml;
 
 import java.util.List;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,7 +12,6 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import lombok.AccessLevel;
@@ -38,6 +38,7 @@ public class FXMLPlayerPoolManagementController{
 	@FXML
 	public void initialize() {
 
+	
 		getTblColName().setCellValueFactory(new PropertyValueFactory<>("name"));
 		getTblColName().setCellFactory(TextFieldTableCell.<Player>forTableColumn());
 		
@@ -45,6 +46,8 @@ public class FXMLPlayerPoolManagementController{
 		
 		getTblPlayers().setItems(getPlayerData());
 		getTblPlayers().getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		
+		getBtnAddPlayer().disableProperty().bind(Bindings.greaterThan(1, getTxtPlayerName().textProperty().length()));
 	}
 	
 	private List<Player> loadPlayerData() {
