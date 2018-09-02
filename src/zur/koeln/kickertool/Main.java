@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 import zur.koeln.kickertool.tournament.MatchException;
 import zur.koeln.kickertool.ui.GUIController;
 import zur.koeln.kickertool.ui.GUIState;
+import zur.koeln.kickertool.ui.MainMenuPane;
+import zur.koeln.kickertool.uifxml.FXMLGUIController;
 
 public class Main extends Application {
 
@@ -19,24 +21,23 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-    	//startWithGUIFXML(primaryStage);
-    	startWithGUICode(primaryStage);
+    	startWithGUIFXML(primaryStage);
+    	//startWithGUICode(primaryStage);
     }
    
     
     private void startWithGUICode(Stage primaryStage) {
         GUIController guiController = new GUIController(primaryStage, GUIState.MAIN_MENU);
         TournamentController controller = new TournamentController(guiController);
-        guiController.init(controller);
+        guiController.init(controller, new MainMenuPane(controller));
     }
 
     private void startWithGUIFXML(Stage primaryStage) throws IOException {
-    	Parent root = FXMLLoader.load(getClass().getResource("uifxml/MainMenu.fxml"));
     	
-    	Scene mainMenuScene = new Scene(root, 450, 400);
+    	Parent mainMenu = FXMLLoader.load(getClass().getResource("uifxml/MainMenu.fxml"));
     	
-    	primaryStage.setTitle("parcIT Kickertool");
-    	primaryStage.setScene(mainMenuScene);
-    	primaryStage.show();
+    	FXMLGUIController fxmlGuiController = new FXMLGUIController(primaryStage, GUIState.MAIN_MENU);
+        TournamentController controller = new TournamentController(fxmlGuiController);
+        fxmlGuiController.init(controller, mainMenu, 450, 450);
     }
 }

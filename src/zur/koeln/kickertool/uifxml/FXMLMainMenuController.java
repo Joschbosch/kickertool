@@ -1,14 +1,16 @@
 package zur.koeln.kickertool.uifxml;
 
-import javafx.fxml.FXML;
-
-import javafx.scene.control.Button;
-
-import javafx.scene.control.TextField;
-import zur.koeln.kickertool.TournamentController;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import lombok.AccessLevel;
+import lombok.Getter;
+import zur.koeln.kickertool.TournamentController;
 
+@Getter(value=AccessLevel.PRIVATE)
 public class FXMLMainMenuController {
+	
 	@FXML
 	private Button btnCreateNewTournament;
 	@FXML

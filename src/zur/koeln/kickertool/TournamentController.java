@@ -6,6 +6,7 @@ package zur.koeln.kickertool;
 import java.util.Collection;
 
 import lombok.Getter;
+import zur.koeln.kickertool.base.AbstractGUIController;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.player.PlayerPool;
 import zur.koeln.kickertool.tools.SimpleTimer;
@@ -21,7 +22,7 @@ import zur.koeln.kickertool.ui.GUIState;
 public class TournamentController {
 
     private final PlayerPool playerpool;
-    private final GUIController guiController;
+    private final AbstractGUIController guiController;
     private static TournamentController instance;
     private Tournament currentTournament;
     private final Timer timer;
@@ -29,7 +30,7 @@ public class TournamentController {
     /**
      * 
      */
-    public TournamentController(GUIController guiController) {
+    public TournamentController(AbstractGUIController guiController) {
         instance = this;
         playerpool = new PlayerPool();
         timer = new SimpleTimer();
