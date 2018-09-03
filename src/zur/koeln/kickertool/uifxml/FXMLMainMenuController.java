@@ -1,5 +1,6 @@
 package zur.koeln.kickertool.uifxml;
 
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,6 +19,13 @@ public class FXMLMainMenuController {
 	@FXML
 	private TextField txtTournamentName;
 
+	@FXML
+	public void initialize() {
+		
+		getBtnCreateNewTournament().disableProperty().bind(Bindings.greaterThan(1, getTxtTournamentName().textProperty().length()));
+		
+	}
+	
 	// Event Listener on Button[#btnCreateNewTournament].onAction
 	@FXML
 	public void onCreateNewTournamentClicked(ActionEvent event) {
