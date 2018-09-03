@@ -48,7 +48,7 @@
          <contextMenu>
             <ContextMenu>
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#OnPlayerDeleteClicked" text="Löschen" />
+                <MenuItem mnemonicParsing="false" onAction="#onPlayerDeleteClicked" text="Löschen" />
               </items>
             </ContextMenu>
          </contextMenu>
@@ -58,7 +58,7 @@
             <Insets left="25.0" right="100.0" top="15.0" />
          </GridPane.margin>
       </TextField>
-      <Button fx:id="btnAddPlayer" mnemonicParsing="false" onAction="#OnBtnAddPlayerClicked" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+      <Button fx:id="btnAddPlayer" mnemonicParsing="false" onAction="#onBtnAddPlayerClicked" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets right="25.0" top="15.0" />
          </GridPane.margin>
@@ -73,7 +73,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="btnBack" ellipsisString="" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#OnBackClicked" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+      <Button fx:id="btnBack" ellipsisString="" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#onBackClicked" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>

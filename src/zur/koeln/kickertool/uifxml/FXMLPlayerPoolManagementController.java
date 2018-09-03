@@ -57,7 +57,7 @@ public class FXMLPlayerPoolManagementController{
 	
 	// Event Listener on Button[#btnAddPlayer].onAction
 	@FXML
-	public void OnBtnAddPlayerClicked(ActionEvent event) {
+	public void onBtnAddPlayerClicked(ActionEvent event) {
 		
 		Player newPlayer = new Player(getTxtPlayerName().getText());
 		getPlayerData().add(newPlayer);
@@ -67,14 +67,15 @@ public class FXMLPlayerPoolManagementController{
 	}
 	// Event Listener on Button[#btnBack].onAction
 	@FXML
-	public void OnBackClicked(ActionEvent event) {
+	public void onBackClicked(ActionEvent event) {
 		TournamentController.getInstance().backToMainMenu();
 	}
 	
 	@FXML
-	public void OnPlayerDeleteClicked(ActionEvent event) {
+	public void onPlayerDeleteClicked(ActionEvent event) {
 		
 		List<Player> selectedPlayers = getTblPlayers().getSelectionModel().getSelectedItems();
+		selectedPlayers.forEach(ePlayer -> TournamentController.getInstance().removePlayer(ePlayer));
 		getPlayerData().removeAll(selectedPlayers);
 		
 	}
