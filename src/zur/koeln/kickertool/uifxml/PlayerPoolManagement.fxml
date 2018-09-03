@@ -37,7 +37,7 @@
       </Label>
       <TableView fx:id="tblPlayers" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
         <columns>
-          <TableColumn fx:id="tblColName" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="-1.0" text="Spieler" />
+          <TableColumn fx:id="tblColName" maxWidth="1.7976931348623157E308" minWidth="-1.0" onEditCommit="#onPlayerNameChanged" prefWidth="-1.0" text="Spieler" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

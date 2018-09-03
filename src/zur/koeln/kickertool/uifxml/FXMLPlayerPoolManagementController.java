@@ -6,10 +6,13 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -48,6 +51,8 @@ public class FXMLPlayerPoolManagementController{
 		getTblPlayers().getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		
 		getBtnAddPlayer().disableProperty().bind(Bindings.greaterThan(1, getTxtPlayerName().textProperty().length()));
+	
+		
 	}
 	
 	private List<Player> loadPlayerData() {
@@ -79,4 +84,18 @@ public class FXMLPlayerPoolManagementController{
 		getPlayerData().removeAll(selectedPlayers);
 		
 	}
+
+	@FXML 
+	public void onPlayerNameChanged(CellEditEvent<Player, String> event) {
+			
+		String newName = event.getNewValue();
+		
+        if (!newName.isEmpty()) {
+        	Player selectedPlayer = getTblPlayers().getSelectionModel().getSelectedItem();
+            selectedPlayer.setName(newName);
+            TournamentController.getInstance().playerEdited();
+        }
+		
+	}
+
 }
