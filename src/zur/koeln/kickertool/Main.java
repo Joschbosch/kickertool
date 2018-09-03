@@ -5,7 +5,6 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import zur.koeln.kickertool.tournament.MatchException;
 import zur.koeln.kickertool.ui.GUIController;
@@ -21,8 +20,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-    	//startWithGUIFXML(primaryStage);
-    	startWithGUICode(primaryStage);
+        //        startWithGUIFXML(primaryStage);
+        startWithGUICode(primaryStage);
     }
    
     

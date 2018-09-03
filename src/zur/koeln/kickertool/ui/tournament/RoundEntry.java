@@ -3,6 +3,9 @@
  */
 package zur.koeln.kickertool.ui.tournament;
 
+import java.util.Collections;
+import java.util.List;
+
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -10,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import zur.koeln.kickertool.TournamentController;
+import zur.koeln.kickertool.tournament.Match;
 import zur.koeln.kickertool.tournament.Round;
 
 public class RoundEntry extends GridPane {
@@ -19,8 +23,10 @@ public class RoundEntry extends GridPane {
      */
     public RoundEntry(Round r, TournamentController controller) {
 
-        for (int i = 0; i < r.getMatches().size(); i++) {
-            MatchEntry entry = new MatchEntry(r.getMatches().get(i), controller);
+        List<Match> allMatches = r.getAllMatches();
+        Collections.sort(allMatches, (m1, m2) -> Integer.compare(m1.getMatchNo(), m2.getMatchNo()));
+        for (int i = 0; i < allMatches.size(); i++) {
+            MatchEntry entry = new MatchEntry(allMatches.get(i), controller);
             if (i % 2 == 0) {
                 entry.setStyle("-fx-background-color: lightgrey;");
             }
@@ -40,7 +46,7 @@ public class RoundEntry extends GridPane {
         roundNumberLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         roundNumberLabel.setAlignment(Pos.TOP_CENTER);
         GridPane.setValignment(roundNumberLabel, VPos.TOP);
-        this.add(roundNumberLabel, 0, 0, 1, r.getMatches().size());
+        this.add(roundNumberLabel, 0, 0, 1, allMatches.size());
     }
 
 }

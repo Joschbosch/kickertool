@@ -2,7 +2,13 @@ package zur.koeln.kickertool.tournament;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +17,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import zur.koeln.kickertool.player.Player;
+import zur.koeln.kickertool.player.PlayerPool;
 
 @RequiredArgsConstructor
 @Getter
@@ -20,26 +27,19 @@ public class Tournament {
     private final TournamentConfiguration config = new TournamentConfiguration();
 
     private String name;
+
     @JsonIgnore
     private boolean started = false;
 
-    private Map<UUID, Player> participants = new HashMap<>();
+    private List<UUID> participants = new ArrayList<>();
 
-    private Map<Integer, Round> completeRounds = new HashMap<>();
+    private List<Round> completeRounds = new ArrayList<>();
 
     private Round currentRound;
 
-    private List<Match> completeMatches = new LinkedList<>();
+    private Map<UUID, TournamentStatistics> scoreTable = new HashMap<>();
 
-    private List<Match> ongoingMatches = new LinkedList<>();
-    @JsonIgnore
-    private Map<Player, TournamentStatistics> table = new HashMap<>();
-
-    private List<GamingTable> playtables = new LinkedList<>();
-
-    private List<Player> dummyPlayer = new LinkedList<>();
-
-    private List<Player> dummyPlayerUnused = new LinkedList<>();
+    private Map<Integer, GamingTable> playtables = new HashMap<>();
 
     /**
      * @param players
@@ -52,13 +52,13 @@ public class Tournament {
 
     public void addParticipant(Player p) {
         if (!started) {
-            if (!participants.containsKey(p.getUid())) {
-                participants.put(p.getUid(), p);
+            if (!participants.contains(p.getUid())) {
+                participants.add(p.getUid());
                 p.setPausingTournament(false);
             }
         } else {
-            if (!table.containsKey(p)) {
-                table.put(p, new TournamentStatistics(p));
+            if (!scoreTable.containsKey(p.getUid())) {
+                scoreTable.put(p.getUid(), new TournamentStatistics(p.getUid()));
                 checkDummies();
             }
         }
@@ -68,19 +68,19 @@ public class Tournament {
         if (!started) {
             participants.remove(p.getUid());
         } else {
-            table.remove(p);
+            scoreTable.remove(p.getUid());
             checkDummies();
         }
 
     }
 
-    public void pausePlayer(Player p) {
-        p.setPausingTournament(true);
+    public void pausePlayer(UUID selectedPlayer) {
+        PlayerPool.getInstance().getPlayerById(selectedPlayer).setPausingTournament(true);
         checkDummies();
     }
 
-    public void unpausePlayer(Player p) {
-        p.setPausingTournament(false);
+    public void unpausePlayer(UUID selectedPlayer) {
+        PlayerPool.getInstance().getPlayerById(selectedPlayer).setPausingTournament(false);
         checkDummies();
     }
 
@@ -88,42 +88,36 @@ public class Tournament {
      * 
      */
     private void checkDummies() {
-        int usedDummies = dummyPlayer.size();
+        int usedDummies = PlayerPool.getInstance().getDummyPlayerUsed();
         int neededDummies = getActivePlayerCount() % 4 == 0 ? 0 : 4 - getActivePlayerCount() % 4;
         if (neededDummies < usedDummies) {
             for (int i = neededDummies; i < usedDummies; i++) {
-                Player removeDummy = dummyPlayer.remove(dummyPlayer.size() - 1);
-                table.remove(removeDummy);
-                dummyPlayerUnused.add(removeDummy);
+                UUID removeDummy = PlayerPool.getInstance().removeLastDummy();
+                scoreTable.remove(removeDummy);
+
             }
         } else if (neededDummies > usedDummies) {
             for (int i = usedDummies; i < neededDummies; i++) {
-                if (dummyPlayerUnused.isEmpty()) {
-                    createDummyPlayer(i);
-                } else {
-                    Player dummy = dummyPlayerUnused.remove(0);
-                    table.put(dummy, new TournamentStatistics(dummy));
-                    dummyPlayer.add(dummy);
-                }
-
+                UUID dummy = PlayerPool.getInstance().useNextDummyPlayer();
+                scoreTable.put(dummy, new TournamentStatistics(dummy));
             }
         }
     }
-
-
 
     /**
      * @return
      */
     private int getActivePlayerCount() {
         int count = 0;
-        for (TournamentStatistics ts : table.values()) {
-            if (!ts.getPlayer().isPausingTournament() && !ts.getPlayer().isDummy()) {
+        for (TournamentStatistics ts : scoreTable.values()) {
+            Player player = PlayerPool.getInstance().getPlayerById(ts.getPlayerId());
+            if (!player.isPausingTournament() && !player.isDummy()) {
                 count++;
             }
         }
         return count;
     }
+
     public void exportTournament() {
         File tournamentFile = new File("tournament.json"); //$NON-NLS-1$
         ObjectMapper m = new ObjectMapper();
@@ -137,24 +131,14 @@ public class Tournament {
     public void startTournament() {
         if (!started) {
             for (int i = 1; i <= config.getTableCount(); i++) {
-                playtables.add(new GamingTable(i));
+                playtables.put(Integer.valueOf(i), new GamingTable(i));
             }
-            for (Player p : participants.values()) {
-                table.put(p, new TournamentStatistics(p));
+            for (UUID pid : participants) {
+                scoreTable.put(pid, new TournamentStatistics(pid));
             }
             checkDummies();
         }
         started = true;
-    }
-
-    /**
-     * @param i
-     */
-    private void createDummyPlayer(int i) {
-        Player dummy = new Player("Dummy Player " + i); //$NON-NLS-1$
-        dummy.setDummy(true);
-        table.put(dummy, new TournamentStatistics(dummy));
-        dummyPlayer.add(dummy);
     }
 
     public Round newRound() {
@@ -162,95 +146,100 @@ public class Tournament {
         if (isCurrentRoundComplete()) {
             int nextRoundNumber = 1;
             if (currentRound != null) {
-                currentRound.setScoreTableAtEndOfRound(getClonedTable());
-                completeRounds.put(Integer.valueOf(currentRound.getRoundNo()), currentRound);
+                currentRound.setScoreTableAtEndOfRound(null);
+                completeRounds.add(currentRound);
                 nextRoundNumber = currentRound.getRoundNo() + 1;
             }
-            Round newRound = new Round(nextRoundNumber);
+            Round newRound = new Round();
+            newRound.setRoundNo(nextRoundNumber);
             currentRound = newRound;
-            ongoingMatches.addAll(newRound.createMatches(getTableCopySortedByPoints(), playtables, config));
-
+            newRound.createMatches(getTableCopySortedByPoints(), config);
+            updatePlayTableUsage();
             return newRound;
         }
         return null;
     }
 
-    private Map<Player, TournamentStatistics> getClonedTable() {
-
-        return null;
-    }
-
     public void addMatchResult(Match m) throws MatchException {
-        if (ongoingMatches.contains(m)) {
-            m.getTable().setInUse(false);
-            ongoingMatches.remove(m);
-            completeMatches.add(m);
+        currentRound.addMatchResult(m);
+        playtables.get(m.getTableNo()).setInUse(false);
+        updatePlayTableUsage();
 
-            table.get(m.getHomeTeam().getP1()).addMatchResult(m, config);
-            table.get(m.getHomeTeam().getP2()).addMatchResult(m, config);
-            table.get(m.getVisitingTeam().getP1()).addMatchResult(m, config);
-            table.get(m.getVisitingTeam().getP2()).addMatchResult(m, config);
-        } else {
-            throw new MatchException();
-        }
+        scoreTable.get(m.getHomeTeam().getP1()).addMatchResult(m);
+        scoreTable.get(m.getHomeTeam().getP2()).addMatchResult(m);
+        scoreTable.get(m.getVisitingTeam().getP1()).addMatchResult(m);
+        scoreTable.get(m.getVisitingTeam().getP2()).addMatchResult(m);
+    }
 
-        for (Match ongoing : ongoingMatches) {
-            if (ongoing.getTable() == null) {
-                if (m.getTable().isActive() && !m.getTable().isInUse()) {
-                    ongoing.setTable(m.getTable());
-                    m.getTable().setInUse(true);
+    private void updatePlayTableUsage() {
+        for (Match ongoing : currentRound.getMatches()) {
+            if (ongoing.getTableNo() == -1) {
+                for (GamingTable gameTable : playtables.values()) {
+                    if (!gameTable.isInUse() && gameTable.isActive()) {
+                        ongoing.setTableNo(gameTable.getTableNumber());
+                        gameTable.setInUse(true);
+                        break;
+                    }
                 }
             }
         }
     }
 
+    @JsonIgnore
     public List<TournamentStatistics> getTableCopySortedByPoints() {
-        List<TournamentStatistics> sorting = new LinkedList<>(table.values());
-        Collections.sort(sorting, new Comparator<TournamentStatistics>() {
-            @Override
-            public int compare(TournamentStatistics o1, TournamentStatistics o2) {
-                if (o1.getPlayer().isDummy()) {
-                    return 1;
-                }
-                if (o2.getPlayer().isDummy()) {
-                    return -1;
-                }
-                if (o1.getPoints() < o2.getPoints()) {
-                    return 1;
-                } else if (o1.getPoints() > o2.getPoints()) {
-                    return -1;
-                }
-                if (o1.getGoalDiff() < o2.getGoalDiff()) {
-                    return 1;
-                }
-                if (o1.getGoalDiff() > o2.getGoalDiff()) {
-                    return -1;
-                }
+        List<TournamentStatistics> sorting = new LinkedList<>(scoreTable.values());
+        Collections.sort(sorting, (o1, o2) -> {
 
-                return o1.getPlayer().getName().compareTo(o2.getPlayer().getName());
+            Player player1 = PlayerPool.getInstance().getPlayerById(o1.getPlayerId());
+            Player player2 = PlayerPool.getInstance().getPlayerById(o2.getPlayerId());
+            if (player1 == null) {
+                return 1;
             }
+            if (player2 == null) {
+                return -1;
+            }
+            if (player1.isDummy()) {
+                return 1;
+            }
+            if (player2.isDummy()) {
+                return -1;
+            }
+            long pointsForConfiguration = o1.calcPointsForConfiguration(config);
+            long pointsForConfiguration2 = o2.calcPointsForConfiguration(config);
+            if (pointsForConfiguration < pointsForConfiguration2) {
+                return 1;
+            } else if (pointsForConfiguration > pointsForConfiguration2) {
+                return -1;
+            }
+            int goalDiff = o1.calcGoalDiff();
+            int goalDiff2 = o2.calcGoalDiff();
+
+            if (goalDiff < goalDiff2) {
+                return 1;
+            }
+            if (goalDiff > goalDiff2) {
+                return -1;
+            }
+
+            return player1.getName().compareTo(player2.getName());
         });
 
         return sorting;
     }
 
-    public List<Match> getMatches() {
-        List<Match> result = new LinkedList<>(completeMatches);
-        result.addAll(ongoingMatches);
-        Collections.sort(result, new Comparator<Match>() {
+    @JsonIgnore
+    public List<Match> getAllMatches() {
 
-            @Override
-            public int compare(Match o1, Match o2) {
-                return o1.getMatchNo() - o2.getMatchNo();
-            }
-        });
+        List<Match> result = new LinkedList<>(currentRound.getAllMatches());
+        completeRounds.forEach(r -> result.addAll(r.getAllMatches()));
+        Collections.sort(result, (o1, o2) -> o1.getMatchNo() - o2.getMatchNo());
 
         return result;
     }
 
-    @SuppressWarnings("nls")
     public void printTable() {
-        System.out.println(String.format("%n%-20s\t%s\t%s\t%s\t%s\t%s\t%s", "Name", "Matches", "Win", "Loss", "Draw", "GoalDiff", "Points"));
+        System.out
+            .println(String.format("%n%-20s\t%s\t%s\t%s\t%s\t%s\t%s", "Name", "Matches", "Win", "Loss", "Draw", "GoalDiff", "Points"));
         System.out.println(getTableCopySortedByPoints());
     }
 
@@ -258,11 +247,12 @@ public class Tournament {
      * 
      */
     public void printMatches() {
-        System.out.println(getMatches());
+        System.out.println(getAllMatches());
     }
 
+    @JsonIgnore
     public boolean isCurrentRoundComplete() {
-        return ongoingMatches.isEmpty();
+        return currentRound != null ? currentRound.isComplete() : true;
     }
 
 }

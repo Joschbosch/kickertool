@@ -3,72 +3,82 @@
  */
 package zur.koeln.kickertool.tournament;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import zur.koeln.kickertool.player.Player;
+import zur.koeln.kickertool.player.PlayerPool;
 
 @RequiredArgsConstructor
 @Getter
 @Setter
 public class TournamentStatistics {
 
-    private final Player player;
+    private final UUID playerId;
 
-    private int matchesDone = 0;
+    private List<UUID> matches = new LinkedList<>();
 
-    private int matchesWon = 0;
+    @JsonIgnore
+    private Map<UUID, Match> uidToMatch = new HashMap<>();
 
-    private int matchesLost = 0;
+    public void addMatchResult(Match match) {
+        matches.add(match.getMatchID());
+        uidToMatch.put(match.getMatchID(), match);
+    }
 
-    private int matchesDraw = 0;
+    public int calcMatchesDone() {
+        return matches.size();
+    }
 
-    private int points = 0;
+    public int calcGoalsShot() {
+        return matches.stream().mapToInt(m -> uidToMatch.get(m).getGoalsForPlayer(playerId)).sum();
+    }
 
-    private int goals = 0;
+    public int calcGoalsConceded() {
+        return matches.stream().mapToInt(m -> uidToMatch.get(m).getConcededGoalsForPlayer(playerId)).sum();
+    }
 
-    private int goalsConceded = 0;
+    public int calcGoalDiff() {
+        return calcGoalsShot() - calcGoalsConceded();
+    }
 
-    private List<Match> matches = new LinkedList<>();
+    public long calcMatchesWonCount() {
+        return matches.stream().filter(m -> uidToMatch.get(m).didPlayerWin(playerId)).count();
+    }
 
-    private Set<Player> opponents = new HashSet<>();
+    public long calcMatchesLostCount() {
+        return matches.stream().filter(m -> !uidToMatch.get(m).didPlayerWin(playerId) && !uidToMatch.get(m).isDraw()).count();
+    }
 
-    private Set<Player> partners = new HashSet<>();
+    public long calcMatchesDrawCount() {
+        return matches.stream().filter(m -> uidToMatch.get(m).isDraw()).count();
+    }
 
-    public void addMatchResult(Match match, TournamentConfiguration config) {
-        matchesDone++;
-        if (!player.isDummy()) {
-            if (match.isDraw()) {
-                matchesDraw++;
-                points += config.getPointsForDraw();
-                goals += match.getScoreHome();
-                goalsConceded += match.getScoreVisiting();
-            } else {
-                if (match.didPlayerWin(player)) {
-                    matchesWon++;
-                    points += config.getPointsForWinner();
-                } else {
-                    matchesLost++;
-                }
-                goals += match.getGoalsForPlayer(player);
-                goalsConceded += match.getConcededGoalsForPlayer(player);
-            }
+    public long calcPointsForConfiguration(TournamentConfiguration config) {
+        if (PlayerPool.getInstance().getPlayerById(playerId).isDummy()) {
+            return 0;
         }
-        partners.add(match.getPartner(player));
-        opponents.addAll(match.getOppenents(player));
+
+        long won = calcMatchesWonCount();
+        long draw = calcMatchesDrawCount();
+
+        return won * config.getPointsForWinner() + draw * config.getPointsForDraw();
+
     }
 
-    public int getGoalDiff() {
-        return goals - goalsConceded;
+    public double calcMeanPoints(TournamentConfiguration config) {
+        return calcPointsForConfiguration(config) / (double) matches.size();
     }
 
-    public double meanPoints() {
-        return points / (double) matchesDone;
+    public void importMatchMapping(Map<UUID, Match> mapping) {
+        uidToMatch = mapping;
     }
 
     /*
@@ -79,17 +89,14 @@ public class TournamentStatistics {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder(""); //$NON-NLS-1$
-        result.append(String.format("%n %-20s\t %s\t%s\t%s\t%s\t%s\t%s %s", player.getName(), Integer.valueOf(matchesDone), //$NON-NLS-1$
-                Integer.valueOf(matchesWon), Integer.valueOf(matchesLost), Integer.valueOf(matchesDraw),
-                Integer.valueOf(getGoalDiff()), Integer.valueOf(points), player.isPausingTournament() ? " (pausing)" : "")); //$NON-NLS-1$ //$NON-NLS-2$
+        // result.append(String.format("%n %-20s\t %s\t%s\t%s\t%s\t%s\t%s %s", player.getName(), String.valueOf(matches.size()),
+        // //$NON-NLS-1$
+        // Integer.valueOf(matchesWon), Integer.valueOf(matchesLost), Integer.valueOf(matchesDraw),
+        // Integer.valueOf(getGoalDiff()), Integer.valueOf(points), player.isPausingTournament() ? " (pausing)" : "")); //$NON-NLS-1$
+        // //$NON-NLS-2$
 
         return result.toString();
 
     }
 
-    public TournamentStatistics cloneStatistics() {
-        TournamentStatistics clone = new TournamentStatistics(player);
-        return null;
-
-    }
 }

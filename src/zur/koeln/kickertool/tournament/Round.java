@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -14,19 +15,23 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import zur.koeln.kickertool.player.Player;
+import zur.koeln.kickertool.player.PlayerPool;
 
 @RequiredArgsConstructor
 @Getter
 @Setter
 public class Round {
 
-    private final int roundNo;
+    private int roundNo;
 
     @JsonIgnore
     private Random r = new Random();
 
     private List<Match> matches = new LinkedList<>();
 
+    private List<Match> completeMatches = new LinkedList<>();
+
+    @JsonIgnore
     private Map<Player, TournamentStatistics> scoreTableAtEndOfRound;
 
     /**
@@ -34,9 +39,8 @@ public class Round {
      * @param playtables
      * @return
      */
-    public List<Match> createMatches(List<TournamentStatistics> table, List<GamingTable> playtables,
-            TournamentConfiguration config) {
-        table.removeIf(statistic -> statistic.getPlayer().isPausingTournament());
+    public void createMatches(List<TournamentStatistics> table, TournamentConfiguration config) {
+        table.removeIf(statistic -> PlayerPool.getInstance().getPlayerById(statistic.getPlayerId()).isPausingTournament());
         while (table.size() > 3) {
             Team home;
             Team visiting;
@@ -44,8 +48,8 @@ public class Round {
                 home = new Team(getRandomPlayer(table), getRandomPlayer(table));
                 visiting = new Team(getRandomPlayer(table), getRandomPlayer(table));
             } else {
-                home = new Team(table.get(0).getPlayer(), table.get(3).getPlayer());
-                visiting = new Team(table.get(1).getPlayer(), table.get(2).getPlayer());
+                home = new Team(table.get(0).getPlayerId(), table.get(3).getPlayerId());
+                visiting = new Team(table.get(1).getPlayerId(), table.get(2).getPlayerId());
                 table.remove(0);
                 table.remove(0);
                 table.remove(0);
@@ -54,27 +58,40 @@ public class Round {
 
             Match m = new Match(Integer.valueOf(roundNo), home, visiting);
 
-            for (GamingTable playtable : playtables) {
-                if (playtable.isActive() && !playtable.isInUse()) {
-                    m.setTable(playtable);
-                    playtable.setInUse(true);
-                    break;
-                }
-            }
             matches.add(m);
         }
-        return matches;
     }
 
     /**
      * @param table
      * @return
      */
-    private Player getRandomPlayer(List<TournamentStatistics> table) {
+    private UUID getRandomPlayer(List<TournamentStatistics> table) {
         int random = r.nextInt(table.size());
-        Player player = table.get(random).getPlayer();
+        UUID playerId = table.get(random).getPlayerId();
         table.remove(random);
-        return player;
+        return playerId;
+    }
+
+    public boolean isComplete() {
+        return matches.isEmpty();
+    }
+
+    public void addMatchResult(Match m) throws MatchException {
+        if (matches.contains(m)) {
+            matches.remove(m);
+            completeMatches.add(m);
+
+        } else {
+            throw new MatchException();
+        }
+    }
+
+    @JsonIgnore
+    public List<Match> getAllMatches() {
+        List<Match> allMatches = new LinkedList<>(matches);
+        allMatches.addAll(completeMatches);
+        return allMatches;
     }
 
 }

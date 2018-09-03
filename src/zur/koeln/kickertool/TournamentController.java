@@ -3,7 +3,14 @@
  */
 package zur.koeln.kickertool;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Getter;
 import zur.koeln.kickertool.base.AbstractGUIController;
@@ -15,16 +22,19 @@ import zur.koeln.kickertool.tournament.Match;
 import zur.koeln.kickertool.tournament.MatchException;
 import zur.koeln.kickertool.tournament.Tournament;
 import zur.koeln.kickertool.tournament.TournamentConfigurationKeys;
-import zur.koeln.kickertool.ui.GUIController;
 import zur.koeln.kickertool.ui.GUIState;
 
 @Getter
 public class TournamentController {
 
     private final PlayerPool playerpool;
+
     private final AbstractGUIController guiController;
+
     private static TournamentController instance;
+
     private Tournament currentTournament;
+
     private final Timer timer;
 
     /**
@@ -107,29 +117,29 @@ public class TournamentController {
      */
     public void changedTournamentConfig(TournamentConfigurationKeys configKey, Integer newValue) {
         switch (configKey) {
-            case TABLES :
-                currentTournament.getConfig().setTableCount(newValue.intValue());
+        case TABLES:
+            currentTournament.getConfig().setTableCount(newValue.intValue());
             break;
-            case MATCHES_TO_WIN :
-                currentTournament.getConfig().setMatchesToWin(newValue.intValue());
+        case MATCHES_TO_WIN:
+            currentTournament.getConfig().setMatchesToWin(newValue.intValue());
             break;
-            case GOALS_FOR_WIN :
-                currentTournament.getConfig().setGoalsToWin(newValue.intValue());
+        case GOALS_FOR_WIN:
+            currentTournament.getConfig().setGoalsToWin(newValue.intValue());
             break;
-            case POINTS_FOR_WINNER :
-                currentTournament.getConfig().setPointsForWinner(newValue.intValue());
+        case POINTS_FOR_WINNER:
+            currentTournament.getConfig().setPointsForWinner(newValue.intValue());
             break;
-            case POINTS_FOR_DRAW :
-                currentTournament.getConfig().setPointsForDraw(newValue.intValue());
+        case POINTS_FOR_DRAW:
+            currentTournament.getConfig().setPointsForDraw(newValue.intValue());
             break;
-            case MINUTES_PER_MATCH :
-                currentTournament.getConfig().setMinutesPerMatch(newValue.intValue());
+        case MINUTES_PER_MATCH:
+            currentTournament.getConfig().setMinutesPerMatch(newValue.intValue());
             break;
-            case RANDOM_ROUNDS :
-                currentTournament.getConfig().setRandomRounds(newValue.intValue());
+        case RANDOM_ROUNDS:
+            currentTournament.getConfig().setRandomRounds(newValue.intValue());
             break;
-            default :
-                break;
+        default:
+            break;
         }
 
     }
@@ -153,8 +163,21 @@ public class TournamentController {
      */
     public void startTournament() {
         currentTournament.startTournament();
+        // currentTournament = importTournament();
         guiController.switchStateTo(GUIState.TOURNAMENT);
         timer.setTimer(currentTournament.getConfig().getMinutesPerMatch());
+    }
+
+    private Tournament importTournament() {
+        File tournamentFile = new File("tournament.json"); //$NON-NLS-1$
+        ObjectMapper m = new ObjectMapper();
+        try {
+            currentTournament = m.readValue(tournamentFile, Tournament.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return currentTournament;
+
     }
 
     /**
@@ -175,7 +198,9 @@ public class TournamentController {
      * @return
      */
     public Collection<Player> getParticipantList() {
-        return currentTournament.getParticipants().values();
+        Set<Player> participants = new HashSet<>();
+        currentTournament.getParticipants().forEach(id -> participants.add(PlayerPool.getInstance().getPlayerById(id)));
+        return participants;
     }
 
     /**
@@ -202,4 +227,17 @@ public class TournamentController {
         guiController.update();
     }
 
+    public Player getPlayer(UUID selectedPlayer) {
+        return PlayerPool.getInstance().getPlayerById(selectedPlayer);
+    }
+
+    public void pausePlayer(UUID selectedPlayer) {
+        currentTournament.pausePlayer(selectedPlayer);
+
+    }
+
+    public void unpausePlayer(UUID selectedPlayer) {
+        currentTournament.unpausePlayer(selectedPlayer);
+
+    }
 }

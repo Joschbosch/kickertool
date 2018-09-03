@@ -29,8 +29,8 @@ public class ScoreDialog<R> extends Dialog<R> {
         GridPane.setColumnSpan(header, Integer.valueOf(3));
         grid.add(header, 0, 0);
 
-        Label homeLabel = new Label(match.getHomeTeamString());
-        Label visitingLabel = new Label(match.getVisitingTeamString());
+        Label homeLabel = new Label(match.createHomeTeamString());
+        Label visitingLabel = new Label(match.createVisitingTeamString());
 
         grid.add(homeLabel, 0, 1);
         grid.add(visitingLabel, 2, 1);

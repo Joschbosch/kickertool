@@ -5,7 +5,6 @@ package zur.koeln.kickertool.ui.tournament;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javafx.scene.layout.GridPane;
@@ -30,19 +29,13 @@ public class MatchesTable extends GridPane {
     public void update() {
         this.getChildren().clear();
 
-        List<Round> rounds = new ArrayList<>(controller.getCurrentTournament().getCompleteRounds().values());
+        List<Round> rounds = new ArrayList<>(controller.getCurrentTournament().getCompleteRounds());
         Round currentRound = controller.getCurrentTournament().getCurrentRound();
         if (currentRound != null) {
             rounds.add(currentRound);
         }
 
-        Collections.sort(rounds, new Comparator<Round>() {
-
-            @Override
-            public int compare(Round o1, Round o2) {
-                return o1.getRoundNo() - o2.getRoundNo();
-            }
-        });
+        Collections.sort(rounds, (o1, o2) -> o1.getRoundNo() - o2.getRoundNo());
 
         for (Round r : rounds) {
             RoundEntry entry = new RoundEntry(r, controller);

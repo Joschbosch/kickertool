@@ -7,23 +7,28 @@ public class SimpleTimer
     implements Timer {
 
     private int minutesPerMatch = -1;
+
     private final Thread timerThread;
-    private final AtomicBoolean running = new AtomicBoolean(false);
-    private final AtomicLong currentTime;
+
+    protected final AtomicBoolean running = new AtomicBoolean(false);
+
+    protected final AtomicLong currentTime;
 
     public SimpleTimer() {
         currentTime = new AtomicLong(0);
 
         timerThread = new Thread() {
+
             @Override
             public void run() {
-                
+
                 long lastTime = System.currentTimeMillis();
                 while (running.get()) {
                     try {
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
-
+                        Thread.currentThread().interrupt();
+                        System.out.println(e);
                     }
                     long now = System.currentTimeMillis();
                     long diff = now - lastTime;
@@ -39,14 +44,17 @@ public class SimpleTimer
 
     }
 
+    @Override
     public void setTimer(int minutesPerMatch) {
         this.minutesPerMatch = minutesPerMatch;
         reset();
     }
+
     @Override
     public long getMinutesLeft() {
         return (currentTime.get() / 1000) / 60;
     }
+
     @Override
     public long getSecondsLeft() {
         return (currentTime.get() / 1000) % 60;
@@ -57,26 +65,30 @@ public class SimpleTimer
         return (currentTime.get() % 1000);
     }
 
+    @Override
     public void start() {
         if (running.get()) {
             return;
         }
         if (minutesPerMatch == -1) {
-            //Error
+            // Error
         }
         running.set(true);
         timerThread.start();
     }
 
+    @Override
     public void stop() {
         running.set(false);
     }
 
+    @Override
     public void reset() {
         if (!running.get()) {
             currentTime.set(minutesPerMatch * 60L * 1000L);
         }
     }
+
     @Override
     public boolean isRunning() {
         return running.get();

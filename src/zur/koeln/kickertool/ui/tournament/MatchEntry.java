@@ -33,9 +33,8 @@ public class MatchEntry extends GridPane {
         col4.setPercentWidth(10);
         this.getColumnConstraints().addAll(col1, col2, col3, col4);
 
-        Label team1 = new Label(match.getHomeTeam().getP1().getName() + "/" + match.getHomeTeam().getP2().getName());
-        Label team2 = new Label(
-                match.getVisitingTeam().getP1().getName() + "/" + match.getVisitingTeam().getP2().getName());
+        Label team1 = new Label(match.createHomeTeamString());
+        Label team2 = new Label(match.createVisitingTeamString());
         Button scoreButton = new Button(match.getScoreHome() + ":" + match.getScoreVisiting());
         scoreButton.setStyle("-fx-background-color: transparent;");
         scoreButton.setDisable(match.getResult() != null);
@@ -52,8 +51,8 @@ public class MatchEntry extends GridPane {
         });
 
         String tableString = "TBA";
-        if (match.getTable() != null) {
-            tableString = String.valueOf(match.getTable().getTableNumber());
+        if (match.getTableNo() != -1) {
+            tableString = String.valueOf(match.getTableNo());
             if (match.getResult() != null) {
                 tableString = "Finished";
             }

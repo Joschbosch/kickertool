@@ -3,6 +3,8 @@
  */
 package zur.koeln.kickertool.ui.tournament;
 
+import java.util.UUID;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -15,7 +17,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import zur.koeln.kickertool.TournamentController;
-import zur.koeln.kickertool.player.Player;
 
 public class TournamentPane extends GridPane {
 
@@ -74,17 +75,17 @@ public class TournamentPane extends GridPane {
         });
         Button pausePlayer = new Button("Pause Player");
         pausePlayer.setOnAction(e -> {
-            Player selectedPlayer = scoreTable.getSelectedPlayer();
-            if (selectedPlayer != null && !selectedPlayer.isDummy()) {
-                controller.getCurrentTournament().pausePlayer(selectedPlayer);
+            UUID selectedPlayer = scoreTable.getSelectedPlayer();
+            if (selectedPlayer != null && !controller.getPlayer(selectedPlayer).isDummy()) {
+                controller.pausePlayer(selectedPlayer);
             }
             update();
         });
         Button unpausePlayer = new Button("Unpause Player");
         unpausePlayer.setOnAction(e -> {
-            Player selectedPlayer = scoreTable.getSelectedPlayer();
-            if (selectedPlayer != null && !selectedPlayer.isDummy()) {
-                controller.getCurrentTournament().unpausePlayer(selectedPlayer);
+            UUID selectedPlayer = scoreTable.getSelectedPlayer();
+            if (selectedPlayer != null && !controller.getPlayer(selectedPlayer).isDummy()) {
+                controller.unpausePlayer(selectedPlayer);
             }
             update();
         });

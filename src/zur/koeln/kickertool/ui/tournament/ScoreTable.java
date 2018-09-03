@@ -3,6 +3,8 @@
  */
 package zur.koeln.kickertool.ui.tournament;
 
+import java.util.UUID;
+
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -22,7 +24,9 @@ import zur.koeln.kickertool.tournament.TournamentStatistics;
 public class ScoreTable extends GridPane {
 
     private final TournamentController controller;
+
     private ObservableList<TournamentStatistics> tableData;
+
     private TableView<TournamentStatistics> table;
 
     public ScoreTable(TournamentController controller) {
@@ -44,6 +48,7 @@ public class ScoreTable extends GridPane {
 
         TableColumn rankCol = new TableColumn("#");
         rankCol.setCellValueFactory(new Callback<CellDataFeatures<TournamentStatistics, String>, ObservableValue<String>>() {
+
             @Override
             public ObservableValue<String> call(CellDataFeatures<TournamentStatistics, String> p) {
                 return new ReadOnlyObjectWrapper(table.getItems().indexOf(p.getValue()) + 1 + "");
@@ -51,10 +56,12 @@ public class ScoreTable extends GridPane {
         });
         TableColumn playerCol = new TableColumn("Player");
         playerCol.setCellValueFactory(new Callback<CellDataFeatures<TournamentStatistics, String>, ObservableValue<String>>() {
+
             @Override
             public ObservableValue<String> call(CellDataFeatures<TournamentStatistics, String> p) {
-                String playerString = p.getValue().getPlayer().getName();
-                if (p.getValue().getPlayer().isPausingTournament()) {
+                Player player = controller.getPlayer(p.getValue().getPlayerId());
+                String playerString = player.getName();
+                if (player.isPausingTournament()) {
                     playerString += " (pausing)";
                 }
                 return new ReadOnlyObjectWrapper(playerString);
@@ -67,13 +74,13 @@ public class ScoreTable extends GridPane {
         matchesCol.setCellValueFactory(new PropertyValueFactory<>("matchesDone"));
 
         TableColumn matchesWonCol = new TableColumn("Won");
-        matchesWonCol.setCellValueFactory(new PropertyValueFactory<>("matchesWon"));
+        matchesWonCol.setCellValueFactory(new PropertyValueFactory<>("matchesWonCount"));
 
         TableColumn matchesLostCol = new TableColumn("Lost");
-        matchesLostCol.setCellValueFactory(new PropertyValueFactory<>("matchesLost"));
+        matchesLostCol.setCellValueFactory(new PropertyValueFactory<>("matchesLostCount"));
 
         TableColumn matchesDrawCol = new TableColumn("Draw");
-        matchesDrawCol.setCellValueFactory(new PropertyValueFactory<>("matchesDraw"));
+        matchesDrawCol.setCellValueFactory(new PropertyValueFactory<>("matchesDrawCount"));
 
         TableColumn goalsHeader = new TableColumn("Goal Stats");
         TableColumn goalsCol = new TableColumn("Goals");
@@ -83,21 +90,20 @@ public class ScoreTable extends GridPane {
         conGoalsCol.setCellValueFactory(new PropertyValueFactory<>("goalsConceded"));
 
         TableColumn diffGoalsrankCol = new TableColumn("Goals Diff");
-        diffGoalsrankCol.setCellValueFactory(new Callback<CellDataFeatures<TournamentStatistics, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(CellDataFeatures<TournamentStatistics, String> p) {
-                return new ReadOnlyObjectWrapper(Integer.valueOf(p.getValue().getGoals() - p.getValue().getGoalsConceded()));
-            }
-        });
+        diffGoalsrankCol
+            .setCellValueFactory(p -> new ReadOnlyObjectWrapper(Integer
+                .valueOf(((CellDataFeatures<TournamentStatistics, String>) p).getValue().calcGoalsShot()
+                    - ((CellDataFeatures<TournamentStatistics, String>) p).getValue().calcGoalsConceded())));
 
         TableColumn pointsCol = new TableColumn("Points");
-        pointsCol.setCellValueFactory(new PropertyValueFactory<>("points"));
+        pointsCol.setCellValueFactory(
+            p -> new ReadOnlyObjectWrapper(Long.valueOf(((CellDataFeatures<TournamentStatistics, String>) p).getValue()
+                .calcPointsForConfiguration(controller.getCurrentTournament().getConfig()))));
 
         matchesHeader.getColumns().addAll(matchesCol, matchesWonCol, matchesLostCol, matchesDrawCol);
         goalsHeader.getColumns().addAll(goalsCol, conGoalsCol, diffGoalsrankCol);
         table.getColumns().addAll(rankCol, playerCol, matchesHeader, goalsHeader, pointsCol);
 
-        
         this.add(table, 0, 0);
 
     }
@@ -129,9 +135,9 @@ public class ScoreTable extends GridPane {
         table.sort();
     }
 
-    public Player getSelectedPlayer() {
+    public UUID getSelectedPlayer() {
         if (table != null && table.getSelectionModel() != null && table.getSelectionModel().getSelectedItem() != null) {
-            return table.getSelectionModel().getSelectedItem().getPlayer();
+            return table.getSelectionModel().getSelectedItem().getPlayerId();
         }
         return null;
     }
