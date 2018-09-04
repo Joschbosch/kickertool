@@ -223,19 +223,6 @@ public class Tournament {
         return result;
     }
 
-    public void printTable() {
-        System.out
-            .println(String.format("%n%-20s\t%s\t%s\t%s\t%s\t%s\t%s", "Name", "Matches", "Win", "Loss", "Draw", "GoalDiff", "Points"));
-        System.out.println(getTableCopySortedByPoints());
-    }
-
-    /**
-     * 
-     */
-    public void printMatches() {
-        System.out.println(getAllMatches());
-    }
-
     @JsonIgnore
     public boolean isCurrentRoundComplete() {
         return currentRound != null ? currentRound.isComplete() : Boolean.TRUE.booleanValue();
