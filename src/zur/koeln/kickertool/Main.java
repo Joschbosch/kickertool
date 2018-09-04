@@ -20,8 +20,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        //        startWithGUIFXML(primaryStage);
-        startWithGUICode(primaryStage);
+        startWithGUIFXML(primaryStage);
+        //startWithGUICode(primaryStage);
     }
    
     

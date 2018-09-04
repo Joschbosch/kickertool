@@ -39,7 +39,7 @@ public class FXMLGUIController extends AbstractGUIController{
 		case MAIN_MENU:
 			return FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
 		case NEW_TOURNAMENT_CONFIG:
-			break;
+			return FXMLLoader.load(getClass().getResource("TournamentConfiguration.fxml"));
 		case PLAYER_CONFIG:
 			break;
 		case PLAYER_POOL:
