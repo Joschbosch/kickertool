@@ -51,18 +51,6 @@ public class TournamentController {
         return instance;
     }
 
-    public void startStopwatch() {
-        timer.start();
-    }
-
-    public void stopStopwatch() {
-        timer.stop();
-    }
-
-    public void resetStopWatch() {
-        timer.reset();
-    }
-
     /**
      * 
      */
@@ -163,21 +151,14 @@ public class TournamentController {
      */
     public void startTournament() {
         currentTournament.startTournament();
-        // currentTournament = importTournament();
         guiController.switchStateTo(GUIState.TOURNAMENT);
         timer.setTimer(currentTournament.getConfig().getMinutesPerMatch());
     }
 
-    private Tournament importTournament() {
-        File tournamentFile = new File("tournament.json"); //$NON-NLS-1$
-        ObjectMapper m = new ObjectMapper();
-        try {
-            currentTournament = m.readValue(tournamentFile, Tournament.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return currentTournament;
-
+    public void importAndStartTournament(File tournamentToImport) throws IOException {
+        importTournament(tournamentToImport);
+        guiController.switchStateTo(GUIState.TOURNAMENT);
+        timer.setTimer(currentTournament.getConfig().getMinutesPerMatch());
     }
 
     /**
@@ -208,8 +189,8 @@ public class TournamentController {
      */
     public void nextRound() {
         currentTournament.newRound();
-        currentTournament.exportTournament();
         guiController.update();
+        exportTournament();
     }
 
     /**
@@ -219,12 +200,18 @@ public class TournamentController {
      */
     public void updateMatchResult(Match match, Integer scoreHome, Integer scoreVisiting) {
         try {
-            match.setResult(scoreHome.intValue(), scoreVisiting.intValue());
-            currentTournament.addMatchResult(match);
+            if (match.getResult() == null) {
+                match.setResult(scoreHome.intValue(), scoreVisiting.intValue());
+                currentTournament.addMatchResult(match);
+            } else {
+                match.setResult(scoreHome.intValue(), scoreVisiting.intValue());
+            }
         } catch (MatchException e) {
             e.printStackTrace();
         }
         guiController.update();
+        exportTournament();
+
     }
 
     public Player getPlayer(UUID selectedPlayer) {
@@ -239,5 +226,36 @@ public class TournamentController {
     public void unpausePlayer(UUID selectedPlayer) {
         currentTournament.unpausePlayer(selectedPlayer);
 
+    }
+
+    public void startStopwatch() {
+        timer.start();
+    }
+
+    public void stopStopwatch() {
+        timer.stop();
+    }
+
+    public void resetStopWatch() {
+        timer.reset();
+    }
+    private Tournament importTournament(File tournamentToImport) throws IOException {
+        ObjectMapper m = new ObjectMapper();
+        currentTournament = m.readValue(tournamentToImport, Tournament.class);
+        currentTournament.initializeAfterImport();
+
+        return currentTournament;
+
+    }
+
+
+    public void exportTournament() {
+        File tournamentFile = new File("tournament" + currentTournament.getName() + ".json"); //$NON-NLS-1$
+        ObjectMapper m = new ObjectMapper();
+        try {
+            m.writerWithDefaultPrettyPrinter().writeValue(tournamentFile, currentTournament);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -3,82 +3,80 @@
  */
 package zur.koeln.kickertool.tournament;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import zur.koeln.kickertool.player.PlayerPool;
 
-@RequiredArgsConstructor
 @Getter
 @Setter
 public class TournamentStatistics {
 
-    private final UUID playerId;
+    private UUID playerId;
 
     private List<UUID> matches = new LinkedList<>();
 
     @JsonIgnore
     private Map<UUID, Match> uidToMatch = new HashMap<>();
 
+    public TournamentStatistics() {
+
+    }
+
+    public TournamentStatistics(UUID playerId) {
+        this.playerId = playerId;
+    }
+
     public void addMatchResult(Match match) {
         matches.add(match.getMatchID());
         uidToMatch.put(match.getMatchID(), match);
     }
-
-    public int calcMatchesDone() {
+    @JsonIgnore
+    public int getMatchesDone() {
         return matches.size();
     }
-
-    public int calcGoalsShot() {
+    @JsonIgnore
+    public int getGoalsShot() {
         return matches.stream().mapToInt(m -> uidToMatch.get(m).getGoalsForPlayer(playerId)).sum();
     }
-
-    public int calcGoalsConceded() {
+    @JsonIgnore
+    public int getGoalsConceded() {
         return matches.stream().mapToInt(m -> uidToMatch.get(m).getConcededGoalsForPlayer(playerId)).sum();
     }
-
-    public int calcGoalDiff() {
-        return calcGoalsShot() - calcGoalsConceded();
+    @JsonIgnore
+    public int getGoalDiff() {
+        return getGoalsShot() - getGoalsConceded();
     }
-
-    public long calcMatchesWonCount() {
+    @JsonIgnore
+    public long getMatchesWonCount() {
         return matches.stream().filter(m -> uidToMatch.get(m).didPlayerWin(playerId)).count();
     }
-
-    public long calcMatchesLostCount() {
+    @JsonIgnore
+    public long getMatchesLostCount() {
         return matches.stream().filter(m -> !uidToMatch.get(m).didPlayerWin(playerId) && !uidToMatch.get(m).isDraw()).count();
     }
-
-    public long calcMatchesDrawCount() {
+    @JsonIgnore
+    public long getMatchesDrawCount() {
         return matches.stream().filter(m -> uidToMatch.get(m).isDraw()).count();
     }
-
-    public long calcPointsForConfiguration(TournamentConfiguration config) {
+    @JsonIgnore
+    public long getPointsForConfiguration(TournamentConfiguration config) {
         if (PlayerPool.getInstance().getPlayerById(playerId).isDummy()) {
             return 0;
         }
 
-        long won = calcMatchesWonCount();
-        long draw = calcMatchesDrawCount();
+        long won = getMatchesWonCount();
+        long draw = getMatchesDrawCount();
 
         return won * config.getPointsForWinner() + draw * config.getPointsForDraw();
 
     }
-
-    public double calcMeanPoints(TournamentConfiguration config) {
-        return calcPointsForConfiguration(config) / (double) matches.size();
-    }
-
-    public void importMatchMapping(Map<UUID, Match> mapping) {
-        uidToMatch = mapping;
+    @JsonIgnore
+    public double getMeanPoints(TournamentConfiguration config) {
+        return getPointsForConfiguration(config) / (double) matches.size();
     }
 
     /*

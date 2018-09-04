@@ -8,31 +8,30 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import zur.koeln.kickertool.player.PlayerPool;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class Match {
 
     private enum MatchResult {
         HOME, VISITING, DRAW;
     }
 
-    private static int matchCounter;
 
     private UUID matchID = UUID.randomUUID();
 
-    private final Integer roundNumber;
+    private Integer roundNumber;
 
-    private final Team homeTeam;
+    private Team homeTeam;
 
-    private final Team visitingTeam;
+    private Team visitingTeam;
 
-    private int matchNo = matchCounter++;
+    private int matchNo;
 
     private int tableNo = -1;
 
@@ -41,6 +40,20 @@ public class Match {
     private int scoreVisiting;
 
     private MatchResult result = null;
+
+    public Match() {
+
+    }
+    public Match(
+        Integer roundNumber,
+        Team homeTeam,
+        Team visitingTeam,
+        int matchNo) {
+        this.roundNumber = roundNumber;
+        this.homeTeam = homeTeam;
+        this.visitingTeam = visitingTeam;
+        this.matchNo = matchNo;
+    }
 
     public void setResult(int scoreHome, int scoreVisiting) {
         this.scoreHome = scoreHome;
@@ -52,10 +65,6 @@ public class Match {
         } else {
             result = MatchResult.DRAW;
         }
-    }
-
-    public boolean isDraw() {
-        return result == MatchResult.DRAW;
     }
 
     public boolean didPlayerWin(UUID playerId) {
@@ -148,15 +157,19 @@ public class Match {
     /**
      * @return
      */
-
+    @JsonIgnore
     public String createHomeTeamString() {
         return PlayerPool.getInstance().getPlayerById(homeTeam.getP1()).getName() + " / " //$NON-NLS-1$
             + PlayerPool.getInstance().getPlayerById(homeTeam.getP2()).getName();
     }
-
+    @JsonIgnore
     public String createVisitingTeamString() {
         return PlayerPool.getInstance().getPlayerById(visitingTeam.getP1()).getName() + " / " //$NON-NLS-1$
             + PlayerPool.getInstance().getPlayerById(visitingTeam.getP2()).getName();
+    }
+    @JsonIgnore
+    public boolean isDraw() {
+        return result == MatchResult.DRAW;
     }
 
 }

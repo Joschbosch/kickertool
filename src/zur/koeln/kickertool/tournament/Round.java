@@ -3,21 +3,15 @@
  */
 package zur.koeln.kickertool.tournament;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.player.PlayerPool;
 
-@RequiredArgsConstructor
 @Getter
 @Setter
 public class Round {
@@ -31,7 +25,6 @@ public class Round {
 
     private List<Match> completeMatches = new LinkedList<>();
 
-    @JsonIgnore
     private Map<Player, TournamentStatistics> scoreTableAtEndOfRound;
 
     /**
@@ -56,7 +49,8 @@ public class Round {
                 table.remove(0);
             }
 
-            Match m = new Match(Integer.valueOf(roundNo), home, visiting);
+            Match m = new Match(Integer.valueOf(roundNo), home, visiting, config.getCurrentNoOfMatches());
+            config.setCurrentNoOfMatches(config.getCurrentNoOfMatches() + 1);
 
             matches.add(m);
         }
@@ -73,9 +67,6 @@ public class Round {
         return playerId;
     }
 
-    public boolean isComplete() {
-        return matches.isEmpty();
-    }
 
     public void addMatchResult(Match m) throws MatchException {
         if (matches.contains(m)) {
@@ -86,7 +77,10 @@ public class Round {
             throw new MatchException();
         }
     }
-
+    @JsonIgnore
+    public boolean isComplete() {
+        return matches.isEmpty();
+    }
     @JsonIgnore
     public List<Match> getAllMatches() {
         List<Match> allMatches = new LinkedList<>(matches);

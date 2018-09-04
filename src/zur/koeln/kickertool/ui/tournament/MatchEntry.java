@@ -37,7 +37,7 @@ public class MatchEntry extends GridPane {
         Label team2 = new Label(match.createVisitingTeamString());
         Button scoreButton = new Button(match.getScoreHome() + ":" + match.getScoreVisiting());
         scoreButton.setStyle("-fx-background-color: transparent;");
-        scoreButton.setDisable(match.getResult() != null);
+        //        scoreButton.setDisable(match.getResult() != null);
         scoreButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override

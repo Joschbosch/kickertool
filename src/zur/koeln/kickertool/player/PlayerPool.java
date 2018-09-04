@@ -2,13 +2,7 @@ package zur.koeln.kickertool.player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +18,7 @@ public class PlayerPool {
 
     private final List<Player> dummies;
 
-    private List<Player> dummyPlayerUnused = new LinkedList<>();
+    private final List<Player> dummyPlayerUnused = new LinkedList<>();
 
     public PlayerPool() {
         players = new ArrayList<>();
@@ -39,7 +33,6 @@ public class PlayerPool {
             ObjectMapper m = new ObjectMapper();
             try {
                 players = m.readValue(playerPoolFile, new TypeReference<List<Player>>() {
-                    // ?
                 });
             } catch (IOException e) {
                 e.printStackTrace();
@@ -113,14 +106,6 @@ public class PlayerPool {
         return null;
     }
 
-    public void addDummy(Player dummy) {
-        dummies.add(dummy);
-    }
-
-    public void removeDummy(Player dummy) {
-        dummies.remove(dummy);
-    }
-
     public int getDummyPlayerUsed() {
         return dummies.size();
     }
@@ -132,6 +117,16 @@ public class PlayerPool {
         Player dummy = new Player("Dummy Player " + i); //$NON-NLS-1$
         dummy.setDummy(true);
         return dummy;
+    }
+
+    /**
+     * @param i
+     */
+    public void createDummyPlayerWithUUID(UUID id) {
+        Player dummy = new Player("Dummy Player " + dummies.size() + 1); //$NON-NLS-1$
+        dummy.setDummy(true);
+        dummy.setUid(id);
+        dummies.add(dummy);
     }
 
     public UUID useNextDummyPlayer() {

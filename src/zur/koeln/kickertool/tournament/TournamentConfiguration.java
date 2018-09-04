@@ -25,4 +25,6 @@ public class TournamentConfiguration {
 
     private boolean fixedTeams = false;
 
+    private int currentNoOfMatches = 0;
+
 }

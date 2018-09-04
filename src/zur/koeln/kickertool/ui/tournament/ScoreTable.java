@@ -92,13 +92,12 @@ public class ScoreTable extends GridPane {
         TableColumn diffGoalsrankCol = new TableColumn("Goals Diff");
         diffGoalsrankCol
             .setCellValueFactory(p -> new ReadOnlyObjectWrapper(Integer
-                .valueOf(((CellDataFeatures<TournamentStatistics, String>) p).getValue().calcGoalsShot()
-                    - ((CellDataFeatures<TournamentStatistics, String>) p).getValue().calcGoalsConceded())));
+                        .valueOf(((CellDataFeatures<TournamentStatistics, String>) p).getValue().getGoalsShot() - ((CellDataFeatures<TournamentStatistics, String>) p).getValue().getGoalsConceded())));
 
         TableColumn pointsCol = new TableColumn("Points");
         pointsCol.setCellValueFactory(
             p -> new ReadOnlyObjectWrapper(Long.valueOf(((CellDataFeatures<TournamentStatistics, String>) p).getValue()
-                .calcPointsForConfiguration(controller.getCurrentTournament().getConfig()))));
+                        .getPointsForConfiguration(controller.getCurrentTournament().getConfig()))));
 
         matchesHeader.getColumns().addAll(matchesCol, matchesWonCol, matchesLostCol, matchesDrawCol);
         goalsHeader.getColumns().addAll(goalsCol, conGoalsCol, diffGoalsrankCol);
