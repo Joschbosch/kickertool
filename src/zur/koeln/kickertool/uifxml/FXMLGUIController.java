@@ -36,23 +36,28 @@ public class FXMLGUIController extends AbstractGUIController{
 	}
 	
 	private Parent loadFXMLParent(GUIState newState) throws IOException {
-		
+        FXMLLoader loader = null;
 		switch (newState) {
 		case MAIN_MENU:
-			return FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
+                loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
+                break;
 		case NEW_TOURNAMENT_CONFIG:
-			return FXMLLoader.load(getClass().getResource("TournamentConfiguration.fxml"));
+                loader = new FXMLLoader(getClass().getResource("TournamentConfiguration.fxml"));
+                break;
 		case PLAYER_CONFIG:
-			return FXMLLoader.load(getClass().getResource("PlayerSelection.fxml"));
+                loader = new FXMLLoader(getClass().getResource("PlayerSelection.fxml"));
+                break;
 		case PLAYER_POOL:
-			return FXMLLoader.load(getClass().getResource("PlayerPoolManagement.fxml"));
+                loader = new FXMLLoader(getClass().getResource("PlayerPoolManagement.fxml"));
+                break;
 		case TOURNAMENT:
 			break;
 		default:
 			return null;
 		}
-		
-		return null;
+        loader.setControllerFactory(getCtx()::getBean);
+
+        return loader.load();
 	}
 
 	@Override

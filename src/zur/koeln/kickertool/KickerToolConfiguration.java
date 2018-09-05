@@ -3,6 +3,7 @@ package zur.koeln.kickertool;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 
 import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.player.SimpleJsonPlayerPool;
@@ -15,6 +16,7 @@ import zur.koeln.kickertool.tournament.TournamentAppConfiguration;
 public class KickerToolConfiguration {
 
     @Bean
+    @Primary
     public PlayerPoolService createPlayerPoolService() {
         SimpleJsonPlayerPool simpleJsonPlayerPool = new SimpleJsonPlayerPool();
         simpleJsonPlayerPool.loadPlayerPool();
@@ -23,6 +25,7 @@ public class KickerToolConfiguration {
 
 
     @Bean
+    @Primary
     public Timer createTimerBean() {
         return new SimpleTimer();
     }

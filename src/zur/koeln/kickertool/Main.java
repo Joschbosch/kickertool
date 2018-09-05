@@ -2,9 +2,9 @@ package zur.koeln.kickertool;
 
 import java.io.IOException;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -19,34 +19,37 @@ import zur.koeln.kickertool.uifxml.FXMLGUIController;
 
 @SpringBootApplication
 public class Main extends Application {
-    private static ApplicationContext ctx;
+    private static ConfigurableApplicationContext ctx;
 
     public static void main(String[] args) throws MatchException {
-        ctx = new AnnotationConfigApplicationContext(KickerToolConfiguration.class);
+        //        ctx = new AnnotationConfigApplicationContext(KickerToolConfiguration.class);
+        ctx = SpringApplication.run(Main.class);
+
         launch(args);
 
     }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        //        startWithGUIFXML(primaryStage);
-        startWithGUICode(primaryStage);
+        startWithGUIFXML(primaryStage);
+        //        startWithGUICode(primaryStage);
     }
     
     private void startWithGUICode(Stage primaryStage) {
         GUIController guiController = new GUIController(primaryStage, GUIState.MAIN_MENU);
         TournamentControllerService controller = ctx.getBean(TournamentControllerService.class);
         controller.setGuiController(guiController);
-        guiController.init(controller, new MainMenuPane(controller));
+        guiController.init(controller, ctx, new MainMenuPane(controller));
     }
 
     private void startWithGUIFXML(Stage primaryStage) throws IOException {
-    	
-    	Parent mainMenu = FXMLLoader.load(getClass().getResource("uifxml/MainMenu.fxml"));
-    	
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("uifxml/MainMenu.fxml"));
+        loader.setControllerFactory(ctx::getBean);
+        Parent mainMenu = loader.load();
     	FXMLGUIController fxmlGuiController = new FXMLGUIController(primaryStage, GUIState.MAIN_MENU);
         TournamentControllerService controller = ctx.getBean(TournamentControllerService.class);
         controller.setGuiController(fxmlGuiController);
-        fxmlGuiController.init(controller, mainMenu, 450, 450);
+        fxmlGuiController.init(controller, ctx, mainMenu, 450, 450);
     }
 }

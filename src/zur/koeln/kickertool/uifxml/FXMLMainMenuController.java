@@ -1,6 +1,7 @@
 package zur.koeln.kickertool.uifxml;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
@@ -12,6 +13,7 @@ import lombok.Getter;
 import zur.koeln.kickertool.base.TournamentControllerService;
 
 @Getter(value=AccessLevel.PRIVATE)
+@Component
 public class FXMLMainMenuController {
 	
     @Autowired

@@ -3,6 +3,7 @@ package zur.koeln.kickertool.uifxml;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -19,6 +20,7 @@ import zur.koeln.kickertool.base.TournamentControllerService;
 import zur.koeln.kickertool.player.Player;
 
 @Getter(value=AccessLevel.PRIVATE)
+@Component
 public class FXMLPlayerPoolManagementController{
 
     @Autowired

@@ -3,6 +3,10 @@ package zur.koeln.kickertool.base;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.context.ConfigurableApplicationContext;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -25,17 +29,21 @@ public abstract class AbstractGUIController {
 
     private TournamentControllerService controller;
     private final Map<GUIState, Pane> createdPanes = new HashMap<>();
-	
-    public void init(TournamentControllerService controller, Parent rootPane) {
-        init(controller, rootPane, 1200, 800);
+
+    private ConfigurableApplicationContext ctx;
+    @PostConstruct
+    public void init(TournamentControllerService controller, ConfigurableApplicationContext ctx, Parent rootPane) {
+        init(controller, ctx, rootPane, 1200, 800);
     }
-    
-    public void init(TournamentControllerService controller, Parent rootPane, double width, double height) {
+    @PostConstruct
+    public void init(TournamentControllerService controller, ConfigurableApplicationContext ctx, Parent rootPane, double width, double height) {
         this.controller = controller;
+        this.ctx = ctx;
         stage.setTitle("Kicker APP");
         Scene mainScene = new Scene(rootPane, width, height);
         stage.setScene(mainScene);
         stage.show();
+        
     }
     
     public abstract void switchStateTo(GUIState newState);
