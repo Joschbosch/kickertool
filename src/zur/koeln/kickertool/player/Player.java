@@ -1,5 +1,6 @@
 package zur.koeln.kickertool.player;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Player {
+public class Player implements Serializable {
 
     private UUID uid;
 

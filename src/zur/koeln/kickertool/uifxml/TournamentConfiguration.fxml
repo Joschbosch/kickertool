@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.152" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.uifxml.FXMLTournamentConfigurationController">
+<GridPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.uifxml.FXMLTournamentConfigurationController">
    <columnConstraints>
       <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="150.0" />
       <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" />
@@ -90,40 +90,48 @@
             </ImageView>
          </graphic>
       </Button>
-      <TextField fx:id="txtNumberOfTables" promptText="2" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+      <TextField fx:id="txtNumberOfTables" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtMatchesToWin" promptText="1" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+      <TextField fx:id="txtMatchesToWin" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtGoalsToWin" promptText="10" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+      <TextField fx:id="txtGoalsToWin" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtPointsToWin" promptText="2" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="5">
+      <TextField fx:id="txtPointsToWin" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtPointsForDraw" promptText="1" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="6">
+      <TextField fx:id="txtPointsForDraw" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="6">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtMinutesPerMatch" promptText="5" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="7">
+      <TextField fx:id="txtMinutesPerMatch" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="7">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtRandomRoundsAtStart" promptText="2" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="8">
+      <TextField fx:id="txtRandomRoundsAtStart" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="8">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </TextField>
+      <ImageView fitHeight="27.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets right="15.0" top="15.0" />
+         </GridPane.margin>
+         <image>
+            <Image url="file:images/parcITLogo.png" />
+         </image>
+      </ImageView>
    </children>
 </GridPane>

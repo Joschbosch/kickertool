@@ -49,6 +49,7 @@ public class FXMLTournamentConfigurationController {
         Tournament currentTournament = controller.getCurrentTournament();
 		config = currentTournament.getConfig();
 		
+		
         getLblTournament().setText(controller.getCurrentTournament().getName());
 		
 		getTxtGoalsToWin().setTextFormatter(createIntegerTextFormatter());
