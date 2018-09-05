@@ -11,13 +11,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import zur.koeln.kickertool.TournamentController;
+import zur.koeln.kickertool.base.TournamentControllerService;
 
 public class MainMenuPane extends GridPane {
 
-    private final TournamentController controller;
+    private final TournamentControllerService controller;
 
-    public MainMenuPane(TournamentController controller) {
+    public MainMenuPane(
+        TournamentControllerService controller) {
         this.controller = controller;
         // ColumnConstraints cc = new ColumnConstraints(100, 100, Double.MAX_VALUE,
         // Priority.ALWAYS, HPos.CENTER, true);

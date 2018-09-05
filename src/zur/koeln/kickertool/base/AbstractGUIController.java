@@ -11,7 +11,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import zur.koeln.kickertool.TournamentController;
 import zur.koeln.kickertool.ui.GUIState;
 
 @RequiredArgsConstructor
@@ -19,19 +18,19 @@ import zur.koeln.kickertool.ui.GUIState;
 public abstract class AbstractGUIController {
 
 	@NonNull
-    private Stage stage;
+    private final Stage stage;
 
     @NonNull
-    private GUIState state;
+    private final GUIState state;
 
-    private TournamentController controller;
-    private Map<GUIState, Pane> createdPanes = new HashMap<>();
+    private TournamentControllerService controller;
+    private final Map<GUIState, Pane> createdPanes = new HashMap<>();
 	
-    public void init(TournamentController controller, Parent rootPane) {
+    public void init(TournamentControllerService controller, Parent rootPane) {
         init(controller, rootPane, 1200, 800);
     }
     
-    public void init(TournamentController controller, Parent rootPane, double width, double height) {
+    public void init(TournamentControllerService controller, Parent rootPane, double width, double height) {
         this.controller = controller;
         stage.setTitle("Kicker APP");
         Scene mainScene = new Scene(rootPane, width, height);

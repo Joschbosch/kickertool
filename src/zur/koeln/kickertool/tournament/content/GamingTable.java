@@ -1,7 +1,7 @@
 /**
  * 
  */
-package zur.koeln.kickertool.tournament;
+package zur.koeln.kickertool.tournament.content;
 
 import lombok.Getter;
 import lombok.Setter;

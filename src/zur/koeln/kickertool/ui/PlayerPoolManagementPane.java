@@ -16,14 +16,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import zur.koeln.kickertool.TournamentController;
+import zur.koeln.kickertool.base.TournamentControllerService;
 import zur.koeln.kickertool.player.Player;
 
 public class PlayerPoolManagementPane extends StackPane {
 
-    private final TournamentController controller;
+    private final TournamentControllerService controller;
 
-    public PlayerPoolManagementPane(TournamentController controller) {
+    public PlayerPoolManagementPane(
+        TournamentControllerService controller) {
         this.controller = controller;
         createControls();
 
@@ -49,7 +50,7 @@ public class PlayerPoolManagementPane extends StackPane {
                 int row = pos.getRow();
                 Player player = event.getTableView().getItems().get(row);
                 player.setName(newName);
-                controller.playerEdited();
+                controller.savePlayerPool();
             }
         });
 
@@ -58,7 +59,7 @@ public class PlayerPoolManagementPane extends StackPane {
         table.getColumns().add(nameCol);
 
         ObservableList<Player> data = FXCollections.observableArrayList();
-        data.addAll(controller.getPlayerpool().getPlayers());
+        data.addAll(controller.getPlayer());
 
         table.setItems(data);
 
@@ -97,7 +98,7 @@ public class PlayerPoolManagementPane extends StackPane {
 
             @Override
             public void handle(ActionEvent event) {
-                controller.backToMainMenu();
+                controller.showMainMenu();
             }
 
         });

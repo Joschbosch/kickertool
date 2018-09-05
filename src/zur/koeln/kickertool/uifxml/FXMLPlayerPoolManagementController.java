@@ -2,29 +2,31 @@ package zur.koeln.kickertool.uifxml;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
+import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.TournamentController;
+import zur.koeln.kickertool.base.PlayerPoolService;
+import zur.koeln.kickertool.base.TournamentControllerService;
 import zur.koeln.kickertool.player.Player;
 
 @Getter(value=AccessLevel.PRIVATE)
 public class FXMLPlayerPoolManagementController{
 	
+    @Autowired
+    private PlayerPoolService playerPool;
+    @Autowired
+    private TournamentControllerService controller;
+
 	@FXML
 	private TableView<Player> tblPlayers;
 	@FXML
@@ -36,7 +38,7 @@ public class FXMLPlayerPoolManagementController{
 	@FXML
 	private Button btnBack;
 	
-	private ObservableList<Player> playerData = FXCollections.observableArrayList();
+	private final ObservableList<Player> playerData = FXCollections.observableArrayList();
 
 	@FXML
 	public void initialize() {
@@ -57,7 +59,7 @@ public class FXMLPlayerPoolManagementController{
 	
 	private List<Player> loadPlayerData() {
 		
-		return TournamentController.getInstance().getPlayerpool().getPlayers();
+		return playerPool.getPlayers();
 	}
 	
 	// Event Listener on Button[#btnAddPlayer].onAction
@@ -67,20 +69,20 @@ public class FXMLPlayerPoolManagementController{
 		Player newPlayer = new Player(getTxtPlayerName().getText());
 		getPlayerData().add(newPlayer);
 		getTxtPlayerName().clear();
-        TournamentController.getInstance().addPlayer(newPlayer);
+        controller.addPlayer(newPlayer);
 		
 	}
 	// Event Listener on Button[#btnBack].onAction
 	@FXML
 	public void onBackClicked(ActionEvent event) {
-		TournamentController.getInstance().backToMainMenu();
+        controller.showMainMenu();
 	}
 	
 	@FXML
 	public void onPlayerDeleteClicked(ActionEvent event) {
 		
 		List<Player> selectedPlayers = getTblPlayers().getSelectionModel().getSelectedItems();
-		selectedPlayers.forEach(ePlayer -> TournamentController.getInstance().removePlayer(ePlayer));
+        selectedPlayers.forEach(ePlayer -> controller.removePlayer(ePlayer));
 		getPlayerData().removeAll(selectedPlayers);
 		
 	}
@@ -93,7 +95,7 @@ public class FXMLPlayerPoolManagementController{
         if (!newName.isEmpty()) {
         	Player selectedPlayer = getTblPlayers().getSelectionModel().getSelectedItem();
             selectedPlayer.setName(newName);
-            TournamentController.getInstance().playerEdited();
+            controller.savePlayerPool();
         }
 		
 	}

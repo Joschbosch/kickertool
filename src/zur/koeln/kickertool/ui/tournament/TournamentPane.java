@@ -16,14 +16,15 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import zur.koeln.kickertool.TournamentController;
+import zur.koeln.kickertool.base.TournamentControllerService;
 
 public class TournamentPane extends GridPane {
 
     private final MatchesTable matchesTable;
     private final ScoreTable scoreTable;
 
-    public TournamentPane(TournamentController controller) {
+    public TournamentPane(
+        TournamentControllerService controller) {
         GridPane innerPane = new GridPane();
         ScrollPane sp = new ScrollPane(innerPane);
         sp.setFitToHeight(true);

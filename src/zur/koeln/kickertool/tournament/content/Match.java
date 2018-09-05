@@ -1,18 +1,20 @@
 /**
  * 
  */
-package zur.koeln.kickertool.tournament;
+package zur.koeln.kickertool.tournament.content;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
-import zur.koeln.kickertool.player.PlayerPool;
+import zur.koeln.kickertool.base.PlayerPoolService;
 
 @Getter
 @Setter
@@ -22,6 +24,9 @@ public class Match {
         HOME, VISITING, DRAW;
     }
 
+    @JsonIgnore
+    @Autowired
+    private PlayerPoolService playerPool;
 
     private UUID matchID = UUID.randomUUID();
 
@@ -159,13 +164,13 @@ public class Match {
      */
     @JsonIgnore
     public String createHomeTeamString() {
-        return PlayerPool.getInstance().getPlayerById(homeTeam.getP1()).getName() + " / " //$NON-NLS-1$
-            + PlayerPool.getInstance().getPlayerById(homeTeam.getP2()).getName();
+        return playerPool.getPlayerById(homeTeam.getP1()).getName() + " / " //$NON-NLS-1$
+                + playerPool.getPlayerById(homeTeam.getP2()).getName();
     }
     @JsonIgnore
     public String createVisitingTeamString() {
-        return PlayerPool.getInstance().getPlayerById(visitingTeam.getP1()).getName() + " / " //$NON-NLS-1$
-            + PlayerPool.getInstance().getPlayerById(visitingTeam.getP2()).getName();
+        return playerPool.getPlayerById(visitingTeam.getP1()).getName() + " / " //$NON-NLS-1$
+                + playerPool.getPlayerById(visitingTeam.getP2()).getName();
     }
     @JsonIgnore
     public boolean isDraw() {

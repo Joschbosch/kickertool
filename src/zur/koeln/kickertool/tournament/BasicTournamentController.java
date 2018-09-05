@@ -1,59 +1,51 @@
 /**
  * 
  */
-package zur.koeln.kickertool;
+package zur.koeln.kickertool.tournament;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Getter;
 import zur.koeln.kickertool.base.AbstractGUIController;
+import zur.koeln.kickertool.base.PlayerPoolService;
+import zur.koeln.kickertool.base.TournamentControllerService;
 import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.player.PlayerPool;
-import zur.koeln.kickertool.tools.SimpleTimer;
 import zur.koeln.kickertool.tools.Timer;
-import zur.koeln.kickertool.tournament.Match;
-import zur.koeln.kickertool.tournament.MatchException;
-import zur.koeln.kickertool.tournament.Tournament;
-import zur.koeln.kickertool.tournament.TournamentConfigurationKeys;
+import zur.koeln.kickertool.tournament.content.Match;
+import zur.koeln.kickertool.tournament.content.Tournament;
+import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 import zur.koeln.kickertool.ui.GUIState;
 
 @Getter
-public class TournamentController {
+@Component
+public class BasicTournamentController
+    implements TournamentControllerService {
 
-    private final PlayerPool playerpool;
+    @Autowired
+    private PlayerPoolService playerpool;
 
-    private final AbstractGUIController guiController;
+    @Autowired
+    private TournamentFactory tournamentFactory;
 
-    private static TournamentController instance;
+    @Autowired
+    private Timer timer;
+
+    private AbstractGUIController guiController;
 
     private Tournament currentTournament;
 
-    private final Timer timer;
 
     /**
      * 
      */
-    public TournamentController(AbstractGUIController guiController) {
-        instance = this;
-        playerpool = new PlayerPool();
-        timer = new SimpleTimer();
-        this.guiController = guiController;
-    }
-
-    public static TournamentController getInstance() {
-        return instance;
-    }
-
-    /**
-     * 
-     */
+    @Override
     public void showPlayerPoolManagement() {
         guiController.switchStateTo(GUIState.PLAYER_POOL);
     }
@@ -61,20 +53,23 @@ public class TournamentController {
     /**
      * 
      */
-    public void backToMainMenu() {
+    @Override
+    public void showMainMenu() {
         guiController.switchStateTo(GUIState.MAIN_MENU);
     }
 
     /**
      * 
      */
-    public void playerEdited() {
+    @Override
+    public void savePlayerPool() {
         playerpool.savePlayerPool();
     }
 
     /**
      * @param newPlayer
      */
+    @Override
     public void addPlayer(Player newPlayer) {
         playerpool.addPlayer(newPlayer);
     }
@@ -82,6 +77,7 @@ public class TournamentController {
     /**
      * @param player
      */
+    @Override
     public void removePlayer(Player player) {
         playerpool.removePlayer(player);
     }
@@ -89,12 +85,14 @@ public class TournamentController {
     /**
      * @param text
      */
-    public void createNewTournament(String text) {
-        currentTournament = new Tournament();
+    @Override
+    public Tournament createNewTournament(String text) {
+        currentTournament = tournamentFactory.createNewTournament();
         currentTournament.setName(text);
         guiController.switchStateTo(GUIState.NEW_TOURNAMENT_CONFIG);
+        return currentTournament;
     }
-
+    @Override
     public boolean isCurrentRoundComplete() {
         return currentTournament.isCurrentRoundComplete();
     }
@@ -103,6 +101,7 @@ public class TournamentController {
      * @param configKey
      * @param newValue
      */
+    @Override
     public void changedTournamentConfig(TournamentConfigurationKeys configKey, Integer newValue) {
         switch (configKey) {
         case TABLES:
@@ -135,26 +134,29 @@ public class TournamentController {
     /**
      * 
      */
-    public void selectPlayer() {
+    @Override
+    public void showPlayerSelection() {
         guiController.switchStateTo(GUIState.PLAYER_CONFIG);
     }
 
     /**
      * 
      */
-    public void backToTournamentConfig() {
+    @Override
+    public void showTournamentConfig() {
         guiController.switchStateTo(GUIState.NEW_TOURNAMENT_CONFIG);
     }
 
     /**
      * 
      */
+    @Override
     public void startTournament() {
         currentTournament.startTournament();
         guiController.switchStateTo(GUIState.TOURNAMENT);
         timer.setTimer(currentTournament.getConfig().getMinutesPerMatch());
     }
-
+    @Override
     public void importAndStartTournament(File tournamentToImport) throws IOException {
         importTournament(tournamentToImport);
         guiController.switchStateTo(GUIState.TOURNAMENT);
@@ -164,6 +166,7 @@ public class TournamentController {
     /**
      * @param p
      */
+    @Override
     public void addParticipantToTournament(Player p) {
         currentTournament.addParticipant(p);
     }
@@ -171,6 +174,7 @@ public class TournamentController {
     /**
      * @param p
      */
+    @Override
     public void removeParticipantFromTournament(Player p) {
         currentTournament.removeParticipant(p);
     }
@@ -178,15 +182,17 @@ public class TournamentController {
     /**
      * @return
      */
+    @Override
     public Collection<Player> getParticipantList() {
         Set<Player> participants = new HashSet<>();
-        currentTournament.getParticipants().forEach(id -> participants.add(PlayerPool.getInstance().getPlayerById(id)));
+        currentTournament.getParticipants().forEach(id -> participants.add(playerpool.getPlayerById(id)));
         return participants;
     }
 
     /**
      * 
      */
+    @Override
     public void nextRound() {
         currentTournament.newRound();
         guiController.update();
@@ -198,6 +204,7 @@ public class TournamentController {
      * @param scoreHome
      * @param value
      */
+    @Override
     public void updateMatchResult(Match match, Integer scoreHome, Integer scoreVisiting) {
         try {
             if (match.getResult() == null) {
@@ -213,42 +220,46 @@ public class TournamentController {
         exportTournament();
 
     }
-
+    @Override
     public Player getPlayer(UUID selectedPlayer) {
-        return PlayerPool.getInstance().getPlayerById(selectedPlayer);
+        return playerpool.getPlayerById(selectedPlayer);
     }
-
+    @Override
     public void pausePlayer(UUID selectedPlayer) {
         currentTournament.pausePlayer(selectedPlayer);
 
     }
-
+    @Override
     public void unpausePlayer(UUID selectedPlayer) {
         currentTournament.unpausePlayer(selectedPlayer);
 
     }
-
+    @Override
     public void startStopwatch() {
         timer.start();
     }
-
+    @Override
     public void stopStopwatch() {
         timer.stop();
     }
-
+    @Override
     public void resetStopWatch() {
         timer.reset();
     }
     private Tournament importTournament(File tournamentToImport) throws IOException {
         ObjectMapper m = new ObjectMapper();
         currentTournament = m.readValue(tournamentToImport, Tournament.class);
+        currentTournament.setPlayerPool(playerpool);
+        currentTournament.setTournamentFactory(tournamentFactory);
         currentTournament.initializeAfterImport();
-
         return currentTournament;
 
     }
-
-
+    @Override
+    public List<Player> getPlayer() {
+        return playerpool.getPlayers();
+    }
+    @Override
     public void exportTournament() {
         File tournamentFile = new File("tournament" + currentTournament.getName() + ".json"); //$NON-NLS-1$
         ObjectMapper m = new ObjectMapper();
@@ -258,4 +269,9 @@ public class TournamentController {
             e.printStackTrace();
         }
     }
+
+    public void setGuiController(AbstractGUIController guiController) {
+        this.guiController = guiController;
+    }
+
 }

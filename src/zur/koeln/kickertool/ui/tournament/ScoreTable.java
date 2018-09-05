@@ -17,19 +17,20 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
-import zur.koeln.kickertool.TournamentController;
+import zur.koeln.kickertool.base.TournamentControllerService;
 import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.tournament.TournamentStatistics;
+import zur.koeln.kickertool.tournament.content.TournamentStatistics;
 
 public class ScoreTable extends GridPane {
 
-    private final TournamentController controller;
+    private final TournamentControllerService controller;
 
     private ObservableList<TournamentStatistics> tableData;
 
     private TableView<TournamentStatistics> table;
 
-    public ScoreTable(TournamentController controller) {
+    public ScoreTable(
+        TournamentControllerService controller) {
 
         this.controller = controller;
         createTable();

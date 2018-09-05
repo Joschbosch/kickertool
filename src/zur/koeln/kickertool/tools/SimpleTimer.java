@@ -3,6 +3,9 @@ package zur.koeln.kickertool.tools;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class SimpleTimer
     implements Timer {
 

@@ -15,15 +15,16 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import zur.koeln.kickertool.TournamentController;
+import zur.koeln.kickertool.base.TournamentControllerService;
 import zur.koeln.kickertool.tournament.TournamentConfiguration;
 import zur.koeln.kickertool.tournament.TournamentConfigurationKeys;
 
 public class TournamentConfigurationPane extends GridPane {
 
-    private final TournamentController controller;
+    private final TournamentControllerService controller;
 
-    public TournamentConfigurationPane(TournamentController controller) {
+    public TournamentConfigurationPane(
+        TournamentControllerService controller) {
         this.controller = controller;
         this.setAlignment(Pos.CENTER);
 
@@ -51,14 +52,14 @@ public class TournamentConfigurationPane extends GridPane {
 
             @Override
             public void handle(ActionEvent event) {
-                controller.backToMainMenu();
+                controller.showMainMenu();
             }
         });
         Button next = new Button("Select Player");
         next.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                controller.selectPlayer();
+                controller.showPlayerSelection();
             }
         });
 

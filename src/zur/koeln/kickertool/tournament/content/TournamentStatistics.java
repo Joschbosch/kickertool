@@ -1,19 +1,26 @@
 /**
  * 
  */
-package zur.koeln.kickertool.tournament;
+package zur.koeln.kickertool.tournament.content;
 
 import java.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
-import zur.koeln.kickertool.player.PlayerPool;
+import zur.koeln.kickertool.base.PlayerPoolService;
+import zur.koeln.kickertool.tournament.TournamentConfiguration;
 
 @Getter
 @Setter
 public class TournamentStatistics {
+
+    @JsonIgnore
+    @Autowired
+    private PlayerPoolService playerPool;
 
     private UUID playerId;
 
@@ -21,14 +28,6 @@ public class TournamentStatistics {
 
     @JsonIgnore
     private Map<UUID, Match> uidToMatch = new HashMap<>();
-
-    public TournamentStatistics() {
-
-    }
-
-    public TournamentStatistics(UUID playerId) {
-        this.playerId = playerId;
-    }
 
     public void addMatchResult(Match match) {
         matches.add(match.getMatchID());
@@ -64,7 +63,7 @@ public class TournamentStatistics {
     }
     @JsonIgnore
     public long getPointsForConfiguration(TournamentConfiguration config) {
-        if (PlayerPool.getInstance().getPlayerById(playerId).isDummy()) {
+        if (playerPool.getPlayerById(playerId).isDummy()) {
             return 0;
         }
 

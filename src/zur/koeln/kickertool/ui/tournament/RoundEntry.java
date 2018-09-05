@@ -12,16 +12,18 @@ import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import zur.koeln.kickertool.TournamentController;
-import zur.koeln.kickertool.tournament.Match;
-import zur.koeln.kickertool.tournament.Round;
+import zur.koeln.kickertool.base.TournamentControllerService;
+import zur.koeln.kickertool.tournament.content.Match;
+import zur.koeln.kickertool.tournament.content.Round;
 
 public class RoundEntry extends GridPane {
 
     /**
      * @param r
      */
-    public RoundEntry(Round r, TournamentController controller) {
+    public RoundEntry(
+        Round r,
+        TournamentControllerService controller) {
 
         List<Match> allMatches = r.getAllMatches();
         Collections.sort(allMatches, (m1, m2) -> Integer.compare(m1.getMatchNo(), m2.getMatchNo()));

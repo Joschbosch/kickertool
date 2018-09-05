@@ -11,13 +11,15 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
 import javafx.util.StringConverter;
-import zur.koeln.kickertool.TournamentController;
-import zur.koeln.kickertool.tournament.Match;
+import zur.koeln.kickertool.base.TournamentControllerService;
+import zur.koeln.kickertool.tournament.content.Match;
 
 public class ScoreDialog<R> extends Dialog<R> {
 
     @SuppressWarnings("unchecked")
-    public ScoreDialog(Match match, TournamentController controller) {
+    public ScoreDialog(
+        Match match,
+        TournamentControllerService controller) {
 
         ButtonType enterButton = new ButtonType("Enter", ButtonData.OK_DONE);
         getDialogPane().getButtonTypes().addAll(enterButton, ButtonType.CANCEL);
@@ -60,7 +62,7 @@ public class ScoreDialog<R> extends Dialog<R> {
      * @param contoller
      * @return
      */
-    private Spinner<Integer> createScoreSpinner(TournamentController contoller) {
+    private Spinner<Integer> createScoreSpinner(TournamentControllerService contoller) {
         Spinner<Integer> spinner = new Spinner<>();
         spinner.setEditable(false);
         ObservableList<Integer> items = FXCollections.observableArrayList(Integer.valueOf(0));

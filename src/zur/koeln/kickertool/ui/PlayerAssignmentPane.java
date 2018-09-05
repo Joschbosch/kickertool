@@ -10,22 +10,19 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import zur.koeln.kickertool.TournamentController;
+import zur.koeln.kickertool.base.TournamentControllerService;
 import zur.koeln.kickertool.player.Player;
 
 public class PlayerAssignmentPane extends GridPane {
 
-    public PlayerAssignmentPane(TournamentController controller) {
+    public PlayerAssignmentPane(
+        TournamentControllerService controller) {
         this.setAlignment(Pos.CENTER);
 
         this.setHgap(5);
@@ -89,7 +86,7 @@ public class PlayerAssignmentPane extends GridPane {
     /**
      * @param controller
      */
-    private TableView<Player> addPlayerTable(TournamentController controller, String labelText, int gridCol,
+    private TableView<Player> addPlayerTable(TournamentControllerService controller, String labelText, int gridCol,
             int gridRow) {
         final Label label = new Label(labelText);
         label.setFont(new Font("Arial", 20));
@@ -121,13 +118,13 @@ public class PlayerAssignmentPane extends GridPane {
     /**
      * @param controller
      */
-    private Button addControlButtons(TournamentController controller) {
+    private Button addControlButtons(TournamentControllerService controller) {
         Button back = new Button("Back");
         back.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
-                controller.backToTournamentConfig();
+                controller.showTournamentConfig();
             }
         });
         Button next = new Button("Start Tournament");

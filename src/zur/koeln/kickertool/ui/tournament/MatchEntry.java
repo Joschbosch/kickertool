@@ -13,15 +13,17 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
-import zur.koeln.kickertool.TournamentController;
-import zur.koeln.kickertool.tournament.Match;
+import zur.koeln.kickertool.base.TournamentControllerService;
+import zur.koeln.kickertool.tournament.content.Match;
 
 public class MatchEntry extends GridPane {
 
     /**
      * @param match
      */
-    public MatchEntry(Match match, TournamentController controller) {
+    public MatchEntry(
+        Match match,
+        TournamentControllerService controller) {
 
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(40);

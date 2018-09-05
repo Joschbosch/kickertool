@@ -1,5 +1,7 @@
 package zur.koeln.kickertool.uifxml;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,11 +9,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.TournamentController;
+import zur.koeln.kickertool.base.TournamentControllerService;
 
 @Getter(value=AccessLevel.PRIVATE)
 public class FXMLMainMenuController {
 	
+    @Autowired
+    private TournamentControllerService controller;
 	@FXML
 	private Button btnCreateNewTournament;
 	@FXML
@@ -29,11 +33,11 @@ public class FXMLMainMenuController {
 	// Event Listener on Button[#btnCreateNewTournament].onAction
 	@FXML
 	public void onCreateNewTournamentClicked(ActionEvent event) {
-		TournamentController.getInstance().createNewTournament(txtTournamentName.getText());
+        controller.createNewTournament(txtTournamentName.getText());
 	}
 	// Event Listener on Button[#btnManagePlayers].onAction
 	@FXML
 	public void onManagePlayersClicked(ActionEvent event) {
-		TournamentController.getInstance().showPlayerPoolManagement();
+        controller.showPlayerPoolManagement();
 	}
 }

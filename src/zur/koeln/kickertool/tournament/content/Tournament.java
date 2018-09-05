@@ -1,24 +1,39 @@
-package zur.koeln.kickertool.tournament;
+package zur.koeln.kickertool.tournament.content;
 
 import java.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
+import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.player.PlayerPool;
+import zur.koeln.kickertool.tournament.MatchException;
+import zur.koeln.kickertool.tournament.TournamentConfiguration;
+import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
 @Getter
 @Setter
+@Component
 public class Tournament {
+
+    @JsonIgnore
+    @Autowired
+    private PlayerPoolService playerPool;
+
+    @JsonIgnore
+    @Autowired
+    private TournamentFactory tournamentFactory;
+
+    @JsonIgnore
+    private boolean started = false;
 
     private TournamentConfiguration config;
 
     private String name;
-
-    @JsonIgnore
-    private boolean started = false;
 
     private List<UUID> participants = new ArrayList<>();
 
@@ -52,7 +67,7 @@ public class Tournament {
             }
         } else {
             if (!scoreTable.containsKey(p.getUid())) {
-                scoreTable.put(p.getUid(), new TournamentStatistics(p.getUid()));
+                scoreTable.put(p.getUid(), tournamentFactory.createNewTournamentStatistics(p.getUid()));
                 checkDummies();
             }
         }
@@ -69,12 +84,12 @@ public class Tournament {
     }
 
     public void pausePlayer(UUID selectedPlayer) {
-        PlayerPool.getInstance().getPlayerById(selectedPlayer).setPausingTournament(true);
+        playerPool.getPlayerById(selectedPlayer).setPausingTournament(true);
         checkDummies();
     }
 
     public void unpausePlayer(UUID selectedPlayer) {
-        PlayerPool.getInstance().getPlayerById(selectedPlayer).setPausingTournament(false);
+        playerPool.getPlayerById(selectedPlayer).setPausingTournament(false);
         checkDummies();
     }
 
@@ -82,18 +97,18 @@ public class Tournament {
      * 
      */
     private void checkDummies() {
-        int usedDummies = PlayerPool.getInstance().getDummyPlayerUsed();
+        int usedDummies = playerPool.getNoOfDummyPlayerUsed();
         int neededDummies = getActivePlayerCount() % 4 == 0 ? 0 : 4 - getActivePlayerCount() % 4;
         if (neededDummies < usedDummies) {
             for (int i = neededDummies; i < usedDummies; i++) {
-                UUID removeDummy = PlayerPool.getInstance().removeLastDummy();
+                UUID removeDummy = playerPool.removeLastDummy();
                 scoreTable.remove(removeDummy);
                 dummyPlayerActive.remove(removeDummy);
             }
         } else if (neededDummies > usedDummies) {
             for (int i = usedDummies; i < neededDummies; i++) {
-                UUID dummy = PlayerPool.getInstance().useNextDummyPlayer();
-                scoreTable.put(dummy, new TournamentStatistics(dummy));
+                UUID dummy = playerPool.useNextDummyPlayer();
+                scoreTable.put(dummy, tournamentFactory.createNewTournamentStatistics(dummy));
                 dummyPlayerActive.add(dummy);
             }
         }
@@ -105,7 +120,7 @@ public class Tournament {
     private int getActivePlayerCount() {
         int count = 0;
         for (TournamentStatistics ts : scoreTable.values()) {
-            Player player = PlayerPool.getInstance().getPlayerById(ts.getPlayerId());
+            Player player = playerPool.getPlayerById(ts.getPlayerId());
             if (!player.isPausingTournament() && !player.isDummy()) {
                 count++;
             }
@@ -120,7 +135,7 @@ public class Tournament {
                 playtables.put(Integer.valueOf(i), new GamingTable(i));
             }
             for (UUID pid : participants) {
-                scoreTable.put(pid, new TournamentStatistics(pid));
+                scoreTable.put(pid, tournamentFactory.createNewTournamentStatistics(pid));
             }
             checkDummies();
         }
@@ -136,8 +151,7 @@ public class Tournament {
                 completeRounds.add(currentRound);
                 nextRoundNumber = currentRound.getRoundNo() + 1;
             }
-            Round newRound = new Round();
-            newRound.setRoundNo(nextRoundNumber);
+            Round newRound = tournamentFactory.createNewRound(nextRoundNumber);
             currentRound = newRound;
             newRound.createMatches(getTableCopySortedByPoints(), config);
             updatePlayTableUsage();
@@ -176,8 +190,8 @@ public class Tournament {
         List<TournamentStatistics> sorting = new LinkedList<>(scoreTable.values());
         Collections.sort(sorting, (o1, o2) -> {
 
-            Player player1 = PlayerPool.getInstance().getPlayerById(o1.getPlayerId());
-            Player player2 = PlayerPool.getInstance().getPlayerById(o2.getPlayerId());
+            Player player1 = playerPool.getPlayerById(o1.getPlayerId());
+            Player player2 = playerPool.getPlayerById(o2.getPlayerId());
             if (player1 == null) {
                 return 1;
             }
@@ -230,12 +244,13 @@ public class Tournament {
 
     @JsonIgnore
     public void initializeAfterImport() {
+        started = true;
         Map<UUID, Match> uuidToMatch = new HashMap<>();
         getAllMatches().forEach(m -> uuidToMatch.put(m.getMatchID(), m));
         scoreTable.values().forEach(tournamentStatistic -> {
             tournamentStatistic.setUidToMatch(uuidToMatch);
             if (dummyPlayerActive.contains(tournamentStatistic.getPlayerId())) {
-                PlayerPool.getInstance().createDummyPlayerWithUUID(tournamentStatistic.getPlayerId());
+                playerPool.createDummyPlayerWithUUID(tournamentStatistic.getPlayerId());
             }
         });
 

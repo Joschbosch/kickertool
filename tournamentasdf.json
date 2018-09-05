@@ -1,0 +1,103 @@
+{
+  "config" : {
+    "mode" : "SWISS_DYP",
+    "tableCount" : 2,
+    "randomRounds" : 2,
+    "matchesToWin" : 1,
+    "goalsToWin" : 10,
+    "minutesPerMatch" : 5,
+    "pointsForWinner" : 2,
+    "pointsForDraw" : 1,
+    "fixedTeams" : false,
+    "currentNoOfMatches" : 2
+  },
+  "name" : "asdf",
+  "participants" : [ "cece15dd-f61a-43c4-b1f4-5f12403685d9", "7053cace-6493-4970-b540-f9570d7b6409", "4fa79826-89a2-451e-81df-4b1e6e9f4b9a", "bdcef19f-6ac3-4dfd-9d8b-5cf73e239d4e", "87c9bf4e-b4e0-4363-ac92-8e996ca59d12", "472264d3-eacd-4a6b-86d3-f6dd7a9be34d", "40cd8648-75f8-41c0-be8f-758e3fbc648e", "3c0d046c-499f-4bd5-adb2-6bd395d1f9b0" ],
+  "completeRounds" : [ ],
+  "currentRound" : {
+    "tournamentFactory" : { },
+    "roundNo" : 1,
+    "matches" : [ {
+      "matchID" : "c7393b77-6b2c-476a-b47a-0a4844d07a4b",
+      "roundNumber" : 1,
+      "homeTeam" : {
+        "p1" : "3c0d046c-499f-4bd5-adb2-6bd395d1f9b0",
+        "p2" : "40cd8648-75f8-41c0-be8f-758e3fbc648e"
+      },
+      "visitingTeam" : {
+        "p1" : "7053cace-6493-4970-b540-f9570d7b6409",
+        "p2" : "4fa79826-89a2-451e-81df-4b1e6e9f4b9a"
+      },
+      "matchNo" : 0,
+      "tableNo" : 1,
+      "scoreHome" : 0,
+      "scoreVisiting" : 0,
+      "result" : null
+    }, {
+      "matchID" : "a61f6a4a-90af-4bfd-a8a8-ac1cfb1337fa",
+      "roundNumber" : 1,
+      "homeTeam" : {
+        "p1" : "87c9bf4e-b4e0-4363-ac92-8e996ca59d12",
+        "p2" : "bdcef19f-6ac3-4dfd-9d8b-5cf73e239d4e"
+      },
+      "visitingTeam" : {
+        "p1" : "cece15dd-f61a-43c4-b1f4-5f12403685d9",
+        "p2" : "472264d3-eacd-4a6b-86d3-f6dd7a9be34d"
+      },
+      "matchNo" : 1,
+      "tableNo" : 2,
+      "scoreHome" : 0,
+      "scoreVisiting" : 0,
+      "result" : null
+    } ],
+    "completeMatches" : [ ],
+    "scoreTableAtEndOfRound" : null
+  },
+  "scoreTable" : {
+    "cece15dd-f61a-43c4-b1f4-5f12403685d9" : {
+      "playerId" : "cece15dd-f61a-43c4-b1f4-5f12403685d9",
+      "matches" : [ ]
+    },
+    "87c9bf4e-b4e0-4363-ac92-8e996ca59d12" : {
+      "playerId" : "87c9bf4e-b4e0-4363-ac92-8e996ca59d12",
+      "matches" : [ ]
+    },
+    "4fa79826-89a2-451e-81df-4b1e6e9f4b9a" : {
+      "playerId" : "4fa79826-89a2-451e-81df-4b1e6e9f4b9a",
+      "matches" : [ ]
+    },
+    "7053cace-6493-4970-b540-f9570d7b6409" : {
+      "playerId" : "7053cace-6493-4970-b540-f9570d7b6409",
+      "matches" : [ ]
+    },
+    "3c0d046c-499f-4bd5-adb2-6bd395d1f9b0" : {
+      "playerId" : "3c0d046c-499f-4bd5-adb2-6bd395d1f9b0",
+      "matches" : [ ]
+    },
+    "bdcef19f-6ac3-4dfd-9d8b-5cf73e239d4e" : {
+      "playerId" : "bdcef19f-6ac3-4dfd-9d8b-5cf73e239d4e",
+      "matches" : [ ]
+    },
+    "40cd8648-75f8-41c0-be8f-758e3fbc648e" : {
+      "playerId" : "40cd8648-75f8-41c0-be8f-758e3fbc648e",
+      "matches" : [ ]
+    },
+    "472264d3-eacd-4a6b-86d3-f6dd7a9be34d" : {
+      "playerId" : "472264d3-eacd-4a6b-86d3-f6dd7a9be34d",
+      "matches" : [ ]
+    }
+  },
+  "playtables" : {
+    "1" : {
+      "tableNumber" : 1,
+      "active" : true,
+      "inUse" : true
+    },
+    "2" : {
+      "tableNumber" : 2,
+      "active" : true,
+      "inUse" : true
+    }
+  },
+  "dummyPlayerActive" : [ ]
+}

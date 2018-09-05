@@ -1,20 +1,34 @@
 /**
  * 
  */
-package zur.koeln.kickertool.tournament;
+package zur.koeln.kickertool.tournament.content;
 
 import java.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
+import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.player.PlayerPool;
+import zur.koeln.kickertool.tournament.MatchException;
+import zur.koeln.kickertool.tournament.TournamentConfiguration;
+import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
 @Getter
 @Setter
+@Component
 public class Round {
+
+    @JsonIgnore
+    @Autowired
+    private PlayerPoolService playerPool;
+
+    @Autowired
+    private TournamentFactory tournamentFactory;
 
     private int roundNo;
 
@@ -33,7 +47,7 @@ public class Round {
      * @return
      */
     public void createMatches(List<TournamentStatistics> table, TournamentConfiguration config) {
-        table.removeIf(statistic -> PlayerPool.getInstance().getPlayerById(statistic.getPlayerId()).isPausingTournament());
+        table.removeIf(statistic -> playerPool.getPlayerById(statistic.getPlayerId()).isPausingTournament());
         while (table.size() > 3) {
             Team home;
             Team visiting;
@@ -49,7 +63,8 @@ public class Round {
                 table.remove(0);
             }
 
-            Match m = new Match(Integer.valueOf(roundNo), home, visiting, config.getCurrentNoOfMatches());
+            Match m = tournamentFactory.createNewMatch(Integer.valueOf(roundNo), home, visiting, config.getCurrentNoOfMatches());
+            m.setPlayerPool(playerPool);
             config.setCurrentNoOfMatches(config.getCurrentNoOfMatches() + 1);
 
             matches.add(m);

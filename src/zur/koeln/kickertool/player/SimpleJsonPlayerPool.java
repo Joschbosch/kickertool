@@ -4,15 +4,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Getter;
+import zur.koeln.kickertool.base.PlayerPoolService;
 
 @Getter
-public class PlayerPool {
-
-    private static PlayerPool instance;
+@Component
+public class SimpleJsonPlayerPool
+    implements PlayerPoolService {
 
     private List<Player> players;
 
@@ -20,13 +23,12 @@ public class PlayerPool {
 
     private final List<Player> dummyPlayerUnused = new LinkedList<>();
 
-    public PlayerPool() {
+    public SimpleJsonPlayerPool() {
         players = new ArrayList<>();
         dummies = new ArrayList<>();
-        loadPlayerPool();
-        setInstance(this);
-    }
 
+    }
+    @Override
     public void loadPlayerPool() {
         File playerPoolFile = new File("playerpool.json"); //$NON-NLS-1$
         if (playerPoolFile.exists() && playerPoolFile.isFile()) {
@@ -43,7 +45,7 @@ public class PlayerPool {
         }
 
     }
-
+    @Override
     public void savePlayerPool() {
         File playerPoolFile = new File("playerpool.json"); //$NON-NLS-1$
         ObjectMapper m = new ObjectMapper();
@@ -53,47 +55,28 @@ public class PlayerPool {
             e.printStackTrace();
         }
     }
-
+    @Override
     public void addPlayer(Player player) {
         players.add(player);
         savePlayerPool();
     }
-
+    @Override
     public void removePlayer(Player player) {
         players.remove(player);
         savePlayerPool();
     }
 
-    public void printPlayerPool() {
-        System.out.println(String.format("%s\t%s\t%s\t", "Name", "Nickname", "ID")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-        Collections.sort(players, new Comparator<Player>() {
-
-            @Override
-            public int compare(Player o1, Player o2) {
-                return o1.getUid().compareTo(o2.getUid());
-            }
-
-        });
-        for (Player p : players) {
-            System.out.println(String.format("%s\t%s\t%s\t", p.getName(), p.getUid())); //$NON-NLS-1$
-        }
-    }
 
     /**
      * 
      */
+    @Override
     public void clear() {
         players.clear();
     }
 
-    public static PlayerPool getInstance() {
-        return instance;
-    }
 
-    public static void setInstance(PlayerPool instance) {
-        PlayerPool.instance = instance;
-    }
-
+    @Override
     public Player getPlayerById(UUID playerId) {
         Optional<Player> p = players.stream().filter(player -> player.getUid().equals(playerId)).findFirst();
         if (p.isPresent()) {
@@ -105,30 +88,24 @@ public class PlayerPool {
         }
         return null;
     }
-
-    public int getDummyPlayerUsed() {
+    @Override
+    public int getNoOfDummyPlayerUsed() {
         return dummies.size();
     }
 
-    /**
-     * @param i
-     */
-    private static Player createDummyPlayer(int i) {
-        Player dummy = new Player("Dummy Player " + i); //$NON-NLS-1$
-        dummy.setDummy(true);
-        return dummy;
-    }
+
 
     /**
      * @param i
      */
+    @Override
     public void createDummyPlayerWithUUID(UUID id) {
         Player dummy = new Player("Dummy Player " + dummies.size() + 1); //$NON-NLS-1$
         dummy.setDummy(true);
         dummy.setUid(id);
         dummies.add(dummy);
     }
-
+    @Override
     public UUID useNextDummyPlayer() {
         Player dummy = null;
         if (dummyPlayerUnused.isEmpty()) {
@@ -139,10 +116,18 @@ public class PlayerPool {
         dummies.add(dummy);
         return dummy.getUid();
     }
-
+    @Override
     public UUID removeLastDummy() {
         Player removedDummy = dummies.remove(dummies.size() - 1);
         dummyPlayerUnused.add(removedDummy);
         return removedDummy.getUid();
+    }
+    /**
+     * @param i
+     */
+    private Player createDummyPlayer(int i) {
+        Player dummy = new Player("Dummy Player " + i); //$NON-NLS-1$
+        dummy.setDummy(true);
+        return dummy;
     }
 }
