@@ -15,18 +15,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.base.TournamentControllerService;
 import zur.koeln.kickertool.player.Player;
 
 @Getter(value=AccessLevel.PRIVATE)
 public class FXMLPlayerPoolManagementController{
-	
-    @Autowired
-    private PlayerPoolService playerPool;
+
     @Autowired
     private TournamentControllerService controller;
-
 	@FXML
 	private TableView<Player> tblPlayers;
 	@FXML
@@ -43,7 +39,6 @@ public class FXMLPlayerPoolManagementController{
 	@FXML
 	public void initialize() {
 
-	
 		getTblColName().setCellValueFactory(new PropertyValueFactory<>("name"));
 		getTblColName().setCellFactory(TextFieldTableCell.<Player>forTableColumn());
 		
@@ -54,12 +49,11 @@ public class FXMLPlayerPoolManagementController{
 		
 		getBtnAddPlayer().disableProperty().bind(Bindings.greaterThan(1, getTxtPlayerName().textProperty().length()));
 	
-		
 	}
 	
 	private List<Player> loadPlayerData() {
 		
-		return playerPool.getPlayers();
+        return controller.getPlayerpool().getPlayers();
 	}
 	
 	// Event Listener on Button[#btnAddPlayer].onAction
