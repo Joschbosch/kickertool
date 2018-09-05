@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.UUID;
 
 import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.tournament.TournamentConfigurationKeys;
+import zur.koeln.kickertool.tournament.TournamentConfigKeys;
 import zur.koeln.kickertool.tournament.content.Match;
 import zur.koeln.kickertool.tournament.content.Tournament;
 
-public interface TournamentControllerService {
+public interface BackendController {
 
     void showMainMenu();
 
@@ -27,7 +27,7 @@ public interface TournamentControllerService {
 
     boolean isCurrentRoundComplete();
 
-    void changedTournamentConfig(TournamentConfigurationKeys configKey, Integer newValue);
+    void changedTournamentConfig(TournamentConfigKeys configKey, Integer newValue);
 
     void showPlayerSelection();
 

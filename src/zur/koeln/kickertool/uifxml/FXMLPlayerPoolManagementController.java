@@ -16,7 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.base.TournamentControllerService;
+import zur.koeln.kickertool.base.BackendController;
 import zur.koeln.kickertool.player.Player;
 
 @Getter(value=AccessLevel.PRIVATE)
@@ -24,7 +24,7 @@ import zur.koeln.kickertool.player.Player;
 public class FXMLPlayerPoolManagementController{
 
     @Autowired
-    private TournamentControllerService controller;
+    private BackendController controller;
 	@FXML
 	private TableView<Player> tblPlayers;
 	@FXML

@@ -16,13 +16,13 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import zur.koeln.kickertool.base.TournamentControllerService;
+import zur.koeln.kickertool.base.BackendController;
 import zur.koeln.kickertool.player.Player;
 
 public class PlayerAssignmentPane extends GridPane {
 
     public PlayerAssignmentPane(
-        TournamentControllerService controller) {
+        BackendController controller) {
         this.setAlignment(Pos.CENTER);
 
         this.setHgap(5);
@@ -86,7 +86,7 @@ public class PlayerAssignmentPane extends GridPane {
     /**
      * @param controller
      */
-    private TableView<Player> addPlayerTable(TournamentControllerService controller, String labelText, int gridCol,
+    private TableView<Player> addPlayerTable(BackendController controller, String labelText, int gridCol,
             int gridRow) {
         final Label label = new Label(labelText);
         label.setFont(new Font("Arial", 20));
@@ -118,7 +118,7 @@ public class PlayerAssignmentPane extends GridPane {
     /**
      * @param controller
      */
-    private Button addControlButtons(TournamentControllerService controller) {
+    private Button addControlButtons(BackendController controller) {
         Button back = new Button("Back");
         back.setOnAction(new EventHandler<ActionEvent>() {
 

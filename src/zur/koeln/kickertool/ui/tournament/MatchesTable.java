@@ -9,15 +9,15 @@ import java.util.List;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import zur.koeln.kickertool.base.TournamentControllerService;
+import zur.koeln.kickertool.base.BackendController;
 import zur.koeln.kickertool.tournament.content.Round;
 
 public class MatchesTable extends GridPane {
 
-    private final TournamentControllerService controller;
+    private final BackendController controller;
 
     public MatchesTable(
-        TournamentControllerService controller) {
+        BackendController controller) {
         this.controller = controller;
         this.setVgap(10);
 

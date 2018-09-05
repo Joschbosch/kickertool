@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TournamentConfiguration {
+public class TournamentConfig {
 
     private TournamentMode mode = TournamentMode.SWISS_DYP;
 

@@ -27,17 +27,16 @@ public abstract class AbstractGUIController {
     @NonNull
     private final GUIState state;
 
-    private TournamentControllerService controller;
     private final Map<GUIState, Pane> createdPanes = new HashMap<>();
 
     private ConfigurableApplicationContext ctx;
+
     @PostConstruct
-    public void init(TournamentControllerService controller, ConfigurableApplicationContext ctx, Parent rootPane) {
-        init(controller, ctx, rootPane, 1200, 800);
+    public void init(ConfigurableApplicationContext ctx, Parent rootPane) {
+        init(ctx, rootPane, 1200, 800);
     }
     @PostConstruct
-    public void init(TournamentControllerService controller, ConfigurableApplicationContext ctx, Parent rootPane, double width, double height) {
-        this.controller = controller;
+    public void init(ConfigurableApplicationContext ctx, Parent rootPane, double width, double height) {
         this.ctx = ctx;
         stage.setTitle("Kicker APP");
         Scene mainScene = new Scene(rootPane, width, height);

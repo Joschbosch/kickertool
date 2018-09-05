@@ -16,15 +16,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import zur.koeln.kickertool.base.TournamentControllerService;
+import zur.koeln.kickertool.base.BackendController;
 import zur.koeln.kickertool.player.Player;
 
 public class PlayerPoolManagementPane extends StackPane {
 
-    private final TournamentControllerService controller;
+    private final BackendController controller;
 
     public PlayerPoolManagementPane(
-        TournamentControllerService controller) {
+        BackendController controller) {
         this.controller = controller;
         createControls();
 

@@ -1,6 +1,7 @@
 package zur.koeln.kickertool.uifxml;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,15 +11,16 @@ import javafx.scene.control.TextFormatter;
 import javafx.util.converter.IntegerStringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.base.TournamentControllerService;
-import zur.koeln.kickertool.tournament.TournamentConfiguration;
+import zur.koeln.kickertool.base.BackendController;
+import zur.koeln.kickertool.tournament.TournamentConfig;
 import zur.koeln.kickertool.tournament.content.Tournament;
 
+@Component
 @Getter(value=AccessLevel.PRIVATE)
 public class FXMLTournamentConfigurationController {
 
     @Autowired
-    private TournamentControllerService controller;
+    private BackendController controller;
 
 	@FXML
 	private Label lblTournament;
@@ -41,7 +43,7 @@ public class FXMLTournamentConfigurationController {
 	@FXML
 	private TextField txtRandomRoundsAtStart;
 	
-	private TournamentConfiguration config;
+	private TournamentConfig config;
 	
 	@FXML 
 	public void initialize() {

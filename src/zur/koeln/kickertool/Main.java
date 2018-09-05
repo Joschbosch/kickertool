@@ -10,7 +10,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import zur.koeln.kickertool.base.TournamentControllerService;
+import zur.koeln.kickertool.base.BackendController;
 import zur.koeln.kickertool.tournament.MatchException;
 import zur.koeln.kickertool.ui.GUIController;
 import zur.koeln.kickertool.ui.GUIState;
@@ -22,7 +22,6 @@ public class Main extends Application {
     private static ConfigurableApplicationContext ctx;
 
     public static void main(String[] args) throws MatchException {
-        //        ctx = new AnnotationConfigApplicationContext(KickerToolConfiguration.class);
         ctx = SpringApplication.run(Main.class);
 
         launch(args);
@@ -37,9 +36,10 @@ public class Main extends Application {
     
     private void startWithGUICode(Stage primaryStage) {
         GUIController guiController = new GUIController(primaryStage, GUIState.MAIN_MENU);
-        TournamentControllerService controller = ctx.getBean(TournamentControllerService.class);
+        BackendController controller = ctx.getBean(BackendController.class);
         controller.setGuiController(guiController);
-        guiController.init(controller, ctx, new MainMenuPane(controller));
+        guiController.init(ctx, new MainMenuPane(controller));
+        guiController.setController(controller);
     }
 
     private void startWithGUIFXML(Stage primaryStage) throws IOException {
@@ -48,8 +48,8 @@ public class Main extends Application {
         loader.setControllerFactory(ctx::getBean);
         Parent mainMenu = loader.load();
     	FXMLGUIController fxmlGuiController = new FXMLGUIController(primaryStage, GUIState.MAIN_MENU);
-        TournamentControllerService controller = ctx.getBean(TournamentControllerService.class);
+        BackendController controller = ctx.getBean(BackendController.class);
         controller.setGuiController(fxmlGuiController);
-        fxmlGuiController.init(controller, ctx, mainMenu, 450, 450);
+        fxmlGuiController.init(ctx, mainMenu, 450, 450);
     }
 }

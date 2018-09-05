@@ -15,7 +15,7 @@ import lombok.Setter;
 import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.MatchException;
-import zur.koeln.kickertool.tournament.TournamentConfiguration;
+import zur.koeln.kickertool.tournament.TournamentConfig;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
 @Getter
@@ -46,7 +46,7 @@ public class Round {
      * @param playtables
      * @return
      */
-    public void createMatches(List<TournamentStatistics> table, TournamentConfiguration config) {
+    public void createMatches(List<TournamentStatistics> table, TournamentConfig config) {
         table.removeIf(statistic -> playerPool.getPlayerById(statistic.getPlayerId()).isPausingTournament());
         while (table.size() > 3) {
             Team home;

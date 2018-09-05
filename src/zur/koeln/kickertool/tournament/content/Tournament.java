@@ -12,7 +12,7 @@ import lombok.Setter;
 import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.MatchException;
-import zur.koeln.kickertool.tournament.TournamentConfiguration;
+import zur.koeln.kickertool.tournament.TournamentConfig;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
 @Getter
@@ -31,7 +31,7 @@ public class Tournament {
     @JsonIgnore
     private boolean started = false;
 
-    private TournamentConfiguration config;
+    private TournamentConfig config;
 
     private String name;
 
@@ -48,7 +48,7 @@ public class Tournament {
     private List<UUID> dummyPlayerActive = new ArrayList<>();
 
     public Tournament() {
-        this.config = new TournamentConfiguration();
+        this.config = new TournamentConfig();
     }
     /**
      * @param players

@@ -29,4 +29,6 @@ public class KickerToolConfiguration {
     public Timer createTimerBean() {
         return new SimpleTimer();
     }
+    
+  
 }

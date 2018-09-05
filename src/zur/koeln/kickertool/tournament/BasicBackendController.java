@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import zur.koeln.kickertool.base.AbstractGUIController;
 import zur.koeln.kickertool.base.PlayerPoolService;
-import zur.koeln.kickertool.base.TournamentControllerService;
+import zur.koeln.kickertool.base.BackendController;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tools.Timer;
 import zur.koeln.kickertool.tournament.content.Match;
@@ -25,8 +25,8 @@ import zur.koeln.kickertool.ui.GUIState;
 
 @Getter
 @Component
-public class BasicTournamentController
-    implements TournamentControllerService {
+public class BasicBackendController
+    implements BackendController {
 
     @Autowired
     private PlayerPoolService playerpool;
@@ -102,7 +102,7 @@ public class BasicTournamentController
      * @param newValue
      */
     @Override
-    public void changedTournamentConfig(TournamentConfigurationKeys configKey, Integer newValue) {
+    public void changedTournamentConfig(TournamentConfigKeys configKey, Integer newValue) {
         switch (configKey) {
         case TABLES:
             currentTournament.getConfig().setTableCount(newValue.intValue());
@@ -261,7 +261,7 @@ public class BasicTournamentController
     }
     @Override
     public void exportTournament() {
-        File tournamentFile = new File("tournament" + currentTournament.getName() + ".json"); //$NON-NLS-1$
+        File tournamentFile = new File("tournament" + currentTournament.getName() + ".json"); //$NON-NLS-1$ //$NON-NLS-2$
         ObjectMapper m = new ObjectMapper();
         try {
             m.writerWithDefaultPrettyPrinter().writeValue(tournamentFile, currentTournament);

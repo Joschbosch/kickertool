@@ -10,14 +10,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.base.TournamentControllerService;
+import zur.koeln.kickertool.base.BackendController;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component
 public class FXMLMainMenuController {
 	
     @Autowired
-    private TournamentControllerService controller;
+    private BackendController controller;
 	@FXML
 	private Button btnCreateNewTournament;
 	@FXML

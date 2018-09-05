@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -16,14 +17,15 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.input.*;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.base.TournamentControllerService;
+import zur.koeln.kickertool.base.BackendController;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.uifxml.cells.PlayerListCell;
 
+@Component
 @Getter(value=AccessLevel.PRIVATE)
 public class FXMLPlayerSelectionController {
     @Autowired
-    private TournamentControllerService controller;
+    private BackendController controller;
 	@FXML
 	private Button btnBack;
 	@FXML

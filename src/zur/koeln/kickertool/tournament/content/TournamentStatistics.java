@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.base.PlayerPoolService;
-import zur.koeln.kickertool.tournament.TournamentConfiguration;
+import zur.koeln.kickertool.tournament.TournamentConfig;
 
 @Getter
 @Setter
@@ -22,12 +22,13 @@ public class TournamentStatistics {
     @Autowired
     private PlayerPoolService playerPool;
 
+    @JsonIgnore
+    private Map<UUID, Match> uidToMatch = new HashMap<>();
+
     private UUID playerId;
 
     private List<UUID> matches = new LinkedList<>();
 
-    @JsonIgnore
-    private Map<UUID, Match> uidToMatch = new HashMap<>();
 
     public void addMatchResult(Match match) {
         matches.add(match.getMatchID());
@@ -62,7 +63,7 @@ public class TournamentStatistics {
         return matches.stream().filter(m -> uidToMatch.get(m).isDraw()).count();
     }
     @JsonIgnore
-    public long getPointsForConfiguration(TournamentConfiguration config) {
+    public long getPointsForConfiguration(TournamentConfig config) {
         if (playerPool.getPlayerById(playerId).isDummy()) {
             return 0;
         }
@@ -74,7 +75,7 @@ public class TournamentStatistics {
 
     }
     @JsonIgnore
-    public double getMeanPoints(TournamentConfiguration config) {
+    public double getMeanPoints(TournamentConfig config) {
         return getPointsForConfiguration(config) / (double) matches.size();
     }
 
