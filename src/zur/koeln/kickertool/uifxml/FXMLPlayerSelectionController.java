@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -54,7 +55,17 @@ public class FXMLPlayerSelectionController {
 		getLstPlayersForTournament().setCellFactory(param -> new PlayerListCell());
 		getLstPlayersForTournament().getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		
+		getBtnStartTournament().disableProperty().bind(Bindings.size(getLstPlayersForTournament().getItems()).isEqualTo(0));
+		
+		getBtnAddPlayer().disableProperty().bind(getLstPlayers().getSelectionModel().selectedItemProperty().isNull());
+		getBtnRemovePlayer().disableProperty().bind(getLstPlayersForTournament().getSelectionModel().selectedItemProperty().isNull());
+		
 		setupDragAndDropFeatures();
+	}
+	
+	private List<Player> loadPlayerData() {
+		
+        return controller.getPlayer();
 	}
 	
 	private void setupDragAndDropFeatures() {
@@ -81,6 +92,8 @@ public class FXMLPlayerSelectionController {
 		target.getItems().addAll(droppedPlayers);
 		source.getItems().removeAll(droppedPlayers);
 		
+		source.getSelectionModel().clearSelection();
+		
 		event.consume();
 		
 	}
@@ -106,12 +119,7 @@ public class FXMLPlayerSelectionController {
 		event.consume();
 		
 	}
-	
-	private List<Player> loadPlayerData() {
-		
-        return controller.getPlayer();
-	}
-	
+
 	@FXML
 	public void onBtnBackClicked(ActionEvent event) {
         controller.showMainMenu();
@@ -134,14 +142,16 @@ public class FXMLPlayerSelectionController {
 		
 		getSelectedPlayerData().addAll(getLstPlayers().getSelectionModel().getSelectedItems());
 		getPlayerData().removeAll(getLstPlayers().getSelectionModel().getSelectedItems());
+		getLstPlayers().getSelectionModel().clearSelection();
 		
 	}
-	// Event Listener on Button[#btnRemovePlayer].onAction
+	
 	@FXML
 	public void onBtnRemovePlayerClicked(ActionEvent event) {
 		
 		getPlayerData().addAll(getLstPlayersForTournament().getSelectionModel().getSelectedItems());
 		getSelectedPlayerData().removeAll(getLstPlayersForTournament().getSelectionModel().getSelectedItems());
+		getLstPlayersForTournament().getSelectionModel().clearSelection();
 		
 	}
 }
