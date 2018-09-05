@@ -41,7 +41,6 @@ public class FXMLPlayerPoolManagementController{
 	@FXML
 	public void initialize() {
 
-	
 		getTblColName().setCellValueFactory(new PropertyValueFactory<>("name"));
 		getTblColName().setCellFactory(TextFieldTableCell.<Player>forTableColumn());
 		
@@ -52,7 +51,6 @@ public class FXMLPlayerPoolManagementController{
 		
 		getBtnAddPlayer().disableProperty().bind(Bindings.greaterThan(1, getTxtPlayerName().textProperty().length()));
 	
-		
 	}
 	
 	private List<Player> loadPlayerData() {

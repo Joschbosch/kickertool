@@ -24,12 +24,14 @@ public class FXMLGUIController extends AbstractGUIController{
         } else {
         	try {
 				newPane = (Pane) loadFXMLParent(newState);
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
             getCreatedPanes().put(newState, newPane);
         }
         getStage().getScene().setRoot(newPane);
+        getStage().setWidth(newPane.getPrefWidth());
 		
 	}
 	
@@ -41,7 +43,7 @@ public class FXMLGUIController extends AbstractGUIController{
 		case NEW_TOURNAMENT_CONFIG:
 			return FXMLLoader.load(getClass().getResource("TournamentConfiguration.fxml"));
 		case PLAYER_CONFIG:
-			break;
+			return FXMLLoader.load(getClass().getResource("PlayerSelection.fxml"));
 		case PLAYER_POOL:
 			return FXMLLoader.load(getClass().getResource("PlayerPoolManagement.fxml"));
 		case TOURNAMENT:
@@ -55,7 +57,7 @@ public class FXMLGUIController extends AbstractGUIController{
 
 	@Override
 	public void update() {	
-		
+		//
 	}
 
 	
