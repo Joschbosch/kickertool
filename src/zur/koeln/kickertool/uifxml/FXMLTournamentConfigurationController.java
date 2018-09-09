@@ -12,15 +12,16 @@ import javafx.util.converter.IntegerStringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.base.BackendController;
+import zur.koeln.kickertool.base.GUIUpdate;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 import zur.koeln.kickertool.tournament.content.Tournament;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLTournamentConfigurationController {
+public class FXMLTournamentConfigurationController implements GUIUpdate {
 
     @Autowired
-    private BackendController controller;
+    private BackendController backendController;
 
 	@FXML
 	private Label lblTournament;
@@ -48,11 +49,11 @@ public class FXMLTournamentConfigurationController {
 	@FXML 
 	public void initialize() {
 		
-        Tournament currentTournament = controller.getCurrentTournament();
+        Tournament currentTournament = backendController.getCurrentTournament();
 		config = currentTournament.getConfig();
 		
 		
-        getLblTournament().setText(controller.getCurrentTournament().getName());
+        getLblTournament().setText(backendController.getCurrentTournament().getName());
 		
 		getTxtGoalsToWin().setTextFormatter(createIntegerTextFormatter());
 		getTxtNumberOfTables().setTextFormatter(createIntegerTextFormatter());
@@ -83,13 +84,13 @@ public class FXMLTournamentConfigurationController {
 	
 	@FXML 
 	public void onBtnBackClicked() {
-        controller.showMainMenu();
+        backendController.showMainMenu();
 	}
 	
 	@FXML 
 	public void onBtnNextClicked() {
 		updateTournamentConfig();
-        controller.showPlayerSelection();
+        backendController.showPlayerSelection();
 	}
 	
 	private void updateTournamentConfig() {
@@ -113,5 +114,11 @@ public class FXMLTournamentConfigurationController {
 		return Integer.parseInt(textfield.getPromptText());
 		
 	}
+	
+	@Override
+	public void update() {
+		//
+	}
+	
 
 }

@@ -18,14 +18,15 @@ import javafx.scene.input.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.base.BackendController;
+import zur.koeln.kickertool.base.GUIUpdate;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.uifxml.cells.PlayerListCell;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLPlayerSelectionController {
+public class FXMLPlayerSelectionController implements GUIUpdate {
     @Autowired
-    private BackendController controller;
+    private BackendController backendController;
 	@FXML
 	private Button btnBack;
 	@FXML
@@ -67,7 +68,7 @@ public class FXMLPlayerSelectionController {
 	
 	private List<Player> loadPlayerData() {
 		
-        return controller.getPlayer();
+        return backendController.getPlayer();
 	}
 	
 	private void setupDragAndDropFeatures() {
@@ -124,19 +125,19 @@ public class FXMLPlayerSelectionController {
 
 	@FXML
 	public void onBtnBackClicked(ActionEvent event) {
-        controller.showMainMenu();
+        backendController.showMainMenu();
 	}
 	
 	@FXML
 	public void onBtnStartTournamentClicked(ActionEvent event) {
 		
 		transferSelectedPlayersToTournamentConfig();
-        controller.startTournament();
+        backendController.startTournament();
 		
 	}
 
 	private void transferSelectedPlayersToTournamentConfig() {
-        getSelectedPlayerData().forEach(ePlayer -> controller.addParticipantToTournament(ePlayer));
+        getSelectedPlayerData().forEach(ePlayer -> backendController.addParticipantToTournament(ePlayer));
 	}
 	
 	@FXML
@@ -156,4 +157,10 @@ public class FXMLPlayerSelectionController {
 		getLstPlayersForTournament().getSelectionModel().clearSelection();
 		
 	}
+	
+	@Override
+	public void update() {
+		//
+	}
+	
 }

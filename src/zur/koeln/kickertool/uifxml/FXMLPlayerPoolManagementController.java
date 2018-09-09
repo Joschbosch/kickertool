@@ -17,14 +17,15 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.base.BackendController;
+import zur.koeln.kickertool.base.GUIUpdate;
 import zur.koeln.kickertool.player.Player;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component
-public class FXMLPlayerPoolManagementController{
+public class FXMLPlayerPoolManagementController implements GUIUpdate {
 
     @Autowired
-    private BackendController controller;
+    private BackendController backendController;
 	@FXML
 	private TableView<Player> tblPlayers;
 	@FXML
@@ -55,7 +56,7 @@ public class FXMLPlayerPoolManagementController{
 	
 	private List<Player> loadPlayerData() {
 		
-        return controller.getPlayerpool().getPlayers();
+        return backendController.getPlayerpool().getPlayers();
 	}
 	
 	// Event Listener on Button[#btnAddPlayer].onAction
@@ -65,20 +66,20 @@ public class FXMLPlayerPoolManagementController{
 		Player newPlayer = new Player(getTxtPlayerName().getText());
 		getPlayerData().add(newPlayer);
 		getTxtPlayerName().clear();
-        controller.addPlayer(newPlayer);
+        backendController.addPlayer(newPlayer);
 		
 	}
 	// Event Listener on Button[#btnBack].onAction
 	@FXML
 	public void onBackClicked(ActionEvent event) {
-        controller.showMainMenu();
+        backendController.showMainMenu();
 	}
 	
 	@FXML
 	public void onPlayerDeleteClicked(ActionEvent event) {
 		
 		List<Player> selectedPlayers = getTblPlayers().getSelectionModel().getSelectedItems();
-        selectedPlayers.forEach(ePlayer -> controller.removePlayer(ePlayer));
+        selectedPlayers.forEach(ePlayer -> backendController.removePlayer(ePlayer));
 		getPlayerData().removeAll(selectedPlayers);
 		
 	}
@@ -91,9 +92,14 @@ public class FXMLPlayerPoolManagementController{
         if (!newName.isEmpty()) {
         	Player selectedPlayer = getTblPlayers().getSelectionModel().getSelectedItem();
             selectedPlayer.setName(newName);
-            controller.savePlayerPool();
+            backendController.savePlayerPool();
         }
 		
+	}
+	
+	@Override
+	public void update() {
+		//
 	}
 
 }

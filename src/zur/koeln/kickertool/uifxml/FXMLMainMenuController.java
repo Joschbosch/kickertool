@@ -11,13 +11,14 @@ import javafx.scene.control.TextField;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.base.BackendController;
+import zur.koeln.kickertool.base.GUIUpdate;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component
-public class FXMLMainMenuController {
+public class FXMLMainMenuController implements GUIUpdate {
 	
     @Autowired
-    private BackendController controller;
+    private BackendController backendController;
 	@FXML
 	private Button btnCreateNewTournament;
 	@FXML
@@ -35,11 +36,16 @@ public class FXMLMainMenuController {
 	// Event Listener on Button[#btnCreateNewTournament].onAction
 	@FXML
 	public void onCreateNewTournamentClicked(ActionEvent event) {
-        controller.createNewTournament(txtTournamentName.getText());
+        backendController.createNewTournament(txtTournamentName.getText());
 	}
 	// Event Listener on Button[#btnManagePlayers].onAction
 	@FXML
 	public void onManagePlayersClicked(ActionEvent event) {
-        controller.showPlayerPoolManagement();
+        backendController.showPlayerPoolManagement();
+	}
+
+	@Override
+	public void update() {
+		//
 	}
 }

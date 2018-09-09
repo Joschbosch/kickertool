@@ -58,7 +58,7 @@
             <Insets left="25.0" right="100.0" top="15.0" />
          </GridPane.margin>
       </TextField>
-      <Button fx:id="btnAddPlayer" mnemonicParsing="false" onAction="#onBtnAddPlayerClicked" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+      <Button fx:id="btnAddPlayer" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#onBtnAddPlayerClicked" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets right="25.0" top="15.0" />
          </GridPane.margin>
