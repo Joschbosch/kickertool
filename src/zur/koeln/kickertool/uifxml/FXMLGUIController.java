@@ -27,15 +27,9 @@ public class FXMLGUIController extends AbstractGUIController {
 	public void switchStateTo(GUIState newState) {
 
 		try {
-			Pane newPane = null;
-			if (getCreatedPanes().containsKey(newState)) {
-				newPane = getCreatedPanes().get(newState);
-			} else {
-				FXMLLoader loader = getFXMLLoader(newState);
-				newPane = (Pane) loader.load();
-				getCreatedPanes().put(newState, newPane);
-			}
-			
+
+			FXMLLoader loader = getFXMLLoader(newState);
+			Pane newPane = (Pane) loader.load();
 			prepareStage(getStage(), newPane);
 			
 			if (newState == GUIState.TOURNAMENT) {
