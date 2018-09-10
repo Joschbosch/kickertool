@@ -32,9 +32,9 @@
       <ColumnConstraints minWidth="10.0" prefWidth="25.0" />
    </columnConstraints>
    <rowConstraints>
+      <RowConstraints minHeight="30.0" prefHeight="45.0" vgrow="NEVER" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
@@ -95,7 +95,7 @@
             <StackPane fx:id="stackGames" />
         </content>
       </ScrollPane>
-      <Label fx:id="lblClock" text="99:99" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+      <Label fx:id="lblClock" text="00:00" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>
