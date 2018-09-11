@@ -5,11 +5,6 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class Player implements Serializable {
 
     private UUID uid;
@@ -54,4 +49,37 @@ public class Player implements Serializable {
     public int hashCode() {
         return uid.hashCode();
     }
+
+    public UUID getUid() {
+        return uid;
+    }
+
+    public void setUid(UUID uid) {
+        this.uid = uid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isDummy() {
+        return dummy;
+    }
+
+    public void setDummy(boolean dummy) {
+        this.dummy = dummy;
+    }
+
+    public boolean isPausingTournament() {
+        return pausingTournament;
+    }
+
+    public void setPausingTournament(boolean pausingTournament) {
+        this.pausingTournament = pausingTournament;
+    }
+
 }

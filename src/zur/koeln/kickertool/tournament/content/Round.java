@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Getter;
-import lombok.Setter;
 import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.MatchException;
@@ -20,8 +18,6 @@ import zur.koeln.kickertool.tournament.TournamentConfig;
 import zur.koeln.kickertool.tournament.TournamentMode;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
-@Getter
-@Setter
 @Component
 public class Round {
 
@@ -35,11 +31,11 @@ public class Round {
     private int roundNo;
 
     @JsonIgnore
-    private Random r = new Random();
+    private final Random r = new Random();
 
-    private List<Match> matches = new LinkedList<>();
+    private final List<Match> matches = new LinkedList<>();
 
-    private List<Match> completeMatches = new LinkedList<>();
+    private final List<Match> completeMatches = new LinkedList<>();
 
     private Map<UUID, PlayerTournamentStatistics> scoreTableAtEndOfRound;
 
@@ -140,6 +136,46 @@ public class Round {
         List<Match> allMatches = new LinkedList<>(matches);
         allMatches.addAll(completeMatches);
         return allMatches;
+    }
+
+    public PlayerPoolService getPlayerPool() {
+        return playerPool;
+    }
+
+    public void setPlayerPool(PlayerPoolService playerPool) {
+        this.playerPool = playerPool;
+    }
+
+    public TournamentFactory getTournamentFactory() {
+        return tournamentFactory;
+    }
+
+    public void setTournamentFactory(TournamentFactory tournamentFactory) {
+        this.tournamentFactory = tournamentFactory;
+    }
+
+    public int getRoundNo() {
+        return roundNo;
+    }
+
+    public void setRoundNo(int roundNo) {
+        this.roundNo = roundNo;
+    }
+
+    public Map<UUID, PlayerTournamentStatistics> getScoreTableAtEndOfRound() {
+        return scoreTableAtEndOfRound;
+    }
+
+    public void setScoreTableAtEndOfRound(Map<UUID, PlayerTournamentStatistics> scoreTableAtEndOfRound) {
+        this.scoreTableAtEndOfRound = scoreTableAtEndOfRound;
+    }
+
+    public List<Match> getMatches() {
+        return matches;
+    }
+
+    public List<Match> getCompleteMatches() {
+        return completeMatches;
     }
 
 }

@@ -9,14 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Getter;
-import lombok.Setter;
 import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 
-@Getter
-@Setter
 public class PlayerTournamentStatistics {
 
     @JsonIgnore
@@ -39,7 +35,7 @@ public class PlayerTournamentStatistics {
     }
     public void addMatchResult(Match match) {
         matches.add(match.getMatchID());
-        uidToMatch.put(match.getMatchID(), match);
+        getUidToMatch().put(match.getMatchID(), match);
     }
     @JsonIgnore
     public int getMatchesDone() {
@@ -47,11 +43,11 @@ public class PlayerTournamentStatistics {
     }
     @JsonIgnore
     public int getGoalsShot() {
-        return matches.stream().mapToInt(m -> uidToMatch.get(m).getGoalsForPlayer(playerId)).sum();
+        return matches.stream().mapToInt(m -> getUidToMatch().get(m).getGoalsForPlayer(playerId)).sum();
     }
     @JsonIgnore
     public int getGoalsConceded() {
-        return matches.stream().mapToInt(m -> uidToMatch.get(m).getConcededGoalsForPlayer(playerId)).sum();
+        return matches.stream().mapToInt(m -> getUidToMatch().get(m).getConcededGoalsForPlayer(playerId)).sum();
     }
     @JsonIgnore
     public int getGoalDiff() {
@@ -59,15 +55,15 @@ public class PlayerTournamentStatistics {
     }
     @JsonIgnore
     public long getMatchesWonCount() {
-        return matches.stream().filter(m -> uidToMatch.get(m).didPlayerWin(playerId)).count();
+        return matches.stream().filter(m -> getUidToMatch().get(m).didPlayerWin(playerId)).count();
     }
     @JsonIgnore
     public long getMatchesLostCount() {
-        return matches.stream().filter(m -> !uidToMatch.get(m).didPlayerWin(playerId) && !uidToMatch.get(m).isDraw()).count();
+        return matches.stream().filter(m -> !getUidToMatch().get(m).didPlayerWin(playerId) && !getUidToMatch().get(m).isDraw()).count();
     }
     @JsonIgnore
     public long getMatchesDrawCount() {
-        return matches.stream().filter(m -> uidToMatch.get(m).isDraw()).count();
+        return matches.stream().filter(m -> getUidToMatch().get(m).isDraw()).count();
     }
     @JsonIgnore
     public long getPointsForConfiguration(TournamentConfig config) {
@@ -108,5 +104,30 @@ public class PlayerTournamentStatistics {
         tournamentStatistics.setUidToMatch(getUidToMatch());
         tournamentStatistics.setPlayer(player);
     }
+    public Map<UUID, Match> getUidToMatch() {
+        return uidToMatch;
+    }
+    public void setUidToMatch(Map<UUID, Match> uidToMatch) {
+        this.uidToMatch = uidToMatch;
+    }
 
+    public List<UUID> getMatches() {
+        return matches;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public UUID getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void setMatches(List<UUID> matches) {
+        this.matches = matches;
+    }
 }

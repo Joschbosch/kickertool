@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.Getter;
 import zur.koeln.kickertool.base.BackendController;
 import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.base.ToolState;
@@ -23,7 +22,6 @@ import zur.koeln.kickertool.tournament.content.PlayerTournamentStatistics;
 import zur.koeln.kickertool.tournament.content.Tournament;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
-@Getter
 @Component
 public class BasicBackendController
     implements BackendController {
@@ -264,6 +262,16 @@ public class BasicBackendController
     @Override
     public List<PlayerTournamentStatistics> getCurrentTable() {
         return new ArrayList<>(currentTournament.getScoreTable().values());
+    }
+
+    @Override
+    public Tournament getCurrentTournament() {
+        return currentTournament;
+    }
+
+    @Override
+    public PlayerPoolService getPlayerpool() {
+        return playerpool;
     }
 
 }

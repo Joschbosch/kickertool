@@ -9,10 +9,8 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.Getter;
 import zur.koeln.kickertool.base.PlayerPoolService;
 
-@Getter
 @Component
 public class SimpleJsonPlayerPool
     implements PlayerPoolService {
@@ -129,5 +127,9 @@ public class SimpleJsonPlayerPool
         Player dummy = new Player("Dummy Player " + i); //$NON-NLS-1$
         dummy.setDummy(true);
         return dummy;
+    }
+    @Override
+    public List<Player> getPlayers() {
+        return players;
     }
 }

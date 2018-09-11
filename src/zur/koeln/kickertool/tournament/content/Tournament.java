@@ -7,16 +7,12 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Getter;
-import lombok.Setter;
 import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.MatchException;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
-@Getter
-@Setter
 @Component
 public class Tournament {
 
@@ -31,21 +27,21 @@ public class Tournament {
     @JsonIgnore
     private boolean started = false;
 
-    private TournamentConfig config;
+    private final TournamentConfig config;
 
     private String name;
 
-    private List<UUID> participants = new ArrayList<>();
+    private final List<UUID> participants = new ArrayList<>();
 
-    private List<Round> completeRounds = new ArrayList<>();
+    private final List<Round> completeRounds = new ArrayList<>();
 
     private Round currentRound;
 
-    private Map<UUID, PlayerTournamentStatistics> scoreTable = new HashMap<>();
+    private final Map<UUID, PlayerTournamentStatistics> scoreTable = new HashMap<>();
 
-    private Map<Integer, GamingTable> playtables = new HashMap<>();
+    private final Map<Integer, GamingTable> playtables = new HashMap<>();
 
-    private List<UUID> dummyPlayerActive = new ArrayList<>();
+    private final List<UUID> dummyPlayerActive = new ArrayList<>();
 
     public Tournament() {
         this.config = new TournamentConfig();
@@ -128,7 +124,6 @@ public class Tournament {
         return count;
     }
 
-
     public void startTournament() {
         if (!started) {
             for (int i = 1; i <= config.getTableCount(); i++) {
@@ -193,7 +188,7 @@ public class Tournament {
     @JsonIgnore
     public List<PlayerTournamentStatistics> getHistoricTableCopySortedByPoints(int roundNo) {
         Collection<PlayerTournamentStatistics> tableToSort = scoreTable.values();
-        
+
         if (currentRound.getRoundNo() != roundNo) {
             for (Round completeRound : completeRounds) {
                 if (completeRound.getRoundNo() == roundNo && completeRound.getScoreTableAtEndOfRound() != null) {
@@ -275,6 +270,56 @@ public class Tournament {
             }
         });
 
+    }
+
+    public void setPlayerPool(PlayerPoolService playerPool) {
+        this.playerPool = playerPool;
+    }
+
+    public void setTournamentFactory(TournamentFactory tournamentFactory) {
+        this.tournamentFactory = tournamentFactory;
+    }
+    public TournamentConfig getConfig() {
+        return config;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public boolean isStarted() {
+        return started;
+    }
+    public void setStarted(boolean started) {
+        this.started = started;
+    }
+    public Round getCurrentRound() {
+        return currentRound;
+    }
+    public void setCurrentRound(Round currentRound) {
+        this.currentRound = currentRound;
+    }
+    public PlayerPoolService getPlayerPool() {
+        return playerPool;
+    }
+    public TournamentFactory getTournamentFactory() {
+        return tournamentFactory;
+    }
+    public String getName() {
+        return name;
+    }
+    public List<UUID> getParticipants() {
+        return participants;
+    }
+    public List<Round> getCompleteRounds() {
+        return completeRounds;
+    }
+    public Map<UUID, PlayerTournamentStatistics> getScoreTable() {
+        return scoreTable;
+    }
+    public Map<Integer, GamingTable> getPlaytables() {
+        return playtables;
+    }
+    public List<UUID> getDummyPlayerActive() {
+        return dummyPlayerActive;
     }
 
 }

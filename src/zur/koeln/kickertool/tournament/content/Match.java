@@ -12,12 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Getter;
-import lombok.Setter;
 import zur.koeln.kickertool.base.PlayerPoolService;
 
-@Getter
-@Setter
 public class Match {
 
     private enum MatchResult {
@@ -28,7 +24,7 @@ public class Match {
     @Autowired
     private PlayerPoolService playerPool;
 
-    private UUID matchID = UUID.randomUUID();
+    private final UUID matchID = UUID.randomUUID();
 
     private Integer roundNumber;
 
@@ -175,6 +171,64 @@ public class Match {
     @JsonIgnore
     public boolean isDraw() {
         return result == MatchResult.DRAW;
+    }
+    public PlayerPoolService getPlayerPool() {
+        return playerPool;
+    }
+    public void setPlayerPool(PlayerPoolService playerPool) {
+        this.playerPool = playerPool;
+    }
+    public Integer getRoundNumber() {
+        return roundNumber;
+    }
+    public void setRoundNumber(Integer roundNumber) {
+        this.roundNumber = roundNumber;
+    }
+    public Team getHomeTeam() {
+        return homeTeam;
+    }
+    public void setHomeTeam(Team homeTeam) {
+        this.homeTeam = homeTeam;
+    }
+    public Team getVisitingTeam() {
+        return visitingTeam;
+    }
+    public void setVisitingTeam(Team visitingTeam) {
+        this.visitingTeam = visitingTeam;
+    }
+    public int getMatchNo() {
+        return matchNo;
+    }
+    public void setMatchNo(int matchNo) {
+        this.matchNo = matchNo;
+    }
+    public int getScoreHome() {
+        return scoreHome;
+    }
+    public void setScoreHome(int scoreHome) {
+        this.scoreHome = scoreHome;
+    }
+    public int getScoreVisiting() {
+        return scoreVisiting;
+    }
+    public void setScoreVisiting(int scoreVisiting) {
+        this.scoreVisiting = scoreVisiting;
+    }
+    public MatchResult getResult() {
+        return result;
+    }
+    public void setResult(MatchResult result) {
+        this.result = result;
+    }
+    public UUID getMatchID() {
+        return matchID;
+    }
+    public int getTableNo() {
+        return tableNo;
+    }
+
+    public void setTableNo(int tableNo) {
+        this.tableNo = tableNo;
     }
 
 }
