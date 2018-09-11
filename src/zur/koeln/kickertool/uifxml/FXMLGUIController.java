@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.context.ConfigurableApplicationContext;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,31 +15,45 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
-import zur.koeln.kickertool.base.AbstractGUIController;
-import zur.koeln.kickertool.ui.GUIState;
+import zur.koeln.kickertool.base.ToolState;
+import zur.koeln.kickertool.base.ui.GUIController;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Setter(value=AccessLevel.PRIVATE)
-public class FXMLGUIController extends AbstractGUIController {
+public class FXMLGUIController
+    implements GUIController {
 
 	private Stage secondaryStage;
 	
-	public FXMLGUIController(Stage stage, GUIState state) {
-		super(stage, state);
+    @NonNull
+    private final Stage stage;
+
+    @NonNull
+    private final ToolState state;
+
+    private ConfigurableApplicationContext ctx;
+
+    private final List<UpdateableUIComponent> updateListener = new ArrayList<>();
+
+	public FXMLGUIController(Stage stage, ToolState state) {
+        this.stage = stage;
+        this.state = state;
 	}
 
 	@Override
-	public void switchStateTo(GUIState newState) {
+    public void switchToolState(ToolState newState) {
 
 		try {
 
 			FXMLLoader loader = getFXMLLoader(newState);
 			Pane newPane = (Pane) loader.load();
+            registerGUIUpdateComponents((UpdateableUIComponent) loader.getController());
 			prepareStage(getStage(), newPane);
 			
-			if (newState == GUIState.TOURNAMENT) {
-				//createSecondTournamentStage(newState);
+			if (newState == ToolState.TOURNAMENT) {
+				createSecondTournamentStage(newState);
 			}
 
 		} catch (IOException e) {
@@ -51,7 +69,7 @@ public class FXMLGUIController extends AbstractGUIController {
 		stage.show();
 	}
 
-	private void createSecondTournamentStage(GUIState newState) throws IOException {
+	private void createSecondTournamentStage(ToolState newState) throws IOException {
 		setSecondaryStage(new Stage());
 		getSecondaryStage().setTitle("Kicker APP");
 		FXMLLoader loader = getFXMLLoader(newState);
@@ -63,7 +81,7 @@ public class FXMLGUIController extends AbstractGUIController {
 		prepareStage(getSecondaryStage(), rootPane);
 	}
 
-	private FXMLLoader getFXMLLoader(GUIState newState) throws IOException {
+	private FXMLLoader getFXMLLoader(ToolState newState) throws IOException {
 		FXMLLoader loader = null;
 		switch (newState) {
 		case MAIN_MENU:
@@ -88,10 +106,28 @@ public class FXMLGUIController extends AbstractGUIController {
 		
 		return loader;
 	}
-	
-	@Override
-	public void update() {
-		//
-	}
+
+    @PostConstruct
+    public void init(ConfigurableApplicationContext ctx, Parent rootPane, double width, double height) {
+        this.ctx = ctx;
+        stage.setTitle("Kicker APP");
+        Scene mainScene = new Scene(rootPane, width, height);
+        stage.setScene(mainScene);
+        stage.show();
+
+    }
+
+    public void unregisterGUIUpdateComponents(UpdateableUIComponent oldComponent) {
+        updateListener.remove(oldComponent);
+    }
+
+    public void registerGUIUpdateComponents(UpdateableUIComponent newComponent) {
+        updateListener.add(newComponent);
+    }
+
+    @Override
+    public void update() {
+        updateListener.forEach(UpdateableUIComponent::update);
+    }
 
 }

@@ -13,11 +13,10 @@ import javafx.scene.layout.StackPane;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.base.BackendController;
-import javafx.scene.control.ToggleButton;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component
-public class FXMLTournamentController implements GUIUpdate {
+public class FXMLTournamentController implements UpdateableUIComponent {
 	
 	@Autowired
     private BackendController backendController;
@@ -42,8 +41,6 @@ public class FXMLTournamentController implements GUIUpdate {
 	private Button btnCreateRound;
 	@FXML
 	private Button btnStartRound;
-	@FXML 
-	private ToggleButton tglPauseStopwatch;
 
 	@FXML
 	public void initialize() {
@@ -57,37 +54,6 @@ public class FXMLTournamentController implements GUIUpdate {
 	
 	public void hideButtons() {
 		getGridButtons().setVisible(false);
-	}
-
-	@FXML 
-	public void onBtnAddPlayerClicked() {
-		
-	}
-
-	@FXML 
-	public void onBtnPausePlayerClicked() {
-		
-	}
-
-	@FXML 
-	public void onBtnResumePlayerClicked() {
-		
-	}
-
-	@FXML 
-	public void onBtnCreateRoundClicked() {
-		backendController.nextRound();
-	}
-
-	@FXML 
-	public void onBtnStartClicked() {
-		
-	}
-
-	@FXML 
-	public void onTglPauseStopwatchClicked() 
-	{
-		
 	}
 	
 }

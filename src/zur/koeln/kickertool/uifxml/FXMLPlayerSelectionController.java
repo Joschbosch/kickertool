@@ -18,13 +18,12 @@ import javafx.scene.input.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.base.BackendController;
-import zur.koeln.kickertool.base.GUIUpdate;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.uifxml.cells.PlayerListCell;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLPlayerSelectionController implements GUIUpdate {
+public class FXMLPlayerSelectionController implements UpdateableUIComponent {
     @Autowired
     private BackendController backendController;
 	@FXML

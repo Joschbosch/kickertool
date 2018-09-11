@@ -12,13 +12,12 @@ import javafx.util.converter.IntegerStringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.base.BackendController;
-import zur.koeln.kickertool.base.GUIUpdate;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 import zur.koeln.kickertool.tournament.content.Tournament;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLTournamentConfigurationController implements GUIUpdate {
+public class FXMLTournamentConfigurationController implements UpdateableUIComponent {
 
     @Autowired
     private BackendController backendController;

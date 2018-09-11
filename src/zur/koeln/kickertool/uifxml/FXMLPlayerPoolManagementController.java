@@ -17,12 +17,11 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.base.BackendController;
-import zur.koeln.kickertool.base.GUIUpdate;
 import zur.koeln.kickertool.player.Player;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component
-public class FXMLPlayerPoolManagementController implements GUIUpdate {
+public class FXMLPlayerPoolManagementController implements UpdateableUIComponent {
 
     @Autowired
     private BackendController backendController;
