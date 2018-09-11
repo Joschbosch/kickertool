@@ -13,11 +13,16 @@ import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 
-public class PlayerTournamentStatistics {
+public class PlayerTournamentStatistics
+    implements Comparable<PlayerTournamentStatistics> {
 
     @JsonIgnore
     @Autowired
     private PlayerPoolService playerPool;
+
+    @JsonIgnore
+    @Autowired
+    private TournamentConfig config;
 
     @JsonIgnore
     private Map<UUID, Match> uidToMatch = new HashMap<>();
@@ -29,10 +34,7 @@ public class PlayerTournamentStatistics {
 
     private List<UUID> matches = new LinkedList<>();
 
-    public void setPlayerId(UUID playerId) {
-        this.playerId = playerId;
-        this.player = playerPool.getPlayerById(playerId);
-    }
+
     public void addMatchResult(Match match) {
         matches.add(match.getMatchID());
         getUidToMatch().put(match.getMatchID(), match);
@@ -81,7 +83,41 @@ public class PlayerTournamentStatistics {
     public double getMeanPoints(TournamentConfig config) {
         return getPointsForConfiguration(config) / (double) matches.size();
     }
+    @Override
+    public int compareTo(PlayerTournamentStatistics o2) {
+        Player player1 = playerPool.getPlayerById(this.getPlayerId());
+        Player player2 = playerPool.getPlayerById(o2.getPlayerId());
+        if (player1 == null) {
+            return 1;
+        }
+        if (player2 == null) {
+            return -1;
+        }
+        if (player1.isDummy()) {
+            return 1;
+        }
+        if (player2.isDummy()) {
+            return -1;
+        }
+        long pointsForConfiguration = this.getPointsForConfiguration(config);
+        long pointsForConfiguration2 = o2.getPointsForConfiguration(config);
+        if (pointsForConfiguration < pointsForConfiguration2) {
+            return 1;
+        } else if (pointsForConfiguration > pointsForConfiguration2) {
+            return -1;
+        }
+        int goalDiff = this.getGoalDiff();
+        int goalDiff2 = o2.getGoalDiff();
 
+        if (goalDiff < goalDiff2) {
+            return 1;
+        }
+        if (goalDiff > goalDiff2) {
+            return -1;
+        }
+
+        return player1.getName().compareTo(player2.getName());
+    }
     /*
      * (non-Javadoc)
      * 
@@ -129,5 +165,9 @@ public class PlayerTournamentStatistics {
 
     public void setMatches(List<UUID> matches) {
         this.matches = matches;
+    }
+    public void setPlayerId(UUID playerId) {
+        this.playerId = playerId;
+        this.player = playerPool.getPlayerById(playerId);
     }
 }

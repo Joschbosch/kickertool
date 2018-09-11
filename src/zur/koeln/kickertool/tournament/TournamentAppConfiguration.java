@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Scope;
 
 import zur.koeln.kickertool.base.BackendController;
 import zur.koeln.kickertool.tournament.content.Match;
+import zur.koeln.kickertool.tournament.content.PlayerTournamentStatistics;
 import zur.koeln.kickertool.tournament.content.Round;
 import zur.koeln.kickertool.tournament.content.Tournament;
-import zur.koeln.kickertool.tournament.content.PlayerTournamentStatistics;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
 @Configuration
@@ -53,6 +53,13 @@ public class TournamentAppConfiguration {
     @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public PlayerTournamentStatistics createTournamentStatisticsBean() {
         return new PlayerTournamentStatistics();
+    }
+
+    @Bean
+    @Primary
+    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public TournamentConfig createTournamentConfigBean() {
+        return new TournamentConfig();
     }
 
 }

@@ -27,7 +27,8 @@ public class Tournament {
     @JsonIgnore
     private boolean started = false;
 
-    private final TournamentConfig config;
+    @Autowired
+    private TournamentConfig config;
 
     private String name;
 
@@ -43,9 +44,6 @@ public class Tournament {
 
     private final List<UUID> dummyPlayerActive = new ArrayList<>();
 
-    public Tournament() {
-        this.config = new TournamentConfig();
-    }
     /**
      * @param players
      */
@@ -199,42 +197,7 @@ public class Tournament {
         }
 
         List<PlayerTournamentStatistics> sorting = new LinkedList<>(tableToSort);
-        Collections.sort(sorting, (o1, o2) -> {
-
-            Player player1 = playerPool.getPlayerById(o1.getPlayerId());
-            Player player2 = playerPool.getPlayerById(o2.getPlayerId());
-            if (player1 == null) {
-                return 1;
-            }
-            if (player2 == null) {
-                return -1;
-            }
-            if (player1.isDummy()) {
-                return 1;
-            }
-            if (player2.isDummy()) {
-                return -1;
-            }
-            long pointsForConfiguration = o1.getPointsForConfiguration(config);
-            long pointsForConfiguration2 = o2.getPointsForConfiguration(config);
-            if (pointsForConfiguration < pointsForConfiguration2) {
-                return 1;
-            } else if (pointsForConfiguration > pointsForConfiguration2) {
-                return -1;
-            }
-            int goalDiff = o1.getGoalDiff();
-            int goalDiff2 = o2.getGoalDiff();
-
-            if (goalDiff < goalDiff2) {
-                return 1;
-            }
-            if (goalDiff > goalDiff2) {
-                return -1;
-            }
-
-            return player1.getName().compareTo(player2.getName());
-        });
-
+        Collections.sort(sorting);
         return sorting;
     }
 
