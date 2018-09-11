@@ -216,6 +216,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 				Parent pane = matchEntryLoader.load();
 				FXMLMatchEntryController matchEntryController = matchEntryLoader.getController();
 				matchEntryController.setMatch(eMatch);
+				matchEntryController.setBackendController(backendController);
 				getStackGames().getChildren().add(pane);
 			} catch (IOException e) {
 				e.printStackTrace();

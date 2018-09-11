@@ -28,6 +28,8 @@ public class Team {
         Player p2) {
         this.setP1(p1.getUid());
         this.setP2(p2.getUid());
+        this.setP1Obj(p1);
+        this.setP2Obj(p2);
     }
 
     public UUID getP2() {
