@@ -223,12 +223,12 @@ public class BasicBackendController
     }
     @Override
     public void pausePlayer(UUID selectedPlayer) {
-        currentTournament.pausePlayer(selectedPlayer);
+        currentTournament.pausePlayer(playerpool.getPlayerById(selectedPlayer));
 
     }
     @Override
     public void unpausePlayer(UUID selectedPlayer) {
-        currentTournament.unpausePlayer(selectedPlayer);
+        currentTournament.unpausePlayer(playerpool.getPlayerById(selectedPlayer));
     }
 
     private Tournament importTournament(File tournamentToImport) throws IOException {

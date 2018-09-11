@@ -9,16 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 
 public class PlayerTournamentStatistics
     implements Comparable<PlayerTournamentStatistics> {
-
-    @JsonIgnore
-    @Autowired
-    private PlayerPoolService playerPool;
 
     @JsonIgnore
     @Autowired
@@ -69,7 +64,7 @@ public class PlayerTournamentStatistics
     }
     @JsonIgnore
     public long getPointsForConfiguration(TournamentConfig config) {
-        if (playerPool.getPlayerById(playerId).isDummy()) {
+        if (player.isDummy()) {
             return 0;
         }
 
@@ -85,8 +80,8 @@ public class PlayerTournamentStatistics
     }
     @Override
     public int compareTo(PlayerTournamentStatistics o2) {
-        Player player1 = playerPool.getPlayerById(this.getPlayerId());
-        Player player2 = playerPool.getPlayerById(o2.getPlayerId());
+        Player player1 = player;
+        Player player2 = o2.getPlayer();
         if (player1 == null) {
             return 1;
         }
@@ -168,6 +163,5 @@ public class PlayerTournamentStatistics
     }
     public void setPlayerId(UUID playerId) {
         this.playerId = playerId;
-        this.player = playerPool.getPlayerById(playerId);
     }
 }

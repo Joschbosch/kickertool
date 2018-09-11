@@ -2,7 +2,7 @@ package zur.koeln.kickertool.tournament;
 
 public class TournamentConfig {
 
-    private TournamentMode mode = TournamentMode.SWISS_DYP;
+    private TournamentMode mode = TournamentMode.SWISS_TUPEL;
 
     private int tableCount = 2;
 

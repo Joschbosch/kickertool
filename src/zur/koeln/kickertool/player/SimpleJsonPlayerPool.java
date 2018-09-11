@@ -104,7 +104,7 @@ public class SimpleJsonPlayerPool
         dummies.add(dummy);
     }
     @Override
-    public UUID useNextDummyPlayer() {
+    public Player useNextDummyPlayer() {
         Player dummy = null;
         if (dummyPlayerUnused.isEmpty()) {
             dummy = createDummyPlayer(dummies.size() + 1);
@@ -112,7 +112,7 @@ public class SimpleJsonPlayerPool
             dummy = dummyPlayerUnused.remove(dummyPlayerUnused.size() - 1);
         }
         dummies.add(dummy);
-        return dummy.getUid();
+        return dummy;
     }
     @Override
     public UUID removeLastDummy() {
