@@ -1,6 +1,5 @@
 package zur.koeln.kickertool.uifxml;
 
-import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,15 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
 import javafx.util.Pair;
-import zur.koeln.kickertool.base.BackendController;
+import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.tournament.content.Match;
 import zur.koeln.kickertool.uifxml.dialog.ScoreDialog;
-import javafx.scene.control.Button;
-import javafx.scene.control.DialogPane;
 
 public class FXMLMatchEntryController {
 	@FXML
@@ -46,8 +42,8 @@ public class FXMLMatchEntryController {
 	}
 
 	private void init() {
-		teamHomeName = match.getHomeTeam().getP1Obj().getName() + " / " + match.getHomeTeam().getP2Obj().getName();
-		teamVisitName = match.getVisitingTeam().getP1Obj().getName() + " / " + match.getVisitingTeam().getP2Obj().getName();
+		teamHomeName = match.getHomeTeam().getPlayer1().getName() + " / " + match.getHomeTeam().getPlayer2().getName();
+		teamVisitName = match.getVisitingTeam().getPlayer1().getName() + " / " + match.getVisitingTeam().getPlayer2().getName();
 		
 		lblTeamHome.setText(teamHomeName);
 		lblTeamVisit.setText(teamVisitName);

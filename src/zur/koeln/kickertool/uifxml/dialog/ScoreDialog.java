@@ -2,22 +2,12 @@ package zur.koeln.kickertool.uifxml.dialog;
 
 import java.io.IOException;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.layout.GridPane;
-import javafx.util.Pair;
 import javafx.util.StringConverter;
-import zur.koeln.kickertool.base.BackendController;
-import zur.koeln.kickertool.tournament.content.Match;
 import zur.koeln.kickertool.uifxml.FXMLGUIController;
 import zur.koeln.kickertool.uifxml.FXMLMatchResultDialogController;
 

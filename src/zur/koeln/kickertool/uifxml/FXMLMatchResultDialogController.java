@@ -5,12 +5,9 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.util.Pair;
-import zur.koeln.kickertool.base.BackendController;
-import zur.koeln.kickertool.tournament.content.Match;
-import javafx.scene.control.ChoiceBox;
 
 public class FXMLMatchResultDialogController {
 	
