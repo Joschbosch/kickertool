@@ -1,6 +1,8 @@
 package zur.koeln.kickertool.uifxml;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,7 +35,7 @@ public class FXMLGUIController extends AbstractGUIController {
 			prepareStage(getStage(), newPane);
 			
 			if (newState == GUIState.TOURNAMENT) {
-				createSecondTournamentStage(newState);
+				//createSecondTournamentStage(newState);
 			}
 
 		} catch (IOException e) {

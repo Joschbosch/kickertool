@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Getter;
-import zur.koeln.kickertool.base.AbstractGUIController;
+import zur.koeln.kickertool.base.BackendController;
 import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.base.BackendController;
 import zur.koeln.kickertool.player.Player;
