@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.base.PlayerPoolService;
+import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.MatchException;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 import zur.koeln.kickertool.tournament.TournamentMode;
@@ -40,14 +41,14 @@ public class Round {
 
     private List<Match> completeMatches = new LinkedList<>();
 
-    private Map<UUID, TournamentStatistics> scoreTableAtEndOfRound;
+    private Map<UUID, PlayerTournamentStatistics> scoreTableAtEndOfRound;
 
     /**
      * @param table
      * @param playtables
      * @return
      */
-    public void createMatches(List<TournamentStatistics> table, TournamentConfig config) {
+    public void createMatches(List<PlayerTournamentStatistics> table, TournamentConfig config) {
         table.removeIf(statistic -> playerPool.getPlayerById(statistic.getPlayerId()).isPausingTournament());
         if (roundNo <= config.getRandomRounds()) {
             while (table.size() > 3) {
@@ -61,11 +62,11 @@ public class Round {
 
     }
 
-    private void createRoundByTournamentType(List<TournamentStatistics> table, TournamentConfig config) {
+    private void createRoundByTournamentType(List<PlayerTournamentStatistics> table, TournamentConfig config) {
         if (config.getMode() == TournamentMode.SWISS_DYP) {
             while (table.size() > 3) {
-                Team home = new Team(table.get(0).getPlayerId(), table.get(3).getPlayerId());
-                Team visiting = new Team(table.get(1).getPlayerId(), table.get(2).getPlayerId());
+                Team home = new Team(table.get(0).getPlayer(), table.get(3).getPlayer());
+                Team visiting = new Team(table.get(1).getPlayer(), table.get(2).getPlayer());
                 table.remove(0);
                 table.remove(0);
                 table.remove(0);
@@ -73,9 +74,9 @@ public class Round {
                 createMatch(config, home, visiting);
             }
         } else if (config.getMode() == TournamentMode.SWISS_TUPEL) {
-            List<Pair<UUID, UUID>> playerPairs = new ArrayList<>();
+            List<Pair<Player, Player>> playerPairs = new ArrayList<>();
             while (!table.isEmpty()) {
-                Pair<UUID, UUID> newPair = new Pair<>(table.get(0).getPlayerId(), table.get(1).getPlayerId());
+                Pair<Player, Player> newPair = new Pair<>(table.get(0).getPlayer(), table.get(1).getPlayer());
                 playerPairs.add(newPair);
                 table.remove(0);
                 table.remove(0);
@@ -114,9 +115,9 @@ public class Round {
      * @param table
      * @return
      */
-    private UUID getRandomPlayer(List<TournamentStatistics> table) {
+    private Player getRandomPlayer(List<PlayerTournamentStatistics> table) {
         int random = r.nextInt(table.size());
-        UUID playerId = table.get(random).getPlayerId();
+        Player playerId = table.get(random).getPlayer();
         table.remove(random);
         return playerId;
     }

@@ -33,8 +33,8 @@ public class TournamentFactory {
         return bean;
     }
 
-    public TournamentStatistics createNewTournamentStatistics(UUID playerId) {
-        TournamentStatistics statistics = ctx.getBean(TournamentStatistics.class);
+    public PlayerTournamentStatistics createNewTournamentStatistics(UUID playerId) {
+        PlayerTournamentStatistics statistics = ctx.getBean(PlayerTournamentStatistics.class);
         statistics.setPlayerId(playerId);
         return statistics;
     }

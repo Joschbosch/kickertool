@@ -20,8 +20,8 @@ import zur.koeln.kickertool.base.ui.GUIController;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.content.Match;
 import zur.koeln.kickertool.tournament.content.Tournament;
+import zur.koeln.kickertool.tournament.content.PlayerTournamentStatistics;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
-import zur.koeln.kickertool.uifxml.tools.Timer;
 
 @Getter
 @Component
@@ -259,6 +259,11 @@ public class BasicBackendController
 
     public void setGuiController(GUIController guiController) {
         this.guiController = guiController;
+    }
+
+    @Override
+    public List<PlayerTournamentStatistics> getCurrentTable() {
+        return currentTournament.getCurrentTableCopySortedByPoints();
     }
 
 }
