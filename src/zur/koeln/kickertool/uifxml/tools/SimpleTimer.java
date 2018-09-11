@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.tools;
+package zur.koeln.kickertool.uifxml.tools;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;

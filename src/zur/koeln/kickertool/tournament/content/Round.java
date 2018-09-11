@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.base.PlayerPoolService;
-import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.MatchException;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
@@ -39,7 +38,7 @@ public class Round {
 
     private List<Match> completeMatches = new LinkedList<>();
 
-    private Map<Player, TournamentStatistics> scoreTableAtEndOfRound;
+    private Map<UUID, TournamentStatistics> scoreTableAtEndOfRound;
 
     /**
      * @param table

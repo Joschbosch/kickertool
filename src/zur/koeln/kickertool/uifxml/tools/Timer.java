@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.tools;
+package zur.koeln.kickertool.uifxml.tools;
 
 
 public interface Timer {

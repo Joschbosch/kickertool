@@ -18,10 +18,10 @@ import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.base.ToolState;
 import zur.koeln.kickertool.base.ui.GUIController;
 import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.tools.Timer;
 import zur.koeln.kickertool.tournament.content.Match;
 import zur.koeln.kickertool.tournament.content.Tournament;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
+import zur.koeln.kickertool.uifxml.tools.Timer;
 
 @Getter
 @Component
@@ -232,20 +232,8 @@ public class BasicBackendController
     @Override
     public void unpausePlayer(UUID selectedPlayer) {
         currentTournament.unpausePlayer(selectedPlayer);
+    }
 
-    }
-    @Override
-    public void startStopwatch() {
-        timer.start();
-    }
-    @Override
-    public void stopStopwatch() {
-        timer.stop();
-    }
-    @Override
-    public void resetStopWatch() {
-        timer.reset();
-    }
     private Tournament importTournament(File tournamentToImport) throws IOException {
         ObjectMapper m = new ObjectMapper();
         currentTournament = m.readValue(tournamentToImport, Tournament.class);

@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Primary;
 
 import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.player.SimpleJsonPlayerPool;
-import zur.koeln.kickertool.tools.SimpleTimer;
-import zur.koeln.kickertool.tools.Timer;
 import zur.koeln.kickertool.tournament.TournamentAppConfiguration;
+import zur.koeln.kickertool.uifxml.tools.SimpleTimer;
+import zur.koeln.kickertool.uifxml.tools.Timer;
 
 @Configuration
 @Import({TournamentAppConfiguration.class})

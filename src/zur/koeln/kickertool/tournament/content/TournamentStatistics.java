@@ -96,5 +96,10 @@ public class TournamentStatistics {
         return result.toString();
 
     }
+    public void getClone(TournamentStatistics tournamentStatistics) {
+        tournamentStatistics.getMatches().addAll(getMatches());
+        tournamentStatistics.setUidToMatch(getUidToMatch());
+
+    }
 
 }

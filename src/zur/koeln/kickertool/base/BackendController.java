@@ -54,12 +54,6 @@ public interface BackendController {
 
     void unpausePlayer(UUID selectedPlayer);
 
-    void startStopwatch();
-
-    void stopStopwatch();
-
-    void resetStopWatch();
-
     void exportTournament();
 
     List<Player> getPlayer();
