@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import zur.koeln.kickertool.base.PlayerPoolService;
+import zur.koeln.kickertool.api.PlayerPoolService;
 
 @Component
 public class SimpleJsonPlayerPool

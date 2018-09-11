@@ -1,7 +1,7 @@
 /**
  * 
  */
-package zur.koeln.kickertool.tournament;
+package zur.koeln.kickertool.base;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,11 +12,13 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import zur.koeln.kickertool.base.BackendController;
-import zur.koeln.kickertool.base.PlayerPoolService;
-import zur.koeln.kickertool.base.ToolState;
-import zur.koeln.kickertool.base.ui.GUIController;
+import zur.koeln.kickertool.api.BackendController;
+import zur.koeln.kickertool.api.PlayerPoolService;
+import zur.koeln.kickertool.api.ui.GUIController;
+import zur.koeln.kickertool.exception.MatchException;
 import zur.koeln.kickertool.player.Player;
+import zur.koeln.kickertool.tournament.TournamentConfigKeys;
+import zur.koeln.kickertool.tournament.TournamentMode;
 import zur.koeln.kickertool.tournament.content.Match;
 import zur.koeln.kickertool.tournament.content.PlayerTournamentStatistics;
 import zur.koeln.kickertool.tournament.content.Tournament;

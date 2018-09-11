@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
-import zur.koeln.kickertool.base.PlayerPoolService;
+import zur.koeln.kickertool.api.PlayerPoolService;
 import zur.koeln.kickertool.player.SimpleJsonPlayerPool;
 import zur.koeln.kickertool.tournament.TournamentAppConfiguration;
 import zur.koeln.kickertool.uifxml.tools.SimpleTimer;
@@ -23,4 +23,5 @@ public class KickerToolConfiguration {
         return simpleJsonPlayerPool;
     }
 
+  
 }

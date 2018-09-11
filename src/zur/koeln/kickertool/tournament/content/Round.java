@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import zur.koeln.kickertool.exception.MatchException;
 import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.tournament.MatchException;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 import zur.koeln.kickertool.tournament.TournamentMode;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;

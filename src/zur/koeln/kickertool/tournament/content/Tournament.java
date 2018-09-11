@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import zur.koeln.kickertool.base.PlayerPoolService;
+import zur.koeln.kickertool.api.PlayerPoolService;
+import zur.koeln.kickertool.exception.MatchException;
 import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.tournament.MatchException;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
@@ -164,10 +164,10 @@ public class Tournament {
         playtables.get(Integer.valueOf(m.getTableNo())).setInUse(false);
         updatePlayTableUsage();
 
-        scoreTable.get(m.getHomeTeam().getP1()).addMatchResult(m);
-        scoreTable.get(m.getHomeTeam().getP2()).addMatchResult(m);
-        scoreTable.get(m.getVisitingTeam().getP1()).addMatchResult(m);
-        scoreTable.get(m.getVisitingTeam().getP2()).addMatchResult(m);
+        scoreTable.get(m.getHomeTeam().getPlayer1Id()).addMatchResult(m);
+        scoreTable.get(m.getHomeTeam().getPlayer2Id()).addMatchResult(m);
+        scoreTable.get(m.getVisitingTeam().getPlayer1Id()).addMatchResult(m);
+        scoreTable.get(m.getVisitingTeam().getPlayer2Id()).addMatchResult(m);
     }
 
     private void updatePlayTableUsage() {

@@ -11,13 +11,13 @@ import zur.koeln.kickertool.player.Player;
 
 public class Team {
 
-    private UUID p1;
-    private UUID p2;
+    private UUID player1Id;
+    private UUID player2Id;
 
     @JsonIgnore
-    private Player p1Obj;
+    private Player player1;
     @JsonIgnore
-    private Player p2Obj;
+    private Player player2;
 
     public Team() {
 
@@ -26,42 +26,42 @@ public class Team {
     public Team(
         Player p1,
         Player p2) {
-        this.setP1(p1.getUid());
-        this.setP2(p2.getUid());
-        this.setP1Obj(p1);
-        this.setP2Obj(p2);
+        this.setPlayer1Id(p1.getUid());
+        this.setPlayer2Id(p2.getUid());
+        this.player1 = p1;
+        this.player2 = p2;
     }
 
-    public UUID getP2() {
-        return p2;
+    public UUID getPlayer2Id() {
+        return player2Id;
     }
 
-    public void setP2(UUID p2) {
-        this.p2 = p2;
+    public void setPlayer2Id(UUID p2) {
+        this.player2Id = p2;
     }
 
-    public UUID getP1() {
-        return p1;
+    public UUID getPlayer1Id() {
+        return player1Id;
     }
 
-    public void setP1(UUID p1) {
-        this.p1 = p1;
+    public void setPlayer1Id(UUID p1) {
+        this.player1Id = p1;
     }
 
-    public Player getP1Obj() {
-        return p1Obj;
+    public Player getPlayer1() {
+        return player1;
     }
 
-    public void setP1Obj(Player p1Obj) {
-        this.p1Obj = p1Obj;
+    public void setPlayer1(Player p1Obj) {
+        this.player1 = p1Obj;
     }
 
-    public Player getP2Obj() {
-        return p2Obj;
+    public Player getPlayer2() {
+        return player2;
     }
 
-    public void setP2Obj(Player p2Obj) {
-        this.p2Obj = p2Obj;
+    public void setPlayer2(Player p2Obj) {
+        this.player2 = p2Obj;
     }
     
 }

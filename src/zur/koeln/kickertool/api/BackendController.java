@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.base;
+package zur.koeln.kickertool.api;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import zur.koeln.kickertool.base.ui.GUIController;
+import zur.koeln.kickertool.api.ui.GUIController;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.TournamentConfigKeys;
 import zur.koeln.kickertool.tournament.TournamentMode;

@@ -16,7 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.base.BackendController;
+import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.player.Player;
 
 @Getter(value=AccessLevel.PRIVATE)

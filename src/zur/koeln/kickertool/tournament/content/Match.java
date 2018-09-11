@@ -105,19 +105,9 @@ public class Match {
     }
 
     private boolean isPlayerInHomeTeam(UUID playerId) {
-        return homeTeam.getP1().equals(playerId) || homeTeam.getP2().equals(playerId);
+        return homeTeam.getPlayer1Id().equals(playerId) || homeTeam.getPlayer2Id().equals(playerId);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        // builder.append(String.format("%n%-25s vs. %-25sTable %s\t" + (matchComplete() ? "%s-%s : %s" : ""),
-        // homeTeam.getP1().getName() + " / " + homeTeam.getP2().getName(),
-        // visitingTeam.getP1().getName() + " / " + visitingTeam.getP2().getName(),
-        // table != null ? Integer.valueOf(table.getTableNumber()) : "Not assigned", Integer.valueOf(scoreHome),
-        // Integer.valueOf(scoreVisiting), result));
-        return builder.toString();
-    }
 
     /**
      * @param player
@@ -125,15 +115,15 @@ public class Match {
      */
     public UUID getPartner(UUID playerId) {
         if (isPlayerInHomeTeam(playerId)) {
-            if (homeTeam.getP1().equals(playerId)) {
-                return homeTeam.getP2();
+            if (homeTeam.getPlayer1Id().equals(playerId)) {
+                return homeTeam.getPlayer2Id();
             }
-            return homeTeam.getP1();
+            return homeTeam.getPlayer1Id();
         }
-        if (homeTeam.getP1().equals(playerId)) {
-            return visitingTeam.getP2();
+        if (homeTeam.getPlayer1Id().equals(playerId)) {
+            return visitingTeam.getPlayer2Id();
         }
-        return visitingTeam.getP1();
+        return visitingTeam.getPlayer1Id();
     }
 
     /**
@@ -142,9 +132,9 @@ public class Match {
      */
     public Set<UUID> getOppenents(UUID playerId) {
         if (isPlayerInHomeTeam(playerId)) {
-            return new HashSet<>(Arrays.asList(visitingTeam.getP1(), visitingTeam.getP2()));
+            return new HashSet<>(Arrays.asList(visitingTeam.getPlayer1Id(), visitingTeam.getPlayer2Id()));
         }
-        return new HashSet<>(Arrays.asList(homeTeam.getP1(), homeTeam.getP2()));
+        return new HashSet<>(Arrays.asList(homeTeam.getPlayer1Id(), homeTeam.getPlayer2Id()));
     }
 
     @JsonIgnore

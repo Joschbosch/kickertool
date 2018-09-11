@@ -10,9 +10,9 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import zur.koeln.kickertool.base.BackendController;
+import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.base.ToolState;
-import zur.koeln.kickertool.tournament.MatchException;
+import zur.koeln.kickertool.exception.MatchException;
 import zur.koeln.kickertool.uifxml.FXMLGUIController;
 
 @SpringBootApplication

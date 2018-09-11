@@ -11,7 +11,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.util.converter.IntegerStringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.base.BackendController;
+import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 import zur.koeln.kickertool.tournament.content.Tournament;
 
