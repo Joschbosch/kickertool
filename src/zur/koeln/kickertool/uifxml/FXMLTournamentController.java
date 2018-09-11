@@ -92,8 +92,6 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	@FXML
 	public void initialize() {
 		
-		getBackendController().nextRound();
-		
 		getLblClock().textProperty().bindBidirectional(getTimer().getTimeSeconds(), new TimerStringConverter());
 		getTimer().init(getBackendController().getCurrentTournament().getConfig().getMinutesPerMatch());
 		
@@ -105,10 +103,6 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		
 		getTblStatistics().setItems(FXCollections.observableList(getBackendController().getCurrentTable().stream().sorted().collect(Collectors.toList())));
 	
-		getBackendController().getCurrentTournament().getCurrentRound().getMatches().forEach(eMatch -> {
-			getStackGames().getChildren().add(loadMatchEntry());
-			
-		});
 	}
 
 	private void setupColumns() {
@@ -215,6 +209,18 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 
 	@FXML public void onBtnCreateRoundClicked() {
 		getBackendController().nextRound();
+		
+		getBackendController().getCurrentTournament().getCurrentRound().getMatches().forEach(eMatch -> {
+			try {
+				FXMLLoader matchEntryLoader = getMatchEntryFXMLLoader();
+				Parent pane = matchEntryLoader.load();
+				FXMLMatchEntryController matchEntryController = matchEntryLoader.getController();
+				matchEntryController.setMatch(eMatch);
+				getStackGames().getChildren().add(pane);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
 	}
 
 	@FXML public void onBtnResetStopwatchClicked() {
@@ -235,11 +241,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		}
 	}
 	
-	private Parent loadMatchEntry() {
-		try {
-			return  new FXMLLoader(getClass().getResource("MatchEntry.fxml")).load();
-		} catch (IOException e) {
-			return null;
-		}
+	private FXMLLoader getMatchEntryFXMLLoader() {
+		return new FXMLLoader(getClass().getResource("MatchEntry.fxml"));
 	}
 }
