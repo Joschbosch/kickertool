@@ -43,9 +43,9 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
    </rowConstraints>
    <children>
-      <ToggleButton fx:id="tglPauseStopwatch" disable="true" mnemonicParsing="false" onAction="#onTglPauseStopwatchClicked" text="Pause" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.rowIndex="7" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
       <ImageView fitHeight="27.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="10" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
          <image>
             <Image url="file:images/parcITLogo.png" />
@@ -97,9 +97,9 @@
             <StackPane fx:id="stackGames" />
         </content>
       </ScrollPane>
-      <Label fx:id="lblClock" text="00:00" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+      <Label fx:id="lblClock" text="15:00:000" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.rowSpan="2" GridPane.valignment="CENTER">
          <font>
-            <Font name="System Bold" size="48.0" />
+            <Font name="System Bold" size="36.0" />
          </font>
       </Label>
       <GridPane fx:id="gridButtons" GridPane.columnIndex="1" GridPane.columnSpan="10" GridPane.rowIndex="6">
@@ -160,9 +160,39 @@
                   </Button>
                </children>
             </HBox>
-            <Button fx:id="btnCreateRound" mnemonicParsing="false" onAction="#onBtnCreateRoundClicked" prefWidth="90.0" text="Neue Runde" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            <Button fx:id="btnStartRound" disable="true" mnemonicParsing="false" onAction="#onBtnStartClicked" prefWidth="90.0" text="Start" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+            <Button fx:id="btnCreateRound" mnemonicParsing="false" onAction="#onBtnCreateRoundClicked" prefWidth="90.0" text="Neue Runde" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
          </children>
       </GridPane>
+      <HBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="9">
+         <children>
+            <ToggleButton fx:id="tglPauseStopwatch" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#onTglPauseStopwatchClicked" prefHeight="30.0" prefWidth="30.0">
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:images/pause.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </ToggleButton>
+            <Button fx:id="btnStartStopwatch" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#onBtnStartStopwatchClicked" prefHeight="30.0" prefWidth="30.0">
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:images/play.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="btnResetStopwatch" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#onBtnResetStopwatchClicked" prefHeight="30.0" prefWidth="30.0">
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:images/reset.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
    </children>
 </GridPane>

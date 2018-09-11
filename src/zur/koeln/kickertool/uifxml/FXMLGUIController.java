@@ -53,7 +53,7 @@ public class FXMLGUIController
 			prepareStage(getStage(), newPane);
 			
 			if (newState == ToolState.TOURNAMENT) {
-				createSecondTournamentStage(newState);
+				//createSecondTournamentStage(newState);
 			}
 
 		} catch (IOException e) {
@@ -74,9 +74,6 @@ public class FXMLGUIController
 		getSecondaryStage().setTitle("Kicker APP");
 		FXMLLoader loader = getFXMLLoader(newState);
 		Pane rootPane = (Pane) loader.load();
-		
-		FXMLTournamentController tournamentController = loader.getController();
-		tournamentController.hideButtons();
 		
 		prepareStage(getSecondaryStage(), rootPane);
 	}

@@ -3,19 +3,16 @@ package zur.koeln.kickertool.uifxml.tools;
 
 public interface Timer {
 
-    public void setTimer(int minutesPerMatch);
-
+	void init(int millisecs);
+	
     void start();
 
     void stop();
+    
+    void pause();
+    
+    void resume();
 
     void reset();
 
-    long getMinutesLeft();
-
-    long getSecondsLeft();
-
-    long getMilliSecondsLeft();
-
-    public boolean isRunning();
 }

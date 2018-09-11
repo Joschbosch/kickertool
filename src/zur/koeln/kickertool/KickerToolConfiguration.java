@@ -23,12 +23,4 @@ public class KickerToolConfiguration {
         return simpleJsonPlayerPool;
     }
 
-
-    @Bean
-    @Primary
-    public Timer createTimerBean() {
-        return new SimpleTimer();
-    }
-    
-  
 }

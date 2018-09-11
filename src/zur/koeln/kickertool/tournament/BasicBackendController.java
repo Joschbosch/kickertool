@@ -34,9 +34,6 @@ public class BasicBackendController
     @Autowired
     private TournamentFactory tournamentFactory;
 
-    @Autowired
-    private Timer timer;
-
     private GUIController guiController;
 
     private Tournament currentTournament;
@@ -154,13 +151,11 @@ public class BasicBackendController
     public void startTournament() {
         currentTournament.startTournament();
         guiController.switchToolState(ToolState.TOURNAMENT);
-        timer.setTimer(currentTournament.getConfig().getMinutesPerMatch());
     }
     @Override
     public void importAndStartTournament(File tournamentToImport) throws IOException {
         importTournament(tournamentToImport);
         guiController.switchToolState(ToolState.TOURNAMENT);
-        timer.setTimer(currentTournament.getConfig().getMinutesPerMatch());
     }
 
     /**
