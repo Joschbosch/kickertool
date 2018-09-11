@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import zur.koeln.kickertool.base.ui.GUIController;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.TournamentConfigKeys;
 import zur.koeln.kickertool.tournament.content.Match;
@@ -67,6 +68,6 @@ public interface BackendController {
 
     PlayerPoolService getPlayerpool();
 
-    void setGuiController(AbstractGUIController guiController);
+    void setGuiController(GUIController guiController);
 
 }

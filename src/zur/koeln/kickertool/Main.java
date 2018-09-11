@@ -11,10 +11,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import zur.koeln.kickertool.base.BackendController;
+import zur.koeln.kickertool.base.ToolState;
 import zur.koeln.kickertool.tournament.MatchException;
-import zur.koeln.kickertool.ui.GUIController;
-import zur.koeln.kickertool.ui.GUIState;
-import zur.koeln.kickertool.ui.MainMenuPane;
 import zur.koeln.kickertool.uifxml.FXMLGUIController;
 
 @SpringBootApplication
@@ -31,23 +29,14 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         startWithGUIFXML(primaryStage);
-//                startWithGUICode(primaryStage);
     }
     
-    private void startWithGUICode(Stage primaryStage) {
-        GUIController guiController = new GUIController(primaryStage, GUIState.MAIN_MENU);
-        BackendController controller = ctx.getBean(BackendController.class);
-        controller.setGuiController(guiController);
-        guiController.init(ctx, new MainMenuPane(controller));
-        guiController.setController(controller);
-    }
-
     private void startWithGUIFXML(Stage primaryStage) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("uifxml/MainMenu.fxml"));
         loader.setControllerFactory(ctx::getBean);
         Parent mainMenu = loader.load();
-    	FXMLGUIController fxmlGuiController = new FXMLGUIController(primaryStage, GUIState.MAIN_MENU);
+    	FXMLGUIController fxmlGuiController = new FXMLGUIController(primaryStage, ToolState.MAIN_MENU);
         BackendController controller = ctx.getBean(BackendController.class);
         controller.setGuiController(fxmlGuiController);
         fxmlGuiController.init(ctx, mainMenu, 450, 450);

@@ -13,15 +13,15 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Getter;
-import zur.koeln.kickertool.base.AbstractGUIController;
-import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.base.BackendController;
+import zur.koeln.kickertool.base.PlayerPoolService;
+import zur.koeln.kickertool.base.ToolState;
+import zur.koeln.kickertool.base.ui.GUIController;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tools.Timer;
 import zur.koeln.kickertool.tournament.content.Match;
 import zur.koeln.kickertool.tournament.content.Tournament;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
-import zur.koeln.kickertool.ui.GUIState;
 
 @Getter
 @Component
@@ -37,7 +37,7 @@ public class BasicBackendController
     @Autowired
     private Timer timer;
 
-    private AbstractGUIController guiController;
+    private GUIController guiController;
 
     private Tournament currentTournament;
 
@@ -47,7 +47,7 @@ public class BasicBackendController
      */
     @Override
     public void showPlayerPoolManagement() {
-        guiController.switchStateTo(GUIState.PLAYER_POOL);
+        guiController.switchToolState(ToolState.PLAYER_POOL);
     }
 
     /**
@@ -55,7 +55,7 @@ public class BasicBackendController
      */
     @Override
     public void showMainMenu() {
-        guiController.switchStateTo(GUIState.MAIN_MENU);
+        guiController.switchToolState(ToolState.MAIN_MENU);
     }
 
     /**
@@ -89,7 +89,7 @@ public class BasicBackendController
     public Tournament createNewTournament(String text) {
         currentTournament = tournamentFactory.createNewTournament();
         currentTournament.setName(text);
-        guiController.switchStateTo(GUIState.NEW_TOURNAMENT_CONFIG);
+        guiController.switchToolState(ToolState.NEW_TOURNAMENT_CONFIG);
         return currentTournament;
     }
     @Override
@@ -136,7 +136,7 @@ public class BasicBackendController
      */
     @Override
     public void showPlayerSelection() {
-        guiController.switchStateTo(GUIState.PLAYER_CONFIG);
+        guiController.switchToolState(ToolState.PLAYER_CONFIG);
     }
 
     /**
@@ -144,7 +144,7 @@ public class BasicBackendController
      */
     @Override
     public void showTournamentConfig() {
-        guiController.switchStateTo(GUIState.NEW_TOURNAMENT_CONFIG);
+        guiController.switchToolState(ToolState.NEW_TOURNAMENT_CONFIG);
     }
 
     /**
@@ -153,13 +153,13 @@ public class BasicBackendController
     @Override
     public void startTournament() {
         currentTournament.startTournament();
-        guiController.switchStateTo(GUIState.TOURNAMENT);
+        guiController.switchToolState(ToolState.TOURNAMENT);
         timer.setTimer(currentTournament.getConfig().getMinutesPerMatch());
     }
     @Override
     public void importAndStartTournament(File tournamentToImport) throws IOException {
         importTournament(tournamentToImport);
-        guiController.switchStateTo(GUIState.TOURNAMENT);
+        guiController.switchToolState(ToolState.TOURNAMENT);
         timer.setTimer(currentTournament.getConfig().getMinutesPerMatch());
     }
 
@@ -270,7 +270,7 @@ public class BasicBackendController
         }
     }
 
-    public void setGuiController(AbstractGUIController guiController) {
+    public void setGuiController(GUIController guiController) {
         this.guiController = guiController;
     }
 

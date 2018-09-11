@@ -13,11 +13,10 @@ import javafx.scene.layout.StackPane;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.base.BackendController;
-import zur.koeln.kickertool.base.GUIUpdate;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component
-public class FXMLTournamentController implements GUIUpdate {
+public class FXMLTournamentController implements UpdateableUIComponent {
 	
 	@Autowired
     private BackendController backendController;
