@@ -7,7 +7,7 @@ import javafx.util.StringConverter;
 
 public class TimerStringConverter extends StringConverter<Number>{
 	
-	private SimpleDateFormat sdf = new SimpleDateFormat("mm:ss.SSS"); //$NON-NLS-1$
+	private final SimpleDateFormat formatter = new SimpleDateFormat("mm:ss.SSS"); //$NON-NLS-1$
 	
 	@Override
 	public String toString(Number millisec) {
@@ -15,7 +15,7 @@ public class TimerStringConverter extends StringConverter<Number>{
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(millisec.longValue());
 		
-		return sdf.format(calendar.getTime());
+		return formatter.format(calendar.getTime());
 	}
 	
 	@Override

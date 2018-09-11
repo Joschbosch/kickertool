@@ -8,10 +8,9 @@ import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.util.Duration;
-import lombok.AccessLevel;
 import lombok.Getter;
 
-@Getter(value=AccessLevel.PUBLIC)
+@Getter
 public class SimpleTimer implements Timer{
 
 	private Timeline timeline;
@@ -24,43 +23,43 @@ public class SimpleTimer implements Timer{
 	@Override
 	public void init(int minutes) {
 		startMilliSecs = minutes * 60 * 1000;
-		timeSeconds.set(startMilliSecs);
+		getTimeSeconds().set(getStartMilliSecs());
 	}
 
 	@Override
 	public void start() {
 		timeline = new Timeline();
-		timeline.getKeyFrames().add(
-				new KeyFrame(Duration.millis(startMilliSecs), new KeyValue(timeSeconds, Integer.valueOf(0))));
-		timeline.playFromStart();
-		runningProperty.set(true);
+		getTimeline().getKeyFrames().add(
+				new KeyFrame(Duration.millis(getStartMilliSecs()), new KeyValue(getTimeSeconds(), Integer.valueOf(0))));
+		getTimeline().playFromStart();
+		getRunningProperty().set(true);
 	}
 	
 	public void pause() {
-		if (timeline != null) {
-			timeline.pause();
+		if (getTimeline() != null) {
+			getTimeline().pause();
 		}
 	}
 	
 	@Override
 	public void resume() {
-		if (timeline != null) {
-			timeline.play();
+		if (getTimeline() != null) {
+			getTimeline().play();
 		}
 	}
 
 	@Override
 	public void stop() {
-		if (timeline != null) {
-			timeline.stop();
+		if (getTimeline() != null) {
+			getTimeline().stop();
 		}
 	}
 
 	@Override
 	public void reset() {
 		stop();
-		timeSeconds.set(startMilliSecs);
-		runningProperty.set(false);
+		getTimeSeconds().set(getStartMilliSecs());
+		getRunningProperty().set(false);
 	}
-
+	
 }
