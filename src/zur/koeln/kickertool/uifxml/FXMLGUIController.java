@@ -78,6 +78,7 @@ public class FXMLGUIController
 		prepareStage(getSecondaryStage(), rootPane);
 	}
 
+	@SuppressWarnings("nls")
 	private FXMLLoader getFXMLLoader(ToolState newState) throws IOException {
 		FXMLLoader loader = null;
 		switch (newState) {
@@ -104,7 +105,8 @@ public class FXMLGUIController
 		return loader;
 	}
 
-    @PostConstruct
+    @SuppressWarnings("nls")
+	@PostConstruct
     public void init(ConfigurableApplicationContext ctx, Parent rootPane, double width, double height) {
         this.ctx = ctx;
         stage.setTitle("Kicker APP");

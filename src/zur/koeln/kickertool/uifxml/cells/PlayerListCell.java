@@ -1,10 +1,6 @@
 package zur.koeln.kickertool.uifxml.cells;
 
 import javafx.scene.control.ListCell;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DataFormat;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import zur.koeln.kickertool.player.Player;
 
 public class PlayerListCell extends ListCell<Player> {

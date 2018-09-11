@@ -42,7 +42,7 @@ public class FXMLPlayerSelectionController implements UpdateableUIComponent {
 	private final ObservableList<Player> playerData = FXCollections.observableArrayList();
 	private final ObservableList<Player> selectedPlayerData = FXCollections.observableArrayList();
 	
-	private static final DataFormat DATAFORMAT = new DataFormat("PLAYER");
+	private static final DataFormat DATAFORMAT = new DataFormat("PLAYER"); //$NON-NLS-1$
 	
 	@FXML
 	public void initialize() {

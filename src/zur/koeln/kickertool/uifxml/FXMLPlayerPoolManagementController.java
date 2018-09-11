@@ -41,7 +41,7 @@ public class FXMLPlayerPoolManagementController implements UpdateableUIComponent
 	@FXML
 	public void initialize() {
 
-		getTblColName().setCellValueFactory(new PropertyValueFactory<>("name"));
+		getTblColName().setCellValueFactory(new PropertyValueFactory<>("name")); //$NON-NLS-1$
 		getTblColName().setCellFactory(TextFieldTableCell.<Player>forTableColumn());
 		
 		getPlayerData().addAll(loadPlayerData());
@@ -50,7 +50,7 @@ public class FXMLPlayerPoolManagementController implements UpdateableUIComponent
 		getTblPlayers().getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		
 		getBtnAddPlayer().disableProperty().bind(Bindings.greaterThan(1, getTxtPlayerName().textProperty().length()));
-	
+		
 	}
 	
 	private List<Player> loadPlayerData() {

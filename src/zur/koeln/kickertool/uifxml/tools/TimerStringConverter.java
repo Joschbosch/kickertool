@@ -7,7 +7,7 @@ import javafx.util.StringConverter;
 
 public class TimerStringConverter extends StringConverter<Number>{
 	
-	private SimpleDateFormat sdf = new SimpleDateFormat("mm:ss.SSS");
+	private SimpleDateFormat sdf = new SimpleDateFormat("mm:ss.SSS"); //$NON-NLS-1$
 	
 	@Override
 	public String toString(Number millisec) {
@@ -20,7 +20,7 @@ public class TimerStringConverter extends StringConverter<Number>{
 	
 	@Override
 	public Number fromString(String string) {
-		// TODO Auto-generated method stub
+		
 		return Long.valueOf(0);
 	}
 	
