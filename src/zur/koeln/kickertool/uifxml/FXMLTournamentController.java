@@ -55,5 +55,17 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	public void hideButtons() {
 		getGridButtons().setVisible(false);
 	}
+
+	@FXML public void onTglPauseStopwatchClicked() {}
+
+	@FXML public void onBtnAddPlayerClicked() {}
+
+	@FXML public void onBtnPausePlayerClicked() {}
+
+	@FXML public void onBtnResumePlayerClicked() {}
+
+	@FXML public void onBtnCreateRoundClicked() {}
+
+	@FXML public void onBtnStartClicked() {}
 	
 }
