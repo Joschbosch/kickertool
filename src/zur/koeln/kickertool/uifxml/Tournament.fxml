@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <GridPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.uifxml.FXMLTournamentController">
@@ -56,24 +56,24 @@
       </ImageView>
       <TableView fx:id="tblStatistics" GridPane.columnIndex="6" GridPane.columnSpan="5" GridPane.rowIndex="2" GridPane.rowSpan="4">
         <columns>
-          <TableColumn prefWidth="75.0" text="#" />
-          <TableColumn prefWidth="75.0" text="Spieler" />
-            <TableColumn prefWidth="75.0" text="Spiele">
+          <TableColumn fx:id="tblColNumber" editable="false" prefWidth="75.0" text="#" />
+          <TableColumn fx:id="tblColPlayerName" editable="false" prefWidth="75.0" text="Spieler" />
+            <TableColumn editable="false" prefWidth="75.0" text="Spiele">
                <columns>
-                  <TableColumn prefWidth="75.0" text="Absolviert" />
-                  <TableColumn prefWidth="75.0" text="Gewonnen" />
-                  <TableColumn prefWidth="75.0" text="Verloren" />
-                  <TableColumn prefWidth="75.0" text="Remis" />
+                  <TableColumn fx:id="tblColPlayedMatched" editable="false" prefWidth="75.0" text="Absolviert" />
+                  <TableColumn fx:id="tblColMatchesWon" editable="false" prefWidth="75.0" text="Gewonnen" />
+                  <TableColumn fx:id="tblColMatchesLost" editable="false" prefWidth="75.0" text="Verloren" />
+                  <TableColumn fx:id="tblColMatchesRemis" editable="false" prefWidth="75.0" text="Remis" />
                </columns>
             </TableColumn>
-            <TableColumn prefWidth="75.0" text="Torstatistik">
+            <TableColumn editable="false" prefWidth="75.0" text="Torstatistik">
                <columns>
-                  <TableColumn prefWidth="75.0" text="Tore" />
-                  <TableColumn prefWidth="75.0" text="Gegn. Tore" />
-                  <TableColumn prefWidth="75.0" text="Differenz" />
+                  <TableColumn fx:id="tblColGoals" editable="false" prefWidth="75.0" text="Tore" />
+                  <TableColumn fx:id="tblColGoalsEnemies" editable="false" prefWidth="75.0" text="Gegn. Tore" />
+                  <TableColumn fx:id="tblColGoalsDifference" editable="false" prefWidth="75.0" text="Differenz" />
                </columns>
             </TableColumn>
-            <TableColumn prefWidth="75.0" text="Punkte" />
+            <TableColumn fx:id="tblColPoints" editable="false" prefWidth="75.0" text="Punkte" />
         </columns>
          <GridPane.margin>
             <Insets />
@@ -92,10 +92,10 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <ScrollPane prefHeight="200.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="2" GridPane.rowSpan="4">
-        <content>
-            <StackPane fx:id="stackGames" />
-        </content>
+      <ScrollPane fx:id="scrPaneMatches" prefHeight="200.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="2" GridPane.rowSpan="4">
+         <content>
+            <VBox fx:id="stackGames" />
+         </content>
       </ScrollPane>
       <Label fx:id="lblClock" text="15:00:000" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.rowSpan="2" GridPane.valignment="CENTER">
          <font>
