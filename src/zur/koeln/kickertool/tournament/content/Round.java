@@ -5,6 +5,7 @@ package zur.koeln.kickertool.tournament.content;
 
 import java.util.*;
 
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import lombok.Setter;
 import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.tournament.MatchException;
 import zur.koeln.kickertool.tournament.TournamentConfig;
+import zur.koeln.kickertool.tournament.TournamentMode;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
 @Getter
@@ -47,27 +49,65 @@ public class Round {
      */
     public void createMatches(List<TournamentStatistics> table, TournamentConfig config) {
         table.removeIf(statistic -> playerPool.getPlayerById(statistic.getPlayerId()).isPausingTournament());
-        while (table.size() > 3) {
-            Team home;
-            Team visiting;
-            if (roundNo <= config.getRandomRounds()) {
-                home = new Team(getRandomPlayer(table), getRandomPlayer(table));
-                visiting = new Team(getRandomPlayer(table), getRandomPlayer(table));
-            } else {
-                home = new Team(table.get(0).getPlayerId(), table.get(3).getPlayerId());
-                visiting = new Team(table.get(1).getPlayerId(), table.get(2).getPlayerId());
+        if (roundNo <= config.getRandomRounds()) {
+            while (table.size() > 3) {
+                Team home = new Team(getRandomPlayer(table), getRandomPlayer(table));
+                Team visiting = new Team(getRandomPlayer(table), getRandomPlayer(table));
+                createMatch(config, home, visiting);
+            }
+        } else {
+            createRoundByTournamentType(table, config);
+        }
+
+    }
+
+    private void createRoundByTournamentType(List<TournamentStatistics> table, TournamentConfig config) {
+        if (config.getMode() == TournamentMode.SWISS_DYP) {
+            while (table.size() > 3) {
+                Team home = new Team(table.get(0).getPlayerId(), table.get(3).getPlayerId());
+                Team visiting = new Team(table.get(1).getPlayerId(), table.get(2).getPlayerId());
                 table.remove(0);
                 table.remove(0);
+                table.remove(0);
+                table.remove(0);
+                createMatch(config, home, visiting);
+            }
+        } else if (config.getMode() == TournamentMode.SWISS_TUPEL) {
+            List<Pair<UUID, UUID>> playerPairs = new ArrayList<>();
+            while (!table.isEmpty()) {
+                Pair<UUID, UUID> newPair = new Pair<>(table.get(0).getPlayerId(), table.get(1).getPlayerId());
+                playerPairs.add(newPair);
                 table.remove(0);
                 table.remove(0);
             }
+            while (playerPairs.size() > 3) {
+                Team home = new Team(playerPairs.get(0).getValue0(), playerPairs.get(3).getValue1());
+                Team visiting = new Team(playerPairs.get(0).getValue1(), playerPairs.get(3).getValue0());
+                createMatch(config, home, visiting);
 
-            Match m = tournamentFactory.createNewMatch(Integer.valueOf(roundNo), home, visiting, config.getCurrentNoOfMatches());
-            m.setPlayerPool(playerPool);
-            config.setCurrentNoOfMatches(config.getCurrentNoOfMatches() + 1);
+                home = new Team(playerPairs.get(1).getValue0(), playerPairs.get(2).getValue1());
+                visiting = new Team(playerPairs.get(1).getValue1(), playerPairs.get(2).getValue0());
+                createMatch(config, home, visiting);
 
-            matches.add(m);
+                playerPairs.remove(0);
+                playerPairs.remove(0);
+                playerPairs.remove(0);
+                playerPairs.remove(0);
+            }
+            if (playerPairs.size() > 1) { // notwendig?
+                Team home = new Team(playerPairs.get(0).getValue0(), playerPairs.get(1).getValue1());
+                Team visiting = new Team(playerPairs.get(0).getValue1(), playerPairs.get(1).getValue0());
+                createMatch(config, home, visiting);
+
+            }
         }
+    }
+
+    private void createMatch(TournamentConfig config, Team home, Team visiting) {
+        Match m = tournamentFactory.createNewMatch(Integer.valueOf(roundNo), home, visiting, config.getCurrentNoOfMatches());
+        m.setPlayerPool(playerPool);
+        config.setCurrentNoOfMatches(config.getCurrentNoOfMatches() + 1);
+        matches.add(m);
     }
 
     /**
@@ -80,7 +120,6 @@ public class Round {
         table.remove(random);
         return playerId;
     }
-
 
     public void addMatchResult(Match m) throws MatchException {
         if (matches.contains(m)) {
