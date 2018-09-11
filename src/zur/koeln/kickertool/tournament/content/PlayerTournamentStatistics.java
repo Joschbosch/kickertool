@@ -94,23 +94,27 @@ public class PlayerTournamentStatistics
         if (player2.isDummy()) {
             return -1;
         }
-        long pointsForConfiguration = this.getPointsForConfiguration(config);
-        long pointsForConfiguration2 = o2.getPointsForConfiguration(config);
-        if (pointsForConfiguration < pointsForConfiguration2) {
-            return 1;
-        } else if (pointsForConfiguration > pointsForConfiguration2) {
-            return -1;
+        
+        int pointsForConfiguration = (int) (this.getPointsForConfiguration(config) -  o2.getPointsForConfiguration(config));
+        if (pointsForConfiguration != 0) {
+            return pointsForConfiguration;
         }
-        int goalDiff = this.getGoalDiff();
-        int goalDiff2 = o2.getGoalDiff();
-
-        if (goalDiff < goalDiff2) {
-            return 1;
+        
+        int goalDiff = this.getGoalDiff() - o2.getGoalDiff();
+        if (goalDiff != 0) {
+            return goalDiff;
         }
-        if (goalDiff > goalDiff2) {
-            return -1;
+        
+        int wonDiff = (int) (this.getMatchesWonCount() - o2.getMatchesWonCount());
+        if (wonDiff != 0) {
+            return wonDiff;
         }
-
+        
+        int drawDiff = (int) (this.getMatchesDrawCount() - o2.getMatchesDrawCount());
+        if (drawDiff != 0) {
+            return drawDiff;
+        }
+        
         return player1.getName().compareTo(player2.getName());
     }
     /*

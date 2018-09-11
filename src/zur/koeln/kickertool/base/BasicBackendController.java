@@ -21,6 +21,7 @@ import zur.koeln.kickertool.tournament.TournamentConfigKeys;
 import zur.koeln.kickertool.tournament.TournamentMode;
 import zur.koeln.kickertool.tournament.content.Match;
 import zur.koeln.kickertool.tournament.content.PlayerTournamentStatistics;
+import zur.koeln.kickertool.tournament.content.Round;
 import zur.koeln.kickertool.tournament.content.Tournament;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
@@ -192,10 +193,10 @@ public class BasicBackendController
      * 
      */
     @Override
-    public void nextRound() {
-        currentTournament.newRound();
-        guiController.update();
+    public Round nextRound() {
+        Round newRound = currentTournament.newRound();
         exportTournament();
+        return newRound;
     }
 
     /**

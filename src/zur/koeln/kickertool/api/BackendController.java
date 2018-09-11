@@ -13,6 +13,7 @@ import zur.koeln.kickertool.tournament.TournamentMode;
 import zur.koeln.kickertool.tournament.content.Match;
 import zur.koeln.kickertool.tournament.content.Tournament;
 import zur.koeln.kickertool.tournament.content.PlayerTournamentStatistics;
+import zur.koeln.kickertool.tournament.content.Round;
 
 public interface BackendController {
 
@@ -46,7 +47,7 @@ public interface BackendController {
 
     Collection<Player> getParticipantList();
 
-    void nextRound();
+    Round nextRound();
 
     void updateMatchResult(Match match, Integer scoreHome, Integer scoreVisiting);
 
