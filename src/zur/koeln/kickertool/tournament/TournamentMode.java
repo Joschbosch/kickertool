@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public enum TournamentMode {
 
-    SWISS_DYP("Schweizer System | DYP");
+    SWISS_DYP("Schweizer System | DYP"), SWISS_TUPEL("Schweizer System | Tupel");
 
     private String displayName;
 

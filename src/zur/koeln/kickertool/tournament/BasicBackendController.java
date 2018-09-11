@@ -127,6 +127,10 @@ public class BasicBackendController
         }
 
     }
+    @Override
+    public void changeMode(TournamentMode newMode) {
+        currentTournament.getConfig().setMode(newMode);
+    }
 
     /**
      * 
