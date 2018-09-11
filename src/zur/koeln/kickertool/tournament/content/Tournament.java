@@ -41,7 +41,7 @@ public class Tournament {
 
     private Round currentRound;
 
-    private Map<UUID, TournamentStatistics> scoreTable = new HashMap<>();
+    private Map<UUID, PlayerTournamentStatistics> scoreTable = new HashMap<>();
 
     private Map<Integer, GamingTable> playtables = new HashMap<>();
 
@@ -119,7 +119,7 @@ public class Tournament {
      */
     private int getActivePlayerCount() {
         int count = 0;
-        for (TournamentStatistics ts : scoreTable.values()) {
+        for (PlayerTournamentStatistics ts : scoreTable.values()) {
             Player player = playerPool.getPlayerById(ts.getPlayerId());
             if (!player.isPausingTournament() && !player.isDummy()) {
                 count++;
@@ -147,9 +147,9 @@ public class Tournament {
         if (isCurrentRoundComplete()) {
             int nextRoundNumber = 1;
             if (currentRound != null) {
-                Map<UUID, TournamentStatistics> scoreTableClone = new HashMap<>();
+                Map<UUID, PlayerTournamentStatistics> scoreTableClone = new HashMap<>();
                 scoreTable.forEach((key, value) -> {
-                    TournamentStatistics clonedStatistics = tournamentFactory.createNewTournamentStatistics(key);
+                    PlayerTournamentStatistics clonedStatistics = tournamentFactory.createNewTournamentStatistics(key);
                     value.getClone(clonedStatistics);
                     scoreTableClone.put(key, clonedStatistics);
                 });
@@ -191,8 +191,8 @@ public class Tournament {
         }
     }
     @JsonIgnore
-    public List<TournamentStatistics> getHistoricTableCopySortedByPoints(int roundNo) {
-        Collection<TournamentStatistics> tableToSort = scoreTable.values();
+    public List<PlayerTournamentStatistics> getHistoricTableCopySortedByPoints(int roundNo) {
+        Collection<PlayerTournamentStatistics> tableToSort = scoreTable.values();
         
         if (currentRound.getRoundNo() != roundNo) {
             for (Round completeRound : completeRounds) {
@@ -203,7 +203,7 @@ public class Tournament {
             }
         }
 
-        List<TournamentStatistics> sorting = new LinkedList<>(tableToSort);
+        List<PlayerTournamentStatistics> sorting = new LinkedList<>(tableToSort);
         Collections.sort(sorting, (o1, o2) -> {
 
             Player player1 = playerPool.getPlayerById(o1.getPlayerId());
@@ -244,7 +244,7 @@ public class Tournament {
     }
 
     @JsonIgnore
-    public List<TournamentStatistics> getCurrentTableCopySortedByPoints() {
+    public List<PlayerTournamentStatistics> getCurrentTableCopySortedByPoints() {
         return getHistoricTableCopySortedByPoints(currentRound.getRoundNo());
     }
 

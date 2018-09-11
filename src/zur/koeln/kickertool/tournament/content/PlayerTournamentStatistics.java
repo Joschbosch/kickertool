@@ -12,11 +12,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.base.PlayerPoolService;
+import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 
 @Getter
 @Setter
-public class TournamentStatistics {
+public class PlayerTournamentStatistics {
 
     @JsonIgnore
     @Autowired
@@ -27,9 +28,15 @@ public class TournamentStatistics {
 
     private UUID playerId;
 
+    @JsonIgnore
+    private Player player;
+
     private List<UUID> matches = new LinkedList<>();
 
-
+    public void setPlayerId(UUID playerId) {
+        this.playerId = playerId;
+        this.player = playerPool.getPlayerById(playerId);
+    }
     public void addMatchResult(Match match) {
         matches.add(match.getMatchID());
         uidToMatch.put(match.getMatchID(), match);
@@ -96,10 +103,10 @@ public class TournamentStatistics {
         return result.toString();
 
     }
-    public void getClone(TournamentStatistics tournamentStatistics) {
+    public void getClone(PlayerTournamentStatistics tournamentStatistics) {
         tournamentStatistics.getMatches().addAll(getMatches());
         tournamentStatistics.setUidToMatch(getUidToMatch());
-
+        tournamentStatistics.setPlayer(player);
     }
 
 }

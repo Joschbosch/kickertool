@@ -12,6 +12,7 @@ import zur.koeln.kickertool.tournament.TournamentConfigKeys;
 import zur.koeln.kickertool.tournament.TournamentMode;
 import zur.koeln.kickertool.tournament.content.Match;
 import zur.koeln.kickertool.tournament.content.Tournament;
+import zur.koeln.kickertool.tournament.content.PlayerTournamentStatistics;
 
 public interface BackendController {
 
@@ -66,5 +67,7 @@ public interface BackendController {
     void setGuiController(GUIController guiController);
 
     void changeMode(TournamentMode newMode);
+
+    List<PlayerTournamentStatistics> getCurrentTable();
 
 }
