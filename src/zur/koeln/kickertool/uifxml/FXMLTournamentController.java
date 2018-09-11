@@ -82,7 +82,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	}
 
 	@FXML public void onBtnCreateRoundClicked() {
-		
+		getBackendController().getCurrentTournament().newRound();
 	}
 
 	@FXML public void onBtnResetStopwatchClicked() {
