@@ -11,10 +11,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.util.Pair;
 import zur.koeln.kickertool.api.BackendController;
+import zur.koeln.kickertool.api.ui.GUIController;
 import zur.koeln.kickertool.tournament.content.Match;
 import zur.koeln.kickertool.uifxml.dialog.ScoreDialog;
 
-public class FXMLMatchEntryController {
+public class FXMLMatchEntryController implements UpdateableUIComponent{
 	@FXML
 	private Label lblTeamHome;
 	@FXML
@@ -49,8 +50,7 @@ public class FXMLMatchEntryController {
 		lblTeamVisit.setText(teamVisitName);
 		lblTable.setText(match.getTableNo() == -1 ? "TBA" : String.valueOf(match.getTableNo()));
 		lblScore.setText("0:0");
-		
-		btnFinish.disableProperty().bind(matchFinished);
+		btnFinish.setDisable(match.getTableNo() == -1);
 	}
 
 	@FXML public void onBtnFinishClicked() {
@@ -61,10 +61,17 @@ public class FXMLMatchEntryController {
             backendController.updateMatchResult(match, result.get().getKey(), result.get().getValue());
     		lblScore.setText(result.get().getKey() + ":" + result.get().getValue());
     		matchFinished.set(true);
+    		btnFinish.setDisable(true);
         }
 	}
 	
 	public void setBackendController(BackendController newBackendController) {
 		backendController = newBackendController;
+	}
+
+	@Override
+	public void update() {
+		lblTable.setText(match.getTableNo() == -1 ? "TBA" : String.valueOf(match.getTableNo()));
+		btnFinish.setDisable(matchFinished.getValue().booleanValue() || match.getTableNo() == -1);
 	}
 }

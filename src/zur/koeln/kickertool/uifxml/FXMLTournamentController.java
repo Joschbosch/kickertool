@@ -1,6 +1,8 @@
 package zur.koeln.kickertool.uifxml;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,6 @@ import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.api.BackendController;
-import zur.koeln.kickertool.base.BasicBackendController;
 import zur.koeln.kickertool.tournament.content.PlayerTournamentStatistics;
 import zur.koeln.kickertool.uifxml.tools.SimpleTimer;
 import zur.koeln.kickertool.uifxml.tools.TimerStringConverter;
@@ -88,6 +89,8 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	@FXML ScrollPane scrPaneMatches;
 
 	@FXML VBox stackGames;
+	
+	private final List<FXMLMatchEntryController> matchEntryController = new ArrayList<>();
 
 	@FXML
 	public void initialize() {
@@ -192,7 +195,10 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 
 	@Override
 	public void update() {
-		//
+		getMatchEntryController().forEach(FXMLMatchEntryController::update);
+		getTblStatistics().refresh();
+		getTblStatistics().getSortOrder().add(getTblColPoints());
+		getTblStatistics().sort();
 	}
 
 	@FXML public void onBtnAddPlayerClicked() {
@@ -218,6 +224,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 				matchEntryController.setMatch(eMatch);
 				matchEntryController.setBackendController(backendController);
 				getStackGames().getChildren().add(pane);
+				getMatchEntryController().add(matchEntryController);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

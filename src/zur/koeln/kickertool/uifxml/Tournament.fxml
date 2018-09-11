@@ -73,7 +73,7 @@
                   <TableColumn fx:id="tblColGoalsDifference" editable="false" prefWidth="75.0" text="Differenz" />
                </columns>
             </TableColumn>
-            <TableColumn fx:id="tblColPoints" editable="false" prefWidth="75.0" text="Punkte" />
+            <TableColumn fx:id="tblColPoints" editable="false" prefWidth="75.0" text="Punkte"  sortType="DESCENDING"/>
         </columns>
          <GridPane.margin>
             <Insets />
