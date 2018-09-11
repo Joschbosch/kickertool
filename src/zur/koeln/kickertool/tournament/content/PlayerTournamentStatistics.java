@@ -12,160 +12,178 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 
-public class PlayerTournamentStatistics
-    implements Comparable<PlayerTournamentStatistics> {
+public class PlayerTournamentStatistics implements Comparable<PlayerTournamentStatistics> {
 
-    @JsonIgnore
-    @Autowired
-    private TournamentConfig config;
+	@JsonIgnore
+	@Autowired
+	private TournamentConfig config;
 
-    @JsonIgnore
-    private Map<UUID, Match> uidToMatch = new HashMap<>();
+	@JsonIgnore
+	private Map<UUID, Match> uidToMatch = new HashMap<>();
 
-    private UUID playerId;
+	private UUID playerId;
 
-    @JsonIgnore
-    private Player player;
+	@JsonIgnore
+	private Player player;
 
-    private List<UUID> matches = new LinkedList<>();
+	private List<UUID> matches = new LinkedList<>();
 
+	public void addMatchResult(Match match) {
+		matches.add(match.getMatchID());
+		getUidToMatch().put(match.getMatchID(), match);
+	}
 
-    public void addMatchResult(Match match) {
-        matches.add(match.getMatchID());
-        getUidToMatch().put(match.getMatchID(), match);
-    }
-    @JsonIgnore
-    public int getMatchesDone() {
-        return matches.size();
-    }
-    @JsonIgnore
-    public int getGoalsShot() {
-        return matches.stream().mapToInt(m -> getUidToMatch().get(m).getGoalsForPlayer(playerId)).sum();
-    }
-    @JsonIgnore
-    public int getGoalsConceded() {
-        return matches.stream().mapToInt(m -> getUidToMatch().get(m).getConcededGoalsForPlayer(playerId)).sum();
-    }
-    @JsonIgnore
-    public int getGoalDiff() {
-        return getGoalsShot() - getGoalsConceded();
-    }
-    @JsonIgnore
-    public long getMatchesWonCount() {
-        return matches.stream().filter(m -> getUidToMatch().get(m).didPlayerWin(playerId)).count();
-    }
-    @JsonIgnore
-    public long getMatchesLostCount() {
-        return matches.stream().filter(m -> !getUidToMatch().get(m).didPlayerWin(playerId) && !getUidToMatch().get(m).isDraw()).count();
-    }
-    @JsonIgnore
-    public long getMatchesDrawCount() {
-        return matches.stream().filter(m -> getUidToMatch().get(m).isDraw()).count();
-    }
-    @JsonIgnore
-    public long getPointsForConfiguration(TournamentConfig config) {
-        if (player.isDummy()) {
-            return 0;
-        }
+	@JsonIgnore
+	public int getMatchesDone() {
+		return matches.size();
+	}
 
-        long won = getMatchesWonCount();
-        long draw = getMatchesDrawCount();
+	@JsonIgnore
+	public int getGoalsShot() {
+		return matches.stream().mapToInt(m -> getUidToMatch().get(m).getGoalsForPlayer(playerId)).sum();
+	}
 
-        return won * config.getPointsForWinner() + draw * config.getPointsForDraw();
+	@JsonIgnore
+	public int getGoalsConceded() {
+		return matches.stream().mapToInt(m -> getUidToMatch().get(m).getConcededGoalsForPlayer(playerId)).sum();
+	}
 
-    }
-    @JsonIgnore
-    public double getMeanPoints(TournamentConfig config) {
-        return getPointsForConfiguration(config) / (double) matches.size();
-    }
-    @Override
-    public int compareTo(PlayerTournamentStatistics o2) {
-        Player player1 = player;
-        Player player2 = o2.getPlayer();
-        if (player1 == null) {
-            return 1;
-        }
-        if (player2 == null) {
-            return -1;
-        }
-        if (player1.isDummy()) {
-            return 1;
-        }
-        if (player2.isDummy()) {
-            return -1;
-        }
-        
-        int pointsForConfiguration = (int) (this.getPointsForConfiguration(config) -  o2.getPointsForConfiguration(config));
-        if (pointsForConfiguration != 0) {
-            return pointsForConfiguration;
-        }
-        
-        int goalDiff = this.getGoalDiff() - o2.getGoalDiff();
-        if (goalDiff != 0) {
-            return goalDiff;
-        }
-        
-        int wonDiff = (int) (this.getMatchesWonCount() - o2.getMatchesWonCount());
-        if (wonDiff != 0) {
-            return wonDiff;
-        }
-        
-        int drawDiff = (int) (this.getMatchesDrawCount() - o2.getMatchesDrawCount());
-        if (drawDiff != 0) {
-            return drawDiff;
-        }
-        
-        return player1.getName().compareTo(player2.getName());
-    }
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        StringBuilder result = new StringBuilder(""); //$NON-NLS-1$
-        // result.append(String.format("%n %-20s\t %s\t%s\t%s\t%s\t%s\t%s %s", player.getName(), String.valueOf(matches.size()),
-        // //$NON-NLS-1$
-        // Integer.valueOf(matchesWon), Integer.valueOf(matchesLost), Integer.valueOf(matchesDraw),
-        // Integer.valueOf(getGoalDiff()), Integer.valueOf(points), player.isPausingTournament() ? " (pausing)" : "")); //$NON-NLS-1$
-        // //$NON-NLS-2$
+	@JsonIgnore
+	public int getGoalDiff() {
+		return getGoalsShot() - getGoalsConceded();
+	}
 
-        return result.toString();
+	@JsonIgnore
+	public long getMatchesWonCount() {
+		return matches.stream().filter(m -> getUidToMatch().get(m).didPlayerWin(playerId)).count();
+	}
 
-    }
-    public void getClone(PlayerTournamentStatistics tournamentStatistics) {
-        tournamentStatistics.getMatches().addAll(getMatches());
-        tournamentStatistics.setUidToMatch(getUidToMatch());
-        tournamentStatistics.setPlayer(player);
-    }
-    public Map<UUID, Match> getUidToMatch() {
-        return uidToMatch;
-    }
-    public void setUidToMatch(Map<UUID, Match> uidToMatch) {
-        this.uidToMatch = uidToMatch;
-    }
+	@JsonIgnore
+	public long getMatchesLostCount() {
+		return matches.stream()
+				.filter(m -> !getUidToMatch().get(m).didPlayerWin(playerId) && !getUidToMatch().get(m).isDraw())
+				.count();
+	}
 
-    public List<UUID> getMatches() {
-        return matches;
-    }
+	@JsonIgnore
+	public long getMatchesDrawCount() {
+		return matches.stream().filter(m -> getUidToMatch().get(m).isDraw()).count();
+	}
 
-    public Player getPlayer() {
-        return player;
-    }
+	@JsonIgnore
+	public long getPointsForConfiguration(TournamentConfig config) {
+		if (player.isDummy()) {
+			return 0;
+		}
 
-    public UUID getPlayerId() {
-        return playerId;
-    }
+		long won = getMatchesWonCount();
+		long draw = getMatchesDrawCount();
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
+		return won * config.getPointsForWinner() + draw * config.getPointsForDraw();
 
-    public void setMatches(List<UUID> matches) {
-        this.matches = matches;
-    }
-    public void setPlayerId(UUID playerId) {
-        this.playerId = playerId;
-    }
+	}
+
+	@JsonIgnore
+	public double getMeanPoints(TournamentConfig config) {
+		return getPointsForConfiguration(config) / (double) matches.size();
+	}
+
+	@Override
+	public int compareTo(PlayerTournamentStatistics o2) {
+		Player player1 = player;
+		Player player2 = o2.getPlayer();
+		if (player1 == null) {
+			return 1;
+		}
+		if (player2 == null) {
+			return -1;
+		}
+		if (player1.isDummy()) {
+			return 1;
+		}
+		if (player2.isDummy()) {
+			return -1;
+		}
+
+		long pointsForConfiguration = this.getPointsForConfiguration(config) - o2.getPointsForConfiguration(config);
+		if (pointsForConfiguration != 0) {
+			return -Long.compare(this.getPointsForConfiguration(config), o2.getPointsForConfiguration(config));
+		}
+
+		int goalDiff = this.getGoalDiff() - o2.getGoalDiff();
+		if (goalDiff != 0) {
+			return -Integer.compare(this.getGoalDiff(), o2.getGoalDiff());
+		}
+
+		int wonDiff = (int) (this.getMatchesWonCount() - o2.getMatchesWonCount());
+		if (wonDiff != 0) {
+			return -Long.compare(this.getMatchesWonCount(), o2.getMatchesWonCount());
+		}
+
+		int drawDiff = (int) (this.getMatchesDrawCount() - o2.getMatchesDrawCount());
+		if (drawDiff != 0) {
+			return -Long.compare(this.getMatchesDrawCount(), o2.getMatchesDrawCount());
+		}
+
+		return player1.getName().compareTo(player2.getName());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder(""); //$NON-NLS-1$
+		// result.append(String.format("%n %-20s\t %s\t%s\t%s\t%s\t%s\t%s %s",
+		// player.getName(), String.valueOf(matches.size()),
+		// //$NON-NLS-1$
+		// Integer.valueOf(matchesWon), Integer.valueOf(matchesLost),
+		// Integer.valueOf(matchesDraw),
+		// Integer.valueOf(getGoalDiff()), Integer.valueOf(points),
+		// player.isPausingTournament() ? " (pausing)" : "")); //$NON-NLS-1$
+		// //$NON-NLS-2$
+
+		return result.toString();
+
+	}
+
+	public void getClone(PlayerTournamentStatistics tournamentStatistics) {
+		tournamentStatistics.getMatches().addAll(getMatches());
+		tournamentStatistics.setUidToMatch(getUidToMatch());
+		tournamentStatistics.setPlayer(player);
+	}
+
+	public Map<UUID, Match> getUidToMatch() {
+		return uidToMatch;
+	}
+
+	public void setUidToMatch(Map<UUID, Match> uidToMatch) {
+		this.uidToMatch = uidToMatch;
+	}
+
+	public List<UUID> getMatches() {
+		return matches;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public UUID getPlayerId() {
+		return playerId;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public void setMatches(List<UUID> matches) {
+		this.matches = matches;
+	}
+
+	public void setPlayerId(UUID playerId) {
+		this.playerId = playerId;
+	}
 }
