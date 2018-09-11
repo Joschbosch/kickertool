@@ -1,11 +1,10 @@
 package zur.koeln.kickertool.tournament.factory;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 import zur.koeln.kickertool.tournament.content.*;
 
@@ -34,9 +33,10 @@ public class TournamentFactory {
         return bean;
     }
 
-    public PlayerTournamentStatistics createNewTournamentStatistics(UUID playerId) {
+    public PlayerTournamentStatistics createNewTournamentStatistics(Player p) {
         PlayerTournamentStatistics statistics = ctx.getBean(PlayerTournamentStatistics.class);
-        statistics.setPlayerId(playerId);
+        statistics.setPlayer(p);
+        statistics.setPlayerId(p.getUid());
         return statistics;
     }
 

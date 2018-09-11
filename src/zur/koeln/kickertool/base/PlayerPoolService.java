@@ -23,7 +23,7 @@ public interface PlayerPoolService {
 
     void createDummyPlayerWithUUID(UUID id);
 
-    UUID useNextDummyPlayer();
+    Player useNextDummyPlayer();
 
     UUID removeLastDummy();
 

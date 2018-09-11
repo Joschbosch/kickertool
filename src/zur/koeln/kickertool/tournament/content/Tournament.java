@@ -61,7 +61,7 @@ public class Tournament {
             }
         } else {
             if (!scoreTable.containsKey(p.getUid())) {
-                scoreTable.put(p.getUid(), tournamentFactory.createNewTournamentStatistics(p.getUid()));
+                scoreTable.put(p.getUid(), tournamentFactory.createNewTournamentStatistics(p));
                 checkDummies();
             }
         }
@@ -77,13 +77,13 @@ public class Tournament {
 
     }
 
-    public void pausePlayer(UUID selectedPlayer) {
-        playerPool.getPlayerById(selectedPlayer).setPausingTournament(true);
+    public void pausePlayer(Player selectedPlayer) {
+        selectedPlayer.setPausingTournament(true);
         checkDummies();
     }
 
-    public void unpausePlayer(UUID selectedPlayer) {
-        playerPool.getPlayerById(selectedPlayer).setPausingTournament(false);
+    public void unpausePlayer(Player selectedPlayer) {
+        selectedPlayer.setPausingTournament(false);
         checkDummies();
     }
 
@@ -101,9 +101,9 @@ public class Tournament {
             }
         } else if (neededDummies > usedDummies) {
             for (int i = usedDummies; i < neededDummies; i++) {
-                UUID dummy = playerPool.useNextDummyPlayer();
-                scoreTable.put(dummy, tournamentFactory.createNewTournamentStatistics(dummy));
-                dummyPlayerActive.add(dummy);
+                Player dummy = playerPool.useNextDummyPlayer();
+                scoreTable.put(dummy.getUid(), tournamentFactory.createNewTournamentStatistics(dummy));
+                dummyPlayerActive.add(dummy.getUid());
             }
         }
     }
@@ -128,7 +128,7 @@ public class Tournament {
                 playtables.put(Integer.valueOf(i), new GamingTable(i));
             }
             for (UUID pid : participants) {
-                scoreTable.put(pid, tournamentFactory.createNewTournamentStatistics(pid));
+                scoreTable.put(pid, tournamentFactory.createNewTournamentStatistics(playerPool.getPlayerById(pid)));
             }
             checkDummies();
         }
@@ -142,7 +142,7 @@ public class Tournament {
             if (currentRound != null) {
                 Map<UUID, PlayerTournamentStatistics> scoreTableClone = new HashMap<>();
                 scoreTable.forEach((key, value) -> {
-                    PlayerTournamentStatistics clonedStatistics = tournamentFactory.createNewTournamentStatistics(key);
+                    PlayerTournamentStatistics clonedStatistics = tournamentFactory.createNewTournamentStatistics(value.getPlayer());
                     value.getClone(clonedStatistics);
                     scoreTableClone.put(key, clonedStatistics);
                 });

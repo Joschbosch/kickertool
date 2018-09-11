@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import zur.koeln.kickertool.base.PlayerPoolService;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.MatchException;
 import zur.koeln.kickertool.tournament.TournamentConfig;
@@ -20,10 +19,6 @@ import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
 @Component
 public class Round {
-
-    @JsonIgnore
-    @Autowired
-    private PlayerPoolService playerPool;
 
     @Autowired
     private TournamentFactory tournamentFactory;
@@ -45,7 +40,7 @@ public class Round {
      * @return
      */
     public void createMatches(List<PlayerTournamentStatistics> table, TournamentConfig config) {
-        table.removeIf(statistic -> playerPool.getPlayerById(statistic.getPlayerId()).isPausingTournament());
+        table.removeIf(statistic -> statistic.getPlayer().isPausingTournament());
         if (roundNo <= config.getRandomRounds()) {
             while (table.size() > 3) {
                 Team home = new Team(getRandomPlayer(table), getRandomPlayer(table));
@@ -102,7 +97,6 @@ public class Round {
 
     private void createMatch(TournamentConfig config, Team home, Team visiting) {
         Match m = tournamentFactory.createNewMatch(Integer.valueOf(roundNo), home, visiting, config.getCurrentNoOfMatches());
-        m.setPlayerPool(playerPool);
         config.setCurrentNoOfMatches(config.getCurrentNoOfMatches() + 1);
         matches.add(m);
     }
@@ -136,14 +130,6 @@ public class Round {
         List<Match> allMatches = new LinkedList<>(matches);
         allMatches.addAll(completeMatches);
         return allMatches;
-    }
-
-    public PlayerPoolService getPlayerPool() {
-        return playerPool;
-    }
-
-    public void setPlayerPool(PlayerPoolService playerPool) {
-        this.playerPool = playerPool;
     }
 
     public TournamentFactory getTournamentFactory() {

@@ -8,21 +8,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import zur.koeln.kickertool.base.PlayerPoolService;
 
 public class Match {
 
     private enum MatchResult {
         HOME, VISITING, DRAW;
     }
-
-    @JsonIgnore
-    @Autowired
-    private PlayerPoolService playerPool;
 
     private final UUID matchID = UUID.randomUUID();
 
@@ -155,29 +147,11 @@ public class Match {
         return new HashSet<>(Arrays.asList(homeTeam.getP1(), homeTeam.getP2()));
     }
 
-    /**
-     * @return
-     */
-    @JsonIgnore
-    public String createHomeTeamString() {
-        return playerPool.getPlayerById(homeTeam.getP1()).getName() + " / " //$NON-NLS-1$
-                + playerPool.getPlayerById(homeTeam.getP2()).getName();
-    }
-    @JsonIgnore
-    public String createVisitingTeamString() {
-        return playerPool.getPlayerById(visitingTeam.getP1()).getName() + " / " //$NON-NLS-1$
-                + playerPool.getPlayerById(visitingTeam.getP2()).getName();
-    }
     @JsonIgnore
     public boolean isDraw() {
         return result == MatchResult.DRAW;
     }
-    public PlayerPoolService getPlayerPool() {
-        return playerPool;
-    }
-    public void setPlayerPool(PlayerPoolService playerPool) {
-        this.playerPool = playerPool;
-    }
+
     public Integer getRoundNumber() {
         return roundNumber;
     }
