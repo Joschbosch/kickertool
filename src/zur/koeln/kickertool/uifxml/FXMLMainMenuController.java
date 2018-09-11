@@ -10,7 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.base.BackendController;
+import zur.koeln.kickertool.api.BackendController;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component

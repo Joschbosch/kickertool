@@ -1,7 +1,7 @@
 /**
  * 
  */
-package zur.koeln.kickertool.tournament;
+package zur.koeln.kickertool.exception;
 
 @SuppressWarnings("serial")
 public class MatchException extends Exception {

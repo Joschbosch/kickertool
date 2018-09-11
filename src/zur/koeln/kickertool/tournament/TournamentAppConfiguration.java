@@ -6,7 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 
-import zur.koeln.kickertool.base.BackendController;
+import zur.koeln.kickertool.api.BackendController;
+import zur.koeln.kickertool.base.BasicBackendController;
 import zur.koeln.kickertool.tournament.content.Match;
 import zur.koeln.kickertool.tournament.content.PlayerTournamentStatistics;
 import zur.koeln.kickertool.tournament.content.Round;
