@@ -26,8 +26,8 @@ public class FXMLMatchEntryController {
 	}
 
 	private void init() {
-		lblTeamHome.setText(match.getHomeTeam().getP1Obj().getName() + " / " + match.getHomeTeam().getP2Obj().getName());
-		lblTeamVisit.setText(match.getVisitingTeam().getP1Obj().getName() + " / " + match.getVisitingTeam().getP2Obj().getName());
+		lblTeamHome.setText(match.getHomeTeam().getPlayer1().getName() + " / " + match.getHomeTeam().getPlayer2().getName());
+		lblTeamVisit.setText(match.getVisitingTeam().getPlayer1().getName() + " / " + match.getVisitingTeam().getPlayer2().getName());
 		lblScore.setText("0:0");
 	}
 

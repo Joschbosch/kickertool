@@ -164,10 +164,10 @@ public class Tournament {
         playtables.get(Integer.valueOf(m.getTableNo())).setInUse(false);
         updatePlayTableUsage();
 
-        scoreTable.get(m.getHomeTeam().getP1()).addMatchResult(m);
-        scoreTable.get(m.getHomeTeam().getP2()).addMatchResult(m);
-        scoreTable.get(m.getVisitingTeam().getP1()).addMatchResult(m);
-        scoreTable.get(m.getVisitingTeam().getP2()).addMatchResult(m);
+        scoreTable.get(m.getHomeTeam().getPlayer1Id()).addMatchResult(m);
+        scoreTable.get(m.getHomeTeam().getPlayer2Id()).addMatchResult(m);
+        scoreTable.get(m.getVisitingTeam().getPlayer1Id()).addMatchResult(m);
+        scoreTable.get(m.getVisitingTeam().getPlayer2Id()).addMatchResult(m);
     }
 
     private void updatePlayTableUsage() {
