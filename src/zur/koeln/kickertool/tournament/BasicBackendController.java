@@ -19,8 +19,8 @@ import zur.koeln.kickertool.base.ToolState;
 import zur.koeln.kickertool.base.ui.GUIController;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.content.Match;
-import zur.koeln.kickertool.tournament.content.Tournament;
 import zur.koeln.kickertool.tournament.content.PlayerTournamentStatistics;
+import zur.koeln.kickertool.tournament.content.Tournament;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
 @Getter
@@ -263,7 +263,7 @@ public class BasicBackendController
 
     @Override
     public List<PlayerTournamentStatistics> getCurrentTable() {
-        return currentTournament.getCurrentTableCopySortedByPoints();
+        return new ArrayList<>(currentTournament.getScoreTable().values());
     }
 
 }
