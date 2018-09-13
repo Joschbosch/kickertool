@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.SortedSet;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,12 +111,12 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		
 		setupColumns();
 		
-		getTblStatistics().setItems(FXCollections.observableList(loadTableStatistics()));
+		getTblStatistics().setItems(FXCollections.observableArrayList(loadTableStatistics()));
 	
 	}
 	
-	private List<PlayerTournamentStatistics> loadTableStatistics() {
-		return getBackendController().getCurrentTable().stream().sorted().collect(Collectors.toList());
+	private SortedSet<PlayerTournamentStatistics> loadTableStatistics() {
+		return getBackendController().getCurrentTable();
 	}
 
 	private void setupColumns() {
@@ -206,7 +207,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	@Override
 	public void update() {
 		getMatchEntryController().forEach(FXMLMatchEntryController::update);
-		getTblStatistics().setItems(FXCollections.observableList(loadTableStatistics()));
+		getTblStatistics().setItems(FXCollections.observableArrayList(loadTableStatistics()));
 		getTblStatistics().refresh();
 		getTblStatistics().getSortOrder().add(getTblColPoints());
 		getTblStatistics().sort();

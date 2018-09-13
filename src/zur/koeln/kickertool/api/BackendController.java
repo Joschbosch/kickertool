@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.SortedSet;
 import java.util.UUID;
 
 import zur.koeln.kickertool.api.config.TournamentMode;
@@ -70,7 +71,7 @@ public interface BackendController {
 
     void changeMode(TournamentMode newMode);
 
-    List<PlayerTournamentStatistics> getCurrentTable();
+    SortedSet<PlayerTournamentStatistics> getCurrentTable();
 
     List<Player> getPlayerListNotInTournament();
 

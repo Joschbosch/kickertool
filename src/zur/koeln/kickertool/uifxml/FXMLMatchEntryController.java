@@ -3,6 +3,8 @@ package zur.koeln.kickertool.uifxml;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javafx.beans.property.BooleanProperty;
@@ -16,6 +18,7 @@ import zur.koeln.kickertool.api.tournament.Match;
 import zur.koeln.kickertool.uifxml.dialog.ScoreDialog;
 
 @Component
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class FXMLMatchEntryController implements UpdateableUIComponent{
 	@FXML
 	private Label lblTeamHome;

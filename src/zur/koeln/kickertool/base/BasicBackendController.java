@@ -5,7 +5,13 @@ package zur.koeln.kickertool.base;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -277,8 +283,8 @@ public class BasicBackendController
     }
 
     @Override
-    public List<PlayerTournamentStatistics> getCurrentTable() {
-        return new ArrayList<>(currentTournament.getScoreTable().values());
+    public SortedSet<PlayerTournamentStatistics> getCurrentTable() {
+        return new TreeSet<>(currentTournament.getScoreTable().values());
     }
 
     @Override
