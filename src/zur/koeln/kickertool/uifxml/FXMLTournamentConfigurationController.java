@@ -1,7 +1,6 @@
 package zur.koeln.kickertool.uifxml;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javafx.fxml.FXML;
@@ -13,8 +12,9 @@ import javafx.util.converter.IntegerStringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.api.BackendController;
-import zur.koeln.kickertool.api.content.Tournament;
-import zur.koeln.kickertool.tournament.TournamentConfig;
+import zur.koeln.kickertool.api.config.TournamentSetingsKeys;
+import zur.koeln.kickertool.api.tournament.Tournament;
+import zur.koeln.kickertool.api.tournament.TournamentSettings;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
@@ -44,13 +44,13 @@ public class FXMLTournamentConfigurationController implements UpdateableUICompon
 	@FXML
 	private TextField txtRandomRoundsAtStart;
 	
-	private TournamentConfig config;
+	private TournamentSettings config;
 	
 	@FXML 
 	public void initialize() {
 		
         Tournament currentTournament = backendController.getCurrentTournament();
-		config = currentTournament.getConfig();
+		config = currentTournament.getSettings();
 		
 		
         getLblTournament().setText(backendController.getCurrentTournament().getName());
@@ -89,29 +89,29 @@ public class FXMLTournamentConfigurationController implements UpdateableUICompon
 	
 	@FXML 
 	public void onBtnNextClicked() {
-		updateTournamentConfig();
+		updateTournamentSettings();
         backendController.showPlayerSelection();
 	}
 	
-	private void updateTournamentConfig() {
+	private void updateTournamentSettings() {
 		
-		getConfig().setGoalsToWin(getValue(getTxtGoalsToWin()));
-		getConfig().setTableCount(getValue(getTxtNumberOfTables()));
-		getConfig().setMatchesToWin(getValue(getTxtMatchesToWin()));
-		getConfig().setPointsForWinner(getValue(getTxtPointsToWin()));
-		getConfig().setPointsForDraw(getValue(getTxtPointsForDraw()));
-		getConfig().setMinutesPerMatch(getValue(getTxtMinutesPerMatch()));
-		getConfig().setRandomRounds(getValue(getTxtRandomRoundsAtStart()));
-		
+		getBackendController().changedTournamentConfig(TournamentSetingsKeys.GOALS_FOR_WIN, getValue(getTxtGoalsToWin()));
+		getBackendController().changedTournamentConfig(TournamentSetingsKeys.TABLES, getValue(getTxtNumberOfTables()));
+		getBackendController().changedTournamentConfig(TournamentSetingsKeys.MATCHES_TO_WIN, getValue(getTxtMatchesToWin()));
+		getBackendController().changedTournamentConfig(TournamentSetingsKeys.POINTS_FOR_WINNER, getValue(getTxtPointsToWin()));
+		getBackendController().changedTournamentConfig(TournamentSetingsKeys.POINTS_FOR_DRAW, getValue(getTxtPointsForDraw()));
+		getBackendController().changedTournamentConfig(TournamentSetingsKeys.MINUTES_PER_MATCH, getValue(getTxtMinutesPerMatch()));
+		getBackendController().changedTournamentConfig(TournamentSetingsKeys.RANDOM_ROUNDS, getValue(getTxtRandomRoundsAtStart()));
+
 	}
 	
-	private int getValue(TextField textfield) {
+	private Integer getValue(TextField textfield) {
 		
 		if (!textfield.getText().isEmpty()) {
-			return Integer.parseInt(textfield.getText());
+			return Integer.valueOf(textfield.getText());
 		}
 		
-		return Integer.parseInt(textfield.getPromptText());
+		return Integer.valueOf(textfield.getPromptText());
 		
 	}
 	

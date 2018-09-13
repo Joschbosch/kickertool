@@ -16,8 +16,13 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -25,8 +30,8 @@ import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.api.BackendController;
-import zur.koeln.kickertool.api.content.PlayerTournamentStatistics;
-import zur.koeln.kickertool.player.Player;
+import zur.koeln.kickertool.api.player.Player;
+import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.uifxml.dialog.AddPlayerDialog;
 import zur.koeln.kickertool.uifxml.tools.SimpleTimer;
 import zur.koeln.kickertool.uifxml.tools.TimerStringConverter;
@@ -97,7 +102,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	public void initialize() {
 		
 		getLblClock().textProperty().bindBidirectional(getTimer().getTimeSeconds(), new TimerStringConverter());
-		getTimer().init(getBackendController().getCurrentTournament().getConfig().getMinutesPerMatch());
+		getTimer().init(getBackendController().getCurrentTournament().getSettings().getMinutesPerMatch());
 		
 		getBtnStartStopwatch().disableProperty().bind(getTimer().getRunningProperty());
 		getBtnResetStopwatch().disableProperty().bind(getTimer().getRunningProperty().not());
@@ -192,7 +197,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 			@Override
             public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
 				
-				return new SimpleStringProperty(String.valueOf(param.getValue().getPointsForConfiguration(getBackendController().getCurrentTournament().getConfig())));
+				return new SimpleStringProperty(String.valueOf(param.getValue().getPointsForConfiguration(getBackendController().getCurrentTournament().getSettings())));
 			}
 		});
 		

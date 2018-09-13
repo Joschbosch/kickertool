@@ -33,7 +33,7 @@ public class SimpleJsonPlayerPool
         if (playerPoolFile.exists() && playerPoolFile.isFile()) {
             ObjectMapper m = new ObjectMapper();
             try {
-                players = m.readValue(playerPoolFile, new TypeReference<List<Player>>() {
+                players = m.readValue(playerPoolFile, new TypeReference<List<HumanPlayer>>() {
                 });
             } catch (IOException e) {
                 e.printStackTrace();

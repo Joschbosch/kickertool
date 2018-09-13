@@ -12,7 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.util.Pair;
 import zur.koeln.kickertool.api.BackendController;
-import zur.koeln.kickertool.api.content.Match;
+import zur.koeln.kickertool.api.tournament.Match;
 import zur.koeln.kickertool.uifxml.dialog.ScoreDialog;
 
 @Component

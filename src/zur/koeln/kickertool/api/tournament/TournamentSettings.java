@@ -15,4 +15,10 @@ public interface TournamentSettings {
     int getRandomRounds();
 
     TournamentMode getMode();
+
+	int getGoalsToWin();
+
+	int getMatchesToWin();
+
+	int getMinutesPerMatch();
 }

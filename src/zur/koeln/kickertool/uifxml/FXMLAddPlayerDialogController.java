@@ -9,17 +9,16 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import zur.koeln.kickertool.api.BackendController;
-import zur.koeln.kickertool.player.Player;
-import javafx.scene.control.TableView;
-
-import javafx.scene.control.TableColumn;
+import zur.koeln.kickertool.api.player.Player;
+import zur.koeln.kickertool.base.HumanPlayer;
 
 @Component
 public class FXMLAddPlayerDialogController {
@@ -91,7 +90,7 @@ public class FXMLAddPlayerDialogController {
 
 	@FXML public void onBtnAddPlayerClicked() {
 
-		Player newPlayer = new Player(getTxtPlayerName().getText());
+		Player newPlayer = new HumanPlayer(getTxtPlayerName().getText());
 		getTxtPlayerName().clear();
         getBackendController().addPlayerToPool(newPlayer);
         refreshTable();
