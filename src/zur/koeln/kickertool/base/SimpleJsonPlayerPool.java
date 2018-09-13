@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import zur.koeln.kickertool.api.PlayerPoolService;
-import zur.koeln.kickertool.player.Player;
+import zur.koeln.kickertool.api.player.Player;
+import zur.koeln.kickertool.api.player.PlayerPoolService;
 
 @Component
 public class SimpleJsonPlayerPool
@@ -99,7 +99,7 @@ public class SimpleJsonPlayerPool
      */
     @Override
     public void createDummyPlayerWithUUID(UUID id) {
-        Player dummy = new Player("Dummy Player " + dummies.size() + 1); //$NON-NLS-1$
+        Player dummy = new HumanPlayer("Dummy Player " + dummies.size() + 1); //$NON-NLS-1$
         dummy.setDummy(true);
         dummy.setUid(id);
         dummies.add(dummy);
@@ -125,7 +125,7 @@ public class SimpleJsonPlayerPool
      * @param i
      */
     private Player createDummyPlayer(int i) {
-        Player dummy = new Player("Dummy Player " + i); //$NON-NLS-1$
+        Player dummy = new HumanPlayer("Dummy Player " + i); //$NON-NLS-1$
         dummy.setDummy(true);
         return dummy;
     }

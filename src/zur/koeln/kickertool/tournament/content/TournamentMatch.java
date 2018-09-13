@@ -10,8 +10,8 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import zur.koeln.kickertool.api.MatchResult;
-import zur.koeln.kickertool.api.content.Match;
+import zur.koeln.kickertool.api.tournament.Match;
+import zur.koeln.kickertool.api.tournament.MatchResult;
 
 public class TournamentMatch
     implements Match {

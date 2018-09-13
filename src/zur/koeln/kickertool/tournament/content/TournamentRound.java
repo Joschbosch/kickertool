@@ -11,13 +11,14 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import zur.koeln.kickertool.api.TournamentMode;
-import zur.koeln.kickertool.api.content.Match;
-import zur.koeln.kickertool.api.content.PlayerTournamentStatistics;
-import zur.koeln.kickertool.api.content.Round;
+import zur.koeln.kickertool.api.config.TournamentMode;
 import zur.koeln.kickertool.api.exceptions.MatchException;
-import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.tournament.TournamentConfig;
+import zur.koeln.kickertool.api.player.Player;
+import zur.koeln.kickertool.api.tournament.Match;
+import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
+import zur.koeln.kickertool.api.tournament.Round;
+import zur.koeln.kickertool.api.tournament.TournamentSettings;
+import zur.koeln.kickertool.tournament.TournamentSettingsImpl;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
 @Component
@@ -43,9 +44,8 @@ public class TournamentRound
      * @param playtables
      * @return
      */
-    public void createMatches(List<PlayerTournamentStatistics> table, TournamentConfig config) {
+    public void createMatches(List<PlayerTournamentStatistics> table, TournamentSettings config) {
         table.removeIf(statistic -> statistic.getPlayer().isPausingTournament());
-        table.forEach(stat ->   System.out.println(stat.getPlayer().getName()));
         if (roundNo <= config.getRandomRounds()) {
             while (table.size() > 3) {
                 TournamentTeam home = new TournamentTeam(getRandomPlayer(table), getRandomPlayer(table));
@@ -58,7 +58,7 @@ public class TournamentRound
 
     }
 
-    private void createRoundByTournamentType(List<PlayerTournamentStatistics> table, TournamentConfig config) {
+    private void createRoundByTournamentType(List<PlayerTournamentStatistics> table, TournamentSettings config) {
         if (config.getMode() == TournamentMode.SWISS_DYP) {
             while (table.size() > 3) {
                 TournamentTeam home = new TournamentTeam(table.get(0).getPlayer(), table.get(3).getPlayer());
@@ -100,9 +100,9 @@ public class TournamentRound
         }
     }
 
-    private void createMatch(TournamentConfig config, TournamentTeam home, TournamentTeam visiting) {
+    private void createMatch(TournamentSettings config, TournamentTeam home, TournamentTeam visiting) {
         TournamentMatch m = tournamentFactory.createNewMatch(Integer.valueOf(roundNo), home, visiting, config.getCurrentNoOfMatches());
-        config.setCurrentNoOfMatches(config.getCurrentNoOfMatches() + 1);
+        ((TournamentSettingsImpl) config).setCurrentNoOfMatches(config.getCurrentNoOfMatches() + 1);
         matches.add(m);
     }
 

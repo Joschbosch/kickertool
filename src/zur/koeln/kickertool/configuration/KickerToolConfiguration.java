@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
 import zur.koeln.kickertool.api.BackendController;
-import zur.koeln.kickertool.api.PlayerPoolService;
+import zur.koeln.kickertool.api.player.PlayerPoolService;
 import zur.koeln.kickertool.base.BasicBackendController;
 import zur.koeln.kickertool.base.SimpleJsonPlayerPool;
 

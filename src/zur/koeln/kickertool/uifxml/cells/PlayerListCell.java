@@ -1,12 +1,12 @@
 package zur.koeln.kickertool.uifxml.cells;
 
 import javafx.scene.control.ListCell;
-import zur.koeln.kickertool.player.Player;
+import zur.koeln.kickertool.base.HumanPlayer;
 
-public class PlayerListCell extends ListCell<Player> {
+public class PlayerListCell extends ListCell<HumanPlayer> {
 	
 	@Override
-	protected void updateItem(Player item, boolean empty) {
+	protected void updateItem(HumanPlayer item, boolean empty) {
 
 		super.updateItem(item, empty);
 		setText(null);

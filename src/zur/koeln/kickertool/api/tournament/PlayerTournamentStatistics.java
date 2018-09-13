@@ -1,16 +1,15 @@
-package zur.koeln.kickertool.api.content;
+package zur.koeln.kickertool.api.tournament;
 
 import java.util.UUID;
 
-import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.tournament.TournamentConfig;
+import zur.koeln.kickertool.api.player.Player;
 
 public interface PlayerTournamentStatistics
     extends Comparable<PlayerTournamentStatistics> {
 
     Player getPlayer();
 
-    long getPointsForConfiguration(TournamentConfig config);
+    long getPointsForConfiguration(TournamentSettings config);
 
     int getGoalDiff();
 

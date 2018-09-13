@@ -7,17 +7,17 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import zur.koeln.kickertool.api.PlayerPoolService;
-import zur.koeln.kickertool.api.content.Match;
-import zur.koeln.kickertool.api.content.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.exceptions.MatchException;
-import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.tournament.TournamentConfig;
+import zur.koeln.kickertool.api.player.Player;
+import zur.koeln.kickertool.api.player.PlayerPoolService;
+import zur.koeln.kickertool.api.tournament.Match;
+import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
+import zur.koeln.kickertool.api.tournament.TournamentSettings;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
 @Component
 public class TournamentImpl
-    implements zur.koeln.kickertool.api.content.Tournament {
+    implements zur.koeln.kickertool.api.tournament.Tournament {
 
     @JsonIgnore
     @Autowired
@@ -31,7 +31,7 @@ public class TournamentImpl
     private boolean started = false;
 
     @Autowired
-    private TournamentConfig config;
+    private TournamentSettings config;
 
     private String name;
 
@@ -245,7 +245,7 @@ public class TournamentImpl
     public void setTournamentFactory(TournamentFactory tournamentFactory) {
         this.tournamentFactory = tournamentFactory;
     }
-    public TournamentConfig getConfig() {
+    public TournamentSettings getSettings() {
         return config;
     }
     public void setName(String name) {

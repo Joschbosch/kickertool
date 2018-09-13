@@ -1,8 +1,8 @@
-package zur.koeln.kickertool.api.content;
+package zur.koeln.kickertool.api.tournament;
 
 import java.util.UUID;
 
-import zur.koeln.kickertool.player.Player;
+import zur.koeln.kickertool.api.player.Player;
 
 public interface Team {
 
