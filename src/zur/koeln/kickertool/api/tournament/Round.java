@@ -14,4 +14,6 @@ public interface Round {
 
     List<Match> getAllMatches();
 
+    boolean isComplete();
+
 }
