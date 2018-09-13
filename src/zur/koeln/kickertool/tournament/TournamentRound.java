@@ -1,7 +1,7 @@
 /**
  * 
  */
-package zur.koeln.kickertool.tournament.content;
+package zur.koeln.kickertool.tournament;
 
 import java.util.*;
 
@@ -18,8 +18,8 @@ import zur.koeln.kickertool.api.tournament.Match;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.api.tournament.TournamentSettings;
-import zur.koeln.kickertool.tournament.TournamentSettingsImpl;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
+import zur.koeln.kickertool.tournament.settings.TournamentSettingsImpl;
 
 @Component
 public class TournamentRound

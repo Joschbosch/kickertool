@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.tournament;
+package zur.koeln.kickertool.tournament.settings;
 
 import zur.koeln.kickertool.api.config.TournamentMode;
 import zur.koeln.kickertool.api.tournament.TournamentSettings;

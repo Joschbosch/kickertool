@@ -1,7 +1,7 @@
 /**
  * 
  */
-package zur.koeln.kickertool.tournament.content;
+package zur.koeln.kickertool.tournament;
 
 import java.util.Arrays;
 import java.util.HashSet;

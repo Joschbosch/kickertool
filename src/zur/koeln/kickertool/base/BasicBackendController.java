@@ -24,10 +24,10 @@ import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.api.tournament.Tournament;
 import zur.koeln.kickertool.api.ui.GUIController;
-import zur.koeln.kickertool.tournament.TournamentSettingsImpl;
-import zur.koeln.kickertool.tournament.content.TournamentImpl;
-import zur.koeln.kickertool.tournament.content.TournamentRound;
+import zur.koeln.kickertool.tournament.TournamentImpl;
+import zur.koeln.kickertool.tournament.TournamentRound;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
+import zur.koeln.kickertool.tournament.settings.TournamentSettingsImpl;
 
 @Component
 public class BasicBackendController

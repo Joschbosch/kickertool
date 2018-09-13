@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import zur.koeln.kickertool.api.player.Player;
 import zur.koeln.kickertool.api.tournament.TournamentSettings;
+import zur.koeln.kickertool.tournament.*;
 import zur.koeln.kickertool.tournament.content.*;
 
 @Service
