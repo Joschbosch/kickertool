@@ -6,7 +6,7 @@ package zur.koeln.kickertool.api.config;
 
 public enum TournamentMode {
 
-    SWISS_DYP("Schweizer System | DYP"), SWISS_TUPEL("Schweizer System | Tupel");
+    SWISS_DYP("Schweizer System | DYP"), SWISS_TUPEL("Schweizer System | Tupel"); //$NON-NLS-1$ //$NON-NLS-2$
 
     private String displayName;
 

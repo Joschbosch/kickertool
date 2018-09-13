@@ -9,7 +9,7 @@ public interface PlayerPoolService {
 
     void savePlayerPool();
 
-    void addPlayer(Player player);
+    Player createAndAddPlayer(String newPlayerName);
 
     void removePlayer(Player player);
 
@@ -26,5 +26,7 @@ public interface PlayerPoolService {
     UUID removeLastDummy();
 
     List<Player> getPlayers();
+
+    void changePlayerName(String newName, Player selectedPlayer);
 
 }

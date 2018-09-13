@@ -37,4 +37,6 @@ public interface Tournament {
     void setName(String text);
 
     Round getCurrentRound();
+
+    List<Match> getMatchesForRound(int roundNo);
 }

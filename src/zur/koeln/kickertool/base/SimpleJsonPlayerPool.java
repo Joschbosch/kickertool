@@ -55,9 +55,14 @@ public class SimpleJsonPlayerPool
         }
     }
     @Override
-    public void addPlayer(Player player) {
-        players.add(player);
-        savePlayerPool();
+    public Player createAndAddPlayer(String newPlayerName) {
+        if (newPlayerName != null && !newPlayerName.isEmpty()) {
+            HumanPlayer newPlayer = new HumanPlayer(newPlayerName);
+            players.add(newPlayer);
+            savePlayerPool();
+            return newPlayer;
+        }
+        return null;
     }
     @Override
     public void removePlayer(Player player) {
@@ -133,4 +138,11 @@ public class SimpleJsonPlayerPool
     public List<Player> getPlayers() {
         return players;
     }
+    @Override
+    public void changePlayerName(String newName, Player selectedPlayer) {
+        if (players.contains(selectedPlayer) && newName != null && !newName.isEmpty()) {
+            ((HumanPlayer) selectedPlayer).setName(newName);
+        }
+    }
+
 }

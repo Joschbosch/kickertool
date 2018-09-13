@@ -12,6 +12,7 @@ import zur.koeln.kickertool.api.player.Player;
 import zur.koeln.kickertool.api.player.PlayerPoolService;
 import zur.koeln.kickertool.api.tournament.Match;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
+import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.api.tournament.TournamentSettings;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
@@ -37,9 +38,9 @@ public class TournamentImpl
 
     private final List<UUID> participants = new ArrayList<>();
 
-    private final List<TournamentRound> completeRounds = new ArrayList<>();
+    private final List<Round> completeRounds = new ArrayList<>();
 
-    private TournamentRound currentRound;
+    private Round currentRound;
 
     private final Map<UUID, PlayerTournamentStatistics> scoreTable = new HashMap<>();
 
@@ -138,24 +139,24 @@ public class TournamentImpl
         started = true;
     }
 
-    public TournamentRound newRound() {
+    public Round newRound() {
 
         if (isCurrentRoundComplete()) {
             int nextRoundNumber = 1;
             if (currentRound != null) {
                 Map<UUID, PlayerTournamentStatistics> scoreTableClone = new HashMap<>();
                 scoreTable.forEach((key, value) -> {
-                    PlayerTournamentStatisticsImpl clonedStatistics = tournamentFactory.createNewTournamentStatistics(value.getPlayer());
-                    ((PlayerTournamentStatisticsImpl) value).getClone(clonedStatistics);
+                    PlayerTournamentStatistics clonedStatistics = tournamentFactory.createNewTournamentStatistics(value.getPlayer());
+                    ((PlayerTournamentStatisticsImpl) value).getClone((PlayerTournamentStatisticsImpl) clonedStatistics);
                     scoreTableClone.put(key, clonedStatistics);
                 });
-                currentRound.setScoreTableAtEndOfRound(scoreTableClone);
+                ((TournamentRound) currentRound).setScoreTableAtEndOfRound(scoreTableClone);
                 completeRounds.add(currentRound);
                 nextRoundNumber = currentRound.getRoundNo() + 1;
             }
-            TournamentRound newRound = tournamentFactory.createNewRound(nextRoundNumber);
+            Round newRound = tournamentFactory.createNewRound(nextRoundNumber);
             currentRound = newRound;
-            newRound.createMatches(getCurrentTableCopySortedByPoints(), config);
+            ((TournamentRound) newRound).createMatches(getCurrentTableCopySortedByPoints(), config);
             updatePlayTableUsage();
             return newRound;
         }
@@ -163,7 +164,7 @@ public class TournamentImpl
     }
 
     public void addMatchResult(Match m) throws MatchException {
-        currentRound.addMatchResult(m);
+        ((TournamentRound) currentRound).addMatchResult(m);
         playtables.get(Integer.valueOf(m.getTableNo())).setInUse(false);
         updatePlayTableUsage();
 
@@ -191,7 +192,7 @@ public class TournamentImpl
         Collection<PlayerTournamentStatistics> tableToSort = scoreTable.values();
 
         if (currentRound.getRoundNo() != roundNo) {
-            for (TournamentRound completeRound : completeRounds) {
+            for (Round completeRound : completeRounds) {
                 if (completeRound.getRoundNo() == roundNo && completeRound.getScoreTableAtEndOfRound() != null) {
                     tableToSort = completeRound.getScoreTableAtEndOfRound().values();
                     break;
@@ -238,6 +239,19 @@ public class TournamentImpl
 
     }
 
+    @Override
+    public List<Match> getMatchesForRound(int roundNo) {
+        if (currentRound.getRoundNo() == roundNo) {
+            return currentRound.getAllMatches();
+        }
+        for (Round r : completeRounds) {
+            if (r.getRoundNo() == roundNo) {
+                return r.getMatches();
+            }
+        }
+        return new ArrayList<>();
+    }
+
     public void setPlayerPool(PlayerPoolService playerPool) {
         this.playerPool = playerPool;
     }
@@ -257,7 +271,7 @@ public class TournamentImpl
     public void setStarted(boolean started) {
         this.started = started;
     }
-    public TournamentRound getCurrentRound() {
+    public Round getCurrentRound() {
         return currentRound;
     }
     public void setCurrentRound(TournamentRound currentRound) {
@@ -275,7 +289,7 @@ public class TournamentImpl
     public List<UUID> getParticipants() {
         return participants;
     }
-    public List<TournamentRound> getCompleteRounds() {
+    public List<Round> getCompleteRounds() {
         return completeRounds;
     }
     public Map<UUID, PlayerTournamentStatistics> getScoreTable() {

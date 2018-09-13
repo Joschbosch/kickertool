@@ -10,19 +10,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.player.Player;
-import zur.koeln.kickertool.base.HumanPlayer;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component
@@ -67,10 +62,12 @@ public class FXMLPlayerPoolManagementController implements UpdateableUIComponent
 	@FXML
 	public void onBtnAddPlayerClicked(ActionEvent event) {
 		
-		Player newPlayer = new HumanPlayer(getTxtPlayerName().getText());
-		getPlayerData().add(newPlayer);
+        Player newPlayer = backendController.addPlayerToPool(getTxtPlayerName().getText());
+        if (newPlayer != null) {
+            getPlayerData().add(newPlayer);
+        }
 		getTxtPlayerName().clear();
-        backendController.addPlayerToPool(newPlayer);
+
 		
 	}
 	// Event Listener on Button[#btnBack].onAction
@@ -95,8 +92,7 @@ public class FXMLPlayerPoolManagementController implements UpdateableUIComponent
 		
         if (!newName.isEmpty()) {
         	Player selectedPlayer = getTblPlayers().getSelectionModel().getSelectedItem();
-            ((HumanPlayer)selectedPlayer).setName(newName);
-            backendController.savePlayerPool();
+            backendController.changePlayerName(newName, selectedPlayer);
         }
 		
 	}

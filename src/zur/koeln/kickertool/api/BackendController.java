@@ -25,7 +25,7 @@ public interface BackendController {
 
     void savePlayerPool();
 
-    void addPlayerToPool(Player newPlayer);
+    Player addPlayerToPool(String playerName);
 
     void removePlayerFromPool(Player player);
 
@@ -76,4 +76,8 @@ public interface BackendController {
     List<Player> getPlayerListNotInTournament();
 
     void createAndAddNewPlayerToPoolAndTournament(String name);
+
+    List<Match> getMatchesForRound(int roundNo);
+
+    void changePlayerName(String newName, Player selectedPlayer);
 }

@@ -5,13 +5,7 @@ package zur.koeln.kickertool.base;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +20,7 @@ import zur.koeln.kickertool.api.config.TournamentSetingsKeys;
 import zur.koeln.kickertool.api.exceptions.MatchException;
 import zur.koeln.kickertool.api.player.Player;
 import zur.koeln.kickertool.api.player.PlayerPoolService;
+import zur.koeln.kickertool.api.tournament.Match;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.api.tournament.Tournament;
@@ -77,8 +72,8 @@ public class BasicBackendController
      * @param newPlayer
      */
     @Override
-    public void addPlayerToPool(Player newPlayer) {
-        playerpool.addPlayer(newPlayer);
+    public Player addPlayerToPool(String newPlayerName) {
+        return playerpool.createAndAddPlayer(newPlayerName);
     }
 
     /**
@@ -272,8 +267,7 @@ public class BasicBackendController
     }
     @Override
     public void createAndAddNewPlayerToPoolAndTournament(String playerName) {
-        Player newPlayer = new HumanPlayer(playerName);
-        addPlayerToPool(newPlayer);
+        Player newPlayer = addPlayerToPool(playerName);
         addParticipantToTournament(newPlayer);
     }
 
@@ -288,6 +282,11 @@ public class BasicBackendController
     }
 
     @Override
+    public List<Match> getMatchesForRound(int roundNo) {
+        return currentTournament.getMatchesForRound(roundNo);
+    }
+
+    @Override
     public Tournament getCurrentTournament() {
         return currentTournament;
     }
@@ -296,5 +295,10 @@ public class BasicBackendController
     public PlayerPoolService getPlayerpool() {
         return playerpool;
     }
+    @Override
+    public void changePlayerName(String newName, Player selectedPlayer) {
+        playerpool.changePlayerName(newName, selectedPlayer);
+        savePlayerPool();
 
+    }
 }
