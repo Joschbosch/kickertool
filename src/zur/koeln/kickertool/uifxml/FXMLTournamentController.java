@@ -3,9 +3,11 @@ package zur.koeln.kickertool.uifxml;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -24,6 +26,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.content.PlayerTournamentStatistics;
+import zur.koeln.kickertool.player.Player;
+import zur.koeln.kickertool.uifxml.dialog.AddPlayerDialog;
 import zur.koeln.kickertool.uifxml.tools.SimpleTimer;
 import zur.koeln.kickertool.uifxml.tools.TimerStringConverter;
 
@@ -33,6 +37,8 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	
 	@Autowired
     private BackendController backendController;
+    @Autowired
+    private ConfigurableApplicationContext ctx;
 	
 	@FXML
 	private TableView tblStatistics;
@@ -99,8 +105,12 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		
 		setupColumns();
 		
-		getTblStatistics().setItems(FXCollections.observableList(getBackendController().getCurrentTable().stream().sorted().collect(Collectors.toList())));
+		getTblStatistics().setItems(FXCollections.observableList(loadTableStatistics()));
 	
+	}
+	
+	private List<PlayerTournamentStatistics> loadTableStatistics() {
+		return getBackendController().getCurrentTable().stream().sorted().collect(Collectors.toList());
 	}
 
 	private void setupColumns() {
@@ -191,6 +201,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	@Override
 	public void update() {
 		getMatchEntryController().forEach(FXMLMatchEntryController::update);
+		getTblStatistics().setItems(FXCollections.observableList(loadTableStatistics()));
 		getTblStatistics().refresh();
 		getTblStatistics().getSortOrder().add(getTblColPoints());
 		getTblStatistics().sort();
@@ -198,6 +209,16 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 
 	@FXML public void onBtnAddPlayerClicked() {
 		
+		AddPlayerDialog<List<Player>> addPlayerDialog = new AddPlayerDialog<>(getCtx());
+		Optional<List<Player>> selectedPlayer = addPlayerDialog.showAndWait();
+		
+		if (selectedPlayer.isPresent()) {
+			selectedPlayer.get().forEach(ePlayer -> {
+				getBackendController().addParticipantToTournament(ePlayer);
+			});
+		}
+		
+		update();
 	}
 
 	@FXML public void onBtnPausePlayerClicked() {
@@ -213,7 +234,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		
 		getBackendController().getCurrentTournament().getCurrentRound().getMatches().forEach(eMatch -> {
 			try {
-				FXMLLoader matchEntryLoader = getMatchEntryFXMLLoader();
+				FXMLLoader matchEntryLoader = getFXMLLoader(FXMLGUI.MATCH_ENTRY);
 				Parent pane = matchEntryLoader.load();
 				FXMLMatchEntryController matchEntryController = matchEntryLoader.getController();
 				matchEntryController.setMatch(eMatch);
@@ -244,7 +265,10 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		}
 	}
 	
-	private FXMLLoader getMatchEntryFXMLLoader() {
-		return new FXMLLoader(getClass().getResource("MatchEntry.fxml"));
+	private FXMLLoader getFXMLLoader(FXMLGUI gui) {
+		
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(gui.getFxmlFile()));
+		loader.setControllerFactory(getCtx()::getBean);
+		return loader;
 	}
 }

@@ -1,6 +1,7 @@
 package zur.koeln.kickertool.uifxml;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javafx.fxml.FXML;
@@ -21,7 +22,7 @@ public class FXMLTournamentConfigurationController implements UpdateableUICompon
 
     @Autowired
     private BackendController backendController;
-
+    
 	@FXML
 	private Label lblTournament;
 	@FXML

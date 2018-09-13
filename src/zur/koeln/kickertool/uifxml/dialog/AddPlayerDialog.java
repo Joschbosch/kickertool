@@ -2,28 +2,28 @@ package zur.koeln.kickertool.uifxml.dialog;
 
 import java.io.IOException;
 
+import org.springframework.context.ConfigurableApplicationContext;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
+import zur.koeln.kickertool.uifxml.FXMLAddPlayerDialogController;
 import zur.koeln.kickertool.uifxml.FXMLGUI;
 import zur.koeln.kickertool.uifxml.FXMLGUIController;
-import zur.koeln.kickertool.uifxml.FXMLMatchResultDialogController;
 
-public class ScoreDialog<R> extends Dialog<R> {
-	
-    public ScoreDialog(String teamHomeName, String teamVisitName) {
+public class AddPlayerDialog<R> extends Dialog<R> {
 
-        setTitle("Ergebnisse");
+	public AddPlayerDialog(ConfigurableApplicationContext ctx) {
+
+        setTitle("Spieler hinzufügen");
         
-        FXMLLoader loader = new FXMLLoader(FXMLGUIController.class.getResource(FXMLGUI.MATCH_RESULT_DIALOG.getFxmlFile()));
+        FXMLLoader loader = new FXMLLoader(FXMLGUIController.class.getResource(FXMLGUI.ADD_PLAYER_DIALOG.getFxmlFile()));
 
         try {
+        	loader.setControllerFactory(ctx::getBean);
         	DialogPane pane = loader.load();
-        	
-        	FXMLMatchResultDialogController dialogController = loader.getController();
-        	
-        	dialogController.init(teamHomeName, teamVisitName);
+        	FXMLAddPlayerDialogController dialogController = loader.getController();
 			setDialogPane(pane);
 			
 	        setResultConverter(dialogButton -> {
@@ -38,5 +38,5 @@ public class ScoreDialog<R> extends Dialog<R> {
 			e.printStackTrace();
 		}
     }
-
+	
 }

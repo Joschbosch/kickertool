@@ -83,19 +83,19 @@ public class FXMLGUIController
 		FXMLLoader loader = null;
 		switch (newState) {
 		case MAIN_MENU:
-			loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
+			loader = new FXMLLoader(getClass().getResource(FXMLGUI.MAIN_MENU.getFxmlFile()));
 			break;
 		case NEW_TOURNAMENT_CONFIG:
-			loader = new FXMLLoader(getClass().getResource("TournamentConfiguration.fxml"));
+			loader = new FXMLLoader(getClass().getResource(FXMLGUI.TOURNAMENT_CONFIGURATION.getFxmlFile()));
 			break;
 		case PLAYER_CONFIG:
-			loader = new FXMLLoader(getClass().getResource("PlayerSelection.fxml"));
+			loader = new FXMLLoader(getClass().getResource(FXMLGUI.PLAYER_SELECTION.getFxmlFile()));
 			break;
 		case PLAYER_POOL:
-			loader = new FXMLLoader(getClass().getResource("PlayerPoolManagement.fxml"));
+			loader = new FXMLLoader(getClass().getResource(FXMLGUI.PLAYER_POOL_MANAGEMENT.getFxmlFile()));
 			break;
 		case TOURNAMENT:
-			loader = new FXMLLoader(getClass().getResource("Tournament.fxml"));
+			loader = new FXMLLoader(getClass().getResource(FXMLGUI.TOURMANENT.getFxmlFile()));
 			break;
 		default:
 			return null;
@@ -104,6 +104,7 @@ public class FXMLGUIController
 		
 		return loader;
 	}
+	
 
     @SuppressWarnings("nls")
 	@PostConstruct

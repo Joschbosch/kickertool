@@ -55,7 +55,7 @@ public class FXMLPlayerPoolManagementController implements UpdateableUIComponent
 	
 	private List<Player> loadPlayerData() {
 		
-        return backendController.getPlayerpool().getPlayers();
+        return backendController.getPlayer();
 	}
 	
 	// Event Listener on Button[#btnAddPlayer].onAction
