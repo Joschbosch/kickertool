@@ -1,8 +1,10 @@
 package zur.koeln.kickertool.tournament;
 
 import zur.koeln.kickertool.api.TournamentMode;
+import zur.koeln.kickertool.api.content.TournamentSettings;
 
-public class TournamentConfig {
+public class TournamentConfig
+    implements TournamentSettings {
 
     private TournamentMode mode = TournamentMode.SWISS_TUPEL;
 

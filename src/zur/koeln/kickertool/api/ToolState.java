@@ -1,7 +1,7 @@
 /**
  * 
  */
-package zur.koeln.kickertool.base;
+package zur.koeln.kickertool.api;
 
 public enum ToolState {
 
