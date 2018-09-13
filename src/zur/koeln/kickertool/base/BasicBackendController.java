@@ -6,6 +6,7 @@ package zur.koeln.kickertool.base;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,15 +15,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.PlayerPoolService;
+import zur.koeln.kickertool.api.TournamentConfigKeys;
+import zur.koeln.kickertool.api.TournamentMode;
+import zur.koeln.kickertool.api.content.PlayerTournamentStatistics;
+import zur.koeln.kickertool.api.content.Round;
+import zur.koeln.kickertool.api.content.Tournament;
 import zur.koeln.kickertool.api.ui.GUIController;
 import zur.koeln.kickertool.exception.MatchException;
 import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.tournament.TournamentConfigKeys;
-import zur.koeln.kickertool.tournament.TournamentMode;
-import zur.koeln.kickertool.tournament.content.Match;
-import zur.koeln.kickertool.tournament.content.PlayerTournamentStatistics;
-import zur.koeln.kickertool.tournament.content.Round;
-import zur.koeln.kickertool.tournament.content.Tournament;
+import zur.koeln.kickertool.tournament.content.TournamentImpl;
+import zur.koeln.kickertool.tournament.content.TournamentRound;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
 @Component
@@ -38,7 +40,6 @@ public class BasicBackendController
     private GUIController guiController;
 
     private Tournament currentTournament;
-
 
     /**
      * 
@@ -68,7 +69,7 @@ public class BasicBackendController
      * @param newPlayer
      */
     @Override
-    public void addPlayer(Player newPlayer) {
+    public void addPlayerToPool(Player newPlayer) {
         playerpool.addPlayer(newPlayer);
     }
 
@@ -76,7 +77,7 @@ public class BasicBackendController
      * @param player
      */
     @Override
-    public void removePlayer(Player player) {
+    public void removePlayerFromPool(Player player) {
         playerpool.removePlayer(player);
     }
 
@@ -102,29 +103,29 @@ public class BasicBackendController
     @Override
     public void changedTournamentConfig(TournamentConfigKeys configKey, Integer newValue) {
         switch (configKey) {
-        case TABLES:
-            currentTournament.getConfig().setTableCount(newValue.intValue());
-            break;
-        case MATCHES_TO_WIN:
-            currentTournament.getConfig().setMatchesToWin(newValue.intValue());
-            break;
-        case GOALS_FOR_WIN:
-            currentTournament.getConfig().setGoalsToWin(newValue.intValue());
-            break;
-        case POINTS_FOR_WINNER:
-            currentTournament.getConfig().setPointsForWinner(newValue.intValue());
-            break;
-        case POINTS_FOR_DRAW:
-            currentTournament.getConfig().setPointsForDraw(newValue.intValue());
-            break;
-        case MINUTES_PER_MATCH:
-            currentTournament.getConfig().setMinutesPerMatch(newValue.intValue());
-            break;
-        case RANDOM_ROUNDS:
-            currentTournament.getConfig().setRandomRounds(newValue.intValue());
-            break;
-        default:
-            break;
+            case TABLES :
+                currentTournament.getConfig().setTableCount(newValue.intValue());
+                break;
+            case MATCHES_TO_WIN :
+                currentTournament.getConfig().setMatchesToWin(newValue.intValue());
+                break;
+            case GOALS_FOR_WIN :
+                currentTournament.getConfig().setGoalsToWin(newValue.intValue());
+                break;
+            case POINTS_FOR_WINNER :
+                currentTournament.getConfig().setPointsForWinner(newValue.intValue());
+                break;
+            case POINTS_FOR_DRAW :
+                currentTournament.getConfig().setPointsForDraw(newValue.intValue());
+                break;
+            case MINUTES_PER_MATCH :
+                currentTournament.getConfig().setMinutesPerMatch(newValue.intValue());
+                break;
+            case RANDOM_ROUNDS :
+                currentTournament.getConfig().setRandomRounds(newValue.intValue());
+                break;
+            default :
+                break;
         }
 
     }
@@ -205,13 +206,13 @@ public class BasicBackendController
      * @param value
      */
     @Override
-    public void updateMatchResult(Match match, Integer scoreHome, Integer scoreVisiting) {
+    public void updateMatchResult(zur.koeln.kickertool.api.content.Match match, Integer scoreHome, Integer scoreVisiting) {
         try {
             if (match.getResult() == null) {
-                match.setResult(scoreHome.intValue(), scoreVisiting.intValue());
+                match.setResultScores(scoreHome.intValue(), scoreVisiting.intValue());
                 currentTournament.addMatchResult(match);
             } else {
-                match.setResult(scoreHome.intValue(), scoreVisiting.intValue());
+                match.setResultScores(scoreHome.intValue(), scoreVisiting.intValue());
             }
         } catch (MatchException e) {
             e.printStackTrace();
@@ -236,10 +237,10 @@ public class BasicBackendController
 
     private Tournament importTournament(File tournamentToImport) throws IOException {
         ObjectMapper m = new ObjectMapper();
-        currentTournament = m.readValue(tournamentToImport, Tournament.class);
-        currentTournament.setPlayerPool(playerpool);
-        currentTournament.setTournamentFactory(tournamentFactory);
-        currentTournament.initializeAfterImport();
+        currentTournament = m.readValue(tournamentToImport, TournamentImpl.class);
+        ((TournamentImpl) currentTournament).setPlayerPool(playerpool);
+        ((TournamentRound) currentTournament).setTournamentFactory(tournamentFactory);
+        ((TournamentImpl) currentTournament).initializeAfterImport();
         return currentTournament;
 
     }
@@ -260,6 +261,17 @@ public class BasicBackendController
 
     public void setGuiController(GUIController guiController) {
         this.guiController = guiController;
+    }
+    @Override
+    public void createAndAddNewPlayerToPoolAndTournament(String playerName) {
+        Player newPlayer = new Player(playerName);
+        addPlayerToPool(newPlayer);
+        addParticipantToTournament(newPlayer);
+    }
+
+    @Override
+    public List<Player> getPlayerListNotInTournament() {
+        return playerpool.getPlayers().stream().filter(player -> !currentTournament.getScoreTable().containsKey(player.getUid())).collect(Collectors.toList());
     }
 
     @Override

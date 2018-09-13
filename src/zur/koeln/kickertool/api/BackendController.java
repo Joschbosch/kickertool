@@ -6,14 +6,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import zur.koeln.kickertool.api.content.Match;
+import zur.koeln.kickertool.api.content.PlayerTournamentStatistics;
+import zur.koeln.kickertool.api.content.Round;
+import zur.koeln.kickertool.api.content.Tournament;
 import zur.koeln.kickertool.api.ui.GUIController;
 import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.tournament.TournamentConfigKeys;
-import zur.koeln.kickertool.tournament.TournamentMode;
-import zur.koeln.kickertool.tournament.content.Match;
-import zur.koeln.kickertool.tournament.content.Tournament;
-import zur.koeln.kickertool.tournament.content.PlayerTournamentStatistics;
-import zur.koeln.kickertool.tournament.content.Round;
 
 public interface BackendController {
 
@@ -23,9 +21,9 @@ public interface BackendController {
 
     void savePlayerPool();
 
-    void addPlayer(Player newPlayer);
+    void addPlayerToPool(Player newPlayer);
 
-    void removePlayer(Player player);
+    void removePlayerFromPool(Player player);
 
     Tournament createNewTournament(String text);
 
@@ -71,4 +69,7 @@ public interface BackendController {
 
     List<PlayerTournamentStatistics> getCurrentTable();
 
+    List<Player> getPlayerListNotInTournament();
+
+    void createAndAddNewPlayerToPoolAndTournament(String name);
 }

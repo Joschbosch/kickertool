@@ -11,8 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.util.Pair;
 import zur.koeln.kickertool.api.BackendController;
-import zur.koeln.kickertool.api.ui.GUIController;
-import zur.koeln.kickertool.tournament.content.Match;
+import zur.koeln.kickertool.api.content.Match;
 import zur.koeln.kickertool.uifxml.dialog.ScoreDialog;
 
 public class FXMLMatchEntryController implements UpdateableUIComponent{
@@ -30,14 +29,14 @@ public class FXMLMatchEntryController implements UpdateableUIComponent{
 	@Autowired
     private BackendController backendController;
 	
-	private Match match;
+    private Match match;
 	
 	private String teamHomeName;
 	private String teamVisitName;
 	
-	private BooleanProperty matchFinished = new SimpleBooleanProperty(false);
+	private final BooleanProperty matchFinished = new SimpleBooleanProperty(false);
 	
-	public void setMatch(Match currentMatch) {
+    public void setMatch(Match currentMatch) {
 		match = currentMatch;
 		init();
 	}

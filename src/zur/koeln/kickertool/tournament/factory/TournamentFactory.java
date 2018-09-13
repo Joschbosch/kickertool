@@ -14,12 +14,12 @@ public class TournamentFactory {
     @Autowired
     private ApplicationContext ctx;
 
-    public Tournament createNewTournament() {
-        return ctx.getBean(Tournament.class);
+    public TournamentImpl createNewTournament() {
+        return ctx.getBean(TournamentImpl.class);
     }
 
-    public Match createNewMatch(Integer roundNo, Team home, Team visiting, int matchNumber) {
-        Match newMatch = ctx.getBean(Match.class);
+    public TournamentMatch createNewMatch(Integer roundNo, TournamentTeam home, TournamentTeam visiting, int matchNumber) {
+        TournamentMatch newMatch = ctx.getBean(TournamentMatch.class);
         newMatch.setRoundNumber(roundNo);
         newMatch.setHomeTeam(home);
         newMatch.setVisitingTeam(visiting);
@@ -27,14 +27,14 @@ public class TournamentFactory {
         return newMatch;
     }
 
-    public Round createNewRound(int nextRoundNumber) {
-        Round bean = ctx.getBean(Round.class);
+    public TournamentRound createNewRound(int nextRoundNumber) {
+        TournamentRound bean = ctx.getBean(TournamentRound.class);
         bean.setRoundNo(nextRoundNumber);
         return bean;
     }
 
-    public PlayerTournamentStatistics createNewTournamentStatistics(Player p) {
-        PlayerTournamentStatistics statistics = ctx.getBean(PlayerTournamentStatistics.class);
+    public PlayerTournamentStatisticsImpl createNewTournamentStatistics(Player p) {
+        PlayerTournamentStatisticsImpl statistics = ctx.getBean(PlayerTournamentStatisticsImpl.class);
         statistics.setPlayer(p);
         statistics.setPlayerId(p.getUid());
         return statistics;

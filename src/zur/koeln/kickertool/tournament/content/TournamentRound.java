@@ -11,14 +11,18 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import zur.koeln.kickertool.api.TournamentMode;
+import zur.koeln.kickertool.api.content.Match;
+import zur.koeln.kickertool.api.content.PlayerTournamentStatistics;
+import zur.koeln.kickertool.api.content.Round;
 import zur.koeln.kickertool.exception.MatchException;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.TournamentConfig;
-import zur.koeln.kickertool.tournament.TournamentMode;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
 @Component
-public class Round {
+public class TournamentRound
+    implements Round {
 
     @Autowired
     private TournamentFactory tournamentFactory;
@@ -44,8 +48,8 @@ public class Round {
         table.forEach(stat ->   System.out.println(stat.getPlayer().getName()));
         if (roundNo <= config.getRandomRounds()) {
             while (table.size() > 3) {
-                Team home = new Team(getRandomPlayer(table), getRandomPlayer(table));
-                Team visiting = new Team(getRandomPlayer(table), getRandomPlayer(table));
+                TournamentTeam home = new TournamentTeam(getRandomPlayer(table), getRandomPlayer(table));
+                TournamentTeam visiting = new TournamentTeam(getRandomPlayer(table), getRandomPlayer(table));
                 createMatch(config, home, visiting);
             }
         } else {
@@ -57,8 +61,8 @@ public class Round {
     private void createRoundByTournamentType(List<PlayerTournamentStatistics> table, TournamentConfig config) {
         if (config.getMode() == TournamentMode.SWISS_DYP) {
             while (table.size() > 3) {
-                Team home = new Team(table.get(0).getPlayer(), table.get(3).getPlayer());
-                Team visiting = new Team(table.get(1).getPlayer(), table.get(2).getPlayer());
+                TournamentTeam home = new TournamentTeam(table.get(0).getPlayer(), table.get(3).getPlayer());
+                TournamentTeam visiting = new TournamentTeam(table.get(1).getPlayer(), table.get(2).getPlayer());
                 table.remove(0);
                 table.remove(0);
                 table.remove(0);
@@ -74,12 +78,12 @@ public class Round {
                 table.remove(0);
             }
             while (playerPairs.size() > 3) {
-                Team home = new Team(playerPairs.get(0).getValue0(), playerPairs.get(3).getValue1());
-                Team visiting = new Team(playerPairs.get(0).getValue1(), playerPairs.get(3).getValue0());
+                TournamentTeam home = new TournamentTeam(playerPairs.get(0).getValue0(), playerPairs.get(3).getValue1());
+                TournamentTeam visiting = new TournamentTeam(playerPairs.get(0).getValue1(), playerPairs.get(3).getValue0());
                 createMatch(config, home, visiting);
 
-                home = new Team(playerPairs.get(1).getValue0(), playerPairs.get(2).getValue1());
-                visiting = new Team(playerPairs.get(1).getValue1(), playerPairs.get(2).getValue0());
+                home = new TournamentTeam(playerPairs.get(1).getValue0(), playerPairs.get(2).getValue1());
+                visiting = new TournamentTeam(playerPairs.get(1).getValue1(), playerPairs.get(2).getValue0());
                 createMatch(config, home, visiting);
 
                 playerPairs.remove(0);
@@ -88,16 +92,16 @@ public class Round {
                 playerPairs.remove(0);
             }
             if (playerPairs.size() > 1) { // notwendig?
-                Team home = new Team(playerPairs.get(0).getValue0(), playerPairs.get(1).getValue1());
-                Team visiting = new Team(playerPairs.get(0).getValue1(), playerPairs.get(1).getValue0());
+                TournamentTeam home = new TournamentTeam(playerPairs.get(0).getValue0(), playerPairs.get(1).getValue1());
+                TournamentTeam visiting = new TournamentTeam(playerPairs.get(0).getValue1(), playerPairs.get(1).getValue0());
                 createMatch(config, home, visiting);
 
             }
         }
     }
 
-    private void createMatch(TournamentConfig config, Team home, Team visiting) {
-        Match m = tournamentFactory.createNewMatch(Integer.valueOf(roundNo), home, visiting, config.getCurrentNoOfMatches());
+    private void createMatch(TournamentConfig config, TournamentTeam home, TournamentTeam visiting) {
+        TournamentMatch m = tournamentFactory.createNewMatch(Integer.valueOf(roundNo), home, visiting, config.getCurrentNoOfMatches());
         config.setCurrentNoOfMatches(config.getCurrentNoOfMatches() + 1);
         matches.add(m);
     }
@@ -164,5 +168,7 @@ public class Round {
     public List<Match> getCompleteMatches() {
         return completeMatches;
     }
+
+
 
 }

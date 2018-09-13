@@ -7,9 +7,11 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import zur.koeln.kickertool.api.content.Team;
 import zur.koeln.kickertool.player.Player;
 
-public class Team {
+public class TournamentTeam
+    implements Team {
 
     private UUID player1Id;
     private UUID player2Id;
@@ -19,11 +21,11 @@ public class Team {
     @JsonIgnore
     private Player player2;
 
-    public Team() {
+    public TournamentTeam() {
 
     }
 
-    public Team(
+    public TournamentTeam(
         Player p1,
         Player p2) {
         this.setPlayer1Id(p1.getUid());

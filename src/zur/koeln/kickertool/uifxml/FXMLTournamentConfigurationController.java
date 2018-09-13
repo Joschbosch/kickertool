@@ -12,8 +12,8 @@ import javafx.util.converter.IntegerStringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.api.BackendController;
+import zur.koeln.kickertool.api.content.Tournament;
 import zur.koeln.kickertool.tournament.TournamentConfig;
-import zur.koeln.kickertool.tournament.content.Tournament;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)

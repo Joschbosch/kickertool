@@ -65,7 +65,7 @@ public class FXMLPlayerPoolManagementController implements UpdateableUIComponent
 		Player newPlayer = new Player(getTxtPlayerName().getText());
 		getPlayerData().add(newPlayer);
 		getTxtPlayerName().clear();
-        backendController.addPlayer(newPlayer);
+        backendController.addPlayerToPool(newPlayer);
 		
 	}
 	// Event Listener on Button[#btnBack].onAction
@@ -78,7 +78,7 @@ public class FXMLPlayerPoolManagementController implements UpdateableUIComponent
 	public void onPlayerDeleteClicked(ActionEvent event) {
 		
 		List<Player> selectedPlayers = getTblPlayers().getSelectionModel().getSelectedItems();
-        selectedPlayers.forEach(ePlayer -> backendController.removePlayer(ePlayer));
+        selectedPlayers.forEach(ePlayer -> backendController.removePlayerFromPool(ePlayer));
 		getPlayerData().removeAll(selectedPlayers);
 		
 	}

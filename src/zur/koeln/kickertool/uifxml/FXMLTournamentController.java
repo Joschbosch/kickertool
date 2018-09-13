@@ -14,13 +14,8 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -28,7 +23,7 @@ import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.api.BackendController;
-import zur.koeln.kickertool.tournament.content.PlayerTournamentStatistics;
+import zur.koeln.kickertool.api.content.PlayerTournamentStatistics;
 import zur.koeln.kickertool.uifxml.tools.SimpleTimer;
 import zur.koeln.kickertool.uifxml.tools.TimerStringConverter;
 
@@ -57,7 +52,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	@FXML
 	private Button btnCreateRound;
 	
-	private SimpleTimer timer = new SimpleTimer();
+	private final SimpleTimer timer = new SimpleTimer();
 
 	@FXML 
 	private ToggleButton tglPauseStopwatch;
@@ -110,82 +105,82 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 
 	private void setupColumns() {
 		
-		getTblColPlayerName().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+        getTblColPlayerName().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
 
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
 				
 				return new SimpleStringProperty(param.getValue().getPlayer().getName());
 			}
 		});
 		
-		getTblColPlayedMatched().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+        getTblColPlayedMatched().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
 
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
 				
 				return new SimpleStringProperty(String.valueOf(param.getValue().getMatchesDone()));
 			}
 		});
 		
-		getTblColMatchesWon().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+        getTblColMatchesWon().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
 
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
 				
 				return new SimpleStringProperty(String.valueOf(param.getValue().getMatchesWonCount()));
 			}
 		});
 		
-		getTblColMatchesLost().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+        getTblColMatchesLost().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
 
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
 				
 				return new SimpleStringProperty(String.valueOf(param.getValue().getMatchesLostCount()));
 			}
 		});
 		
-		getTblColMatchesRemis().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+        getTblColMatchesRemis().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
 
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
 				
 				return new SimpleStringProperty(String.valueOf(param.getValue().getMatchesDrawCount()));
 			}
 		});
 		
-		getTblColGoals().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+        getTblColGoals().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
 
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
 				
 				return new SimpleStringProperty(String.valueOf(param.getValue().getGoalsShot()));
 			}
 		});
 		
-		getTblColGoalsEnemies().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+        getTblColGoalsEnemies().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
 
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
 				
 				return new SimpleStringProperty(String.valueOf(param.getValue().getGoalsConceded()));
 			}
 		});
 		
-		getTblColGoalsDifference().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+        getTblColGoalsDifference().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
 
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
 				
 				return new SimpleStringProperty(String.valueOf(param.getValue().getGoalDiff()));
 			}
 		});
 		
-		getTblColPoints().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+        getTblColPoints().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
 
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
 				
 				return new SimpleStringProperty(String.valueOf(param.getValue().getPointsForConfiguration(getBackendController().getCurrentTournament().getConfig())));
 			}

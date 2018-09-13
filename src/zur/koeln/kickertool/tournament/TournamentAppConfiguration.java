@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Scope;
 
 import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.base.BasicBackendController;
-import zur.koeln.kickertool.tournament.content.Match;
-import zur.koeln.kickertool.tournament.content.PlayerTournamentStatistics;
-import zur.koeln.kickertool.tournament.content.Round;
-import zur.koeln.kickertool.tournament.content.Tournament;
+import zur.koeln.kickertool.tournament.content.TournamentMatch;
+import zur.koeln.kickertool.tournament.content.PlayerTournamentStatisticsImpl;
+import zur.koeln.kickertool.tournament.content.TournamentRound;
+import zur.koeln.kickertool.tournament.content.TournamentImpl;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
 @Configuration
@@ -31,29 +31,29 @@ public class TournamentAppConfiguration {
     @Bean
     @Primary
     @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Tournament createTournamentBean() {
-        return new Tournament();
+    public TournamentImpl createTournamentBean() {
+        return new TournamentImpl();
     }
 
     @Bean
     @Primary
     @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Match createMatchBean() {
-        return new Match();
+    public TournamentMatch createMatchBean() {
+        return new TournamentMatch();
     }
 
     @Bean
     @Primary
     @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Round createRoundBean() {
-        return new Round();
+    public TournamentRound createRoundBean() {
+        return new TournamentRound();
     }
 
     @Bean
     @Primary
     @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public PlayerTournamentStatistics createTournamentStatisticsBean() {
-        return new PlayerTournamentStatistics();
+    public PlayerTournamentStatisticsImpl createTournamentStatisticsBean() {
+        return new PlayerTournamentStatisticsImpl();
     }
 
     @Bean

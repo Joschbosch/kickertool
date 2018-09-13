@@ -9,17 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import zur.koeln.kickertool.api.content.Match;
+import zur.koeln.kickertool.api.content.PlayerTournamentStatistics;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 
-public class PlayerTournamentStatistics implements Comparable<PlayerTournamentStatistics> {
+public class PlayerTournamentStatisticsImpl
+    implements Comparable<PlayerTournamentStatistics>, PlayerTournamentStatistics {
 
 	@JsonIgnore
 	@Autowired
 	private TournamentConfig config;
 
 	@JsonIgnore
-	private Map<UUID, Match> uidToMatch = new HashMap<>();
+    private Map<UUID, Match> uidToMatch = new HashMap<>();
 
 	private UUID playerId;
 
@@ -28,9 +31,9 @@ public class PlayerTournamentStatistics implements Comparable<PlayerTournamentSt
 
 	private List<UUID> matches = new LinkedList<>();
 
-	public void addMatchResult(Match match) {
+    public void addMatchResult(Match match) {
 		matches.add(match.getMatchID());
-		getUidToMatch().put(match.getMatchID(), match);
+        getUidToMatch().put(match.getMatchID(), match);
 	}
 
 	@JsonIgnore
@@ -40,7 +43,7 @@ public class PlayerTournamentStatistics implements Comparable<PlayerTournamentSt
 
 	@JsonIgnore
 	public int getGoalsShot() {
-		return matches.stream().mapToInt(m -> getUidToMatch().get(m).getGoalsForPlayer(playerId)).sum();
+		return matches.stream().mapToInt(m -> ((TournamentMatch) getUidToMatch().get(m)).getGoalsForPlayer(playerId)).sum();
 	}
 
 	@JsonIgnore
@@ -89,7 +92,7 @@ public class PlayerTournamentStatistics implements Comparable<PlayerTournamentSt
 	}
 
 	@Override
-	public int compareTo(PlayerTournamentStatistics o2) {
+    public int compareTo(PlayerTournamentStatistics o2) {
 		Player player1 = player;
 		Player player2 = o2.getPlayer();
 		if (player1 == null) {
@@ -149,17 +152,17 @@ public class PlayerTournamentStatistics implements Comparable<PlayerTournamentSt
 
 	}
 
-	public void getClone(PlayerTournamentStatistics tournamentStatistics) {
+	public void getClone(PlayerTournamentStatisticsImpl tournamentStatistics) {
 		tournamentStatistics.getMatches().addAll(getMatches());
 		tournamentStatistics.setUidToMatch(getUidToMatch());
 		tournamentStatistics.setPlayer(player);
 	}
 
-	public Map<UUID, Match> getUidToMatch() {
+    public Map<UUID, Match> getUidToMatch() {
 		return uidToMatch;
 	}
 
-	public void setUidToMatch(Map<UUID, Match> uidToMatch) {
+    public void setUidToMatch(Map<UUID, Match> uidToMatch) {
 		this.uidToMatch = uidToMatch;
 	}
 

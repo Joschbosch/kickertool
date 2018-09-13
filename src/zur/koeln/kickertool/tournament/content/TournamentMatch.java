@@ -10,19 +10,20 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class Match {
+import zur.koeln.kickertool.api.MatchResult;
+import zur.koeln.kickertool.api.content.Match;
 
-    private enum MatchResult {
-        HOME, VISITING, DRAW;
-    }
+public class TournamentMatch
+    implements Match {
+
 
     private final UUID matchID = UUID.randomUUID();
 
     private Integer roundNumber;
 
-    private Team homeTeam;
+    private TournamentTeam homeTeam;
 
-    private Team visitingTeam;
+    private TournamentTeam visitingTeam;
 
     private int matchNo;
 
@@ -34,13 +35,13 @@ public class Match {
 
     private MatchResult result = null;
 
-    public Match() {
+    public TournamentMatch() {
 
     }
-    public Match(
+    public TournamentMatch(
         Integer roundNumber,
-        Team homeTeam,
-        Team visitingTeam,
+        TournamentTeam homeTeam,
+        TournamentTeam visitingTeam,
         int matchNo) {
         this.roundNumber = roundNumber;
         this.homeTeam = homeTeam;
@@ -48,7 +49,7 @@ public class Match {
         this.matchNo = matchNo;
     }
 
-    public void setResult(int scoreHome, int scoreVisiting) {
+    public void setResultScores(int scoreHome, int scoreVisiting) {
         this.scoreHome = scoreHome;
         this.scoreVisiting = scoreVisiting;
         if (scoreHome > scoreVisiting) {
@@ -71,7 +72,7 @@ public class Match {
 
     }
 
-    public Team getOpposingTeam(UUID playerId) {
+    public TournamentTeam getOpposingTeam(UUID playerId) {
         if (isPlayerInHomeTeam(playerId)) {
             return visitingTeam;
         }
@@ -148,16 +149,16 @@ public class Match {
     public void setRoundNumber(Integer roundNumber) {
         this.roundNumber = roundNumber;
     }
-    public Team getHomeTeam() {
+    public TournamentTeam getHomeTeam() {
         return homeTeam;
     }
-    public void setHomeTeam(Team homeTeam) {
+    public void setHomeTeam(TournamentTeam homeTeam) {
         this.homeTeam = homeTeam;
     }
-    public Team getVisitingTeam() {
+    public TournamentTeam getVisitingTeam() {
         return visitingTeam;
     }
-    public void setVisitingTeam(Team visitingTeam) {
+    public void setVisitingTeam(TournamentTeam visitingTeam) {
         this.visitingTeam = visitingTeam;
     }
     public int getMatchNo() {

@@ -8,13 +8,16 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import zur.koeln.kickertool.api.PlayerPoolService;
+import zur.koeln.kickertool.api.content.Match;
+import zur.koeln.kickertool.api.content.PlayerTournamentStatistics;
 import zur.koeln.kickertool.exception.MatchException;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 
 @Component
-public class Tournament {
+public class TournamentImpl
+    implements zur.koeln.kickertool.api.content.Tournament {
 
     @JsonIgnore
     @Autowired
@@ -34,9 +37,9 @@ public class Tournament {
 
     private final List<UUID> participants = new ArrayList<>();
 
-    private final List<Round> completeRounds = new ArrayList<>();
+    private final List<TournamentRound> completeRounds = new ArrayList<>();
 
-    private Round currentRound;
+    private TournamentRound currentRound;
 
     private final Map<UUID, PlayerTournamentStatistics> scoreTable = new HashMap<>();
 
@@ -135,22 +138,22 @@ public class Tournament {
         started = true;
     }
 
-    public Round newRound() {
+    public TournamentRound newRound() {
 
         if (isCurrentRoundComplete()) {
             int nextRoundNumber = 1;
             if (currentRound != null) {
                 Map<UUID, PlayerTournamentStatistics> scoreTableClone = new HashMap<>();
                 scoreTable.forEach((key, value) -> {
-                    PlayerTournamentStatistics clonedStatistics = tournamentFactory.createNewTournamentStatistics(value.getPlayer());
-                    value.getClone(clonedStatistics);
+                    PlayerTournamentStatisticsImpl clonedStatistics = tournamentFactory.createNewTournamentStatistics(value.getPlayer());
+                    ((PlayerTournamentStatisticsImpl) value).getClone(clonedStatistics);
                     scoreTableClone.put(key, clonedStatistics);
                 });
                 currentRound.setScoreTableAtEndOfRound(scoreTableClone);
                 completeRounds.add(currentRound);
                 nextRoundNumber = currentRound.getRoundNo() + 1;
             }
-            Round newRound = tournamentFactory.createNewRound(nextRoundNumber);
+            TournamentRound newRound = tournamentFactory.createNewRound(nextRoundNumber);
             currentRound = newRound;
             newRound.createMatches(getCurrentTableCopySortedByPoints(), config);
             updatePlayTableUsage();
@@ -175,7 +178,7 @@ public class Tournament {
             if (ongoing.getTableNo() == -1) {
                 for (GamingTable gameTable : playtables.values()) {
                     if (!gameTable.isInUse() && gameTable.isActive()) {
-                        ongoing.setTableNo(gameTable.getTableNumber());
+                        ((TournamentMatch) ongoing).setTableNo(gameTable.getTableNumber());
                         gameTable.setInUse(true);
                         break;
                     }
@@ -188,7 +191,7 @@ public class Tournament {
         Collection<PlayerTournamentStatistics> tableToSort = scoreTable.values();
 
         if (currentRound.getRoundNo() != roundNo) {
-            for (Round completeRound : completeRounds) {
+            for (TournamentRound completeRound : completeRounds) {
                 if (completeRound.getRoundNo() == roundNo && completeRound.getScoreTableAtEndOfRound() != null) {
                     tableToSort = completeRound.getScoreTableAtEndOfRound().values();
                     break;
@@ -227,7 +230,7 @@ public class Tournament {
         Map<UUID, Match> uuidToMatch = new HashMap<>();
         getAllMatches().forEach(m -> uuidToMatch.put(m.getMatchID(), m));
         scoreTable.values().forEach(tournamentStatistic -> {
-            tournamentStatistic.setUidToMatch(uuidToMatch);
+            ((PlayerTournamentStatisticsImpl) tournamentStatistic).setUidToMatch(uuidToMatch);
             if (dummyPlayerActive.contains(tournamentStatistic.getPlayerId())) {
                 playerPool.createDummyPlayerWithUUID(tournamentStatistic.getPlayerId());
             }
@@ -254,10 +257,10 @@ public class Tournament {
     public void setStarted(boolean started) {
         this.started = started;
     }
-    public Round getCurrentRound() {
+    public TournamentRound getCurrentRound() {
         return currentRound;
     }
-    public void setCurrentRound(Round currentRound) {
+    public void setCurrentRound(TournamentRound currentRound) {
         this.currentRound = currentRound;
     }
     public PlayerPoolService getPlayerPool() {
@@ -272,7 +275,7 @@ public class Tournament {
     public List<UUID> getParticipants() {
         return participants;
     }
-    public List<Round> getCompleteRounds() {
+    public List<TournamentRound> getCompleteRounds() {
         return completeRounds;
     }
     public Map<UUID, PlayerTournamentStatistics> getScoreTable() {
