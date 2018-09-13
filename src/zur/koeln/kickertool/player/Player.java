@@ -5,7 +5,8 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class Player implements Serializable {
+public class Player
+    implements Serializable, zur.koeln.kickertool.api.Player {
 
     private UUID uid;
 

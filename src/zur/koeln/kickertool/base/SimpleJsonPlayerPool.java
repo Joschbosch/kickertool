@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.player;
+package zur.koeln.kickertool.base;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import zur.koeln.kickertool.api.PlayerPoolService;
+import zur.koeln.kickertool.player.Player;
 
 @Component
 public class SimpleJsonPlayerPool

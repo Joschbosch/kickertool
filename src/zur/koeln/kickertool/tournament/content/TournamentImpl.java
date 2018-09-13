@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import zur.koeln.kickertool.api.PlayerPoolService;
 import zur.koeln.kickertool.api.content.Match;
 import zur.koeln.kickertool.api.content.PlayerTournamentStatistics;
-import zur.koeln.kickertool.exception.MatchException;
+import zur.koeln.kickertool.api.exceptions.MatchException;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import zur.koeln.kickertool.exception.MatchException;
+import zur.koeln.kickertool.api.exceptions.MatchException;
 import zur.koeln.kickertool.player.Player;
 import zur.koeln.kickertool.tournament.TournamentConfig;
 
