@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.api.content;
+package zur.koeln.kickertool.api.tournament;
 
 import java.util.List;
 

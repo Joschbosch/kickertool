@@ -4,8 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.tournament.TournamentConfig;
+import zur.koeln.kickertool.api.player.Player;
+import zur.koeln.kickertool.api.tournament.TournamentSettings;
+import zur.koeln.kickertool.tournament.*;
 import zur.koeln.kickertool.tournament.content.*;
 
 @Service
@@ -40,7 +41,7 @@ public class TournamentFactory {
         return statistics;
     }
 
-    public TournamentConfig createNewTournamentConfig() {
-        return ctx.getBean(TournamentConfig.class);
+    public TournamentSettings createNewTournamentConfig() {
+        return ctx.getBean(TournamentSettings.class);
     }
 }

@@ -6,12 +6,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import zur.koeln.kickertool.api.content.Match;
-import zur.koeln.kickertool.api.content.PlayerTournamentStatistics;
-import zur.koeln.kickertool.api.content.Round;
-import zur.koeln.kickertool.api.content.Tournament;
+import zur.koeln.kickertool.api.config.TournamentMode;
+import zur.koeln.kickertool.api.config.TournamentSetingsKeys;
+import zur.koeln.kickertool.api.player.Player;
+import zur.koeln.kickertool.api.player.PlayerPoolService;
+import zur.koeln.kickertool.api.tournament.Match;
+import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
+import zur.koeln.kickertool.api.tournament.Round;
+import zur.koeln.kickertool.api.tournament.Tournament;
 import zur.koeln.kickertool.api.ui.GUIController;
-import zur.koeln.kickertool.player.Player;
 
 public interface BackendController {
 
@@ -29,7 +32,7 @@ public interface BackendController {
 
     boolean isCurrentRoundComplete();
 
-    void changedTournamentConfig(TournamentConfigKeys configKey, Integer newValue);
+    void changedTournamentConfig(TournamentSetingsKeys configKey, Integer newValue);
 
     void showPlayerSelection();
 

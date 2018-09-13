@@ -3,7 +3,7 @@ package zur.koeln.kickertool.api.ui;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import javafx.scene.Parent;
-import zur.koeln.kickertool.base.ToolState;
+import zur.koeln.kickertool.api.ToolState;
 
 public interface GUIController {
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package zur.koeln.kickertool.tournament.content;
+package zur.koeln.kickertool.tournament;
 
 import java.util.*;
 
@@ -9,17 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import zur.koeln.kickertool.api.content.Match;
-import zur.koeln.kickertool.api.content.PlayerTournamentStatistics;
-import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.tournament.TournamentConfig;
+import zur.koeln.kickertool.api.player.Player;
+import zur.koeln.kickertool.api.tournament.Match;
+import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
+import zur.koeln.kickertool.api.tournament.TournamentSettings;
 
 public class PlayerTournamentStatisticsImpl
     implements Comparable<PlayerTournamentStatistics>, PlayerTournamentStatistics {
 
 	@JsonIgnore
 	@Autowired
-	private TournamentConfig config;
+    private TournamentSettings config;
 
 	@JsonIgnore
     private Map<UUID, Match> uidToMatch = new HashMap<>();
@@ -27,7 +27,7 @@ public class PlayerTournamentStatisticsImpl
 	private UUID playerId;
 
 	@JsonIgnore
-	private Player player;
+    private Player player;
 
 	private List<UUID> matches = new LinkedList<>();
 
@@ -74,7 +74,7 @@ public class PlayerTournamentStatisticsImpl
 	}
 
 	@JsonIgnore
-	public long getPointsForConfiguration(TournamentConfig config) {
+    public long getPointsForConfiguration(TournamentSettings config2) {
 		if (player.isDummy()) {
 			return 0;
 		}
@@ -82,19 +82,19 @@ public class PlayerTournamentStatisticsImpl
 		long won = getMatchesWonCount();
 		long draw = getMatchesDrawCount();
 
-		return won * config.getPointsForWinner() + draw * config.getPointsForDraw();
+        return won * config2.getPointsForWinner() + draw * config2.getPointsForDraw();
 
 	}
 
 	@JsonIgnore
-	public double getMeanPoints(TournamentConfig config) {
+    public double getMeanPoints(TournamentSettings config) {
 		return getPointsForConfiguration(config) / (double) matches.size();
 	}
 
 	@Override
     public int compareTo(PlayerTournamentStatistics o2) {
-		Player player1 = player;
-		Player player2 = o2.getPlayer();
+        Player player1 = player;
+        Player player2 = o2.getPlayer();
 		if (player1 == null) {
 			return 1;
 		}
@@ -170,7 +170,7 @@ public class PlayerTournamentStatisticsImpl
 		return matches;
 	}
 
-	public Player getPlayer() {
+    public Player getPlayer() {
 		return player;
 	}
 
@@ -178,7 +178,7 @@ public class PlayerTournamentStatisticsImpl
 		return playerId;
 	}
 
-	public void setPlayer(Player player) {
+    public void setPlayer(Player player) {
 		this.player = player;
 	}
 

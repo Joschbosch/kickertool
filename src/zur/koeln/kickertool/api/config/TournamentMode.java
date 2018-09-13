@@ -1,7 +1,7 @@
 /**
  * 
  */
-package zur.koeln.kickertool.api;
+package zur.koeln.kickertool.api.config;
 
 
 public enum TournamentMode {

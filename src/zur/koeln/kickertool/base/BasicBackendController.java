@@ -14,18 +14,20 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import zur.koeln.kickertool.api.BackendController;
-import zur.koeln.kickertool.api.PlayerPoolService;
-import zur.koeln.kickertool.api.TournamentConfigKeys;
-import zur.koeln.kickertool.api.TournamentMode;
-import zur.koeln.kickertool.api.content.PlayerTournamentStatistics;
-import zur.koeln.kickertool.api.content.Round;
-import zur.koeln.kickertool.api.content.Tournament;
+import zur.koeln.kickertool.api.ToolState;
+import zur.koeln.kickertool.api.config.TournamentMode;
+import zur.koeln.kickertool.api.config.TournamentSetingsKeys;
+import zur.koeln.kickertool.api.exceptions.MatchException;
+import zur.koeln.kickertool.api.player.Player;
+import zur.koeln.kickertool.api.player.PlayerPoolService;
+import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
+import zur.koeln.kickertool.api.tournament.Round;
+import zur.koeln.kickertool.api.tournament.Tournament;
 import zur.koeln.kickertool.api.ui.GUIController;
-import zur.koeln.kickertool.exception.MatchException;
-import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.tournament.content.TournamentImpl;
-import zur.koeln.kickertool.tournament.content.TournamentRound;
+import zur.koeln.kickertool.tournament.TournamentImpl;
+import zur.koeln.kickertool.tournament.TournamentRound;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
+import zur.koeln.kickertool.tournament.settings.TournamentSettingsImpl;
 
 @Component
 public class BasicBackendController
@@ -101,28 +103,28 @@ public class BasicBackendController
      * @param newValue
      */
     @Override
-    public void changedTournamentConfig(TournamentConfigKeys configKey, Integer newValue) {
+    public void changedTournamentConfig(TournamentSetingsKeys configKey, Integer newValue) {
         switch (configKey) {
             case TABLES :
-                currentTournament.getConfig().setTableCount(newValue.intValue());
+                ((TournamentSettingsImpl) currentTournament.getSettings()).setTableCount(newValue.intValue());
                 break;
             case MATCHES_TO_WIN :
-                currentTournament.getConfig().setMatchesToWin(newValue.intValue());
+                ((TournamentSettingsImpl) currentTournament.getSettings()).setMatchesToWin(newValue.intValue());
                 break;
             case GOALS_FOR_WIN :
-                currentTournament.getConfig().setGoalsToWin(newValue.intValue());
+                ((TournamentSettingsImpl) currentTournament.getSettings()).setGoalsToWin(newValue.intValue());
                 break;
             case POINTS_FOR_WINNER :
-                currentTournament.getConfig().setPointsForWinner(newValue.intValue());
+                ((TournamentSettingsImpl) currentTournament.getSettings()).setPointsForWinner(newValue.intValue());
                 break;
             case POINTS_FOR_DRAW :
-                currentTournament.getConfig().setPointsForDraw(newValue.intValue());
+                ((TournamentSettingsImpl) currentTournament.getSettings()).setPointsForDraw(newValue.intValue());
                 break;
             case MINUTES_PER_MATCH :
-                currentTournament.getConfig().setMinutesPerMatch(newValue.intValue());
+                ((TournamentSettingsImpl) currentTournament.getSettings()).setMinutesPerMatch(newValue.intValue());
                 break;
             case RANDOM_ROUNDS :
-                currentTournament.getConfig().setRandomRounds(newValue.intValue());
+                ((TournamentSettingsImpl) currentTournament.getSettings()).setRandomRounds(newValue.intValue());
                 break;
             default :
                 break;
@@ -131,7 +133,7 @@ public class BasicBackendController
     }
     @Override
     public void changeMode(TournamentMode newMode) {
-        currentTournament.getConfig().setMode(newMode);
+        ((TournamentSettingsImpl) currentTournament.getSettings()).setMode(newMode);
     }
 
     /**
@@ -206,7 +208,7 @@ public class BasicBackendController
      * @param value
      */
     @Override
-    public void updateMatchResult(zur.koeln.kickertool.api.content.Match match, Integer scoreHome, Integer scoreVisiting) {
+    public void updateMatchResult(zur.koeln.kickertool.api.tournament.Match match, Integer scoreHome, Integer scoreVisiting) {
         try {
             if (match.getResult() == null) {
                 match.setResultScores(scoreHome.intValue(), scoreVisiting.intValue());
@@ -264,7 +266,7 @@ public class BasicBackendController
     }
     @Override
     public void createAndAddNewPlayerToPoolAndTournament(String playerName) {
-        Player newPlayer = new Player(playerName);
+        Player newPlayer = new HumanPlayer(playerName);
         addPlayerToPool(newPlayer);
         addParticipantToTournament(newPlayer);
     }

@@ -1,14 +1,14 @@
 /**
  * 
  */
-package zur.koeln.kickertool.tournament.content;
+package zur.koeln.kickertool.tournament;
 
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import zur.koeln.kickertool.api.content.Team;
-import zur.koeln.kickertool.player.Player;
+import zur.koeln.kickertool.api.player.Player;
+import zur.koeln.kickertool.api.tournament.Team;
 
 public class TournamentTeam
     implements Team {

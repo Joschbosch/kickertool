@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.tournament;
+package zur.koeln.kickertool.configuration;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
@@ -6,21 +6,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 
-import zur.koeln.kickertool.api.BackendController;
-import zur.koeln.kickertool.base.BasicBackendController;
-import zur.koeln.kickertool.tournament.content.TournamentMatch;
-import zur.koeln.kickertool.tournament.content.PlayerTournamentStatisticsImpl;
-import zur.koeln.kickertool.tournament.content.TournamentRound;
-import zur.koeln.kickertool.tournament.content.TournamentImpl;
+import zur.koeln.kickertool.tournament.PlayerTournamentStatisticsImpl;
+import zur.koeln.kickertool.tournament.TournamentImpl;
+import zur.koeln.kickertool.tournament.TournamentMatch;
+import zur.koeln.kickertool.tournament.TournamentRound;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
+import zur.koeln.kickertool.tournament.settings.TournamentSettingsImpl;
 
 @Configuration
-public class TournamentAppConfiguration {
-    @Bean
-    @Primary
-    public BackendController createTournamentController() {
-        return new BasicBackendController();
-    }
+public class TournamentContentConfiguration {
+ 
 
     @Bean
     @Primary
@@ -59,8 +54,8 @@ public class TournamentAppConfiguration {
     @Bean
     @Primary
     @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public TournamentConfig createTournamentConfigBean() {
-        return new TournamentConfig();
+    public TournamentSettingsImpl createTournamentConfigBean() {
+        return new TournamentSettingsImpl();
     }
 
 }

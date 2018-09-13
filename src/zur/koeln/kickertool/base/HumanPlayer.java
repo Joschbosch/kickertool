@@ -1,11 +1,14 @@
-package zur.koeln.kickertool.player;
+package zur.koeln.kickertool.base;
 
 import java.io.Serializable;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class Player implements Serializable {
+import zur.koeln.kickertool.api.player.Player;
+
+public class HumanPlayer
+    implements Serializable, Player {
 
     private UUID uid;
 
@@ -16,10 +19,10 @@ public class Player implements Serializable {
     @JsonIgnore
     private boolean pausingTournament = false;
 
-    public Player() {
+    public HumanPlayer() {
     }
 
-    public Player(
+    public HumanPlayer(
         String name) {
         uid = UUID.randomUUID();
         this.name = name;
@@ -34,10 +37,10 @@ public class Player implements Serializable {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Player)) {
+        if (!(obj instanceof HumanPlayer)) {
             return false;
         }
-        return ((Player) obj).uid.equals(uid);
+        return ((HumanPlayer) obj).uid.equals(uid);
     }
 
     /*

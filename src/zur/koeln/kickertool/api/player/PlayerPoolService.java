@@ -1,9 +1,7 @@
-package zur.koeln.kickertool.api;
+package zur.koeln.kickertool.api.player;
 
 import java.util.List;
 import java.util.UUID;
-
-import zur.koeln.kickertool.player.Player;
 
 public interface PlayerPoolService {
 

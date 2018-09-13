@@ -1,19 +1,18 @@
-package zur.koeln.kickertool.api.content;
+package zur.koeln.kickertool.api.tournament;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import zur.koeln.kickertool.exception.MatchException;
-import zur.koeln.kickertool.player.Player;
-import zur.koeln.kickertool.tournament.TournamentConfig;
+import zur.koeln.kickertool.api.exceptions.MatchException;
+import zur.koeln.kickertool.api.player.Player;
 
 public interface Tournament {
 
 
     boolean isCurrentRoundComplete();
 
-    TournamentConfig getConfig();
+    TournamentSettings getSettings();
 
     void startTournament();
 

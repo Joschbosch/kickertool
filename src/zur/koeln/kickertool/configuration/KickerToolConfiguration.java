@@ -1,18 +1,17 @@
-package zur.koeln.kickertool;
+package zur.koeln.kickertool.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
-import zur.koeln.kickertool.api.PlayerPoolService;
-import zur.koeln.kickertool.player.SimpleJsonPlayerPool;
-import zur.koeln.kickertool.tournament.TournamentAppConfiguration;
-import zur.koeln.kickertool.uifxml.tools.SimpleTimer;
-import zur.koeln.kickertool.uifxml.tools.Timer;
+import zur.koeln.kickertool.api.BackendController;
+import zur.koeln.kickertool.api.player.PlayerPoolService;
+import zur.koeln.kickertool.base.BasicBackendController;
+import zur.koeln.kickertool.base.SimpleJsonPlayerPool;
 
 @Configuration
-@Import({TournamentAppConfiguration.class})
+@Import({TournamentContentConfiguration.class})
 public class KickerToolConfiguration {
 
     @Bean
@@ -23,5 +22,10 @@ public class KickerToolConfiguration {
         return simpleJsonPlayerPool;
     }
 
+    @Bean
+    @Primary
+    public BackendController createBackendController() {
+        return new BasicBackendController();
+    }
   
 }
