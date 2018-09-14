@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.SortedSet;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -98,7 +100,9 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	@FXML VBox stackGames;
 	
 	private final List<FXMLMatchEntryController> matchEntryController = new ArrayList<>();
-
+	private boolean selectionModeOn = true;
+	
+	
 	@FXML
 	public void initialize() {
 		
@@ -112,7 +116,32 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		setupColumns();
 		
 		getTblStatistics().setItems(FXCollections.observableArrayList(loadTableStatistics()));
+			
+		setupListener();
+	}
 	
+	private void setupListener() {
+		getTblStatistics().getSelectionModel().selectedItemProperty().addListener(event -> {
+			
+			if (!isSelectionModeOn()) {
+				return;
+			}
+			
+			Player selectedPlayer = getSelectedPlayerInStatisticsTable();
+			
+			getBtnPausePlayer().setDisable(selectedPlayer.isDummy() || getTblStatistics().getSelectionModel().getSelectedItems().size() == 0 || selectedPlayer.isPausingTournament());
+			getBtnUnpausePlayer().setDisable(getTblStatistics().getSelectionModel().getSelectedItems().size() == 0 || !selectedPlayer.isPausingTournament());
+			
+		});
+	}
+
+	private Player getSelectedPlayerInStatisticsTable() {
+		
+		if (!isSelectionModeOn()) {
+			return null;
+		}
+		
+		return ((PlayerTournamentStatistics) getTblStatistics().getSelectionModel().getSelectedItem()).getPlayer();
 	}
 	
 	private SortedSet<PlayerTournamentStatistics> loadTableStatistics() {
@@ -206,11 +235,13 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 
 	@Override
 	public void update() {
+		setSelectionModeOn(false);
 		getMatchEntryController().forEach(FXMLMatchEntryController::update);
 		getTblStatistics().setItems(FXCollections.observableArrayList(loadTableStatistics()));
 		getTblStatistics().refresh();
 		getTblStatistics().getSortOrder().add(getTblColPoints());
 		getTblStatistics().sort();
+		setSelectionModeOn(true);
 	}
 
 	@FXML public void onBtnAddPlayerClicked() {
@@ -228,10 +259,23 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	}
 
 	@FXML public void onBtnPausePlayerClicked() {
+		Player selectedPlayer = getSelectedPlayerInStatisticsTable();
+		
+		if (selectedPlayer != null) {
+			getBackendController().pausePlayer(selectedPlayer.getUid());
+			update();
+		}
 		
 	}
 
 	@FXML public void onBtnResumePlayerClicked() {
+		Player selectedPlayer = getSelectedPlayerInStatisticsTable();
+		
+		if (selectedPlayer != null) {
+			getBackendController().unpausePlayer(selectedPlayer.getUid());
+			update();
+		}
+		
 		
 	}
 
@@ -277,4 +321,10 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		loader.setControllerFactory(getCtx()::getBean);
 		return loader;
 	}
+
+	private void setSelectionModeOn(boolean selectionModeOn) {
+		this.selectionModeOn = selectionModeOn;
+	}
+	
+	
 }
