@@ -38,6 +38,7 @@ import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.uifxml.dialog.AddPlayerDialog;
 import zur.koeln.kickertool.uifxml.tools.SimpleTimer;
 import zur.koeln.kickertool.uifxml.tools.TimerStringConverter;
+import javafx.scene.control.ChoiceBox;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component
@@ -101,6 +102,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	
 	private final List<FXMLMatchEntryController> matchEntryController = new ArrayList<>();
 	private boolean selectionModeOn = true;
+	@FXML ChoiceBox cmbRounds;
 	
 	
 	@FXML
@@ -116,7 +118,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		setupColumns();
 		
 		getTblStatistics().setItems(FXCollections.observableArrayList(loadTableStatistics()));
-			
+		
 		setupListener();
 	}
 	
@@ -131,6 +133,12 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 			
 			getBtnPausePlayer().setDisable(selectedPlayer.isDummy() || getTblStatistics().getSelectionModel().getSelectedItems().size() == 0 || selectedPlayer.isPausingTournament());
 			getBtnUnpausePlayer().setDisable(getTblStatistics().getSelectionModel().getSelectedItems().size() == 0 || !selectedPlayer.isPausingTournament());
+			
+		});
+		
+		getCmbRounds().getSelectionModel().selectedItemProperty().addListener(event -> {
+			
+			
 			
 		});
 	}

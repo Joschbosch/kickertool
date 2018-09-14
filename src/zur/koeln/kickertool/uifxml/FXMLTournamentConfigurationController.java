@@ -63,6 +63,7 @@ public class FXMLTournamentConfigurationController implements UpdateableUICompon
 		getTxtMinutesPerMatch().setTextFormatter(createIntegerTextFormatter());
 		getTxtRandomRoundsAtStart().setTextFormatter(createIntegerTextFormatter());
 		
+		
 		setDefaultValues();
 	}
 	
