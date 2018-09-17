@@ -289,6 +289,8 @@ public class TournamentImpl
     public List<UUID> getParticipants() {
         return participants;
     }
+
+    @Override
     public List<Round> getCompleteRounds() {
         return completeRounds;
     }

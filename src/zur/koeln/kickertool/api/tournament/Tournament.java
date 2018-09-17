@@ -38,5 +38,7 @@ public interface Tournament {
 
     Round getCurrentRound();
 
+    List<Round> getCompleteRounds();
+
     List<Match> getMatchesForRound(int roundNo);
 }
