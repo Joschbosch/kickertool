@@ -79,13 +79,13 @@ public class FXMLPlayerSelectionController implements UpdateableUIComponent {
 		
 		getLstPlayers().setOnDragDetected(event -> onDragDetected(getLstPlayers(), event));
 		
-		getLstPlayers().setOnDragOver(this::onDragOver);
+		getLstPlayers().setOnDragOver(event -> onDragOver(event, getLstPlayers()));
 		
 		getLstPlayers().setOnDragDropped(event -> onDragDropped(getLstPlayers(), getLstPlayersForTournament(), event));
 		
 		getLstPlayersForTournament().setOnDragDetected(event -> onDragDetected(getLstPlayersForTournament(), event));
 		
-		getLstPlayersForTournament().setOnDragOver(this::onDragOver);
+		getLstPlayersForTournament().setOnDragOver(event -> onDragOver(event, getLstPlayersForTournament()));
 		
 		getLstPlayersForTournament().setOnDragDropped(event -> onDragDropped(getLstPlayersForTournament(), getLstPlayers(), event));
 	}
@@ -118,11 +118,12 @@ public class FXMLPlayerSelectionController implements UpdateableUIComponent {
 		
 	}
 
-	private void onDragOver(DragEvent event) {
+	private void onDragOver(DragEvent event, ListView sourceListView) {
 		
-		if (event.getGestureSource() != event.getTarget()) {
+		if (event.getGestureSource() != sourceListView) {
 			event.acceptTransferModes(TransferMode.MOVE);
 		}
+		
 		event.consume();
 		
 	}
