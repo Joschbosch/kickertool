@@ -246,7 +246,7 @@ public class TournamentImpl
         }
         for (Round r : completeRounds) {
             if (r.getRoundNo() == roundNo) {
-                return r.getMatches();
+                return r.getAllMatches();
             }
         }
         return new ArrayList<>();
