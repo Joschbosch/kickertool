@@ -293,6 +293,11 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	}
 	
 	private void loadPlayerRounds() {
+		Round selectedRound = null;
+		
+		if (getCmbRounds().getSelectionModel().getSelectedItem() != null) {
+			selectedRound = (Round) getCmbRounds().getSelectionModel().getSelectedItem();
+		}
 		
 		if (getBackendController().getCurrentTournament().getCurrentRound() == null) {
 			return;
@@ -301,7 +306,13 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		getRounds().clear();
 		getRounds().addAll(getBackendController().getCurrentTournament().getCompleteRounds());
 		getRounds().add(getBackendController().getCurrentTournament().getCurrentRound());
-		getCmbRounds().getSelectionModel().select(getRounds().size() - 1);
+		
+		if (selectedRound != null) {
+			getCmbRounds().getSelectionModel().select(selectedRound);
+		} else {
+			getCmbRounds().getSelectionModel().select(getRounds().size() - 1);
+		}
+		
 	}
 
 	@FXML public void onBtnAddPlayerClicked() {
@@ -344,6 +355,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		
 		getBackendController().nextRound();
 		loadPlayerRounds();
+		getCmbRounds().getSelectionModel().select(getRounds().size() - 1);
 	}
 	
 	private void fillMatchesForRound(int round) {

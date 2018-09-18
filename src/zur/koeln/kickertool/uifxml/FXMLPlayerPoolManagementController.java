@@ -40,7 +40,9 @@ public class FXMLPlayerPoolManagementController implements UpdateableUIComponent
 
 	@FXML
 	public void initialize() {
-
+		
+		getPlayerData().clear();
+		
 		getTblColName().setCellValueFactory(new PropertyValueFactory<>("name")); //$NON-NLS-1$
 		getTblColName().setCellFactory(TextFieldTableCell.<Player>forTableColumn());
 		
