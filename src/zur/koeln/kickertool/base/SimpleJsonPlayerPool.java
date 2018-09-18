@@ -49,7 +49,7 @@ public class SimpleJsonPlayerPool
         File playerPoolFile = new File("playerpool.json"); //$NON-NLS-1$
         ObjectMapper m = new ObjectMapper();
         try {
-            m.writeValue(playerPoolFile, players);
+            m.writerWithDefaultPrettyPrinter().writeValue(playerPoolFile, players);
         } catch (IOException e) {
             e.printStackTrace();
         }
