@@ -71,7 +71,7 @@ public class FXMLGUIController
 
 	private void createSecondTournamentStage(ToolState newState) throws IOException {
 		setSecondaryStage(new Stage());
-		getSecondaryStage().setTitle("Kicker APP");
+		getSecondaryStage().setTitle("parcIT Kickerturnier Helferlein");
 		FXMLLoader loader = getFXMLLoader(newState);
 		Pane rootPane = (Pane) loader.load();
 		
@@ -110,7 +110,7 @@ public class FXMLGUIController
 	@PostConstruct
     public void init(ConfigurableApplicationContext ctx, Parent rootPane, double width, double height) {
         this.ctx = ctx;
-        stage.setTitle("Kicker APP");
+        stage.setTitle("parcIT Kickerturnier Helferlein");
         Scene mainScene = new Scene(rootPane, width, height);
         stage.setScene(mainScene);
         stage.show();

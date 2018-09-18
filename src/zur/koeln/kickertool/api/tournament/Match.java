@@ -2,7 +2,7 @@ package zur.koeln.kickertool.api.tournament;
 
 import java.util.UUID;
 
-public interface Match {
+public interface Match extends Comparable<Match> {
 
     MatchResult getResult();
 

@@ -137,7 +137,17 @@ public class TournamentMatch
         }
         return new HashSet<>(Arrays.asList(homeTeam.getPlayer1Id(), homeTeam.getPlayer2Id()));
     }
-
+	@Override
+	public int compareTo(Match o) {
+		if (o == null) {
+			return -1;
+		}
+		int roundCompare = roundNumber.compareTo(((TournamentMatch) o).getRoundNumber());
+		if (roundCompare != 0) {
+			return roundCompare;
+		}
+		return Integer.compare(getMatchNo(), o.getMatchNo());
+	}
     @JsonIgnore
     public boolean isDraw() {
         return result == MatchResult.DRAW;

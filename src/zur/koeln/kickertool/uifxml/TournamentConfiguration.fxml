@@ -52,12 +52,12 @@
             <Insets right="25.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Punkte für Gesamtsieg" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+      <Label text="Punkte bei Sieg" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets right="25.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Punkte zum Ziehen" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+      <Label text="Punkte bei Unentschieden" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
          <GridPane.margin>
             <Insets right="25.0" />
          </GridPane.margin>

@@ -136,6 +136,15 @@ public class TournamentRound
         allMatches.addAll(completeMatches);
         return allMatches;
     }
+    
+    @Override
+    public int compareTo(Round o) {
+    	if (o == null) {
+    		return -1;
+    	}
+    
+    	return Integer.compare(getRoundNo(), o.getRoundNo());
+    }
 
     public TournamentFactory getTournamentFactory() {
         return tournamentFactory;
