@@ -282,8 +282,6 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		getMatchEntryController().forEach(FXMLMatchEntryController::update);
 		getTblStatistics().setItems(FXCollections.observableArrayList(loadTableStatistics()));
 		getTblStatistics().refresh();
-		getTblStatistics().getSortOrder().add(getTblColPoints());
-		getTblStatistics().sort();
 		setSelectionModeOn(true);
 		loadPlayerRounds();
 		

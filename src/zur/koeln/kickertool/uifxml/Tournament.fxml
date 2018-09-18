@@ -57,24 +57,24 @@
       </ImageView>
       <TableView fx:id="tblStatistics" GridPane.columnIndex="6" GridPane.columnSpan="5" GridPane.rowIndex="2" GridPane.rowSpan="4">
         <columns>
-          <TableColumn fx:id="tblColNumber" editable="false" prefWidth="75.0" text="#" />
-          <TableColumn fx:id="tblColPlayerName" editable="false" prefWidth="75.0" text="Spieler" />
-            <TableColumn editable="false" prefWidth="75.0" text="Spiele">
+          <TableColumn fx:id="tblColNumber" editable="false" prefWidth="75.0" sortable="false" text="#" />
+          <TableColumn fx:id="tblColPlayerName" editable="false" prefWidth="75.0" sortable="false" text="Spieler" />
+            <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Spiele">
                <columns>
-                  <TableColumn fx:id="tblColPlayedMatched" editable="false" prefWidth="75.0" text="Absolviert" />
-                  <TableColumn fx:id="tblColMatchesWon" editable="false" prefWidth="75.0" text="Gewonnen" />
-                  <TableColumn fx:id="tblColMatchesLost" editable="false" prefWidth="75.0" text="Verloren" />
-                  <TableColumn fx:id="tblColMatchesRemis" editable="false" prefWidth="75.0" text="Remis" />
+                  <TableColumn fx:id="tblColPlayedMatched" editable="false" prefWidth="75.0" sortable="false" text="Absolviert" />
+                  <TableColumn fx:id="tblColMatchesWon" editable="false" prefWidth="75.0" sortable="false" text="Gewonnen" />
+                  <TableColumn fx:id="tblColMatchesLost" editable="false" prefWidth="75.0" sortable="false" text="Verloren" />
+                  <TableColumn fx:id="tblColMatchesRemis" editable="false" prefWidth="75.0" sortable="false" text="Remis" />
                </columns>
             </TableColumn>
-            <TableColumn editable="false" prefWidth="75.0" text="Torstatistik">
+            <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Torstatistik">
                <columns>
-                  <TableColumn fx:id="tblColGoals" editable="false" prefWidth="75.0" text="Tore" />
-                  <TableColumn fx:id="tblColGoalsEnemies" editable="false" prefWidth="75.0" text="Gegn. Tore" />
-                  <TableColumn fx:id="tblColGoalsDifference" editable="false" prefWidth="75.0" text="Differenz" />
+                  <TableColumn fx:id="tblColGoals" editable="false" prefWidth="75.0" sortable="false" text="Tore" />
+                  <TableColumn fx:id="tblColGoalsEnemies" editable="false" prefWidth="75.0" sortable="false" text="Gegn. Tore" />
+                  <TableColumn fx:id="tblColGoalsDifference" editable="false" prefWidth="75.0" sortable="false" text="Differenz" />
                </columns>
             </TableColumn>
-            <TableColumn fx:id="tblColPoints" editable="false" prefWidth="75.0" sortType="DESCENDING" text="Punkte" />
+            <TableColumn fx:id="tblColPoints" editable="false" prefWidth="75.0" sortType="DESCENDING" sortable="false" text="Punkte" />
         </columns>
          <GridPane.margin>
             <Insets />
