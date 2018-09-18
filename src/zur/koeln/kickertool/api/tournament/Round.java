@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public interface Round {
+public interface Round extends Comparable<Round>{
 
     List<Match> getMatches();
 

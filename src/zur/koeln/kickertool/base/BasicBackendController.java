@@ -253,9 +253,11 @@ public class BasicBackendController
     @Override
     public void exportTournament() {
         File tournamentFile = new File("tournament" + currentTournament.getName() + ".json"); //$NON-NLS-1$ //$NON-NLS-2$
+        File tournamentRoundFile = new File("tournament" + currentTournament.getName() + "-Round" + currentTournament.getCurrentRound().getRoundNo() + ".json"); //$NON-NLS-1$ //$NON-NLS-2$
         ObjectMapper m = new ObjectMapper();
         try {
             m.writerWithDefaultPrettyPrinter().writeValue(tournamentFile, currentTournament);
+            m.writerWithDefaultPrettyPrinter().writeValue(tournamentRoundFile, currentTournament);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -282,7 +284,9 @@ public class BasicBackendController
 
     @Override
     public List<Match> getMatchesForRound(int roundNo) {
-        return currentTournament.getMatchesForRound(roundNo);
+    	List<Match> matches = currentTournament.getMatchesForRound(roundNo);
+    	Collections.sort(matches);
+        return matches;
     }
 
     @Override
