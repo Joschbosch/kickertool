@@ -53,7 +53,8 @@ public class FXMLMatchEntryController implements UpdateableUIComponent{
 		lblTable.setText(match.getTableNo() == -1 ? "TBA" : String.valueOf(match.getTableNo()));
 
 		if (match.getResult() != null) {
-			lblScore.setText("?:?");
+			
+			lblScore.setText(match.getScoreHome() + ":" + match.getScoreVisiting());
 		} else {
 			lblScore.setText("0:0");
 		}
