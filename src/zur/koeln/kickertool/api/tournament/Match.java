@@ -24,4 +24,7 @@ public interface Match {
 
     boolean isDraw();
 
+    int getScoreHome();
+
+    int getScoreVisiting();
 }
