@@ -23,6 +23,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
@@ -172,12 +173,32 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 
 	private void setupColumns() {
 		
+		getTblColNumber().setCellFactory(param -> new TableCell<PlayerTournamentStatistics, String>() {
+			
+			 @Override
+			    protected void updateItem(String item, boolean empty) {
+				 	
+				 	if (empty) {
+				 		setText(null);
+				 		return;
+				 	}
+				 
+			      	setText(String.valueOf(getIndex() + 1));
+			    }
+			 
+		});
+		
         getTblColPlayerName().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
 
 			@Override
             public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
 				
-				return new SimpleStringProperty(param.getValue().getPlayer().getName());
+				String playerName = param.getValue().getPlayer().getName();
+				if (param.getValue().getPlayer().isPausingTournament()) {
+					playerName += " (Pausing)";
+				}
+				
+				return new SimpleStringProperty(playerName);
 			}
 		});
 		
@@ -266,7 +287,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		setSelectionModeOn(true);
 		loadPlayerRounds();
 		
-		if (getBackendController().getCurrentTournament().getCurrentRound().isComplete()) {
+		if (getBackendController().getCurrentTournament().getCurrentRound() != null && getBackendController().getCurrentTournament().getCurrentRound().isComplete()) {
 			getBtnCreateRound().setDisable(false);
 		}
 	}

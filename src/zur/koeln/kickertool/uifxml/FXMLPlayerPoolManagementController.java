@@ -67,6 +67,7 @@ public class FXMLPlayerPoolManagementController implements UpdateableUIComponent
             getPlayerData().add(newPlayer);
         }
 		getTxtPlayerName().clear();
+		getTxtPlayerName().requestFocus();
 
 		
 	}

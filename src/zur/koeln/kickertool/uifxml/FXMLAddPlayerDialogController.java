@@ -84,9 +84,10 @@ public class FXMLAddPlayerDialogController {
 	}
 
 	@FXML public void onBtnAddPlayerClicked() {
-
-		getTxtPlayerName().clear();
+		
         getBackendController().addPlayerToPool(getTxtPlayerName().getText());
+        getTxtPlayerName().clear();
+        getTxtPlayerName().requestFocus();
         refreshTable();
 	}
 
