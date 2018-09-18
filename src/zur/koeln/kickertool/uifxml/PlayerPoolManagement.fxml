@@ -65,7 +65,7 @@
          <graphic>
             <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="file:images/add_player.png" />
+                  <Image url="images/add_player.png" />
                </image>
                <viewport>
                   <Rectangle2D />
@@ -80,7 +80,7 @@
          <graphic>
             <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="file:images/back_arrow.png" />
+                  <Image url="images/back_arrow.png" />
                </image>
             </ImageView>
          </graphic>
@@ -90,7 +90,7 @@
             <Insets right="15.0" top="15.0" />
          </GridPane.margin>
          <image>
-            <Image url="file:images/parcITLogo.png" />
+            <Image url="images/parcITLogo.png" />
          </image>
       </ImageView>
    </children>

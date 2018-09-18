@@ -51,7 +51,7 @@
       </Label>
       <ImageView fitHeight="27.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
          <image>
-            <Image url="file:images/parcITLogo.png" />
+            <Image url="images/parcITLogo.png" />
          </image>
          <GridPane.margin>
             <Insets right="15.0" top="15.0" />

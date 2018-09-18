@@ -16,7 +16,7 @@ public class AddPlayerDialog<R> extends Dialog<R> {
 
 	public AddPlayerDialog(ConfigurableApplicationContext ctx) {
 
-        setTitle("Spieler hinzufügen");
+        setTitle("Spieler hinzuf\u00FCgen");
         
         FXMLLoader loader = new FXMLLoader(FXMLGUIController.class.getResource(FXMLGUI.ADD_PLAYER_DIALOG.getFxmlFile()));
 

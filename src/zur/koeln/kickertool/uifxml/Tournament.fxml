@@ -49,7 +49,7 @@
    <children>
       <ImageView fitHeight="27.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="10" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
          <image>
-            <Image url="file:images/parcITLogo.png" />
+            <Image url="images/parcITLogo.png" />
          </image>
          <GridPane.margin>
             <Insets top="15.0" />
@@ -127,7 +127,7 @@
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="file:images/add_player.png" />
+                              <Image url="images/add_player.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -139,7 +139,7 @@
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="file:images/pause_player.png" />
+                              <Image url="images/pause_player.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -151,7 +151,7 @@
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="file:images/unpause_player.png" />
+                              <Image url="images/unpause_player.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -171,7 +171,7 @@
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="file:images/pause.png" />
+                        <Image url="images/pause.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -180,7 +180,7 @@
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="file:images/play.png" />
+                        <Image url="images/play.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -189,7 +189,7 @@
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="file:images/reset.png" />
+                        <Image url="images/reset.png" />
                      </image>
                   </ImageView>
                </graphic>
