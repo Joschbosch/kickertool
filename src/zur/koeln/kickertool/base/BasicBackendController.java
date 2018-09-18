@@ -220,7 +220,6 @@ public class BasicBackendController
         } catch (MatchException e) {
             e.printStackTrace();
         }
-        guiController.update();
         exportTournament();
 
     }

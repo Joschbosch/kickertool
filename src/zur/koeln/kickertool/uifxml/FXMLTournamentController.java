@@ -16,6 +16,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -35,6 +36,8 @@ import lombok.Getter;
 import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.player.Player;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
+import zur.koeln.kickertool.api.tournament.Round;
+import zur.koeln.kickertool.uifxml.cells.RoundConverter;
 import zur.koeln.kickertool.uifxml.dialog.AddPlayerDialog;
 import zur.koeln.kickertool.uifxml.tools.SimpleTimer;
 import zur.koeln.kickertool.uifxml.tools.TimerStringConverter;
@@ -102,6 +105,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	
 	private final List<FXMLMatchEntryController> matchEntryController = new ArrayList<>();
 	private boolean selectionModeOn = true;
+	private final ObservableList<Round> rounds = FXCollections.observableArrayList();
 	@FXML ChoiceBox cmbRounds;
 	
 	
@@ -118,6 +122,11 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		setupColumns();
 		
 		getTblStatistics().setItems(FXCollections.observableArrayList(loadTableStatistics()));
+		getCmbRounds().setItems(getRounds());
+		getCmbRounds().setConverter(new RoundConverter());
+		getCmbRounds().disableProperty().bind(Bindings.size(getRounds()).isEqualTo(0));
+		
+		loadPlayerRounds();
 		
 		setupListener();
 	}
@@ -138,7 +147,12 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		
 		getCmbRounds().getSelectionModel().selectedItemProperty().addListener(event -> {
 			
+			if (getCmbRounds().getSelectionModel().getSelectedItem() == null) {
+				return;
+			}
 			
+			Round selectedRound = (Round) getCmbRounds().getSelectionModel().getSelectedItem();
+			fillMatchesForRound(selectedRound.getRoundNo());
 			
 		});
 	}
@@ -250,6 +264,23 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		getTblStatistics().getSortOrder().add(getTblColPoints());
 		getTblStatistics().sort();
 		setSelectionModeOn(true);
+		loadPlayerRounds();
+		
+		if (getBackendController().getCurrentTournament().getCurrentRound().isComplete()) {
+			getBtnCreateRound().setDisable(false);
+		}
+	}
+	
+	private void loadPlayerRounds() {
+		
+		if (getBackendController().getCurrentTournament().getCurrentRound() == null) {
+			return;
+		}
+		
+		getRounds().clear();
+		getRounds().addAll(getBackendController().getCurrentTournament().getCompleteRounds());
+		getRounds().add(getBackendController().getCurrentTournament().getCurrentRound());
+		getCmbRounds().getSelectionModel().select(getRounds().size() - 1);
 	}
 
 	@FXML public void onBtnAddPlayerClicked() {
@@ -288,15 +319,22 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	}
 
 	@FXML public void onBtnCreateRoundClicked() {
-		getBackendController().nextRound();
+		getBtnCreateRound().setDisable(true);
 		
-		getBackendController().getCurrentTournament().getCurrentRound().getMatches().forEach(eMatch -> {
+		getBackendController().nextRound();
+		loadPlayerRounds();
+	}
+	
+	private void fillMatchesForRound(int round) {
+		
+		getStackGames().getChildren().clear();
+		
+		getBackendController().getMatchesForRound(round).forEach(eMatch -> {
 			try {
 				FXMLLoader matchEntryLoader = getFXMLLoader(FXMLGUI.MATCH_ENTRY);
 				Parent pane = matchEntryLoader.load();
 				FXMLMatchEntryController matchEntryController = matchEntryLoader.getController();
 				matchEntryController.setMatch(eMatch);
-				matchEntryController.setBackendController(backendController);
 				getStackGames().getChildren().add(pane);
 				getMatchEntryController().add(matchEntryController);
 			} catch (IOException e) {

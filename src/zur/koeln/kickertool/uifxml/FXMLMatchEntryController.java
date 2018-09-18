@@ -7,8 +7,6 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -33,13 +31,13 @@ public class FXMLMatchEntryController implements UpdateableUIComponent{
 	
 	@Autowired
     private BackendController backendController;
+	@Autowired
+	private FXMLTournamentController tournamentController;
 	
     private Match match;
 	
 	private String teamHomeName;
 	private String teamVisitName;
-	
-	private final BooleanProperty matchFinished = new SimpleBooleanProperty(false);
 	
     public void setMatch(Match currentMatch) {
 		match = currentMatch;
@@ -53,7 +51,13 @@ public class FXMLMatchEntryController implements UpdateableUIComponent{
 		lblTeamHome.setText(teamHomeName);
 		lblTeamVisit.setText(teamVisitName);
 		lblTable.setText(match.getTableNo() == -1 ? "TBA" : String.valueOf(match.getTableNo()));
-		lblScore.setText("0:0");
+
+		if (match.getResult() != null) {
+			lblScore.setText("?:?");
+		} else {
+			lblScore.setText("0:0");
+		}
+		
 		btnFinish.setDisable(match.getTableNo() == -1);
 	}
 
@@ -64,18 +68,12 @@ public class FXMLMatchEntryController implements UpdateableUIComponent{
         if (result.isPresent()) {
             backendController.updateMatchResult(match, result.get().getKey(), result.get().getValue());
     		lblScore.setText(result.get().getKey() + ":" + result.get().getValue());
-    		matchFinished.set(true);
-    		btnFinish.setDisable(true);
+    		tournamentController.update();
         }
-	}
-	
-	public void setBackendController(BackendController newBackendController) {
-		backendController = newBackendController;
 	}
 
 	@Override
 	public void update() {
 		lblTable.setText(match.getTableNo() == -1 ? "TBA" : String.valueOf(match.getTableNo()));
-		btnFinish.setDisable(matchFinished.getValue().booleanValue() || match.getTableNo() == -1);
 	}
 }

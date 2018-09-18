@@ -26,7 +26,7 @@
       <Label fx:id="lblScore" text="10:10" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
       <Label fx:id="lblTeamVisit" text="Spielerteam" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
       <Label fx:id="lblTable" text="Tisch" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-      <Button fx:id="btnFinish" mnemonicParsing="false" onAction="#onBtnFinishClicked" text="Fertig" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Button fx:id="btnFinish" mnemonicParsing="false" onAction="#onBtnFinishClicked" text="Ergebnis" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets right="15.0" />
          </GridPane.margin></Button>
