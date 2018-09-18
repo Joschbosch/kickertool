@@ -8,7 +8,7 @@ public class RoundConverter extends StringConverter<Round>{
 	@Override
 	public String toString(Round object) {
 		// TODO Auto-generated method stub
-		return String.valueOf(object.getRoundNo());
+		return "Runde " + String.valueOf(object.getRoundNo());
 	}
 
 	@Override
