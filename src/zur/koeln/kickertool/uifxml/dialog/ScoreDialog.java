@@ -6,13 +6,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
+import zur.koeln.kickertool.api.tournament.Team;
 import zur.koeln.kickertool.uifxml.FXMLGUI;
 import zur.koeln.kickertool.uifxml.FXMLGUIController;
 import zur.koeln.kickertool.uifxml.FXMLMatchResultDialogController;
 
 public class ScoreDialog<R> extends Dialog<R> {
 	
-    public ScoreDialog(String teamHomeName, String teamVisitName) {
+    public ScoreDialog(Team teamHome, Team teamVisit) {
 
         setTitle("Ergebnisse");
         
@@ -23,7 +24,7 @@ public class ScoreDialog<R> extends Dialog<R> {
         	
         	FXMLMatchResultDialogController dialogController = loader.getController();
         	
-        	dialogController.init(teamHomeName, teamVisitName);
+        	dialogController.init(teamHome, teamVisit);
 			setDialogPane(pane);
 			getDialogPane().setExpandableContent(null);
 			

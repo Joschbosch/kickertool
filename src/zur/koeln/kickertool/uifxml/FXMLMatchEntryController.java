@@ -18,12 +18,9 @@ import zur.koeln.kickertool.uifxml.dialog.ScoreDialog;
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class FXMLMatchEntryController implements UpdateableUIComponent{
-	@FXML
-	private Label lblTeamHome;
+
 	@FXML
 	private Label lblScore;
-	@FXML
-	private Label lblTeamVisit;
 	@FXML
 	private Label lblTable;
 	@FXML 
@@ -36,8 +33,10 @@ public class FXMLMatchEntryController implements UpdateableUIComponent{
 	
     private Match match;
 	
-	private String teamHomeName;
-	private String teamVisitName;
+	@FXML Label lblPlayer1TeamHome;
+	@FXML Label lblPlayer1TeamVisit;
+	@FXML Label lblPlayer2TeamHome;
+	@FXML Label lblPlayer2TeamVisit;
 	
     public void setMatch(Match currentMatch) {
 		match = currentMatch;
@@ -45,11 +44,8 @@ public class FXMLMatchEntryController implements UpdateableUIComponent{
 	}
 
 	private void init() {
-		teamHomeName = match.getHomeTeam().getPlayer1().getName() + " / " + match.getHomeTeam().getPlayer2().getName();
-		teamVisitName = match.getVisitingTeam().getPlayer1().getName() + " / " + match.getVisitingTeam().getPlayer2().getName();
-		
-		lblTeamHome.setText(teamHomeName);
-		lblTeamVisit.setText(teamVisitName);
+
+		setPlayerTeamTexts();
 		lblTable.setText(match.getTableNo() == -1 ? "TBA" : String.valueOf(match.getTableNo()));
 
 		if (match.getResult() != null) {
@@ -61,10 +57,18 @@ public class FXMLMatchEntryController implements UpdateableUIComponent{
 		
 		btnFinish.setDisable(match.getTableNo() == -1);
 	}
+	
+	private void setPlayerTeamTexts() {
+		lblPlayer1TeamHome.setText(match.getHomeTeam().getPlayer1().getName());
+		lblPlayer2TeamHome.setText(match.getHomeTeam().getPlayer2().getName());
+		
+		lblPlayer1TeamVisit.setText(match.getVisitingTeam().getPlayer1().getName());
+		lblPlayer2TeamVisit.setText(match.getVisitingTeam().getPlayer2().getName());
+	}
 
 	@FXML public void onBtnFinishClicked() {
 		
-		ScoreDialog<Pair<Integer, Integer>> dialog = new ScoreDialog<>(teamHomeName, teamVisitName);
+		ScoreDialog<Pair<Integer, Integer>> dialog = new ScoreDialog(match.getHomeTeam(), match.getVisitingTeam());
 		Optional<Pair<Integer, Integer>> result = dialog.showAndWait();
         if (result.isPresent()) {
             backendController.updateMatchResult(match, result.get().getKey(), result.get().getValue());

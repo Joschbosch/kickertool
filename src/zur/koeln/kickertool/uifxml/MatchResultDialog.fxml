@@ -20,7 +20,7 @@
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
@@ -30,18 +30,23 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="lblTeamHome" text="&lt;Team Home&gt;" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <Label fx:id="lblTeamHome" text="&lt;Team Home&gt;" textAlignment="CENTER" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="lblTeamVisitor" text="&lt;Team Visit&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <Label fx:id="lblTeamVisitor" text="&lt;Team Visit&gt;" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
             <ChoiceBox fx:id="choiceGoalsTeamHome" prefWidth="150.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <ChoiceBox fx:id="choiceGoalsTeamVisit" prefWidth="150.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Label text="Ergebnis" textAlignment="CENTER" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="26.0" />
+               </font>
+            </Label>
          </children>
       </GridPane>
     </content>
