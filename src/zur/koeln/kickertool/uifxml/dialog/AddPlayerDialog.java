@@ -25,6 +25,7 @@ public class AddPlayerDialog<R> extends Dialog<R> {
         	DialogPane pane = loader.load();
         	FXMLAddPlayerDialogController dialogController = loader.getController();
 			setDialogPane(pane);
+			getDialogPane().setExpandableContent(null);
 			
 	        setResultConverter(dialogButton -> {
 	            if (dialogButton == ButtonType.APPLY) {

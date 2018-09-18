@@ -25,6 +25,7 @@ public class ScoreDialog<R> extends Dialog<R> {
         	
         	dialogController.init(teamHomeName, teamVisitName);
 			setDialogPane(pane);
+			getDialogPane().setExpandableContent(null);
 			
 	        setResultConverter(dialogButton -> {
 	            if (dialogButton == ButtonType.APPLY) {
