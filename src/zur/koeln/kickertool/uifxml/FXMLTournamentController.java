@@ -107,6 +107,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	private final List<FXMLMatchEntryController> matchEntryController = new ArrayList<>();
 	private boolean selectionModeOn = true;
 	private final ObservableList<Round> rounds = FXCollections.observableArrayList();
+	private final ObservableList<PlayerTournamentStatistics> statistics = FXCollections.observableArrayList();
 	@FXML ChoiceBox cmbRounds;
 	
 	
@@ -122,7 +123,9 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		
 		setupColumns();
 		
-		getTblStatistics().setItems(FXCollections.observableArrayList(loadTableStatistics()));
+		getStatistics().addAll(loadTableStatistics());
+		
+		getTblStatistics().setItems(getStatistics());
 		getCmbRounds().setItems(getRounds());
 		getCmbRounds().setConverter(new RoundConverter());
 		getCmbRounds().disableProperty().bind(Bindings.size(getRounds()).isEqualTo(0));
@@ -135,14 +138,14 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	private void setupListener() {
 		getTblStatistics().getSelectionModel().selectedItemProperty().addListener(event -> {
 			
-			if (!isSelectionModeOn()) {
-				return;
-			}
-			
 			Player selectedPlayer = getSelectedPlayerInStatisticsTable();
 			
-			getBtnPausePlayer().setDisable(selectedPlayer.isDummy() || getTblStatistics().getSelectionModel().getSelectedItems().size() == 0 || selectedPlayer.isPausingTournament());
-			getBtnUnpausePlayer().setDisable(getTblStatistics().getSelectionModel().getSelectedItems().size() == 0 || !selectedPlayer.isPausingTournament());
+			if (selectedPlayer != null) {
+				getBtnPausePlayer().setDisable(selectedPlayer.isDummy() || getTblStatistics().getSelectionModel().getSelectedItems().size() == 0 || selectedPlayer.isPausingTournament());
+				getBtnUnpausePlayer().setDisable(getTblStatistics().getSelectionModel().getSelectedItems().size() == 0 || !selectedPlayer.isPausingTournament());
+				
+			}
+			
 			
 		});
 		
@@ -280,8 +283,8 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	public void update() {
 		setSelectionModeOn(false);
 		getMatchEntryController().forEach(FXMLMatchEntryController::update);
-		getTblStatistics().setItems(FXCollections.observableArrayList(loadTableStatistics()));
-		getTblStatistics().refresh();
+		getStatistics().clear();
+		getStatistics().addAll(loadTableStatistics());
 		setSelectionModeOn(true);
 		loadPlayerRounds();
 		
