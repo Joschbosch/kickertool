@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.SortedSet;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -20,7 +18,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableCell;
@@ -28,9 +28,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -42,7 +45,6 @@ import zur.koeln.kickertool.uifxml.cells.RoundConverter;
 import zur.koeln.kickertool.uifxml.dialog.AddPlayerDialog;
 import zur.koeln.kickertool.uifxml.tools.SimpleTimer;
 import zur.koeln.kickertool.uifxml.tools.TimerStringConverter;
-import javafx.scene.control.ChoiceBox;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component
@@ -110,6 +112,8 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 	private final ObservableList<PlayerTournamentStatistics> statistics = FXCollections.observableArrayList();
 	@FXML ChoiceBox cmbRounds;
 	
+	private FXMLTournamentInfoController tournamentInfoController;
+	
 	
 	@FXML
 	public void initialize() {
@@ -133,8 +137,33 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		loadPlayerRounds();
 		
 		setupListener();
+		
+		showTournamentInfoGUI();
 	}
 	
+	private void showTournamentInfoGUI() {
+		
+		Stage secondaryStage = new Stage();
+		secondaryStage.setTitle("parcIT Kickerturnier Helferlein");
+		secondaryStage.getIcons().add(new Image(this.getClass().getResource("/images/icon.png").toString()));
+
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLGUI.TOURMANENT_INFO.getFxmlFile()));
+		try {
+			loader.setControllerFactory(getCtx()::getBean);
+			
+			Pane rootPane = (Pane) loader.load();
+			tournamentInfoController = loader.getController();
+			tournamentInfoController.init(getTimer(), getStatistics());
+			Scene newScene = new Scene(rootPane);
+			secondaryStage.setScene(newScene);
+			secondaryStage.centerOnScreen();
+	        secondaryStage.show();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void setupListener() {
 		getTblStatistics().getSelectionModel().selectedItemProperty().addListener(event -> {
 			
@@ -156,7 +185,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 			}
 			
 			Round selectedRound = (Round) getCmbRounds().getSelectionModel().getSelectedItem();
-			fillMatchesForRound(selectedRound.getRoundNo());
+			fillMatchesForRound(selectedRound, getCmbRounds().getSelectionModel().getSelectedIndex());
 			
 		});
 	}
@@ -359,11 +388,15 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 		getCmbRounds().getSelectionModel().select(getRounds().size() - 1);
 	}
 	
-	private void fillMatchesForRound(int round) {
+	private void fillMatchesForRound(final Round selectedRound, int selectedIndex) {
 		
 		getStackGames().getChildren().clear();
 		
-		getBackendController().getMatchesForRound(round).forEach(eMatch -> {
+		if (!selectedRound.isComplete() || selectedIndex == (getRounds().size() - 1)) {
+			getTournamentInfoController().updateMatches(getBackendController().getMatchesForRound(selectedRound.getRoundNo()));
+		}
+		
+		getBackendController().getMatchesForRound(selectedRound.getRoundNo()).forEach(eMatch -> {
 			try {
 				FXMLLoader matchEntryLoader = getFXMLLoader(FXMLGUI.MATCH_ENTRY);
 				Parent pane = matchEntryLoader.load();
@@ -371,6 +404,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 				matchEntryController.setMatch(eMatch);
 				getStackGames().getChildren().add(pane);
 				getMatchEntryController().add(matchEntryController);
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

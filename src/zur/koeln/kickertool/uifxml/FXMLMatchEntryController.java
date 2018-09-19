@@ -58,6 +58,10 @@ public class FXMLMatchEntryController implements UpdateableUIComponent{
 		btnFinish.setDisable(match.getTableNo() == -1);
 	}
 	
+	public void hideBtnFinish() {
+		btnFinish.setVisible(false);
+	}
+	
 	private void setPlayerTeamTexts() {
 		lblPlayer1TeamHome.setText(match.getHomeTeam().getPlayer1().getName());
 		lblPlayer2TeamHome.setText(match.getHomeTeam().getPlayer2().getName());

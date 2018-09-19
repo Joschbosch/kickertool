@@ -8,6 +8,7 @@ public enum FXMLGUI {
 	PLAYER_POOL_MANAGEMENT("PlayerPoolManagement.fxml"),
 	PLAYER_SELECTION("PlayerSelection.fxml"),
 	TOURMANENT("Tournament.fxml"),
+	TOURMANENT_INFO("TournamentInfo.fxml"),
 	TOURNAMENT_CONFIGURATION("TournamentConfiguration.fxml"),
 	ADD_PLAYER_DIALOG("AddPlayerDialog.fxml");
 	

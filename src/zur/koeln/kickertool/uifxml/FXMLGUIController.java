@@ -53,10 +53,6 @@ public class FXMLGUIController
             registerGUIUpdateComponents((UpdateableUIComponent) loader.getController());
 			prepareStage(getStage(), newPane);
 			
-			if (newState == ToolState.TOURNAMENT) {
-				//createSecondTournamentStage(newState);
-			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -81,7 +77,6 @@ public class FXMLGUIController
 		prepareStage(getSecondaryStage(), rootPane);
 	}
 
-	@SuppressWarnings("nls")
 	private FXMLLoader getFXMLLoader(ToolState newState) throws IOException {
 		FXMLLoader loader = null;
 		switch (newState) {
