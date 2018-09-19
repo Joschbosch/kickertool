@@ -22,15 +22,17 @@ public class FXMLMatchResultDialogController {
 	@FXML
 	private ChoiceBox<Integer> choiceGoalsTeamVisit;
 	
-	public void init(Team teamHome, Team teamVisit) {
+    public void init(Team teamHome, Team teamVisit, int goalsToWin) {
 		lblTeamHome.setText(teamHome.getPlayer1().getName() + "/" + teamHome.getPlayer2().getName());
 		lblTeamVisitor.setText(teamVisit.getPlayer1().getName() + "/" + teamVisit.getPlayer2().getName());
-		choiceGoalsTeamHome.setItems(FXCollections.observableList(getGoalValues()));
-		choiceGoalsTeamVisit.setItems(FXCollections.observableList(getGoalValues()));
+        choiceGoalsTeamHome.setItems(FXCollections.observableList(getGoalValues(goalsToWin)));
+        choiceGoalsTeamVisit.setItems(FXCollections.observableList(getGoalValues(goalsToWin)));
+        choiceGoalsTeamHome.setValue(Integer.valueOf(0));
+        choiceGoalsTeamVisit.setValue(Integer.valueOf(0));
 	}
 	
-	private List<Integer> getGoalValues() {
-		return IntStream.range(0, 20).boxed().collect(Collectors.toList());
+    private List<Integer> getGoalValues(int goalsToWin) {
+        return IntStream.range(0, goalsToWin + 1).boxed().collect(Collectors.toList());
 	}
 
 	public Pair<Integer, Integer> getEnteredResult() {

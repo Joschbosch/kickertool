@@ -13,7 +13,10 @@ import zur.koeln.kickertool.uifxml.FXMLMatchResultDialogController;
 
 public class ScoreDialog<R> extends Dialog<R> {
 	
-    public ScoreDialog(Team teamHome, Team teamVisit) {
+    public ScoreDialog(
+        Team teamHome,
+        Team teamVisit,
+        int goalsToWin) {
 
         setTitle("Ergebnisse");
         
@@ -24,7 +27,7 @@ public class ScoreDialog<R> extends Dialog<R> {
         	
         	FXMLMatchResultDialogController dialogController = loader.getController();
         	
-        	dialogController.init(teamHome, teamVisit);
+            dialogController.init(teamHome, teamVisit, goalsToWin);
 			setDialogPane(pane);
 			getDialogPane().setExpandableContent(null);
 			

@@ -68,7 +68,7 @@ public class FXMLMatchEntryController implements UpdateableUIComponent{
 
 	@FXML public void onBtnFinishClicked() {
 		
-		ScoreDialog<Pair<Integer, Integer>> dialog = new ScoreDialog(match.getHomeTeam(), match.getVisitingTeam());
+        ScoreDialog<Pair<Integer, Integer>> dialog = new ScoreDialog(match.getHomeTeam(), match.getVisitingTeam(), backendController.getCurrentTournament().getSettings().getGoalsToWin());
 		Optional<Pair<Integer, Integer>> result = dialog.showAndWait();
         if (result.isPresent()) {
             backendController.updateMatchResult(match, result.get().getKey(), result.get().getValue());
