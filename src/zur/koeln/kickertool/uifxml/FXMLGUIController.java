@@ -11,6 +11,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.AccessLevel;
@@ -65,13 +66,15 @@ public class FXMLGUIController
 		Scene newScene = new Scene(root);
 		stage.setScene(newScene);
 		stage.sizeToScene();
-		stage.centerOnScreen();
+        stage.centerOnScreen();
 		stage.show();
 	}
 
 	private void createSecondTournamentStage(ToolState newState) throws IOException {
 		setSecondaryStage(new Stage());
 		getSecondaryStage().setTitle("parcIT Kickerturnier Helferlein");
+        getSecondaryStage().getIcons().add(new Image(this.getClass().getResource("/images/icon.png").toString()));
+
 		FXMLLoader loader = getFXMLLoader(newState);
 		Pane rootPane = (Pane) loader.load();
 		
@@ -111,6 +114,7 @@ public class FXMLGUIController
     public void init(ConfigurableApplicationContext ctx, Parent rootPane, double width, double height) {
         this.ctx = ctx;
         stage.setTitle("parcIT Kickerturnier Helferlein");
+        stage.getIcons().add(new Image(this.getClass().getResource("/images/icon.png").toString()));
         Scene mainScene = new Scene(rootPane, width, height);
         stage.setScene(mainScene);
         stage.show();
