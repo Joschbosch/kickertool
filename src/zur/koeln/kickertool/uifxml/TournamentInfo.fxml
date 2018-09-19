@@ -13,9 +13,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.uifxml.FXMLTournamentInfoController">
+<GridPane fx:id="gridPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@kickertool.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.uifxml.FXMLTournamentInfoController">
    <rowConstraints>
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" vgrow="NEVER" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
@@ -34,7 +34,7 @@
       <ColumnConstraints minWidth="10.0" prefWidth="25.0" />
    </columnConstraints>
    <children>
-      <ImageView fitHeight="27.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+      <ImageView fitHeight="54.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
          <image>
             <Image url="file:resources/images/parcITLogo.png" />
          </image>
@@ -44,12 +44,12 @@
       </ImageView>
       <Label fx:id="lblClock" text="15:00.000" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
          <font>
-            <Font name="System Bold" size="48.0" />
+            <Font name="System Bold" size="56.0" />
          </font>
       </Label>
       <ScrollPane fitToWidth="true" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="4">
          <content>
-            <VBox fx:id="stackGames" spacing="5.0" />
+            <VBox fx:id="stackGames" spacing="5.0" styleClass="matchentries" />
          </content>
       </ScrollPane>
       <TableView fx:id="tblStatistics" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="6">

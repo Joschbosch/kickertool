@@ -1,0 +1,28 @@
+.root {
+	-fx-background-color: #3e3e3e;
+}
+
+.root > .label {
+	-fx-text-fill: #FFFFFF;
+}
+
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+
+.scroll-pane {
+   -fx-background-color: transparent;
+   -fx-border-color: #FFFFFF;
+}
+
+.matchentries {
+	-fx-background-color: #3e3e3e;
+}
+
+.matchentries .label {
+	-fx-text-fill: #FFFFFF;
+}
+
+#dialoglabel {
+	-fx-text-fill: #FFFFFF;
+}
