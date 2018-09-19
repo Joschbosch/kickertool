@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane prefHeight="600.0" prefWidth="1200.0" stylesheets="@kickertool.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.uifxml.FXMLTournamentController">
+<GridPane prefHeight="600.0" prefWidth="1200.0" stylesheets="file:resources/css/kickertool.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.uifxml.FXMLTournamentController">
    <columnConstraints>
       <ColumnConstraints minWidth="10.0" prefWidth="25.0" />
       <ColumnConstraints minWidth="10.0" prefWidth="125.0" />

@@ -1,5 +1,5 @@
 .root {
-	-fx-background-color: #3e3e3e;
+	-fx-background-color: #474747;
 }
 
 .root > .label {
@@ -16,7 +16,7 @@
 }
 
 .matchentries {
-	-fx-background-color: #3e3e3e;
+	-fx-background-color: #474747;
 }
 
 .matchentries .label {
