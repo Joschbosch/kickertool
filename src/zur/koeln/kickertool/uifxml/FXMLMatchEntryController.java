@@ -52,7 +52,7 @@ public class FXMLMatchEntryController implements UpdateableUIComponent{
 			
 			lblScore.setText(match.getScoreHome() + ":" + match.getScoreVisiting());
 		} else {
-			lblScore.setText("0:0");
+            lblScore.setText("-:-");
 		}
 		
 		btnFinish.setDisable(match.getTableNo() == -1);
