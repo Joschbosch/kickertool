@@ -31,8 +31,8 @@ public class FXMLTournamentConfigurationController implements UpdateableUICompon
 	private Button btnNext;
 	@FXML
 	private TextField txtNumberOfTables;
-	@FXML
-	private TextField txtMatchesToWin;
+    //	@FXML
+    //	private TextField txtMatchesToWin;
 	@FXML
 	private TextField txtGoalsToWin;
 	@FXML
@@ -57,7 +57,7 @@ public class FXMLTournamentConfigurationController implements UpdateableUICompon
 		
 		getTxtGoalsToWin().setTextFormatter(createIntegerTextFormatter());
 		getTxtNumberOfTables().setTextFormatter(createIntegerTextFormatter());
-		getTxtMatchesToWin().setTextFormatter(createIntegerTextFormatter());
+        //		getTxtMatchesToWin().setTextFormatter(createIntegerTextFormatter());
 		getTxtPointsToWin().setTextFormatter(createIntegerTextFormatter());
 		getTxtPointsForDraw().setTextFormatter(createIntegerTextFormatter());
 		getTxtMinutesPerMatch().setTextFormatter(createIntegerTextFormatter());
@@ -75,7 +75,7 @@ public class FXMLTournamentConfigurationController implements UpdateableUICompon
 		
 		getTxtGoalsToWin().setPromptText(String.valueOf(getConfig().getGoalsToWin()));
 		getTxtNumberOfTables().setPromptText(String.valueOf(getConfig().getTableCount()));
-		getTxtMatchesToWin().setPromptText(String.valueOf(getConfig().getMatchesToWin()));
+        //		getTxtMatchesToWin().setPromptText(String.valueOf(getConfig().getMatchesToWin()));
 		getTxtPointsToWin().setPromptText(String.valueOf(getConfig().getPointsForWinner()));
 		getTxtPointsForDraw().setPromptText(String.valueOf(getConfig().getPointsForDraw()));
 		getTxtMinutesPerMatch().setPromptText(String.valueOf(getConfig().getMinutesPerMatch()));
@@ -98,7 +98,7 @@ public class FXMLTournamentConfigurationController implements UpdateableUICompon
 		
 		getBackendController().changedTournamentConfig(TournamentSetingsKeys.GOALS_FOR_WIN, getValue(getTxtGoalsToWin()));
 		getBackendController().changedTournamentConfig(TournamentSetingsKeys.TABLES, getValue(getTxtNumberOfTables()));
-		getBackendController().changedTournamentConfig(TournamentSetingsKeys.MATCHES_TO_WIN, getValue(getTxtMatchesToWin()));
+        //		getBackendController().changedTournamentConfig(TournamentSetingsKeys.MATCHES_TO_WIN, getValue(getTxtMatchesToWin()));
 		getBackendController().changedTournamentConfig(TournamentSetingsKeys.POINTS_FOR_WINNER, getValue(getTxtPointsToWin()));
 		getBackendController().changedTournamentConfig(TournamentSetingsKeys.POINTS_FOR_DRAW, getValue(getTxtPointsForDraw()));
 		getBackendController().changedTournamentConfig(TournamentSetingsKeys.MINUTES_PER_MATCH, getValue(getTxtMinutesPerMatch()));
