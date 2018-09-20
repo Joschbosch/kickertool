@@ -16,9 +16,6 @@ public class HumanPlayer
 
     private boolean dummy;
 
-    @JsonIgnore
-    private boolean pausingTournament = false;
-
     public HumanPlayer() {
     }
 
@@ -27,7 +24,6 @@ public class HumanPlayer
         uid = UUID.randomUUID();
         this.name = name;
         dummy = false;
-        pausingTournament = false;
     }
 
     /*
@@ -77,12 +73,5 @@ public class HumanPlayer
         this.dummy = dummy;
     }
 
-    public boolean isPausingTournament() {
-        return pausingTournament;
-    }
-
-    public void setPausingTournament(boolean pausingTournament) {
-        this.pausingTournament = pausingTournament;
-    }
 
 }

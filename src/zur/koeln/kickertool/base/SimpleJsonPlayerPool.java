@@ -81,7 +81,7 @@ public class SimpleJsonPlayerPool
 
 
     @Override
-    public Player getPlayerById(UUID playerId) {
+    public Player getPlayerOrDummyById(UUID playerId) {
         Optional<Player> p = players.stream().filter(player -> player.getUid().equals(playerId)).findFirst();
         if (p.isPresent()) {
             return p.get();
@@ -104,7 +104,7 @@ public class SimpleJsonPlayerPool
      */
     @Override
     public Player createDummyPlayerWithUUID(UUID id) {
-        Player dummy = new HumanPlayer("Dummy Player " + dummies.size() + 1); //$NON-NLS-1$
+        Player dummy = new HumanPlayer("Dummy Player " + (dummies.size() + 1)); //$NON-NLS-1$
         dummy.setDummy(true);
         dummy.setUid(id);
         dummies.add(dummy);

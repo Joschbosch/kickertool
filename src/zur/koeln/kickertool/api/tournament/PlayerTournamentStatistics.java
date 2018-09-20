@@ -28,5 +28,7 @@ public interface PlayerTournamentStatistics
     int getGoalsShot();
 
     int getGoalsConceded();
+    
+    boolean isPlayerPausing();
 
 }

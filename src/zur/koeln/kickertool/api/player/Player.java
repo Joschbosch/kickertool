@@ -10,12 +10,9 @@ public interface Player {
 
     UUID getUid();
 
-    boolean isPausingTournament();
-
     boolean isDummy();
 
     String getName();
 
-    void setPausingTournament(boolean b);
 
 }

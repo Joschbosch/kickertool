@@ -44,8 +44,7 @@ public class FXMLMainMenuController implements UpdateableUIComponent {
 		comboboxItems.addAll(backendController.createTournamentsListForImport());
 		getCmbTournaments().setItems(comboboxItems);
 		getCmbTournaments().setDisable(comboboxItems.isEmpty());
-		getBtnCreateNewTournament().disableProperty().bind(Bindings.isEmpty(comboboxItems));
-		getBtnImportTournament().setDisable(comboboxItems.isEmpty());
+		getBtnImportTournament().disableProperty().bind(Bindings.isEmpty(comboboxItems));
 		
 		if (!comboboxItems.isEmpty()) {
 			getCmbTournaments().getSelectionModel().clearAndSelect(0);

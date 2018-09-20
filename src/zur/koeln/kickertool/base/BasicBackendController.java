@@ -208,7 +208,7 @@ public class BasicBackendController
     @Override
     public Collection<Player> getParticipantList() {
         Set<Player> participants = new HashSet<>();
-        currentTournament.getParticipants().forEach(id -> participants.add(playerpool.getPlayerById(id)));
+        currentTournament.getParticipants().forEach(id -> participants.add(playerpool.getPlayerOrDummyById(id)));
         return participants;
     }
 
@@ -244,16 +244,16 @@ public class BasicBackendController
     }
     @Override
     public Player getPlayer(UUID selectedPlayer) {
-        return playerpool.getPlayerById(selectedPlayer);
+        return playerpool.getPlayerOrDummyById(selectedPlayer);
     }
     @Override
     public void pausePlayer(UUID selectedPlayer) {
-        currentTournament.pausePlayer(playerpool.getPlayerById(selectedPlayer));
+        currentTournament.pausePlayer(playerpool.getPlayerOrDummyById(selectedPlayer));
 
     }
     @Override
     public void unpausePlayer(UUID selectedPlayer) {
-        currentTournament.unpausePlayer(playerpool.getPlayerById(selectedPlayer));
+        currentTournament.unpausePlayer(playerpool.getPlayerOrDummyById(selectedPlayer));
     }
 
     @Override
@@ -331,4 +331,9 @@ public class BasicBackendController
         }
         return tournamentList;
     }
+
+	@Override
+	public boolean isPlayerPausing(Player selectedPlayer) {
+		return currentTournament.getScoreTable().get(selectedPlayer.getUid()).isPlayerPausing();
+	}
 }

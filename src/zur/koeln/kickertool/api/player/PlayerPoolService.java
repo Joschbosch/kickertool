@@ -15,7 +15,7 @@ public interface PlayerPoolService {
 
     void clear();
 
-    Player getPlayerById(UUID playerId);
+    Player getPlayerOrDummyById(UUID playerId);
 
     int getNoOfDummyPlayerUsed();
 

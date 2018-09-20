@@ -93,7 +93,7 @@ public class FXMLTournamentInfoController {
             public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
 				
 				String playerName = param.getValue().getPlayer().getName();
-				if (param.getValue().getPlayer().isPausingTournament()) {
+				if (backendController.isPlayerPausing(param.getValue().getPlayer())) {
 					playerName += " (Pausing)";
 				}
 				

@@ -46,7 +46,7 @@ public class TournamentRound
      * @return
      */
     public void createMatches(List<PlayerTournamentStatistics> table, TournamentSettings config) {
-        table.removeIf(statistic -> statistic.getPlayer().isPausingTournament());
+        table.removeIf(statistic -> statistic.isPlayerPausing());
         if (roundNo <= config.getRandomRounds()) {
             while (table.size() > 3) {
                 TournamentTeam home = new TournamentTeam(getRandomPlayer(table), getRandomPlayer(table));

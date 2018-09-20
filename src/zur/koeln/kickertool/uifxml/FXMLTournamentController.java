@@ -170,8 +170,8 @@ public class FXMLTournamentController implements UpdateableUIComponent {
 			Player selectedPlayer = getSelectedPlayerInStatisticsTable();
 			
 			if (selectedPlayer != null) {
-				getBtnPausePlayer().setDisable(selectedPlayer.isDummy() || getTblStatistics().getSelectionModel().getSelectedItems().size() == 0 || selectedPlayer.isPausingTournament());
-				getBtnUnpausePlayer().setDisable(getTblStatistics().getSelectionModel().getSelectedItems().size() == 0 || !selectedPlayer.isPausingTournament());
+				getBtnPausePlayer().setDisable(selectedPlayer.isDummy() || getTblStatistics().getSelectionModel().getSelectedItems().size() == 0 || backendController.isPlayerPausing(selectedPlayer));
+				getBtnUnpausePlayer().setDisable(getTblStatistics().getSelectionModel().getSelectedItems().size() == 0 || !backendController.isPlayerPausing(selectedPlayer));
 				
 			}
 			
@@ -226,7 +226,7 @@ public class FXMLTournamentController implements UpdateableUIComponent {
             public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
 				
 				String playerName = param.getValue().getPlayer().getName();
-				if (param.getValue().getPlayer().isPausingTournament()) {
+				if (backendController.isPlayerPausing(param.getValue().getPlayer())) {
 					playerName += " (Pausing)";
 				}
 				

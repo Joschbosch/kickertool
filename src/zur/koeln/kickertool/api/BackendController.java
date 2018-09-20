@@ -81,4 +81,6 @@ public interface BackendController {
     void changePlayerName(String newName, Player selectedPlayer);
 
     List<String> createTournamentsListForImport();
+
+	boolean isPlayerPausing(Player selectedPlayer);
 }

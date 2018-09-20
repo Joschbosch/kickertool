@@ -31,6 +31,8 @@ public class PlayerTournamentStatisticsImpl
 
 	private List<UUID> matches = new LinkedList<>();
 
+	private boolean pausing = false;
+
     public void addMatchResult(Match match) {
 		matches.add(match.getMatchID());
         getUidToMatch().put(match.getMatchID(), match);
@@ -191,5 +193,14 @@ public class PlayerTournamentStatisticsImpl
 
 	public void setPlayerId(UUID playerId) {
 		this.playerId = playerId;
+	}
+	
+	@Override
+	public boolean isPlayerPausing() {
+		return pausing ;
+	}
+
+	public void setPlayerPausing(boolean b) {
+		pausing = b;
 	}
 }
