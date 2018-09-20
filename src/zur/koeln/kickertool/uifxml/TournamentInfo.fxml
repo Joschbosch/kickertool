@@ -34,7 +34,7 @@
       <ColumnConstraints minWidth="10.0" prefWidth="25.0" />
    </columnConstraints>
    <children>
-      <ImageView fitHeight="54.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+      <ImageView fitHeight="61.0" fitWidth="141.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.rowSpan="3" GridPane.valignment="TOP">
          <image>
             <Image url="@/images/parcITLogo.png" />
          </image>
@@ -44,7 +44,7 @@
       </ImageView>
       <Label fx:id="lblClock" text="15:00.000" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
          <font>
-            <Font name="System Bold" size="56.0" />
+            <Font name="System Bold" size="96.0" />
          </font>
       </Label>
       <ScrollPane fitToWidth="true" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="4">
