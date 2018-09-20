@@ -127,8 +127,11 @@ public class PlayerTournamentStatisticsImpl
 		if (drawDiff != 0) {
 			return -Long.compare(this.getMatchesDrawCount(), o2.getMatchesDrawCount());
 		}
-
-		return player1.getName().compareTo(player2.getName());
+        int nameCompare = player1.getName().compareTo(player2.getName());
+        if (nameCompare != 0) {
+            return nameCompare;
+        }
+        return player1.getUid().compareTo(player2.getUid());
 	}
 
 	/*
