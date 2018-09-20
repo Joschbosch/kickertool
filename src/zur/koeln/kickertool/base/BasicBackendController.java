@@ -5,9 +5,12 @@ package zur.koeln.kickertool.base;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +29,6 @@ import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.api.tournament.Tournament;
 import zur.koeln.kickertool.api.ui.GUIController;
 import zur.koeln.kickertool.tournament.TournamentImpl;
-import zur.koeln.kickertool.tournament.TournamentRound;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 import zur.koeln.kickertool.tournament.settings.TournamentSettingsImpl;
 
@@ -162,8 +164,8 @@ public class BasicBackendController
         guiController.switchToolState(ToolState.TOURNAMENT);
     }
     @Override
-    public void importAndStartTournament(File tournamentToImport) throws IOException {
-        importTournament(tournamentToImport);
+    public void importAndStartTournament(String tournamentNameToImport) throws IOException {
+        importTournament(new File("tournament" + tournamentNameToImport + ".json"));
         guiController.switchToolState(ToolState.TOURNAMENT);
     }
 
@@ -241,7 +243,7 @@ public class BasicBackendController
         ObjectMapper m = new ObjectMapper();
         currentTournament = m.readValue(tournamentToImport, TournamentImpl.class);
         ((TournamentImpl) currentTournament).setPlayerPool(playerpool);
-        ((TournamentRound) currentTournament).setTournamentFactory(tournamentFactory);
+        ((TournamentImpl) currentTournament).setTournamentFactory(tournamentFactory);
         ((TournamentImpl) currentTournament).initializeAfterImport();
         return currentTournament;
 
@@ -303,5 +305,22 @@ public class BasicBackendController
         playerpool.changePlayerName(newName, selectedPlayer);
         savePlayerPool();
 
+    }
+
+    @Override
+    public List<String> createTournamentsListForImport() {
+        List<String> tournamentList = new ArrayList<>();
+        try {
+            Files.walk(Paths.get("")).filter(Files::isRegularFile).forEach(file -> {
+                if (file.toString().contains("tournament") && !file.toString().contains("-Round") && file.toString().contains(".json")) {
+                    String name = FilenameUtils.getBaseName(file.toString());
+                    name = name.substring("tournament".length());
+                    tournamentList.add(name);
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return tournamentList;
     }
 }

@@ -1,6 +1,5 @@
 package zur.koeln.kickertool.api;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
@@ -41,7 +40,7 @@ public interface BackendController {
 
     void startTournament();
 
-    void importAndStartTournament(File tournamentToImport) throws IOException;
+    void importAndStartTournament(String tournamentNameToImport) throws IOException;
 
     void addParticipantToTournament(Player p);
 
@@ -80,4 +79,6 @@ public interface BackendController {
     List<Match> getMatchesForRound(int roundNo);
 
     void changePlayerName(String newName, Player selectedPlayer);
+
+    List<String> createTournamentsListForImport();
 }
