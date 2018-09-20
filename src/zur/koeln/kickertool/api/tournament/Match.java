@@ -9,7 +9,7 @@ public interface Match extends Comparable<Match> {
     void setResultScores(int homeScore, int guestScore);
 
     UUID getMatchID();
-
+    public Integer getRoundNumber();
     int getTableNo();
 
     Team getHomeTeam();

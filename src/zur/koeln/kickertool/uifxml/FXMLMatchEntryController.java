@@ -55,14 +55,14 @@ public class FXMLMatchEntryController implements UpdateableUIComponent{
             lblScore.setText("-:-");
 		}
 		
-		btnFinish.setDisable(match.getTableNo() == -1);
+        btnFinish.setDisable(match.getTableNo() == -1 || match.getRoundNumber().intValue() != backendController.getCurrentTournament().getCurrentRound().getRoundNo());
 	}
 	
 	public void hideBtnFinish() {
 		btnFinish.setVisible(false);
 	}
 	
-	private void setPlayerTeamTexts() {
+	private void setPlayerTeamTexts() { 
 		lblPlayer1TeamHome.setText(match.getHomeTeam().getPlayer1().getName());
 		lblPlayer2TeamHome.setText(match.getHomeTeam().getPlayer2().getName());
 		
