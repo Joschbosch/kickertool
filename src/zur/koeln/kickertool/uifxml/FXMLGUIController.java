@@ -63,7 +63,8 @@ public class FXMLGUIController
 		stage.setScene(newScene);
 		stage.sizeToScene();
         stage.centerOnScreen();
-		stage.show();
+        stage.show();
+
 	}
 
 	private void createSecondTournamentStage(ToolState newState) throws IOException {
@@ -73,7 +74,6 @@ public class FXMLGUIController
 
 		FXMLLoader loader = getFXMLLoader(newState);
 		Pane rootPane = (Pane) loader.load();
-		
 		prepareStage(getSecondaryStage(), rootPane);
 	}
 
