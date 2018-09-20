@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridPane" prefHeight="600.0" prefWidth="800.0" stylesheets="file:resources/css/kickertool.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.uifxml.FXMLTournamentInfoController">
+<GridPane fx:id="gridPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@/css/kickertool.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.uifxml.FXMLTournamentInfoController">
    <rowConstraints>
       <RowConstraints minHeight="10.0" vgrow="NEVER" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
@@ -36,7 +36,7 @@
    <children>
       <ImageView fitHeight="54.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
          <image>
-            <Image url="file:resources/images/parcITLogo.png" />
+            <Image url="@/images/parcITLogo.png" />
          </image>
          <GridPane.margin>
             <Insets top="15.0" />
