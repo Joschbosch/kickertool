@@ -36,17 +36,17 @@ public class TournamentImpl
 
     private String name;
 
-    private final List<UUID> participants = new ArrayList<>();
+    private  List<UUID> participants = new ArrayList<>();
 
-    private final List<Round> completeRounds = new ArrayList<>();
+    private  List<Round> completeRounds = new ArrayList<>();
 
     private Round currentRound;
 
-    private final Map<UUID, PlayerTournamentStatistics> scoreTable = new HashMap<>();
+    private  Map<UUID, PlayerTournamentStatistics> scoreTable = new HashMap<>();
 
-    private final Map<Integer, GamingTable> playtables = new HashMap<>();
+    private  Map<Integer, GamingTable> playtables = new HashMap<>();
 
-    private final List<UUID> dummyPlayerActive = new ArrayList<>();
+    private  List<UUID> dummyPlayerActive = new ArrayList<>();
 
     /**
      * @param players
@@ -225,19 +225,6 @@ public class TournamentImpl
         return currentRound != null ? currentRound.isComplete() : Boolean.TRUE.booleanValue();
     }
 
-    @JsonIgnore
-    public void initializeAfterImport() {
-        started = true;
-        Map<UUID, Match> uuidToMatch = new HashMap<>();
-        getAllMatches().forEach(m -> uuidToMatch.put(m.getMatchID(), m));
-        scoreTable.values().forEach(tournamentStatistic -> {
-            ((PlayerTournamentStatisticsImpl) tournamentStatistic).setUidToMatch(uuidToMatch);
-            if (dummyPlayerActive.contains(tournamentStatistic.getPlayerId())) {
-                playerPool.createDummyPlayerWithUUID(tournamentStatistic.getPlayerId());
-            }
-        });
-
-    }
 
     @Override
     public List<Match> getMatchesForRound(int roundNo) {
@@ -303,5 +290,37 @@ public class TournamentImpl
     public List<UUID> getDummyPlayerActive() {
         return dummyPlayerActive;
     }
+
+	public TournamentSettings getConfig() {
+		return config;
+	}
+
+	public void setConfig(TournamentSettings config) {
+		this.config = config;
+	}
+
+	public void setParticipants(List<UUID> participants) {
+		this.participants = participants;
+	}
+
+	public void setCompleteRounds(List<Round> completeRounds) {
+		this.completeRounds = completeRounds;
+	}
+
+	public void setCurrentRound(Round currentRound) {
+		this.currentRound = currentRound;
+	}
+
+	public void setScoreTable(Map<UUID, PlayerTournamentStatistics> scoreTable) {
+		this.scoreTable = scoreTable;
+	}
+
+	public void setPlaytables(Map<Integer, GamingTable> playtables) {
+		this.playtables = playtables;
+	}
+
+	public void setDummyPlayerActive(List<UUID> dummyPlayerActive) {
+		this.dummyPlayerActive = dummyPlayerActive;
+	}
 
 }

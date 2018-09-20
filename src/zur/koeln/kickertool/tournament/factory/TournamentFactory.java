@@ -24,7 +24,7 @@ public class TournamentFactory {
         return ctx.getBean(Tournament.class);
     }
 
-    public TournamentSettings createNewTournamentConfig() {
+    public TournamentSettings getTournamentSettings() {
         return ctx.getBean(TournamentSettings.class);
     }
     public TournamentMatch createNewMatch(Integer roundNo, TournamentTeam home, TournamentTeam visiting, int matchNumber) {

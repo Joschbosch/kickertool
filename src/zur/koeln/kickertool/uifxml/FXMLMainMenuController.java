@@ -1,5 +1,7 @@
 package zur.koeln.kickertool.uifxml;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +42,12 @@ public class FXMLMainMenuController implements UpdateableUIComponent {
 	// Event Listener on Button[#btnManagePlayers].onAction
 	@FXML
 	public void onManagePlayersClicked(ActionEvent event) {
-        backendController.showPlayerPoolManagement();
+//        backendController.showPlayerPoolManagement();
+		try {
+			backendController.importAndStartTournament("Test");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

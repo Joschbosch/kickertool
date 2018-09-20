@@ -19,7 +19,7 @@ public interface PlayerPoolService {
 
     int getNoOfDummyPlayerUsed();
 
-    void createDummyPlayerWithUUID(UUID id);
+    Player createDummyPlayerWithUUID(UUID id);
 
     Player useNextDummyPlayer();
 

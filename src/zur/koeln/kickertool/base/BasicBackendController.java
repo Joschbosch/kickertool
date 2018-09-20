@@ -7,14 +7,25 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.ToolState;
@@ -27,8 +38,10 @@ import zur.koeln.kickertool.api.tournament.Match;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.api.tournament.Tournament;
+import zur.koeln.kickertool.api.tournament.TournamentSettings;
 import zur.koeln.kickertool.api.ui.GUIController;
 import zur.koeln.kickertool.tournament.TournamentImpl;
+import zur.koeln.kickertool.tournament.TournamentRound;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 import zur.koeln.kickertool.tournament.settings.TournamentSettingsImpl;
 
@@ -41,6 +54,9 @@ public class BasicBackendController
 
     @Autowired
     private TournamentFactory tournamentFactory;
+    
+    @Autowired
+    private Importer importer;
 
     private GUIController guiController;
 
@@ -165,8 +181,9 @@ public class BasicBackendController
     }
     @Override
     public void importAndStartTournament(String tournamentNameToImport) throws IOException {
-        importTournament(new File("tournament" + tournamentNameToImport + ".json"));
+    	currentTournament = importer. importTournament(new File("tournament" + tournamentNameToImport + ".json"));
         guiController.switchToolState(ToolState.TOURNAMENT);
+        guiController.update();
     }
 
     /**
@@ -239,15 +256,6 @@ public class BasicBackendController
         currentTournament.unpausePlayer(playerpool.getPlayerById(selectedPlayer));
     }
 
-    private Tournament importTournament(File tournamentToImport) throws IOException {
-        ObjectMapper m = new ObjectMapper();
-        currentTournament = m.readValue(tournamentToImport, TournamentImpl.class);
-        ((TournamentImpl) currentTournament).setPlayerPool(playerpool);
-        ((TournamentImpl) currentTournament).setTournamentFactory(tournamentFactory);
-        ((TournamentImpl) currentTournament).initializeAfterImport();
-        return currentTournament;
-
-    }
     @Override
     public List<Player> getPlayer() {
         return playerpool.getPlayers();
@@ -265,7 +273,7 @@ public class BasicBackendController
         }
     }
 
-    public void setGuiController(GUIController guiController) {
+	public void setGuiController(GUIController guiController) {
         this.guiController = guiController;
     }
     @Override

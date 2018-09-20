@@ -25,6 +25,7 @@ import zur.koeln.kickertool.tournament.settings.TournamentSettingsImpl;
 public class TournamentRound
     implements Round {
 
+	@JsonIgnore
     @Autowired
     private TournamentFactory tournamentFactory;
 
@@ -33,9 +34,9 @@ public class TournamentRound
     @JsonIgnore
     private final Random r = new Random();
 
-    private final List<Match> matches = new LinkedList<>();
+    private  List<Match> matches = new LinkedList<>();
 
-    private final List<Match> completeMatches = new LinkedList<>();
+    private  List<Match> completeMatches = new LinkedList<>();
 
     private Map<UUID, PlayerTournamentStatistics> scoreTableAtEndOfRound;
 
@@ -177,6 +178,14 @@ public class TournamentRound
     public List<Match> getCompleteMatches() {
         return completeMatches;
     }
+
+	public void setMatches(List<Match> matches) {
+		this.matches = matches;
+	}
+
+	public void setCompleteMatches(List<Match> completeMatches) {
+		this.completeMatches = completeMatches;
+	}
 
 
 

@@ -103,11 +103,12 @@ public class SimpleJsonPlayerPool
      * @param i
      */
     @Override
-    public void createDummyPlayerWithUUID(UUID id) {
+    public Player createDummyPlayerWithUUID(UUID id) {
         Player dummy = new HumanPlayer("Dummy Player " + dummies.size() + 1); //$NON-NLS-1$
         dummy.setDummy(true);
         dummy.setUid(id);
         dummies.add(dummy);
+        return dummy;
     }
     @Override
     public Player useNextDummyPlayer() {

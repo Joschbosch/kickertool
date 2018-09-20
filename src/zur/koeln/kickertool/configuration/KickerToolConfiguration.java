@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Primary;
 import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.player.PlayerPoolService;
 import zur.koeln.kickertool.base.BasicBackendController;
+import zur.koeln.kickertool.base.Importer;
 import zur.koeln.kickertool.base.SimpleJsonPlayerPool;
 
 @Configuration
@@ -26,6 +27,12 @@ public class KickerToolConfiguration {
     @Primary
     public BackendController createBackendController() {
         return new BasicBackendController();
+    }
+    
+    @Bean
+    @Primary
+    public Importer createImporter() {
+        return new Importer();
     }
   
 }

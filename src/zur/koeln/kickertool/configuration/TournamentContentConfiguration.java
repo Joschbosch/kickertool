@@ -53,7 +53,6 @@ public class TournamentContentConfiguration {
 
     @Bean
     @Primary
-    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public TournamentSettingsImpl createTournamentConfigBean() {
         return new TournamentSettingsImpl();
     }
