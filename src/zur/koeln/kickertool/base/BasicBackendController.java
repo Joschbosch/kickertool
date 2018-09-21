@@ -5,20 +5,14 @@ package zur.koeln.kickertool.base;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import zur.koeln.kickertool.api.BackendController;
+import zur.koeln.kickertool.api.PersistenceService;
 import zur.koeln.kickertool.api.ToolState;
 import zur.koeln.kickertool.api.config.TournamentMode;
 import zur.koeln.kickertool.api.config.TournamentSetingsKeys;
@@ -44,7 +38,7 @@ public class BasicBackendController
     private TournamentFactory tournamentFactory;
     
     @Autowired
-    private Importer importer;
+    private PersistenceService persistenceService;
 
     private GUIController guiController;
 
@@ -167,12 +161,7 @@ public class BasicBackendController
         currentTournament.startTournament();
         guiController.switchToolState(ToolState.TOURNAMENT);
     }
-    @Override
-    public void importAndStartTournament(String tournamentNameToImport) throws IOException {
-        currentTournament = importer.importTournament(new File("tournament" + tournamentNameToImport + ".json")); //$NON-NLS-1$ //$NON-NLS-2$
-        guiController.switchToolState(ToolState.TOURNAMENT);
-        guiController.update();
-    }
+
 
     /**
      * @param p
@@ -248,18 +237,7 @@ public class BasicBackendController
     public List<Player> getPlayer() {
         return playerpool.getPlayers();
     }
-    @Override
-    public void exportTournament() {
-        File tournamentFile = new File("tournament" + currentTournament.getName() + ".json"); //$NON-NLS-1$ //$NON-NLS-2$
-        File tournamentRoundFile = new File("tournament" + currentTournament.getName() + "-Round" + currentTournament.getCurrentRound().getRoundNo() + ".json"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        ObjectMapper m = new ObjectMapper();
-        try {
-            m.writerWithDefaultPrettyPrinter().writeValue(tournamentFile, currentTournament);
-            m.writerWithDefaultPrettyPrinter().writeValue(tournamentRoundFile, currentTournament);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 
 	public void setGuiController(GUIController guiController) {
         this.guiController = guiController;
@@ -302,26 +280,20 @@ public class BasicBackendController
         savePlayerPool();
 
     }
-
+    @Override
+    public void exportTournament() {
+        persistenceService.exportTournament(currentTournament);
+    }
     @Override
     public List<String> createTournamentsListForImport() {
-        List<String> tournamentList = new ArrayList<>();
-        try {
-            Stream<Path> walk = Files.walk(Paths.get(""), 1); //$NON-NLS-1$
-            walk.filter(Files::isRegularFile).forEach(file -> {
-                if (file.toString().contains("tournament") && !file.toString().contains("-Round") && file.toString().contains(".json")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    String name = FilenameUtils.getBaseName(file.toString());
-                    name = name.substring("tournament".length()); //$NON-NLS-1$
-                    tournamentList.add(name);
-                }
-            });
-            walk.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return tournamentList;
+        return persistenceService.createTournamentsListForImport();
     }
-
+    @Override
+    public void importAndStartTournament(String tournamentNameToImport) throws IOException {
+        currentTournament = persistenceService.importTournament(new File("tournament" + tournamentNameToImport + ".json")); //$NON-NLS-1$ //$NON-NLS-2$
+        guiController.switchToolState(ToolState.TOURNAMENT);
+        guiController.update();
+    }
 	@Override
 	public boolean isPlayerPausing(Player selectedPlayer) {
 		return currentTournament.getScoreTable().get(selectedPlayer.getUid()).isPlayerPausing();

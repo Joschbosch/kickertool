@@ -2,13 +2,13 @@ package zur.koeln.kickertool.base;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.UUID;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Stream;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,25 +17,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import zur.koeln.kickertool.api.PersistenceService;
 import zur.koeln.kickertool.api.config.TournamentMode;
 import zur.koeln.kickertool.api.player.Player;
 import zur.koeln.kickertool.api.player.PlayerPoolService;
-import zur.koeln.kickertool.api.tournament.Match;
-import zur.koeln.kickertool.api.tournament.MatchResult;
-import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
-import zur.koeln.kickertool.api.tournament.Round;
-import zur.koeln.kickertool.api.tournament.Tournament;
-import zur.koeln.kickertool.tournament.GamingTable;
-import zur.koeln.kickertool.tournament.PlayerTournamentStatisticsImpl;
-import zur.koeln.kickertool.tournament.TournamentImpl;
-import zur.koeln.kickertool.tournament.TournamentMatch;
-import zur.koeln.kickertool.tournament.TournamentRound;
-import zur.koeln.kickertool.tournament.TournamentTeam;
+import zur.koeln.kickertool.api.tournament.*;
+import zur.koeln.kickertool.tournament.*;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 import zur.koeln.kickertool.tournament.settings.TournamentSettingsImpl;
 
 @Component
-public class Importer {
+@SuppressWarnings("nls")
+public class PersistenceServiceImpl
+    implements PersistenceService {
 
 	@Autowired
 	private TournamentFactory tournamentFactory;
@@ -43,6 +37,8 @@ public class Importer {
 	@Autowired
 	private PlayerPoolService playerpool;
 
+
+    @Override
 	public Tournament importTournament(File tournamentToImport) throws IOException {
 		ObjectMapper m = new ObjectMapper();
 		JsonNode importRootNode = m.readTree(tournamentToImport);
@@ -99,7 +95,8 @@ public class Importer {
 			PlayerTournamentStatisticsImpl statistics = (PlayerTournamentStatisticsImpl) tournamentFactory
 					.createNewTournamentStatistics(player);
 			statistics.setMatches(importUIDList(node.get("matches")));
-			statistics.setPlayerPausing(node.get("playerPausing").booleanValue());
+            JsonNode playerPausingNode = node.get("playerPausing");
+            statistics.setPlayerPausing(playerPausingNode != null ? playerPausingNode.booleanValue() : false);
 			scoreTable.put(statistics.getPlayerId(),statistics);
 		});
 		return scoreTable;
@@ -173,6 +170,35 @@ public class Importer {
 		});
 
 		return importedMatches;
-	}
-
+    }
+    @Override
+    public List<String> createTournamentsListForImport() {
+        List<String> tournamentList = new ArrayList<>();
+        try {
+            Stream<Path> walk = Files.walk(Paths.get(""), 1); //$NON-NLS-1$
+            walk.filter(Files::isRegularFile).forEach(file -> {
+                if (file.toString().contains("tournament") && !file.toString().contains("-Round") && file.toString().contains(".json")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    String name = FilenameUtils.getBaseName(file.toString());
+                    name = name.substring("tournament".length()); //$NON-NLS-1$
+                    tournamentList.add(name);
+                }
+            });
+            walk.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return tournamentList;
+    }
+    @Override
+    public void exportTournament(Tournament currentTournament) {
+        File tournamentFile = new File("tournament" + currentTournament.getName() + ".json"); //$NON-NLS-1$ //$NON-NLS-2$
+        File tournamentRoundFile = new File("tournament" + currentTournament.getName() + "-Round" + currentTournament.getCurrentRound().getRoundNo() + ".json"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        ObjectMapper m = new ObjectMapper();
+        try {
+            m.writerWithDefaultPrettyPrinter().writeValue(tournamentFile, currentTournament);
+            m.writerWithDefaultPrettyPrinter().writeValue(tournamentRoundFile, currentTournament);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -6,9 +6,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
 import zur.koeln.kickertool.api.BackendController;
+import zur.koeln.kickertool.api.PersistenceService;
 import zur.koeln.kickertool.api.player.PlayerPoolService;
 import zur.koeln.kickertool.base.BasicBackendController;
-import zur.koeln.kickertool.base.Importer;
+import zur.koeln.kickertool.base.PersistenceServiceImpl;
 import zur.koeln.kickertool.base.SimpleJsonPlayerPool;
 
 @Configuration
@@ -31,8 +32,8 @@ public class KickerToolConfiguration {
     
     @Bean
     @Primary
-    public Importer createImporter() {
-        return new Importer();
+    public PersistenceService createPersistenceService() {
+        return new PersistenceServiceImpl();
     }
   
 }
