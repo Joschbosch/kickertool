@@ -6,26 +6,17 @@ package zur.koeln.kickertool.base;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.ToolState;
@@ -38,10 +29,7 @@ import zur.koeln.kickertool.api.tournament.Match;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.api.tournament.Tournament;
-import zur.koeln.kickertool.api.tournament.TournamentSettings;
 import zur.koeln.kickertool.api.ui.GUIController;
-import zur.koeln.kickertool.tournament.TournamentImpl;
-import zur.koeln.kickertool.tournament.TournamentRound;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 import zur.koeln.kickertool.tournament.settings.TournamentSettingsImpl;
 
@@ -181,7 +169,7 @@ public class BasicBackendController
     }
     @Override
     public void importAndStartTournament(String tournamentNameToImport) throws IOException {
-    	currentTournament = importer. importTournament(new File("tournament" + tournamentNameToImport + ".json"));
+        currentTournament = importer.importTournament(new File("tournament" + tournamentNameToImport + ".json")); //$NON-NLS-1$ //$NON-NLS-2$
         guiController.switchToolState(ToolState.TOURNAMENT);
         guiController.update();
     }
@@ -263,7 +251,7 @@ public class BasicBackendController
     @Override
     public void exportTournament() {
         File tournamentFile = new File("tournament" + currentTournament.getName() + ".json"); //$NON-NLS-1$ //$NON-NLS-2$
-        File tournamentRoundFile = new File("tournament" + currentTournament.getName() + "-Round" + currentTournament.getCurrentRound().getRoundNo() + ".json"); //$NON-NLS-1$ //$NON-NLS-2$
+        File tournamentRoundFile = new File("tournament" + currentTournament.getName() + "-Round" + currentTournament.getCurrentRound().getRoundNo() + ".json"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         ObjectMapper m = new ObjectMapper();
         try {
             m.writerWithDefaultPrettyPrinter().writeValue(tournamentFile, currentTournament);
@@ -319,13 +307,15 @@ public class BasicBackendController
     public List<String> createTournamentsListForImport() {
         List<String> tournamentList = new ArrayList<>();
         try {
-            Files.walk(Paths.get("")).filter(Files::isRegularFile).forEach(file -> {
-                if (file.toString().contains("tournament") && !file.toString().contains("-Round") && file.toString().contains(".json")) {
+            Stream<Path> walk = Files.walk(Paths.get(""), 1); //$NON-NLS-1$
+            walk.filter(Files::isRegularFile).forEach(file -> {
+                if (file.toString().contains("tournament") && !file.toString().contains("-Round") && file.toString().contains(".json")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     String name = FilenameUtils.getBaseName(file.toString());
-                    name = name.substring("tournament".length());
+                    name = name.substring("tournament".length()); //$NON-NLS-1$
                     tournamentList.add(name);
                 }
             });
+            walk.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
