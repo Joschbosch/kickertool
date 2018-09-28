@@ -20,6 +20,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import zur.koeln.kickertool.api.ToolState;
 import zur.koeln.kickertool.api.ui.GUIController;
+import zur.koeln.kickertool.uifxml.service.FXMLGUI;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Setter(value=AccessLevel.PRIVATE)

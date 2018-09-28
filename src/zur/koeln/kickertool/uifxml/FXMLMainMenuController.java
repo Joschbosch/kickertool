@@ -5,77 +5,68 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javafx.collections.FXCollections;
-import javafx.beans.binding.Bindings;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.api.BackendController;
-import javafx.scene.control.ComboBox;
+import zur.koeln.kickertool.uifxml.service.FXMLGUI;
+import zur.koeln.kickertool.uifxml.service.FXMLGUIservice;
+import zur.koeln.kickertool.uifxml.vm.MainMenuViewModel;
 
 @Getter(value = AccessLevel.PRIVATE)
 @Component
-public class FXMLMainMenuController implements UpdateableUIComponent {
+public class FXMLMainMenuController{
 
-	@Autowired
-	private BackendController backendController;
 	@FXML
 	private Button btnCreateNewTournament;
 	@FXML
 	private Button btnManagePlayers;
 	@FXML
 	private TextField txtTournamentName;
-
 	@FXML
 	private Button btnImportTournament;
 	@FXML
-	ComboBox cmbTournaments;
-
+	private ComboBox cmbTournaments;
+	
+	@Autowired
+	private MainMenuViewModel vm;
+	@Autowired
+	private FXMLGUIservice guiService;
+	
 	@FXML
 	public void initialize() {
 
-		getBtnCreateNewTournament().disableProperty()
-				.bind(Bindings.greaterThan(1, getTxtTournamentName().textProperty().length()));
-		ObservableList<String> comboboxItems = FXCollections.observableArrayList();
-		comboboxItems.addAll(backendController.createTournamentsListForImport());
-		getCmbTournaments().setItems(comboboxItems);
-		getCmbTournaments().setDisable(comboboxItems.isEmpty());
-		getBtnImportTournament().disableProperty().bind(Bindings.isEmpty(comboboxItems));
+		getBtnCreateNewTournament().disableProperty().bind(getVm().getTxtTournamentNameProperty().isEmpty());
+		getBtnImportTournament().disableProperty().bind(getVm().getSelectedTournamentFile().isNull());
+		getTxtTournamentName().textProperty().bindBidirectional(getVm().getTxtTournamentNameProperty());
+		getVm().getSelectedTournamentFile().bind(getCmbTournaments().getSelectionModel().selectedItemProperty());
+		getCmbTournaments().setItems(getVm().getImportableTournaments());
 		
-		if (!comboboxItems.isEmpty()) {
-			getCmbTournaments().getSelectionModel().clearAndSelect(0);
-		}
-
+		getVm().loadImportableTournaments();
 	}
 
-	// Event Listener on Button[#btnCreateNewTournament].onAction
 	@FXML
 	public void onCreateNewTournamentClicked(ActionEvent event) {
-		backendController.createNewTournament(txtTournamentName.getText());
+		getVm().createNewTournament();
+		getGuiService().switchToScene(FXMLGUI.TOURNAMENT_CONFIGURATION);
 	}
 
-	// Event Listener on Button[#btnManagePlayers].onAction
-	@FXML
-	public void onManagePlayersClicked(ActionEvent event) {
-		backendController.showPlayerPoolManagement();
-	}
-
-	// Event Listener on Button[#onImportTournamentClicked
 	@FXML
 	public void onImportTournamentClicked(ActionEvent event) {
 		try {
-			backendController.importAndStartTournament((String) getCmbTournaments().getSelectionModel().getSelectedItem());
+			getVm().importTournament();
+			getGuiService().switchToScene(FXMLGUI.TOURMANENT);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	@Override
-	public void update() {
-		//
+	@FXML
+	public void onManagePlayersClicked(ActionEvent event) {
+		getGuiService().switchToScene(FXMLGUI.PLAYER_POOL_MANAGEMENT);
 	}
+	
 }

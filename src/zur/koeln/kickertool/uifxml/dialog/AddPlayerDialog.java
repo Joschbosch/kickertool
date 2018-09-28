@@ -9,8 +9,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import zur.koeln.kickertool.uifxml.FXMLAddPlayerDialogController;
-import zur.koeln.kickertool.uifxml.FXMLGUI;
 import zur.koeln.kickertool.uifxml.FXMLGUIController;
+import zur.koeln.kickertool.uifxml.service.FXMLGUI;
 
 public class AddPlayerDialog<R> extends Dialog<R> {
 

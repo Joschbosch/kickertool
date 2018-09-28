@@ -41,10 +41,11 @@ import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.player.Player;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
-import zur.koeln.kickertool.uifxml.cells.RoundConverter;
+import zur.koeln.kickertool.uifxml.converter.RoundConverter;
+import zur.koeln.kickertool.uifxml.converter.TimerStringConverter;
 import zur.koeln.kickertool.uifxml.dialog.AddPlayerDialog;
+import zur.koeln.kickertool.uifxml.service.FXMLGUI;
 import zur.koeln.kickertool.uifxml.tools.SimpleTimer;
-import zur.koeln.kickertool.uifxml.tools.TimerStringConverter;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component
