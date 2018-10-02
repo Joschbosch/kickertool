@@ -62,7 +62,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <ListView fx:id="lstPlayers" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="4" />
+      <ListView fx:id="lstSelectablePlayers" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="4" />
       <ListView fx:id="lstPlayersForTournament" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" GridPane.rowSpan="4" />
       <Label text="Spieler" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
          <font>

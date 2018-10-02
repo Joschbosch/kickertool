@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javafx.beans.binding.Bindings;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,21 +20,22 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.player.Player;
 import zur.koeln.kickertool.uifxml.cells.PlayerListCell;
+import zur.koeln.kickertool.uifxml.service.FXMLGUI;
+import zur.koeln.kickertool.uifxml.service.FXMLGUIservice;
+import zur.koeln.kickertool.uifxml.vm.PlayerSelectionViewModel;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLPlayerSelectionController implements UpdateableUIComponent {
-    @Autowired
-    private BackendController backendController;
+public class FXMLPlayerSelectionController {
+
 	@FXML
 	private Button btnBack;
 	@FXML
 	private Button btnStartTournament;
 	@FXML
-	private ListView lstPlayers;
+	private ListView lstSelectablePlayers;
 	@FXML
 	private ListView lstPlayersForTournament;
 	@FXML
@@ -44,50 +43,46 @@ public class FXMLPlayerSelectionController implements UpdateableUIComponent {
 	@FXML
 	private Button btnRemovePlayer;
 
-	private final ObservableList<Player> playerData = FXCollections.observableArrayList();
-	private final ObservableList<Player> selectedPlayerData = FXCollections.observableArrayList();
+	@Autowired
+	private PlayerSelectionViewModel vm;
+	@Autowired
+	private FXMLGUIservice guiService;
 	
 	private static final DataFormat DATAFORMAT = new DataFormat("PLAYER"); //$NON-NLS-1$
 	
 	@FXML
 	public void initialize() {
 		
-		getPlayerData().addAll(loadPlayerData());
+		getLstSelectablePlayers().setItems(getVm().getSelectablePlayers());
+		getLstSelectablePlayers().setCellFactory(param -> new PlayerListCell());
+		getLstSelectablePlayers().getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		
-		getLstPlayers().setItems(getPlayerData());
-		getLstPlayers().setCellFactory(param -> new PlayerListCell());
-		getLstPlayers().getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		
-		getLstPlayersForTournament().setItems(getSelectedPlayerData());
+		getLstPlayersForTournament().setItems(getVm().getPlayersForTournament());
 		getLstPlayersForTournament().setCellFactory(param -> new PlayerListCell());
 		getLstPlayersForTournament().getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		
-		getBtnStartTournament().disableProperty().bind(Bindings.size(getLstPlayersForTournament().getItems()).isEqualTo(0));
-		
-		getBtnAddPlayer().disableProperty().bind(getLstPlayers().getSelectionModel().selectedItemProperty().isNull());
+		getBtnStartTournament().disableProperty().bind(Bindings.size(getVm().getPlayersForTournament()).lessThan(PlayerSelectionViewModel.MINIMUM_PLAYERS));
+		getBtnAddPlayer().disableProperty().bind(getLstSelectablePlayers().getSelectionModel().selectedItemProperty().isNull());
 		getBtnRemovePlayer().disableProperty().bind(getLstPlayersForTournament().getSelectionModel().selectedItemProperty().isNull());
 		
 		setupDragAndDropFeatures();
-	}
-	
-	private List<Player> loadPlayerData() {
 		
-        return backendController.getPlayer();
+		getVm().loadPlayers();
 	}
 	
 	private void setupDragAndDropFeatures() {
 		
-		getLstPlayers().setOnDragDetected(event -> onDragDetected(getLstPlayers(), event));
+		getLstSelectablePlayers().setOnDragDetected(event -> onDragDetected(getLstSelectablePlayers(), event));
 		
-		getLstPlayers().setOnDragOver(event -> onDragOver(event, getLstPlayers()));
+		getLstSelectablePlayers().setOnDragOver(event -> onDragOver(event, getLstSelectablePlayers()));
 		
-		getLstPlayers().setOnDragDropped(event -> onDragDropped(getLstPlayers(), getLstPlayersForTournament(), event));
+		getLstSelectablePlayers().setOnDragDropped(event -> onDragDropped(getLstSelectablePlayers(), getLstPlayersForTournament(), event));
 		
 		getLstPlayersForTournament().setOnDragDetected(event -> onDragDetected(getLstPlayersForTournament(), event));
 		
 		getLstPlayersForTournament().setOnDragOver(event -> onDragOver(event, getLstPlayersForTournament()));
 		
-		getLstPlayersForTournament().setOnDragDropped(event -> onDragDropped(getLstPlayersForTournament(), getLstPlayers(), event));
+		getLstPlayersForTournament().setOnDragDropped(event -> onDragDropped(getLstPlayersForTournament(), getLstSelectablePlayers(), event));
 	}
 
 	private void onDragDropped(ListView target, ListView source, DragEvent event) {
@@ -96,8 +91,7 @@ public class FXMLPlayerSelectionController implements UpdateableUIComponent {
 		
 		List<Player> droppedPlayers = (List<Player>) db.getContent(DATAFORMAT);
 		
-		target.getItems().addAll(droppedPlayers);
-		source.getItems().removeAll(droppedPlayers);
+		getVm().transferPlayersFromTo(droppedPlayers, source, target);
 		
 		source.getSelectionModel().clearSelection();
 		
@@ -130,40 +124,29 @@ public class FXMLPlayerSelectionController implements UpdateableUIComponent {
 
 	@FXML
 	public void onBtnBackClicked(ActionEvent event) {
+		getGuiService().switchToScene(FXMLGUI.TOURNAMENT_CONFIGURATION);
 	}
 	
 	@FXML
 	public void onBtnStartTournamentClicked(ActionEvent event) {
 		
-		transferSelectedPlayersToTournamentConfig();
+		getVm().transferSelectedPlayersToTournament();
+		getGuiService().switchToScene(FXMLGUI.TOURMANENT);
 		
 	}
 
-	private void transferSelectedPlayersToTournamentConfig() {
-        getSelectedPlayerData().forEach(ePlayer ->  getBackendController().addParticipantToTournament(ePlayer));
-	}
-	
 	@FXML
 	public void onBtnAddPlayerClicked(ActionEvent event) {
-		
-		getSelectedPlayerData().addAll(getLstPlayers().getSelectionModel().getSelectedItems());
-		getPlayerData().removeAll(getLstPlayers().getSelectionModel().getSelectedItems());
-		getLstPlayers().getSelectionModel().clearSelection();
+		getVm().addPlayersForTournament(getLstSelectablePlayers().getSelectionModel().getSelectedItems());
+		getLstSelectablePlayers().getSelectionModel().clearSelection();
 		
 	}
 	
 	@FXML
 	public void onBtnRemovePlayerClicked(ActionEvent event) {
-		
-		getPlayerData().addAll(getLstPlayersForTournament().getSelectionModel().getSelectedItems());
-		getSelectedPlayerData().removeAll(getLstPlayersForTournament().getSelectionModel().getSelectedItems());
+		getVm().removePlayersFromTourmanent(getLstPlayersForTournament().getSelectionModel().getSelectedItems());
 		getLstPlayersForTournament().getSelectionModel().clearSelection();
 		
-	}
-	
-	@Override
-	public void update() {
-		//
 	}
 	
 }
