@@ -8,32 +8,20 @@ import javafx.beans.property.StringProperty;
 import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.config.TournamentSettingsKeys;
 import zur.koeln.kickertool.api.tournament.TournamentSettings;
+import zur.koeln.kickertool.uifxml.vm.wrapper.ModelWrapper;
+import zur.koeln.kickertool.uifxml.vm.wrapper.TournamentConfigFields;
 
 @Component
 public class TournamentConfigurationViewModel {
 
 	@Autowired
 	private BackendController backendController;
+	@Autowired
+	private ModelWrapper<TournamentConfigFields> tournamentConfigMapper;
 	
 	private TournamentSettings tournamentSettings;
 	
 	private final StringProperty lblTournamentNameProperty = new SimpleStringProperty();
-	
-	private final StringProperty txtNumberOfTablesProperty = new SimpleStringProperty();
-	private final StringProperty txtMatchesToWinProperty = new SimpleStringProperty();
-	private final StringProperty txtGoalsToWinProperty = new SimpleStringProperty();
-	private final StringProperty txtPointsToWinProperty = new SimpleStringProperty();
-	private final StringProperty txtPointsForDrawProperty = new SimpleStringProperty();
-	private final StringProperty txtMinutesPerMatchProperty = new SimpleStringProperty();
-	private final StringProperty txtRandomRoundsAtStartProperty = new SimpleStringProperty();
-	
-	private final StringProperty txtNumberOfTablesPromptProperty = new SimpleStringProperty();
-	private final StringProperty txtMatchesToWinPromptProperty = new SimpleStringProperty();
-	private final StringProperty txtGoalsToWinPromptProperty = new SimpleStringProperty();
-	private final StringProperty txtPointsToWinPromptProperty = new SimpleStringProperty();
-	private final StringProperty txtPointsForDrawPromptProperty = new SimpleStringProperty();
-	private final StringProperty txtMinutesPerMatchPromptProperty = new SimpleStringProperty();
-	private final StringProperty txtRandomRoundsAtStartPromptProperty = new SimpleStringProperty();
 	
 	public void loadTournamentSettings() {
 		setTournamentSettings(getBackendController().getCurrentTournament().getSettings());
@@ -42,26 +30,28 @@ public class TournamentConfigurationViewModel {
 	}
 	
 	private void setPromptTexts() {
-		getTxtGoalsToWinPromptProperty().set(String.valueOf(getTournamentSettings().getGoalsToWin()));
-		getTxtMatchesToWinPromptProperty().set(String.valueOf(getTournamentSettings().getMatchesToWin()));
-		getTxtMinutesPerMatchPromptProperty().set(String.valueOf(getTournamentSettings().getMinutesPerMatch()));
-		getTxtNumberOfTablesPromptProperty().set(String.valueOf(getTournamentSettings().getTableCount()));
-		getTxtPointsForDrawPromptProperty().set(String.valueOf(getTournamentSettings().getPointsForDraw()));
-		getTxtPointsToWinPromptProperty().set(String.valueOf(getTournamentSettings().getPointsForWinner()));
-		getTxtRandomRoundsAtStartPromptProperty().set(String.valueOf(getTournamentSettings().getRandomRounds()));
+		getStringProperty(TournamentConfigFields.GOALS_TO_WIN_DEFAULT).set(String.valueOf(getTournamentSettings().getGoalsToWin()));
+		getStringProperty(TournamentConfigFields.MATCHES_TO_WIN_DEFAULT).set(String.valueOf(getTournamentSettings().getMatchesToWin()));
+		getStringProperty(TournamentConfigFields.MINUTES_FOR_MATCH_DEFAULT).set(String.valueOf(getTournamentSettings().getMinutesPerMatch()));
+		getStringProperty(TournamentConfigFields.NUMBER_OF_TABLES_DEFAULT).set(String.valueOf(getTournamentSettings().getTableCount()));
+		getStringProperty(TournamentConfigFields.POINTS_FOR_DRAW_DEFAULT).set(String.valueOf(getTournamentSettings().getPointsForDraw()));
+		getStringProperty(TournamentConfigFields.POINTS_TO_WIN_DEFAULT).set(String.valueOf(getTournamentSettings().getPointsForWinner()));
+		getStringProperty(TournamentConfigFields.RANDOM_ROUNDS_START_DEFAULT).set(String.valueOf(getTournamentSettings().getRandomRounds()));
 	}
 	
 	public void updateTournamentSettings() {
-		getBackendController().changedTournamentConfig(TournamentSettingsKeys.TABLES, getValue(getTxtNumberOfTablesProperty(), getTxtNumberOfTablesPromptProperty()));
-		getBackendController().changedTournamentConfig(TournamentSettingsKeys.GOALS_FOR_WIN, getValue(getTxtGoalsToWinProperty(), getTxtGoalsToWinPromptProperty()));
-		getBackendController().changedTournamentConfig(TournamentSettingsKeys.MATCHES_TO_WIN, getValue(getTxtMatchesToWinProperty(), getTxtMatchesToWinPromptProperty()));
-		getBackendController().changedTournamentConfig(TournamentSettingsKeys.MINUTES_PER_MATCH, getValue(getTxtMinutesPerMatchProperty(), getTxtMinutesPerMatchPromptProperty()));
-		getBackendController().changedTournamentConfig(TournamentSettingsKeys.POINTS_FOR_DRAW, getValue(getTxtPointsForDrawProperty(), getTxtPointsForDrawPromptProperty()));
-		getBackendController().changedTournamentConfig(TournamentSettingsKeys.POINTS_FOR_WINNER, getValue(getTxtPointsToWinProperty(), getTxtPointsToWinPromptProperty()));
-		getBackendController().changedTournamentConfig(TournamentSettingsKeys.RANDOM_ROUNDS, getValue(getTxtRandomRoundsAtStartProperty(), getTxtRandomRoundsAtStartPromptProperty()));
+		getBackendController().changedTournamentConfig(TournamentSettingsKeys.TABLES, getValue(TournamentConfigFields.NUMBER_OF_TABLES, TournamentConfigFields.NUMBER_OF_TABLES_DEFAULT));
+		getBackendController().changedTournamentConfig(TournamentSettingsKeys.GOALS_FOR_WIN, getValue(TournamentConfigFields.GOALS_TO_WIN, TournamentConfigFields.GOALS_TO_WIN_DEFAULT));
+		getBackendController().changedTournamentConfig(TournamentSettingsKeys.MATCHES_TO_WIN, getValue(TournamentConfigFields.MATCHES_TO_WIN, TournamentConfigFields.MATCHES_TO_WIN_DEFAULT));
+		getBackendController().changedTournamentConfig(TournamentSettingsKeys.MINUTES_PER_MATCH, getValue(TournamentConfigFields.MINUTES_FOR_MATCH, TournamentConfigFields.MINUTES_FOR_MATCH_DEFAULT));
+		getBackendController().changedTournamentConfig(TournamentSettingsKeys.POINTS_FOR_DRAW, getValue(TournamentConfigFields.POINTS_FOR_DRAW, TournamentConfigFields.POINTS_FOR_DRAW_DEFAULT));
+		getBackendController().changedTournamentConfig(TournamentSettingsKeys.POINTS_FOR_WINNER, getValue(TournamentConfigFields.POINTS_TO_WIN, TournamentConfigFields.POINTS_TO_WIN_DEFAULT));
+		getBackendController().changedTournamentConfig(TournamentSettingsKeys.RANDOM_ROUNDS, getValue(TournamentConfigFields.RANDOM_ROUNDS_START, TournamentConfigFields.RANDOM_ROUNDS_START_DEFAULT));
 	}
 
-	private Integer getValue(StringProperty txtProperty, StringProperty txtPromptProperty) {
+	private Integer getValue(TournamentConfigFields propertyField, TournamentConfigFields defaultField) {
+		StringProperty txtProperty = getStringProperty(propertyField); 
+		StringProperty txtPromptProperty = getStringProperty(defaultField);
 		
 		if (!txtProperty.isEmpty().get()) {
 			return Integer.valueOf(txtProperty.get());
@@ -83,47 +73,11 @@ public class TournamentConfigurationViewModel {
 	public StringProperty getLblTournamentNameProperty() {
 		return lblTournamentNameProperty;
 	}
-	public StringProperty getTxtNumberOfTablesProperty() {
-		return txtNumberOfTablesProperty;
-	}
-	public StringProperty getTxtMatchesToWinProperty() {
-		return txtMatchesToWinProperty;
-	}
-	public StringProperty getTxtGoalsToWinProperty() {
-		return txtGoalsToWinProperty;
-	}
-	public StringProperty getTxtPointsToWinProperty() {
-		return txtPointsToWinProperty;
-	}
-	public StringProperty getTxtPointsForDrawProperty() {
-		return txtPointsForDrawProperty;
-	}
-	public StringProperty getTxtMinutesPerMatchProperty() {
-		return txtMinutesPerMatchProperty;
-	}
-	public StringProperty getTxtRandomRoundsAtStartProperty() {
-		return txtRandomRoundsAtStartProperty;
-	}
-	public StringProperty getTxtNumberOfTablesPromptProperty() {
-		return txtNumberOfTablesPromptProperty;
-	}
-	public StringProperty getTxtMatchesToWinPromptProperty() {
-		return txtMatchesToWinPromptProperty;
-	}
-	public StringProperty getTxtGoalsToWinPromptProperty() {
-		return txtGoalsToWinPromptProperty;
-	}
-	public StringProperty getTxtPointsToWinPromptProperty() {
-		return txtPointsToWinPromptProperty;
-	}
-	public StringProperty getTxtPointsForDrawPromptProperty() {
-		return txtPointsForDrawPromptProperty;
-	}
-	public StringProperty getTxtMinutesPerMatchPromptProperty() {
-		return txtMinutesPerMatchPromptProperty;
-	}
-	public StringProperty getTxtRandomRoundsAtStartPromptProperty() {
-		return txtRandomRoundsAtStartPromptProperty;
+	private ModelWrapper<TournamentConfigFields> getTournamentConfigMapper() {
+		return tournamentConfigMapper;
 	}
 	
+	public StringProperty getStringProperty(TournamentConfigFields field) {
+		return getTournamentConfigMapper().getStringProperty(field);
+	}
 }
