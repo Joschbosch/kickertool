@@ -25,7 +25,7 @@ import zur.koeln.kickertool.api.tournament.Match;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.uifxml.converter.TimerStringConverter;
 import zur.koeln.kickertool.uifxml.service.FXMLGUI;
-import zur.koeln.kickertool.uifxml.tools.SimpleTimer;
+import zur.koeln.kickertool.uifxml.tools.TournamentStopWatch;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -46,7 +46,7 @@ public class FXMLTournamentInfoController {
 	@FXML RowConstraints gridInfo;
 	@FXML Label lblClock;
 	
-	private SimpleTimer timer;
+	private TournamentStopWatch timer;
 	private ObservableList<PlayerTournamentStatistics> statistics;
 	@FXML GridPane gridPane;
 	@FXML TableView tblStatistics;
@@ -61,13 +61,13 @@ public class FXMLTournamentInfoController {
 	@FXML TableColumn tblColGoalsDifference;
 	@FXML TableColumn tblColPoints;
 	
-	public void init(SimpleTimer refTimer, ObservableList<PlayerTournamentStatistics> refStatistics) {
+	public void init(TournamentStopWatch refTimer, ObservableList<PlayerTournamentStatistics> refStatistics) {
 		
 		timer = refTimer;
 		statistics = refStatistics;
 		
 		getTblStatistics().setItems(getStatistics());
-		getLblClock().textProperty().bindBidirectional(getTimer().getTimeSeconds(), new TimerStringConverter());
+		//getLblClock().textProperty().bindBidirectional(getTimer().getTimeSeconds(), new TimerStringConverter());
 		setupColumns();
 	}
 	
@@ -185,8 +185,8 @@ public class FXMLTournamentInfoController {
 				FXMLLoader matchEntryLoader = getFXMLLoader(FXMLGUI.MATCH_ENTRY);
 				Parent pane = matchEntryLoader.load();
 				FXMLMatchEntryController matchEntryController = matchEntryLoader.getController();
-				matchEntryController.setMatch(eMatch);
-				matchEntryController.hideBtnFinish();
+//				matchEntryController.setMatch(eMatch);
+//				matchEntryController.hideBtnFinish();
 				getStackGames().getChildren().add(pane);
 			} catch (IOException e) {
 				e.printStackTrace();
