@@ -11,6 +11,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.util.converter.IntegerStringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
+import zur.koeln.kickertool.api.config.TournamentSettingsKeys;
 import zur.koeln.kickertool.uifxml.service.FXMLGUI;
 import zur.koeln.kickertool.uifxml.service.FXMLGUIservice;
 import zur.koeln.kickertool.uifxml.vm.TournamentConfigurationViewModel;
@@ -52,21 +53,21 @@ public class FXMLTournamentConfigurationController {
 		
 		getLblTournament().textProperty().bind(getVm().getLblTournamentNameProperty());
 		
-		getTxtNumberOfTables().promptTextProperty().bind(getVm().getTxtNumberOfTablesPromptProperty());
-		getTxtGoalsToWin().promptTextProperty().bind(getVm().getTxtGoalsToWinPromptProperty());
-		getTxtMatchesToWin().promptTextProperty().bind(getVm().getTxtMatchesToWinPromptProperty());
-		getTxtPointsToWin().promptTextProperty().bind(getVm().getTxtPointsToWinPromptProperty());
-		getTxtPointsForDraw().promptTextProperty().bind(getVm().getTxtPointsForDrawPromptProperty());
-		getTxtMinutesPerMatch().promptTextProperty().bind(getVm().getTxtMinutesPerMatchPromptProperty());
-		getTxtRandomRoundsAtStart().promptTextProperty().bind(getVm().getTxtRandomRoundsAtStartPromptProperty());
+		getTxtNumberOfTables().promptTextProperty().bind(getVm().getStringPromptProperty(TournamentSettingsKeys.TABLES));
+		getTxtGoalsToWin().promptTextProperty().bind(getVm().getStringPromptProperty(TournamentSettingsKeys.GOALS_FOR_WIN));
+		getTxtMatchesToWin().promptTextProperty().bind(getVm().getStringPromptProperty(TournamentSettingsKeys.MATCHES_TO_WIN));
+		getTxtPointsToWin().promptTextProperty().bind(getVm().getStringPromptProperty(TournamentSettingsKeys.POINTS_FOR_WINNER));
+		getTxtPointsForDraw().promptTextProperty().bind(getVm().getStringPromptProperty(TournamentSettingsKeys.POINTS_FOR_DRAW));
+		getTxtMinutesPerMatch().promptTextProperty().bind(getVm().getStringPromptProperty(TournamentSettingsKeys.MINUTES_PER_MATCH));
+		getTxtRandomRoundsAtStart().promptTextProperty().bind(getVm().getStringPromptProperty(TournamentSettingsKeys.RANDOM_ROUNDS));
 		
-		getTxtNumberOfTables().textProperty().bindBidirectional(getVm().getTxtNumberOfTablesProperty());
-		getTxtGoalsToWin().textProperty().bindBidirectional(getVm().getTxtGoalsToWinProperty());
-		getTxtMatchesToWin().textProperty().bindBidirectional(getVm().getTxtMatchesToWinProperty());
-		getTxtPointsToWin().textProperty().bindBidirectional(getVm().getTxtPointsToWinProperty());
-		getTxtPointsForDraw().textProperty().bindBidirectional(getVm().getTxtPointsForDrawProperty());
-		getTxtMinutesPerMatch().textProperty().bindBidirectional(getVm().getTxtMinutesPerMatchProperty());
-		getTxtRandomRoundsAtStart().textProperty().bindBidirectional(getVm().getTxtRandomRoundsAtStartProperty());
+		getTxtNumberOfTables().textProperty().bindBidirectional(getVm().getStringProperty(TournamentSettingsKeys.TABLES));
+		getTxtGoalsToWin().textProperty().bindBidirectional(getVm().getStringProperty(TournamentSettingsKeys.GOALS_FOR_WIN));
+		getTxtMatchesToWin().textProperty().bindBidirectional(getVm().getStringProperty(TournamentSettingsKeys.MATCHES_TO_WIN));
+		getTxtPointsToWin().textProperty().bindBidirectional(getVm().getStringProperty(TournamentSettingsKeys.POINTS_FOR_WINNER));
+		getTxtPointsForDraw().textProperty().bindBidirectional(getVm().getStringProperty(TournamentSettingsKeys.POINTS_FOR_DRAW));
+		getTxtMinutesPerMatch().textProperty().bindBidirectional(getVm().getStringProperty(TournamentSettingsKeys.MINUTES_PER_MATCH));
+		getTxtRandomRoundsAtStart().textProperty().bindBidirectional(getVm().getStringProperty(TournamentSettingsKeys.RANDOM_ROUNDS));
 		
 		setTextFormatter();
 	}
