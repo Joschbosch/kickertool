@@ -33,25 +33,26 @@ public class FXMLGUIservice {
 	
 	public void switchToScene(FXMLGUI fxmlGui) {
 		
-		try {
-			FXMLLoader fxmlLoader = getFXMLLoader(fxmlGui);
-			Pane rootPane = (Pane) fxmlLoader.load();
-			
-			Scene newScene = new Scene(rootPane);
-			getPrimaryStage().setScene(newScene);
-			getPrimaryStage().sizeToScene();
-	        getPrimaryStage().centerOnScreen();
-	        getPrimaryStage().show();
-		} catch (IOException e) {
-			// Should never get thrown
-			e.printStackTrace();
-		}
+		FXMLLoader fxmlLoader = getFXMLLoader(fxmlGui);
+
+		Scene newScene = new Scene(fxmlLoader.getRoot());
+		getPrimaryStage().setScene(newScene);
+		getPrimaryStage().sizeToScene();
+        getPrimaryStage().centerOnScreen();
+        getPrimaryStage().show();
 		
 	}
 	
 	public FXMLLoader getFXMLLoader(FXMLGUI fxmlGui) {
 		FXMLLoader fxmlLoader = new FXMLLoader(fxmlGui.getFxmlControllerClass().getResource(fxmlGui.getFxmlFile()));
 		fxmlLoader.setControllerFactory(getCtx()::getBean);
+		
+		try {
+			fxmlLoader.load();
+		} catch (IOException e) {
+			// Will never be thrown
+		}
+		
 		return fxmlLoader;
 	}
 

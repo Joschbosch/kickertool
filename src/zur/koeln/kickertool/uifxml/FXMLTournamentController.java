@@ -1,6 +1,5 @@
 package zur.koeln.kickertool.uifxml;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -85,24 +85,21 @@ public class FXMLTournamentController {
 	@Autowired
 	private TournamentViewModel vm;
 	
-	private final List<FXMLMatchEntryController> matchEntryController = new ArrayList<>();
-	private boolean selectionModeOn = true;
-	
-	private FXMLTournamentInfoController tournamentInfoController;
-	
 	@FXML
 	public void initialize() {
 		
 		getLblClock().textProperty().bindBidirectional(getVm().getTimePropertyFromStopWatch(), new TimerStringConverter());
 		
+		getBtnCreateRound().disableProperty().bind(getVm().getBtnCreateRoundsDisableProperty());
 		getBtnStartStopwatch().disableProperty().bind(getVm().getIsRunningPropertyFromStopWatch());
 		getBtnResetStopwatch().disableProperty().bind(getVm().getIsRunningPropertyFromStopWatch().not());
 		getTglPauseStopwatch().disableProperty().bind(getVm().getIsRunningPropertyFromStopWatch().not());
+		getTglPauseStopwatch().selectedProperty().bindBidirectional(getVm().getStopwatchToggleButtonSelectedProperty());
 		getTblStatistics().setItems(getVm().getStatistics());
 		getCmbRounds().setItems(getVm().getRounds());
 		getCmbRounds().setConverter(new RoundConverter());
 		getCmbRounds().disableProperty().bind(Bindings.size(getVm().getRounds()).isEqualTo(0));
-		
+
 		setupColumns();
 		setupListener();
 		
@@ -148,24 +145,28 @@ public class FXMLTournamentController {
 //			
 //		});
 //		
-//		getCmbRounds().getSelectionModel().selectedItemProperty().addListener(event -> {
-//			
-//			if (getCmbRounds().getSelectionModel().getSelectedItem() == null) {
-//				return;
-//			}
-//			
-//			Round selectedRound = (Round) getCmbRounds().getSelectionModel().getSelectedItem();
-//			fillMatchesForRound(selectedRound, getCmbRounds().getSelectionModel().getSelectedIndex());
-//			
-//		});
+		getCmbRounds().getSelectionModel().selectedItemProperty().addListener(event -> {
+			
+			if (getCmbRounds().getSelectionModel().getSelectedItem() == null) {
+				return;
+			}
+			
+			Round selectedRound = (Round) getCmbRounds().getSelectionModel().getSelectedItem();
+			fillMatchesForRound(selectedRound, getCmbRounds().getSelectionModel().getSelectedIndex());
+			
+		});
+	}
+	
+	private void fillMatchesForRound(final Round selectedRound, int selectedIndex) {
+			
+		List<Pane> matchesForRound = getVm().loadMatchesForRound(selectedRound);
+		
+		getStackGames().getChildren().clear();
+		getStackGames().getChildren().addAll(matchesForRound);
+		
 	}
 
 	private Player getSelectedPlayerInStatisticsTable() {
-		
-		if (!isSelectionModeOn()) {
-			return null;
-		}
-		
 		return ((PlayerTournamentStatistics) getTblStatistics().getSelectionModel().getSelectedItem()).getPlayer();
 	}
 	
@@ -346,52 +347,24 @@ public class FXMLTournamentController {
 	}
 
 	@FXML public void onBtnCreateRoundClicked() {
-//		getBtnCreateRound().setDisable(true);
-//		
-//		getBackendController().nextRound();
-//		loadPlayerRounds();
-//		getCmbRounds().getSelectionModel().select(getRounds().size() - 1);
+		
+		getVm().createNewRound();
+		getCmbRounds().getSelectionModel().select(getVm().getLastRoundIndex());
+		
 	}
 	
-	private void fillMatchesForRound(final Round selectedRound, int selectedIndex) {
-		
-//		getStackGames().getChildren().clear();
-//		
-//		if (!selectedRound.isComplete() || selectedIndex == (getRounds().size() - 1)) {
-//			getTournamentInfoController().updateMatches(getBackendController().getMatchesForRound(selectedRound.getRoundNo()));
-//		}
-//		
-//		getBackendController().getMatchesForRound(selectedRound.getRoundNo()).forEach(eMatch -> {
-//			try {
-//				FXMLLoader matchEntryLoader = getFXMLLoader(FXMLGUI.MATCH_ENTRY);
-//				Parent pane = matchEntryLoader.load();
-//				FXMLMatchEntryController matchEntryController = matchEntryLoader.getController();
-//				matchEntryController.setMatch(eMatch);
-//				getStackGames().getChildren().add(pane);
-//				getMatchEntryController().add(matchEntryController);
-//				
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		});
-	}
+	
 
 	@FXML public void onBtnResetStopwatchClicked() {
-//		getTimer().reset();
-//		getTglPauseStopwatch().setSelected(false);
+		getVm().resetStopwatch();
 	}
 
 	@FXML public void onBtnStartStopwatchClicked() {
-//		getTimer().start();
+		getVm().startStopwatch();
 	}
 	
 	@FXML public void onTglPauseStopwatchClicked() {
-		
-//		if (getTglPauseStopwatch().isSelected()) {
-//			getTimer().pause();
-//		} else {
-//			getTimer().resume();
-//		}
+		getVm().pauseResumeStopwatch();
 	}
 	
 	private FXMLLoader getFXMLLoader(FXMLGUI gui) {
@@ -401,9 +374,4 @@ public class FXMLTournamentController {
 //		return loader;
 	}
 
-	private void setSelectionModeOn(boolean selectionModeOn) {
-		this.selectionModeOn = selectionModeOn;
-	}
-	
-	
 }
