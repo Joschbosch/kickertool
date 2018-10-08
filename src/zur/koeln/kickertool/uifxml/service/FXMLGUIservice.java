@@ -6,9 +6,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 @Service
@@ -49,8 +49,12 @@ public class FXMLGUIservice {
 		
 		try {
 			fxmlLoader.load();
+			Parent pane = fxmlLoader.getRoot();
+			pane.getStylesheets().clear();
+			pane.getStylesheets().add(fxmlGui.getFxmlControllerClass().getResource("/css/kickertool.css").toExternalForm()); //$NON-NLS-1$
 		} catch (IOException e) {
-			// Will never be thrown
+			// Should never be thrown
+			throw new RuntimeException(e);
 		}
 		
 		return fxmlLoader;
