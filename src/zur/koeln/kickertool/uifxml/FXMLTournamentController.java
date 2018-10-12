@@ -89,6 +89,9 @@ public class FXMLTournamentController {
 	@Autowired
 	private TournamentViewModel vm;
 	
+	@Autowired
+	private FXMLTournamentInfoController fxmlTournamentInfoController;
+	
 	@FXML
 	public void initialize() {
 		
@@ -112,32 +115,10 @@ public class FXMLTournamentController {
 		
 		getVm().init();
 		
-		// showTournamentInfoGUI();
+		getVm().showTournamentInfoGUI();
+		
 	}
 	
-	private void showTournamentInfoGUI() {
-		
-//		Stage secondaryStage = new Stage();
-//		secondaryStage.setTitle("parcIT Kickerturnier Helferlein");
-//		secondaryStage.getIcons().add(new Image(this.getClass().getResource("/images/icon.png").toString()));
-//
-//		FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLGUI.TOURMANENT_INFO.getFxmlFile()));
-//		try {
-//			loader.setControllerFactory(getCtx()::getBean);
-//			
-//			Pane rootPane = (Pane) loader.load();
-//			tournamentInfoController = loader.getController();
-//			tournamentInfoController.init(getTimer(), getStatistics());
-//			Scene newScene = new Scene(rootPane);
-//			secondaryStage.setScene(newScene);
-//			secondaryStage.centerOnScreen();
-//	        secondaryStage.show();
-//			
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-	}
-
 	private void registerListener() {
 		getTblStatistics().getSelectionModel().selectedItemProperty().addListener(event -> {
 			
@@ -163,6 +144,7 @@ public class FXMLTournamentController {
 		
 		getStackGames().getChildren().clear();
 		getStackGames().getChildren().addAll(matchesForRound);
+		
 		
 	}
 
@@ -298,7 +280,6 @@ public class FXMLTournamentController {
 	}
 	
 	@FXML public void onBtnCreateRoundClicked() {
-		
 		getVm().createNewRound();
 		getCmbRounds().getSelectionModel().select(getVm().getLastRoundIndex());
 		

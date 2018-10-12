@@ -20,6 +20,7 @@ import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.tournament.data.PlayerTournamentStatisticsImpl;
 import zur.koeln.kickertool.uifxml.FXMLMatchEntryController;
+import zur.koeln.kickertool.uifxml.FXMLTournamentInfoController;
 import zur.koeln.kickertool.uifxml.dialog.AddPlayerDialog;
 import zur.koeln.kickertool.uifxml.service.FXMLGUI;
 import zur.koeln.kickertool.uifxml.service.FXMLGUIservice;
@@ -34,6 +35,8 @@ public class TournamentViewModel {
 	private BackendController backendController;
 	@Autowired
 	private FXMLGUIservice fxmlGUIService;
+	@Autowired
+	private FXMLTournamentInfoController fxmlTournamentInfoController;
 	
 	private final List<FXMLMatchEntryController> matchEntryControllerList = new ArrayList<>();
 	private final ObservableList<Round> rounds = FXCollections.observableArrayList();
@@ -64,6 +67,11 @@ public class TournamentViewModel {
 	private FXMLGUIservice getFxmlGUIService() {
 		return fxmlGUIService;
 	}
+	
+	private FXMLTournamentInfoController getFxmlTournamentInfoController() {
+		return fxmlTournamentInfoController;
+	}
+
 	public ObservableList<Round> getRounds() {
 		return rounds;
 	}
@@ -176,5 +184,10 @@ public class TournamentViewModel {
 	public void enableDisablePauseResumePlayer(PlayerTournamentStatisticsImpl playerTournamentStatisticsImpl) {
 		getBtnPausePlayerDisableProperty().set(playerTournamentStatisticsImpl == null || playerTournamentStatisticsImpl.isPlayerPausing());
 		getBtnResumePlayerDisableProperty().set(playerTournamentStatisticsImpl == null || !playerTournamentStatisticsImpl.isPlayerPausing());
+	}
+
+	public void showTournamentInfoGUI() {
+		getFxmlGUIService().openAnotherStage(FXMLGUI.TOURMANENT_INFO);
+		getFxmlTournamentInfoController().init(this);
 	}
 }

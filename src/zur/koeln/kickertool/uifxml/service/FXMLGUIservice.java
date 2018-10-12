@@ -1,6 +1,8 @@
 package zur.koeln.kickertool.uifxml.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 @Service
@@ -18,6 +21,8 @@ public class FXMLGUIservice {
 	private ConfigurableApplicationContext ctx;
 	private static final String APP_TITLE = "parcIT Kickerturnier Helferlein"; //$NON-NLS-1$
 	private static final Image ICON = new Image(FXMLGUIservice.class.getResource("/images/icon.png").toString()); //$NON-NLS-1$
+	
+	private List<Stage> otherStages = new ArrayList<>();
 	
 	public void init(Stage newPrimaryStage, ConfigurableApplicationContext newCtx) {
 		primaryStage = newPrimaryStage;
@@ -35,12 +40,16 @@ public class FXMLGUIservice {
 		
 		FXMLLoader fxmlLoader = getFXMLLoader(fxmlGui);
 
-		Scene newScene = new Scene(fxmlLoader.getRoot());
-		getPrimaryStage().setScene(newScene);
-		getPrimaryStage().sizeToScene();
-        getPrimaryStage().centerOnScreen();
-        getPrimaryStage().show();
+		prepareScene(getPrimaryStage(), fxmlLoader.getRoot());
 		
+	}
+	
+	private void prepareScene(Stage stage, Pane rootPane) {
+		Scene newScene = new Scene(rootPane);
+		stage.setScene(newScene);
+		stage.sizeToScene();
+		stage.centerOnScreen();
+		stage.show();
 	}
 	
 	public FXMLLoader getFXMLLoader(FXMLGUI fxmlGui) {
@@ -59,6 +68,18 @@ public class FXMLGUIservice {
 		
 		return fxmlLoader;
 	}
+	
+	public void openAnotherStage(FXMLGUI fxmlGUI) {
+		Stage otherStage = new Stage();
+		otherStage.setTitle(APP_TITLE);
+		otherStage.getIcons().add(ICON);
+		
+		getOtherStages().add(otherStage);
+		
+		FXMLLoader loader = getFXMLLoader(fxmlGUI);
+		
+		prepareScene(otherStage, loader.getRoot());
+	}
 
 	private Stage getPrimaryStage() {
 		return primaryStage;
@@ -66,6 +87,10 @@ public class FXMLGUIservice {
 
 	private ConfigurableApplicationContext getCtx() {
 		return ctx;
+	}
+
+	private List<Stage> getOtherStages() {
+		return otherStages;
 	}
 	
 	
