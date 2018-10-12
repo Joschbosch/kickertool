@@ -131,6 +131,7 @@ public class FXMLPlayerSelectionController {
 	public void onBtnStartTournamentClicked(ActionEvent event) {
 		
 		getVm().transferSelectedPlayersToTournament();
+		getVm().startTournament();
 		getGuiService().switchToScene(FXMLGUI.TOURMANENT);
 		
 	}
