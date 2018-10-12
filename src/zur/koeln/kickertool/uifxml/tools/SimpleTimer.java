@@ -14,6 +14,7 @@ import javafx.util.Duration;
 import lombok.Getter;
 
 @Getter
+@SuppressWarnings("nls")
 public class SimpleTimer implements Timer{
 
 	private Timeline timeline;

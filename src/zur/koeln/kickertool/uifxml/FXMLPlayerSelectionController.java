@@ -130,14 +130,12 @@ public class FXMLPlayerSelectionController implements UpdateableUIComponent {
 
 	@FXML
 	public void onBtnBackClicked(ActionEvent event) {
-		 getBackendController().showMainMenu();
 	}
 	
 	@FXML
 	public void onBtnStartTournamentClicked(ActionEvent event) {
 		
 		transferSelectedPlayersToTournamentConfig();
-        getBackendController().startTournament();
 		
 	}
 

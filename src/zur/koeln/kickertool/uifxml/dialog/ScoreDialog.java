@@ -7,9 +7,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import zur.koeln.kickertool.api.tournament.Team;
-import zur.koeln.kickertool.uifxml.FXMLGUI;
 import zur.koeln.kickertool.uifxml.FXMLGUIController;
 import zur.koeln.kickertool.uifxml.FXMLMatchResultDialogController;
+import zur.koeln.kickertool.uifxml.service.FXMLGUI;
 
 public class ScoreDialog<R> extends Dialog<R> {
 	

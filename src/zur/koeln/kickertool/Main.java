@@ -49,14 +49,8 @@ public class Main extends Application {
     }
     
     private void startWithGUIFXML(Stage primaryStage) throws IOException {
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("uifxml/MainMenu.fxml"));
-        loader.setControllerFactory(ctx::getBean);
-        Parent mainMenu = loader.load();
-    	FXMLGUIController fxmlGuiController = new FXMLGUIController(primaryStage, ToolState.MAIN_MENU);
-        BackendController controller = ctx.getBean(BackendController.class);
-        controller.init();
-        controller.setGuiController(fxmlGuiController);
-        fxmlGuiController.init(ctx, mainMenu, 450, 450);
+    	FXMLGUIservice fxmlGuiService = ctx.getBean(FXMLGUIservice.class); 
+    	fxmlGuiService.init(primaryStage, ctx);
+    	fxmlGuiService.showMainMenu();
     }
 }

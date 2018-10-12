@@ -7,7 +7,7 @@ import java.util.SortedSet;
 import java.util.UUID;
 
 import zur.koeln.kickertool.api.config.TournamentMode;
-import zur.koeln.kickertool.api.config.TournamentSetingsKeys;
+import zur.koeln.kickertool.api.config.TournamentSettingsKeys;
 import zur.koeln.kickertool.api.player.Player;
 import zur.koeln.kickertool.api.player.PlayerPoolService;
 import zur.koeln.kickertool.api.tournament.Match;
@@ -17,10 +17,6 @@ import zur.koeln.kickertool.api.tournament.Tournament;
 import zur.koeln.kickertool.api.ui.GUIController;
 
 public interface BackendController {
-
-    void showMainMenu();
-
-    void showPlayerPoolManagement();
 
     void savePlayerPool();
 
@@ -32,13 +28,7 @@ public interface BackendController {
 
     boolean isCurrentRoundComplete();
 
-    void changedTournamentConfig(TournamentSetingsKeys configKey, Integer newValue);
-
-    void showPlayerSelection();
-
-    void showTournamentConfig();
-
-    void startTournament();
+    void changedTournamentConfig(TournamentSettingsKeys configKey, Integer newValue);
 
     void importAndStartTournament(String tournamentNameToImport) throws IOException;
 
@@ -65,8 +55,6 @@ public interface BackendController {
     Tournament getCurrentTournament();
 
     PlayerPoolService getPlayerpool();
-
-    void setGuiController(GUIController guiController);
 
     void changeMode(TournamentMode newMode);
 

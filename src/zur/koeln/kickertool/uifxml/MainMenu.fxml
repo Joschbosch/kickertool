@@ -39,7 +39,7 @@
             <Insets left="25.0" right="25.0" />
          </GridPane.margin>
       </Button>
-      <ComboBox fx:id="cmbTournaments" maxWidth="1.7976931348623157E308" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+      <ComboBox fx:id="cmbTournaments" maxWidth="1.7976931348623157E308" promptText="-- bitte auswählen --" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets left="25.0" right="25.0" />
          </GridPane.margin>
