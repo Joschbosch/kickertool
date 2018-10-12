@@ -3,17 +3,12 @@
  */
 package zur.koeln.kickertool.base;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import zur.koeln.kickertool.api.BackendController;
@@ -33,6 +28,8 @@ import zur.koeln.kickertool.tournament.settings.TournamentSettingsImpl;
 @Component
 public class BasicBackendController
     implements BackendController {
+
+    private final Logger logger = LogManager.getLogger(BackendController.class);
 
     private final PlayerPoolService playerpool;
     
@@ -78,8 +75,7 @@ public class BasicBackendController
      */
     @Override
     public Tournament createNewTournament(String text) {
-        Tournament newTournament = tournamentService.createNewTournament(text);
-        return newTournament;
+        return tournamentService.createNewTournament(text);
     }
     @Override
     public boolean isCurrentRoundComplete() {
@@ -184,7 +180,7 @@ public class BasicBackendController
                 match.setResultScores(scoreHome.intValue(), scoreVisiting.intValue());
             }
         } catch (MatchException e) {
-            e.printStackTrace();
+            logger.error(String.format("Error updating match result for match %s", String.valueOf(match.getMatchNo())), e);
         }
         exportTournament();
 
@@ -257,7 +253,7 @@ public class BasicBackendController
     }
     @Override
     public void importAndStartTournament(String tournamentNameToImport) throws IOException {
-        tournamentService.setCurrentTournament(persistenceService.importTournament(new File("tournament" + tournamentNameToImport + ".json"))); //$NON-NLS-1$ //$NON-NLS-2$
+        tournamentService.setCurrentTournament(persistenceService.importTournament(tournamentNameToImport));
     }
 	@Override
 	public boolean isPlayerPausing(Player selectedPlayer) {

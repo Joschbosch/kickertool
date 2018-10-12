@@ -9,6 +9,8 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,6 +32,14 @@ import zur.koeln.kickertool.tournament.settings.TournamentSettingsImpl;
 public class PersistenceServiceImpl
     implements PersistenceService {
 
+    private static final String TOURNAMENT_ROUND_SUFFIX = "-Round";
+
+    private static final String EXPORT_FILE_ENDING = ".json";
+
+    private static final String TOURNAMENT_ROOT_DIR = "tournaments";
+
+    private static final Logger logger = LogManager.getLogger(PersistenceService.class);
+
 
     private final TournamentService tournamentService;
 
@@ -43,9 +53,10 @@ public class PersistenceServiceImpl
     }
 
     @Override
-	public Tournament importTournament(File tournamentToImport) throws IOException {
-		ObjectMapper m = new ObjectMapper();
-		JsonNode importRootNode = m.readTree(tournamentToImport);
+    public Tournament importTournament(String tournamentToImport) throws IOException {
+        File tournamentFile = new File(new File(TOURNAMENT_ROOT_DIR), tournamentToImport + EXPORT_FILE_ENDING);
+        ObjectMapper m = new ObjectMapper();
+        JsonNode importRootNode = m.readTree(tournamentFile);
 
 		importSettings(importRootNode);
 
@@ -99,7 +110,7 @@ public class PersistenceServiceImpl
             PlayerTournamentStatisticsImpl statistics = new PlayerTournamentStatisticsImpl(player);
 			statistics.setMatches(importUIDList(node.get("matches")));
             JsonNode playerPausingNode = node.get("playerPausing");
-            statistics.setPlayerPausing(playerPausingNode != null ? playerPausingNode.booleanValue() : false);
+            statistics.setPlayerPausing(playerPausingNode != null ? playerPausingNode.booleanValue() : Boolean.FALSE.booleanValue());
 			scoreTable.put(statistics.getPlayerId(),statistics);
 		});
 		return scoreTable;
@@ -177,31 +188,35 @@ public class PersistenceServiceImpl
     @Override
     public List<String> createTournamentsListForImport() {
         List<String> tournamentList = new ArrayList<>();
+        File tournamentRootDir = new File(TOURNAMENT_ROOT_DIR);
+        if (!tournamentRootDir.exists()) {
+            tournamentRootDir.mkdirs();
+        }
         try {
-            Stream<Path> walk = Files.walk(Paths.get(""), 1); //$NON-NLS-1$
+            Stream<Path> walk = Files.walk(Paths.get(TOURNAMENT_ROOT_DIR), 1); //$NON-NLS-1$
             walk.filter(Files::isRegularFile).forEach(file -> {
-                if (file.toString().contains("tournament") && !file.toString().contains("-Round") && file.toString().contains(".json")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                if (!file.toString().contains(TOURNAMENT_ROUND_SUFFIX) && file.toString().contains(EXPORT_FILE_ENDING)) { //$NON-NLS-1$ 
                     String name = FilenameUtils.getBaseName(file.toString());
-                    name = name.substring("tournament".length()); //$NON-NLS-1$
                     tournamentList.add(name);
                 }
             });
             walk.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error importing tournament: ", e);
+
         }
         return tournamentList;
     }
     @Override
     public void exportTournament(Tournament currentTournament) {
-        File tournamentFile = new File("tournament" + currentTournament.getName() + ".json"); //$NON-NLS-1$ //$NON-NLS-2$
-        File tournamentRoundFile = new File("tournament" + currentTournament.getName() + "-Round" + currentTournament.getCurrentRound().getRoundNo() + ".json"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        File tournamentFile = new File(new File(TOURNAMENT_ROOT_DIR), currentTournament.getName() + EXPORT_FILE_ENDING);
+        File tournamentRoundFile = new File(new File(TOURNAMENT_ROOT_DIR), currentTournament.getName() + TOURNAMENT_ROUND_SUFFIX + currentTournament.getCurrentRound().getRoundNo() + EXPORT_FILE_ENDING); //$NON-NLS-1$ 
         ObjectMapper m = new ObjectMapper();
         try {
             m.writerWithDefaultPrettyPrinter().writeValue(tournamentFile, currentTournament);
             m.writerWithDefaultPrettyPrinter().writeValue(tournamentRoundFile, currentTournament);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error exporting tournament: ", e);
         }
     }
 }

@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,6 +18,10 @@ import zur.koeln.kickertool.api.player.PlayerPoolService;
 @Component
 public class SimpleJsonPlayerPool
     implements PlayerPoolService {
+
+    private static final Logger logger = LogManager.getLogger(PlayerPoolService.class);
+
+    private static final String PLAYER_POOL_ROOT_DIR = "playerpools" + IOUtils.DIR_SEPARATOR;
 
     private List<Player> players;
 
@@ -29,14 +36,14 @@ public class SimpleJsonPlayerPool
     @Override
     public void loadPlayerPool() {
 
-        File playerPoolFile = new File("playerpool.json"); //$NON-NLS-1$
+        File playerPoolFile = new File(PLAYER_POOL_ROOT_DIR + "playerpool.json"); //$NON-NLS-1$
         if (playerPoolFile.exists() && playerPoolFile.isFile()) {
             ObjectMapper m = new ObjectMapper();
             try {
                 players = m.readValue(playerPoolFile, new TypeReference<List<HumanPlayer>>() {
                 });
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("Error loading Playerpool: ", e);
                 players = new LinkedList<>();
             }
         } else {
@@ -46,12 +53,17 @@ public class SimpleJsonPlayerPool
     }
     @Override
     public void savePlayerPool() {
-        File playerPoolFile = new File("playerpool.json"); //$NON-NLS-1$
+        File playerPoolRoot = new File(PLAYER_POOL_ROOT_DIR);
+        if (!playerPoolRoot.exists()) {
+            playerPoolRoot.mkdirs();
+        }
+        File playerPoolFile = new File(playerPoolRoot, "playerpool.json"); //$NON-NLS-1$
+
         ObjectMapper m = new ObjectMapper();
         try {
             m.writerWithDefaultPrettyPrinter().writeValue(playerPoolFile, players);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error saving Playerpool: ", e);
         }
     }
     @Override
@@ -70,7 +82,6 @@ public class SimpleJsonPlayerPool
         savePlayerPool();
     }
 
-
     /**
      * 
      */
@@ -78,7 +89,6 @@ public class SimpleJsonPlayerPool
     public void clear() {
         players.clear();
     }
-
 
     @Override
     public Player getPlayerOrDummyById(UUID playerId) {
@@ -96,8 +106,6 @@ public class SimpleJsonPlayerPool
     public int getNoOfDummyPlayerUsed() {
         return dummies.size();
     }
-
-
 
     /**
      * @param i

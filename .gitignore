@@ -1,3 +1,6 @@
 target
 .settings
 tournament*.json
+/logs/
+/playerpools/
+/tournaments/
