@@ -57,4 +57,8 @@ public class PlayerSelectionViewModel {
 		source.getItems().removeAll(droppedPlayers);
 	}
 
+	public void startTournament() {
+		getBackendController().getCurrentTournament().startTournament();
+	}
+
 }
