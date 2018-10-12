@@ -307,4 +307,12 @@ public class BasicBackendController
     public void init() {
         playerpool.loadPlayerPool();
     }
+
+    @Override
+    public void startTournament() {
+        if (currentTournament != null) {
+            currentTournament.startTournament();
+        }
+    }
+
 }
