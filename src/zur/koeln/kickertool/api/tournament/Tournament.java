@@ -4,41 +4,35 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import zur.koeln.kickertool.api.exceptions.MatchException;
-import zur.koeln.kickertool.api.player.Player;
+import zur.koeln.kickertool.tournament.data.GamingTable;
+import zur.koeln.kickertool.tournament.data.PlayerTournamentStatisticsComparator;
 
 public interface Tournament {
 
-
-    boolean isCurrentRoundComplete();
+    List<Round> getCompleteRounds();
 
     TournamentSettings getSettings();
 
-    void startTournament();
-
-    void addParticipant(Player p);
-
-    void removeParticipant(Player p);
-
-    void addMatchResult(Match match) throws MatchException;
-
-    Round newRound();
-
-    void pausePlayer(Player playerById);
-
-    List<UUID> getParticipants();
-
-    void unpausePlayer(Player playerById);
-
-    Map<UUID, PlayerTournamentStatistics> getScoreTable();
-
     String getName();
-
-    void setName(String text);
 
     Round getCurrentRound();
 
-    List<Round> getCompleteRounds();
+    void setName(String newTournamentTitle);
 
-    List<Match> getMatchesForRound(int roundNo);
+    Map<UUID, PlayerTournamentStatistics> getScoreTable();
+
+    List<UUID> getParticipants();
+
+    Map<Integer, GamingTable> getPlaytables();
+
+    boolean isStarted();
+
+    List<UUID> getDummyPlayerActive();
+
+    void setStarted(boolean b);
+
+    void setCurrentRound(Round newRound);
+
+    PlayerTournamentStatisticsComparator getTableComparator();
+
 }

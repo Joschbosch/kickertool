@@ -55,6 +55,7 @@ public class Main extends Application {
         Parent mainMenu = loader.load();
     	FXMLGUIController fxmlGuiController = new FXMLGUIController(primaryStage, ToolState.MAIN_MENU);
         BackendController controller = ctx.getBean(BackendController.class);
+        controller.init();
         controller.setGuiController(fxmlGuiController);
         fxmlGuiController.init(ctx, mainMenu, 450, 450);
     }

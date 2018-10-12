@@ -1,11 +1,9 @@
 /**
  * 
  */
-package zur.koeln.kickertool.tournament;
+package zur.koeln.kickertool.tournament.data;
 
 import java.util.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -15,23 +13,25 @@ import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.TournamentSettings;
 
 public class PlayerTournamentStatisticsImpl
-    implements Comparable<PlayerTournamentStatistics>, PlayerTournamentStatistics {
+    implements PlayerTournamentStatistics {
 
-	@JsonIgnore
-	@Autowired
-    private TournamentSettings config;
+    private UUID playerId;
 
-	@JsonIgnore
-    private Map<UUID, Match> uidToMatch = new HashMap<>();
+    private List<UUID> matches = new LinkedList<>();
 
-	private UUID playerId;
+    private boolean pausing = false;
 
-	@JsonIgnore
+    @JsonIgnore
     private Player player;
 
-	private List<UUID> matches = new LinkedList<>();
+    @JsonIgnore
+    private Map<UUID, Match> uidToMatch = new HashMap<>();
 
-	private boolean pausing = false;
+    public PlayerTournamentStatisticsImpl(
+        Player p) {
+        this.player = p;
+        this.playerId = p.getUid();
+    }
 
     public void addMatchResult(Match match) {
 		matches.add(match.getMatchID());
@@ -93,49 +93,6 @@ public class PlayerTournamentStatisticsImpl
 		return getPointsForConfiguration(config) / (double) matches.size();
 	}
 
-	@Override
-    public int compareTo(PlayerTournamentStatistics o2) {
-        Player player1 = player;
-        Player player2 = o2.getPlayer();
-		if (player1 == null) {
-			return 1;
-		}
-		if (player2 == null) {
-			return -1;
-		}
-		if (player1.isDummy()) {
-			return 1;
-		}
-		if (player2.isDummy()) {
-			return -1;
-		}
-
-		long pointsForConfiguration = this.getPointsForConfiguration(config) - o2.getPointsForConfiguration(config);
-		if (pointsForConfiguration != 0) {
-			return -Long.compare(this.getPointsForConfiguration(config), o2.getPointsForConfiguration(config));
-		}
-
-		int goalDiff = this.getGoalDiff() - o2.getGoalDiff();
-		if (goalDiff != 0) {
-			return -Integer.compare(this.getGoalDiff(), o2.getGoalDiff());
-		}
-
-		int wonDiff = (int) (this.getMatchesWonCount() - o2.getMatchesWonCount());
-		if (wonDiff != 0) {
-			return -Long.compare(this.getMatchesWonCount(), o2.getMatchesWonCount());
-		}
-
-		int drawDiff = (int) (this.getMatchesDrawCount() - o2.getMatchesDrawCount());
-		if (drawDiff != 0) {
-			return -Long.compare(this.getMatchesDrawCount(), o2.getMatchesDrawCount());
-		}
-        int nameCompare = player1.getName().compareTo(player2.getName());
-        if (nameCompare != 0) {
-            return nameCompare;
-        }
-        return player1.getUid().compareTo(player2.getUid());
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -144,15 +101,7 @@ public class PlayerTournamentStatisticsImpl
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder(""); //$NON-NLS-1$
-		// result.append(String.format("%n %-20s\t %s\t%s\t%s\t%s\t%s\t%s %s",
-		// player.getName(), String.valueOf(matches.size()),
-		// //$NON-NLS-1$
-		// Integer.valueOf(matchesWon), Integer.valueOf(matchesLost),
-		// Integer.valueOf(matchesDraw),
-		// Integer.valueOf(getGoalDiff()), Integer.valueOf(points),
-		// player.isPausingTournament() ? " (pausing)" : "")); //$NON-NLS-1$
-		// //$NON-NLS-2$
-
+        result.append(player.getName());
 		return result.toString();
 
 	}
@@ -203,4 +152,5 @@ public class PlayerTournamentStatisticsImpl
 	public void setPlayerPausing(boolean b) {
 		pausing = b;
 	}
+
 }

@@ -4,8 +4,7 @@ import java.util.UUID;
 
 import zur.koeln.kickertool.api.player.Player;
 
-public interface PlayerTournamentStatistics
-    extends Comparable<PlayerTournamentStatistics> {
+public interface PlayerTournamentStatistics {
 
     Player getPlayer();
 

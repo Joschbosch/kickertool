@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import zur.koeln.kickertool.api.BackendController;
@@ -24,25 +23,30 @@ import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.api.tournament.Tournament;
 import zur.koeln.kickertool.api.ui.GUIController;
-import zur.koeln.kickertool.tournament.factory.TournamentFactory;
+import zur.koeln.kickertool.tournament.TournamentService;
 import zur.koeln.kickertool.tournament.settings.TournamentSettingsImpl;
 
 @Component
 public class BasicBackendController
     implements BackendController {
 
-    @Autowired
-    private PlayerPoolService playerpool;
-
-    @Autowired
-    private TournamentFactory tournamentFactory;
+    private final PlayerPoolService playerpool;
     
-    @Autowired
-    private PersistenceService persistenceService;
+    private final PersistenceService persistenceService;
+
+    private final TournamentService tournamentService;
 
     private GUIController guiController;
 
-    private Tournament currentTournament;
+
+    public BasicBackendController(
+        PlayerPoolService playerpool,
+        PersistenceService persistenceService,
+        TournamentService tournamentService) {
+        this.playerpool = playerpool;
+        this.persistenceService = persistenceService;
+        this.tournamentService = tournamentService;
+    }
 
     /**
      * 
@@ -89,14 +93,13 @@ public class BasicBackendController
      */
     @Override
     public Tournament createNewTournament(String text) {
-        currentTournament = tournamentFactory.createNewTournament();
-        currentTournament.setName(text);
+        Tournament newTournament = tournamentService.createNewTournament(text);
         guiController.switchToolState(ToolState.NEW_TOURNAMENT_CONFIG);
-        return currentTournament;
+        return newTournament;
     }
     @Override
     public boolean isCurrentRoundComplete() {
-        return currentTournament.isCurrentRoundComplete();
+        return tournamentService.isCurrentRoundComplete();
     }
 
     /**
@@ -107,25 +110,25 @@ public class BasicBackendController
     public void changedTournamentConfig(TournamentSetingsKeys configKey, Integer newValue) {
         switch (configKey) {
             case TABLES :
-                ((TournamentSettingsImpl) currentTournament.getSettings()).setTableCount(newValue.intValue());
+                ((TournamentSettingsImpl) tournamentService.getCurrentTournament().getSettings()).setTableCount(newValue.intValue());
                 break;
             case MATCHES_TO_WIN :
-                ((TournamentSettingsImpl) currentTournament.getSettings()).setMatchesToWin(newValue.intValue());
+                ((TournamentSettingsImpl) tournamentService.getCurrentTournament().getSettings()).setMatchesToWin(newValue.intValue());
                 break;
             case GOALS_FOR_WIN :
-                ((TournamentSettingsImpl) currentTournament.getSettings()).setGoalsToWin(newValue.intValue());
+                ((TournamentSettingsImpl) tournamentService.getCurrentTournament().getSettings()).setGoalsToWin(newValue.intValue());
                 break;
             case POINTS_FOR_WINNER :
-                ((TournamentSettingsImpl) currentTournament.getSettings()).setPointsForWinner(newValue.intValue());
+                ((TournamentSettingsImpl) tournamentService.getCurrentTournament().getSettings()).setPointsForWinner(newValue.intValue());
                 break;
             case POINTS_FOR_DRAW :
-                ((TournamentSettingsImpl) currentTournament.getSettings()).setPointsForDraw(newValue.intValue());
+                ((TournamentSettingsImpl) tournamentService.getCurrentTournament().getSettings()).setPointsForDraw(newValue.intValue());
                 break;
             case MINUTES_PER_MATCH :
-                ((TournamentSettingsImpl) currentTournament.getSettings()).setMinutesPerMatch(newValue.intValue());
+                ((TournamentSettingsImpl) tournamentService.getCurrentTournament().getSettings()).setMinutesPerMatch(newValue.intValue());
                 break;
             case RANDOM_ROUNDS :
-                ((TournamentSettingsImpl) currentTournament.getSettings()).setRandomRounds(newValue.intValue());
+                ((TournamentSettingsImpl) tournamentService.getCurrentTournament().getSettings()).setRandomRounds(newValue.intValue());
                 break;
             default :
                 break;
@@ -134,7 +137,7 @@ public class BasicBackendController
     }
     @Override
     public void changeMode(TournamentMode newMode) {
-        ((TournamentSettingsImpl) currentTournament.getSettings()).setMode(newMode);
+        ((TournamentSettingsImpl) tournamentService.getCurrentTournament().getSettings()).setMode(newMode);
     }
 
     /**
@@ -158,7 +161,7 @@ public class BasicBackendController
      */
     @Override
     public void startTournament() {
-        currentTournament.startTournament();
+        tournamentService.startTournament();
         guiController.switchToolState(ToolState.TOURNAMENT);
     }
 
@@ -168,7 +171,7 @@ public class BasicBackendController
      */
     @Override
     public void addParticipantToTournament(Player p) {
-        currentTournament.addParticipant(p);
+        tournamentService.addParticipant(p);
     }
 
     /**
@@ -176,7 +179,7 @@ public class BasicBackendController
      */
     @Override
     public void removeParticipantFromTournament(Player p) {
-        currentTournament.removeParticipant(p);
+        tournamentService.removeParticipant(p);
     }
 
     /**
@@ -185,7 +188,7 @@ public class BasicBackendController
     @Override
     public Collection<Player> getParticipantList() {
         Set<Player> participants = new HashSet<>();
-        currentTournament.getParticipants().forEach(id -> participants.add(playerpool.getPlayerOrDummyById(id)));
+        tournamentService.getCurrentTournament().getParticipants().forEach(id -> participants.add(playerpool.getPlayerOrDummyById(id)));
         return participants;
     }
 
@@ -194,7 +197,7 @@ public class BasicBackendController
      */
     @Override
     public Round nextRound() {
-        Round newRound = currentTournament.newRound();
+        Round newRound = tournamentService.newRound();
         exportTournament();
         return newRound;
     }
@@ -209,7 +212,7 @@ public class BasicBackendController
         try {
             if (match.getResult() == null) {
                 match.setResultScores(scoreHome.intValue(), scoreVisiting.intValue());
-                currentTournament.addMatchResult(match);
+                tournamentService.addMatchResult(match);
             } else {
                 match.setResultScores(scoreHome.intValue(), scoreVisiting.intValue());
             }
@@ -225,12 +228,12 @@ public class BasicBackendController
     }
     @Override
     public void pausePlayer(UUID selectedPlayer) {
-        currentTournament.pausePlayer(playerpool.getPlayerOrDummyById(selectedPlayer));
+        tournamentService.pausePlayer(playerpool.getPlayerOrDummyById(selectedPlayer));
 
     }
     @Override
     public void unpausePlayer(UUID selectedPlayer) {
-        currentTournament.unpausePlayer(playerpool.getPlayerOrDummyById(selectedPlayer));
+        tournamentService.unpausePlayer(playerpool.getPlayerOrDummyById(selectedPlayer));
     }
 
     @Override
@@ -250,24 +253,25 @@ public class BasicBackendController
 
     @Override
     public List<Player> getPlayerListNotInTournament() {
-        return playerpool.getPlayers().stream().filter(player -> !currentTournament.getScoreTable().containsKey(player.getUid())).collect(Collectors.toList());
+        return playerpool.getPlayers().stream().filter(player -> !tournamentService.getCurrentTournament().getScoreTable().containsKey(player.getUid())).collect(Collectors.toList());
     }
 
     @Override
     public SortedSet<PlayerTournamentStatistics> getCurrentTable() {
-        return new TreeSet<>(currentTournament.getScoreTable().values());
+
+        return tournamentService.getCurrentTableAsSet();
     }
 
     @Override
     public List<Match> getMatchesForRound(int roundNo) {
-    	List<Match> matches = currentTournament.getMatchesForRound(roundNo);
+        List<Match> matches = tournamentService.getMatchesForRound(roundNo);
     	Collections.sort(matches);
         return matches;
     }
 
     @Override
     public Tournament getCurrentTournament() {
-        return currentTournament;
+        return tournamentService.getCurrentTournament();
     }
 
     @Override
@@ -282,7 +286,7 @@ public class BasicBackendController
     }
     @Override
     public void exportTournament() {
-        persistenceService.exportTournament(currentTournament);
+        persistenceService.exportTournament(tournamentService.getCurrentTournament());
     }
     @Override
     public List<String> createTournamentsListForImport() {
@@ -290,12 +294,17 @@ public class BasicBackendController
     }
     @Override
     public void importAndStartTournament(String tournamentNameToImport) throws IOException {
-        currentTournament = persistenceService.importTournament(new File("tournament" + tournamentNameToImport + ".json")); //$NON-NLS-1$ //$NON-NLS-2$
+        tournamentService.setCurrentTournament(persistenceService.importTournament(new File("tournament" + tournamentNameToImport + ".json"))); //$NON-NLS-1$ //$NON-NLS-2$
         guiController.switchToolState(ToolState.TOURNAMENT);
         guiController.update();
     }
 	@Override
 	public boolean isPlayerPausing(Player selectedPlayer) {
-		return currentTournament.getScoreTable().get(selectedPlayer.getUid()).isPlayerPausing();
+        return tournamentService.getCurrentTournament().getScoreTable().get(selectedPlayer.getUid()).isPlayerPausing();
 	}
+
+    @Override
+    public void init() {
+        playerpool.loadPlayerPool();
+    }
 }

@@ -3,8 +3,6 @@ package zur.koeln.kickertool.base;
 import java.io.Serializable;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import zur.koeln.kickertool.api.player.Player;
 
 public class HumanPlayer

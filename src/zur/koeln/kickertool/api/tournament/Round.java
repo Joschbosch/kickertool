@@ -16,4 +16,6 @@ public interface Round extends Comparable<Round>{
 
     boolean isComplete();
 
+    void addMatch(Match m);
+
 }

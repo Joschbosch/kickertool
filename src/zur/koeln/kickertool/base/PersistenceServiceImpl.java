@@ -9,7 +9,6 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,8 +21,8 @@ import zur.koeln.kickertool.api.config.TournamentMode;
 import zur.koeln.kickertool.api.player.Player;
 import zur.koeln.kickertool.api.player.PlayerPoolService;
 import zur.koeln.kickertool.api.tournament.*;
-import zur.koeln.kickertool.tournament.*;
-import zur.koeln.kickertool.tournament.factory.TournamentFactory;
+import zur.koeln.kickertool.tournament.TournamentService;
+import zur.koeln.kickertool.tournament.data.*;
 import zur.koeln.kickertool.tournament.settings.TournamentSettingsImpl;
 
 @Component
@@ -31,12 +30,17 @@ import zur.koeln.kickertool.tournament.settings.TournamentSettingsImpl;
 public class PersistenceServiceImpl
     implements PersistenceService {
 
-	@Autowired
-	private TournamentFactory tournamentFactory;
 
-	@Autowired
-	private PlayerPoolService playerpool;
+    private final TournamentService tournamentService;
 
+	private final PlayerPoolService playerpool;
+
+    public PersistenceServiceImpl(
+        PlayerPoolService playerpool,
+        TournamentService tournamentService) {
+        this.playerpool = playerpool;
+        this.tournamentService = tournamentService;
+    }
 
     @Override
 	public Tournament importTournament(File tournamentToImport) throws IOException {
@@ -45,7 +49,7 @@ public class PersistenceServiceImpl
 
 		importSettings(importRootNode);
 
-		TournamentImpl tournament = (TournamentImpl) tournamentFactory.createNewTournament();
+        TournamentImpl tournament = (TournamentImpl) tournamentService.createNewTournament("");
 		tournament.setName(importRootNode.get("name").asText());
 		tournament.setParticipants(importUIDList(importRootNode.get("participants")));
 		tournament.setScoreTable(importScoreTable(importRootNode.get("scoreTable")));
@@ -62,7 +66,7 @@ public class PersistenceServiceImpl
 	public void initializeAfterImport(TournamentImpl tournament) {
 		tournament.setStarted(true);
 		Map<UUID, Match> uuidToMatch = new HashMap<>();
-		tournament.getAllMatches().forEach(m -> uuidToMatch.put(m.getMatchID(), m));
+        tournamentService.getAllMatches().forEach(m -> uuidToMatch.put(m.getMatchID(), m));
 		tournament.getScoreTable().values()
 				.forEach(tournamentStatistic -> ((PlayerTournamentStatisticsImpl) tournamentStatistic)
 						.setUidToMatch(uuidToMatch));
@@ -92,8 +96,7 @@ public class PersistenceServiceImpl
 			if (player == null) {
 				player = playerpool.createDummyPlayerWithUUID(playerId);
 			}
-			PlayerTournamentStatisticsImpl statistics = (PlayerTournamentStatisticsImpl) tournamentFactory
-					.createNewTournamentStatistics(player);
+            PlayerTournamentStatisticsImpl statistics = new PlayerTournamentStatisticsImpl(player);
 			statistics.setMatches(importUIDList(node.get("matches")));
             JsonNode playerPausingNode = node.get("playerPausing");
             statistics.setPlayerPausing(playerPausingNode != null ? playerPausingNode.booleanValue() : false);
@@ -112,7 +115,7 @@ public class PersistenceServiceImpl
 	}
 
 	private void importSettings(JsonNode importRootNode) {
-		TournamentSettingsImpl settings = (TournamentSettingsImpl) tournamentFactory.getTournamentSettings();
+        TournamentSettingsImpl settings = new TournamentSettingsImpl();
 		JsonNode settingsNode = importRootNode.get("settings");
 		settings.setMode(TournamentMode.valueOf(settingsNode.get("mode").asText()));
 		settings.setTableCount(settingsNode.get("tableCount").asInt());
@@ -134,7 +137,7 @@ public class PersistenceServiceImpl
 	}
 
 	private TournamentRound importRound(JsonNode node) {
-		TournamentRound newRound = (TournamentRound) tournamentFactory.createNewRound(node.get("roundNo").asInt());
+        TournamentRound newRound = new TournamentRound(node.get("roundNo").asInt());
 		newRound.setCompleteMatches(importMatches(node.get("completeMatches")));
 		newRound.setMatches(importMatches(node.get("matches")));
 		newRound.setScoreTableAtEndOfRound(importScoreTable(node.get("scoreTableAtEndOfRound")));
@@ -156,7 +159,7 @@ public class PersistenceServiceImpl
 			visiting.setPlayer1(playerpool.getPlayerOrDummyById(visiting.getPlayer1Id()));
 			visiting.setPlayer2(playerpool.getPlayerOrDummyById(visiting.getPlayer2Id()));
 
-			TournamentMatch match = tournamentFactory.createNewMatch(Integer.valueOf(node.get("roundNumber").asInt()),
+            TournamentMatch match = new TournamentMatch(Integer.valueOf(node.get("roundNumber").asInt()),
 					home, visiting, node.get("matchNo").asInt());
 			match.setTableNo(node.get("tableNo").asInt());
 			JsonNode scoreHomeNode = node.get("scoreHome");

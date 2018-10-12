@@ -25,10 +25,10 @@ public class SimpleJsonPlayerPool
     public SimpleJsonPlayerPool() {
         players = new ArrayList<>();
         dummies = new ArrayList<>();
-
     }
     @Override
     public void loadPlayerPool() {
+
         File playerPoolFile = new File("playerpool.json"); //$NON-NLS-1$
         if (playerPoolFile.exists() && playerPoolFile.isFile()) {
             ObjectMapper m = new ObjectMapper();

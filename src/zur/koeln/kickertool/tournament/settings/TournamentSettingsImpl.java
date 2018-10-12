@@ -1,8 +1,11 @@
 package zur.koeln.kickertool.tournament.settings;
 
+import org.springframework.stereotype.Component;
+
 import zur.koeln.kickertool.api.config.TournamentMode;
 import zur.koeln.kickertool.api.tournament.TournamentSettings;
 
+@Component
 public class TournamentSettingsImpl
     implements TournamentSettings {
 

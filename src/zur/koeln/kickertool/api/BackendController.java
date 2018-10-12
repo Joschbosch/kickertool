@@ -83,4 +83,6 @@ public interface BackendController {
     List<String> createTournamentsListForImport();
 
 	boolean isPlayerPausing(Player selectedPlayer);
+
+    void init();
 }
