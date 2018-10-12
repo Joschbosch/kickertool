@@ -54,5 +54,10 @@ public class PlayerPoolManagementViewModel {
 			getBackendController().changePlayerName(newName, selectedPlayer);
 		}
 	}
+
+	public void loadPlayersNotInTournament() {
+		getPlayers().clear();
+		getPlayers().addAll(getBackendController().getPlayerListNotInTournament());
+	}
 	
 }

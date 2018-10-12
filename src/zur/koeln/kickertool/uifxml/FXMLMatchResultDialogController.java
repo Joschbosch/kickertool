@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.springframework.stereotype.Component;
+
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
@@ -11,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.util.Pair;
 import zur.koeln.kickertool.api.tournament.Team;
 
+@Component
 public class FXMLMatchResultDialogController {
 	
 	@FXML

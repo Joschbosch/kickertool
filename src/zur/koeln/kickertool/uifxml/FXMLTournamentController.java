@@ -6,27 +6,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.api.player.Player;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
+import zur.koeln.kickertool.tournament.PlayerTournamentStatisticsImpl;
 import zur.koeln.kickertool.uifxml.converter.RoundConverter;
 import zur.koeln.kickertool.uifxml.converter.TimerStringConverter;
-import zur.koeln.kickertool.uifxml.service.FXMLGUI;
 import zur.koeln.kickertool.uifxml.vm.TournamentViewModel;
 
 @Getter(value=AccessLevel.PRIVATE)
@@ -99,9 +103,12 @@ public class FXMLTournamentController {
 		getCmbRounds().setItems(getVm().getRounds());
 		getCmbRounds().setConverter(new RoundConverter());
 		getCmbRounds().disableProperty().bind(Bindings.size(getVm().getRounds()).isEqualTo(0));
-
+		
+		getBtnPausePlayer().disableProperty().bind(getVm().getBtnPausePlayerDisableProperty());
+		getBtnUnpausePlayer().disableProperty().bind(getVm().getBtnResumePlayerDisableProperty());
+		
 		setupColumns();
-		setupListener();
+		registerListener();
 		
 		getVm().init();
 		
@@ -131,20 +138,13 @@ public class FXMLTournamentController {
 //		}
 	}
 
-	private void setupListener() {
-//		getTblStatistics().getSelectionModel().selectedItemProperty().addListener(event -> {
-//			
-//			Player selectedPlayer = getSelectedPlayerInStatisticsTable();
-//			
-//			if (selectedPlayer != null) {
-//				getBtnPausePlayer().setDisable(selectedPlayer.isDummy() || getTblStatistics().getSelectionModel().getSelectedItems().size() == 0 || backendController.isPlayerPausing(selectedPlayer));
-//				getBtnUnpausePlayer().setDisable(getTblStatistics().getSelectionModel().getSelectedItems().size() == 0 || !backendController.isPlayerPausing(selectedPlayer));
-//				
-//			}
-//			
-//			
-//		});
-//		
+	private void registerListener() {
+		getTblStatistics().getSelectionModel().selectedItemProperty().addListener(event -> {
+			
+			getVm().enableDisablePauseResumePlayer((PlayerTournamentStatisticsImpl) getTblStatistics().getSelectionModel().getSelectedItem());
+			
+		});
+
 		getCmbRounds().getSelectionModel().selectedItemProperty().addListener(event -> {
 			
 			if (getCmbRounds().getSelectionModel().getSelectedItem() == null) {
@@ -152,12 +152,12 @@ public class FXMLTournamentController {
 			}
 			
 			Round selectedRound = (Round) getCmbRounds().getSelectionModel().getSelectedItem();
-			fillMatchesForRound(selectedRound, getCmbRounds().getSelectionModel().getSelectedIndex());
+			fillMatchesForRound(selectedRound);
 			
 		});
 	}
 	
-	private void fillMatchesForRound(final Round selectedRound, int selectedIndex) {
+	private void fillMatchesForRound(final Round selectedRound) {
 			
 		List<Pane> matchesForRound = getVm().loadMatchesForRound(selectedRound);
 		
@@ -166,186 +166,137 @@ public class FXMLTournamentController {
 		
 	}
 
-	private Player getSelectedPlayerInStatisticsTable() {
-		return ((PlayerTournamentStatistics) getTblStatistics().getSelectionModel().getSelectedItem()).getPlayer();
-	}
-	
 	private void setupColumns() {
 		
-//		getTblColNumber().setCellFactory(param -> new TableCell<PlayerTournamentStatistics, String>() {
-//			
-//			 @Override
-//			    protected void updateItem(String item, boolean empty) {
-//				 	
-//				 	if (empty) {
-//				 		setText(null);
-//				 		return;
-//				 	}
-//				 
-//			      	setText(String.valueOf(getIndex() + 1));
-//			    }
-//			 
-//		});
-//		
-//        getTblColPlayerName().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
-//
-//			@Override
-//            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
-//				
-//				String playerName = param.getValue().getPlayer().getName();
-//				if (backendController.isPlayerPausing(param.getValue().getPlayer())) {
-//					playerName += " (Pausing)";
-//				}
-//				
-//				return new SimpleStringProperty(playerName);
-//			}
-//		});
-//		
-//        getTblColPlayedMatched().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
-//
-//			@Override
-//            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
-//				
-//				return new SimpleStringProperty(String.valueOf(param.getValue().getMatchesDone()));
-//			}
-//		});
-//		
-//        getTblColMatchesWon().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
-//
-//			@Override
-//            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
-//				
-//				return new SimpleStringProperty(String.valueOf(param.getValue().getMatchesWonCount()));
-//			}
-//		});
-//		
-//        getTblColMatchesLost().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
-//
-//			@Override
-//            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
-//				
-//				return new SimpleStringProperty(String.valueOf(param.getValue().getMatchesLostCount()));
-//			}
-//		});
-//		
-//        getTblColMatchesRemis().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
-//
-//			@Override
-//            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
-//				
-//				return new SimpleStringProperty(String.valueOf(param.getValue().getMatchesDrawCount()));
-//			}
-//		});
-//		
-//        getTblColGoals().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
-//
-//			@Override
-//            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
-//				
-//				return new SimpleStringProperty(String.valueOf(param.getValue().getGoalsShot()));
-//			}
-//		});
-//		
-//        getTblColGoalsEnemies().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
-//
-//			@Override
-//            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
-//				
-//				return new SimpleStringProperty(String.valueOf(param.getValue().getGoalsConceded()));
-//			}
-//		});
-//		
-//        getTblColGoalsDifference().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
-//
-//			@Override
-//            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
-//				
-//				return new SimpleStringProperty(String.valueOf(param.getValue().getGoalDiff()));
-//			}
-//		});
-//		
-//        getTblColPoints().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
-//
-//			@Override
-//            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
-//				
-//				return new SimpleStringProperty(String.valueOf(param.getValue().getPointsForConfiguration(getBackendController().getCurrentTournament().getSettings())));
-//			}
-//		});
+		getTblColNumber().setCellFactory(param -> new TableCell<PlayerTournamentStatistics, String>() {
+			
+			 @Override
+			    protected void updateItem(String item, boolean empty) {
+				 	
+				 	if (empty) {
+				 		setText(null);
+				 		return;
+				 	}
+				 
+			      	setText(String.valueOf(getIndex() + 1));
+			    }
+			 
+		});
 		
-	}
+        getTblColPlayerName().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
 
-	public void update() {
-//		setSelectionModeOn(false);
-//		getMatchEntryController().forEach(FXMLMatchEntryController::update);
-//		getStatistics().clear();
-//		getStatistics().addAll(loadTableStatistics());
-//		setSelectionModeOn(true);
-//		loadPlayerRounds();
-//		
-//		if (getBackendController().getCurrentTournament().getCurrentRound() != null && getBackendController().getCurrentTournament().getCurrentRound().isComplete()) {
-//			getBtnCreateRound().setDisable(false);
-//		}
-	}
-	
-	private void loadPlayerRounds() {
-//		Round selectedRound = null;
-//		
-//		if (getCmbRounds().getSelectionModel().getSelectedItem() != null) {
-//			selectedRound = (Round) getCmbRounds().getSelectionModel().getSelectedItem();
-//		}
-//		
-//		if (getBackendController().getCurrentTournament().getCurrentRound() == null) {
-//			return;
-//		}
-//		
-//		getRounds().clear();
-//		getRounds().addAll(getBackendController().getCurrentTournament().getCompleteRounds());
-//		getRounds().add(getBackendController().getCurrentTournament().getCurrentRound());
-//		
-//		if (selectedRound != null) {
-//			getCmbRounds().getSelectionModel().select(selectedRound);
-//		} else {
-//			getCmbRounds().getSelectionModel().select(getRounds().size() - 1);
-//		}
-//		
+			@Override
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+				
+				String playerName = param.getValue().getPlayer().getName();
+				
+				return new SimpleStringProperty(playerName);
+			}
+		});
+		
+        getTblColPlayedMatched().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+
+			@Override
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+				
+				return new SimpleStringProperty(String.valueOf(param.getValue().getMatchesDone()));
+			}
+		});
+		
+        getTblColMatchesWon().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+
+			@Override
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+				
+				return new SimpleStringProperty(String.valueOf(param.getValue().getMatchesWonCount()));
+			}
+		});
+		
+        getTblColMatchesLost().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+
+			@Override
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+				
+				return new SimpleStringProperty(String.valueOf(param.getValue().getMatchesLostCount()));
+			}
+		});
+		
+        getTblColMatchesRemis().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+
+			@Override
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+				
+				return new SimpleStringProperty(String.valueOf(param.getValue().getMatchesDrawCount()));
+			}
+		});
+		
+        getTblColGoals().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+
+			@Override
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+				
+				return new SimpleStringProperty(String.valueOf(param.getValue().getGoalsShot()));
+			}
+		});
+		
+        getTblColGoalsEnemies().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+
+			@Override
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+				
+				return new SimpleStringProperty(String.valueOf(param.getValue().getGoalsConceded()));
+			}
+		});
+		
+        getTblColGoalsDifference().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+
+			@Override
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+				
+				return new SimpleStringProperty(String.valueOf(param.getValue().getGoalDiff()));
+			}
+		});
+		
+        getTblColPoints().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerTournamentStatistics, String>, ObservableValue<String>>() {
+
+			@Override
+            public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
+				
+				return new SimpleStringProperty(String.valueOf("0"));
+			}
+		});
+		
 	}
 
 	@FXML public void onBtnAddPlayerClicked() {
 		
-//		AddPlayerDialog<List<Player>> addPlayerDialog = new AddPlayerDialog<>(getCtx());
-//		Optional<List<Player>> selectedPlayer = addPlayerDialog.showAndWait();
-//		
-//		if (selectedPlayer.isPresent()) {
-//			selectedPlayer.get().forEach(ePlayer -> {
-//				getBackendController().addParticipantToTournament(ePlayer);
-//			});
-//		}
-//		
-//		update();
+		getVm().openAddLatePlayerDialog();
+		
 	}
 
 	@FXML public void onBtnPausePlayerClicked() {
-//		Player selectedPlayer = getSelectedPlayerInStatisticsTable();
-//		
-//		if (selectedPlayer != null) {
-//			getBackendController().pausePlayer(selectedPlayer.getUid());
-//			update();
-//		}
+		
+		Player selectedPlayer = getSelectedPlayerInStatisticsTable();
+		
+		if (selectedPlayer != null) {
+			getVm().pausePlayer(selectedPlayer);
+		}
 		
 	}
 
 	@FXML public void onBtnResumePlayerClicked() {
-//		Player selectedPlayer = getSelectedPlayerInStatisticsTable();
-//		
-//		if (selectedPlayer != null) {
-//			getBackendController().unpausePlayer(selectedPlayer.getUid());
-//			update();
-//		}
 		
+		Player selectedPlayer = getSelectedPlayerInStatisticsTable();
 		
+		if (selectedPlayer != null) {
+			getVm().resumePlayer(selectedPlayer);
+		}
 	}
-
+	
+	private Player getSelectedPlayerInStatisticsTable() {
+		return ((PlayerTournamentStatistics) getTblStatistics().getSelectionModel().getSelectedItem()).getPlayer();
+	}
+	
 	@FXML public void onBtnCreateRoundClicked() {
 		
 		getVm().createNewRound();
@@ -353,8 +304,6 @@ public class FXMLTournamentController {
 		
 	}
 	
-	
-
 	@FXML public void onBtnResetStopwatchClicked() {
 		getVm().resetStopwatch();
 	}
@@ -367,11 +316,4 @@ public class FXMLTournamentController {
 		getVm().pauseResumeStopwatch();
 	}
 	
-	private FXMLLoader getFXMLLoader(FXMLGUI gui) {
-		return null;
-//		FXMLLoader loader = new FXMLLoader(getClass().getResource(gui.getFxmlFile()));
-//		loader.setControllerFactory(getCtx()::getBean);
-//		return loader;
-	}
-
 }

@@ -14,7 +14,10 @@ import javafx.beans.property.StringProperty;
 import javafx.util.Pair;
 import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.tournament.Match;
+import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.uifxml.dialog.ScoreDialog;
+import zur.koeln.kickertool.uifxml.service.FXMLGUI;
+import zur.koeln.kickertool.uifxml.service.FXMLGUIservice;
 
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -23,54 +26,70 @@ public class MatchEntryViewModel {
 
 	@Autowired
 	private BackendController backendController;
-	
+	@Autowired
+	private FXMLGUIservice fxmlGuiService;
+
 	private Match currentMatch;
-	
+	private Round currentRound;
+
 	private final StringProperty player1TeamHomeNameProperty = new SimpleStringProperty();
 	private final StringProperty player2TeamHomeNameProperty = new SimpleStringProperty();
 	private final StringProperty player1TeamVisitNameProperty = new SimpleStringProperty();
 	private final StringProperty player2TeamVisitNameProperty = new SimpleStringProperty();
 	private final StringProperty tableNameProperty = new SimpleStringProperty();
 	private final StringProperty scoreProperty = new SimpleStringProperty();
-	
+
 	private final BooleanProperty btnFinishMatchDisableProperty = new SimpleBooleanProperty();
 	private final BooleanProperty btnFinishMatchVisibleProperty = new SimpleBooleanProperty();
-	
-	public void init(Match match) {
+
+	public void init(Match match, Round round) {
 		currentMatch = match;
-		
+		currentRound = round;
+
 		getPlayer1TeamHomeNameProperty().set(getCurrentMatch().getHomeTeam().getPlayer1().getName());
 		getPlayer2TeamHomeNameProperty().set(getCurrentMatch().getHomeTeam().getPlayer2().getName());
 		getPlayer1TeamVisitNameProperty().set(getCurrentMatch().getVisitingTeam().getPlayer1().getName());
 		getPlayer2TeamVisitNameProperty().set(getCurrentMatch().getVisitingTeam().getPlayer2().getName());
-		
+
+		getBtnFinishMatchVisibleProperty().set(!getCurrentRound().isComplete());
+
 		updateTableAndScoreTexts();
 		updateDisableState();
 	}
-	
+
 	private void updateTableAndScoreTexts() {
 		getTableNameProperty().set(getTableNoString());
 		getScoreProperty().set(getMatchResultString());
 	}
-	
+
 	private String getTableNoString() {
 		return getCurrentMatch().getTableNo() == -1 ? "TBA" : String.valueOf(getCurrentMatch().getTableNo());
 	}
-	
+
 	private String getMatchResultString() {
-		return getCurrentMatch().getResult() == null ? "-:-" : getCurrentMatch().getScoreHome() + ":" + getCurrentMatch().getScoreVisiting(); 
+		return getCurrentMatch().getResult() == null ? "-:-"
+				: getCurrentMatch().getScoreHome() + ":" + getCurrentMatch().getScoreVisiting();
 	}
-	
+
 	private void updateDisableState() {
-		getBtnFinishMatchDisableProperty().set(getCurrentMatch().getTableNo() == -1 || getCurrentMatch().getRoundNumber().intValue() != getBackendController().getCurrentTournament().getCurrentRound().getRoundNo());
+		getBtnFinishMatchDisableProperty().set(getCurrentMatch().getTableNo() == -1 || getCurrentRound()
+				.getRoundNo() != getBackendController().getCurrentTournament().getCurrentRound().getRoundNo());
 	}
-	
+
 	private Match getCurrentMatch() {
 		return currentMatch;
 	}
-	
+
+	private Round getCurrentRound() {
+		return currentRound;
+	}
+
 	private BackendController getBackendController() {
 		return backendController;
+	}
+
+	private FXMLGUIservice getFxmlGuiService() {
+		return fxmlGuiService;
 	}
 
 	public StringProperty getPlayer1TeamHomeNameProperty() {
@@ -106,13 +125,20 @@ public class MatchEntryViewModel {
 	}
 
 	public void openScoreEntryDialog() {
-		ScoreDialog<Pair<Integer, Integer>> dialog = new ScoreDialog(getCurrentMatch().getHomeTeam(), getCurrentMatch().getVisitingTeam(), getBackendController().getCurrentTournament().getSettings().getGoalsToWin());
+		ScoreDialog<Pair<Integer, Integer>> dialog = new ScoreDialog(getFxmlGuiService());
+		dialog.init(getCurrentMatch().getHomeTeam(), getCurrentMatch().getVisitingTeam(),
+				getBackendController().getCurrentTournament().getSettings().getGoalsToWin());
 		Optional<Pair<Integer, Integer>> result = dialog.showAndWait();
-        if (result.isPresent()) {
-            getBackendController().updateMatchResult(getCurrentMatch(), result.get().getKey(), result.get().getValue());
-    		updateTableAndScoreTexts();
-    		updateDisableState();
-        }
+		if (result.isPresent()) {
+			getBackendController().updateMatchResult(getCurrentMatch(), result.get().getKey(), result.get().getValue());
+			updateTableAndScoreTexts();
+			updateDisableState();
+		}
+	}
+
+	public void update() {
+		updateTableAndScoreTexts();
+		updateDisableState();
 	}
 
 }

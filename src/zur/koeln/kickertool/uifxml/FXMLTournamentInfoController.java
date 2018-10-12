@@ -9,12 +9,16 @@ import org.springframework.stereotype.Component;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.TableView;
+import javafx.scene.Parent;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
@@ -23,14 +27,8 @@ import lombok.Getter;
 import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.tournament.Match;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
-import zur.koeln.kickertool.uifxml.converter.TimerStringConverter;
 import zur.koeln.kickertool.uifxml.service.FXMLGUI;
 import zur.koeln.kickertool.uifxml.tools.TournamentStopWatch;
-import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.layout.GridPane;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component

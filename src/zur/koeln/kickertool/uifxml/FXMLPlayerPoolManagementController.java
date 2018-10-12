@@ -1,5 +1,7 @@
 package zur.koeln.kickertool.uifxml;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -74,6 +76,15 @@ public class FXMLPlayerPoolManagementController {
 	@FXML 
 	public void onPlayerNameChanged(CellEditEvent<Player, String> event) {
 		getVm().changePlayerName(event.getNewValue(), getTblPlayers().getSelectionModel().getSelectedItem());
+	}
+
+	public List<Player> getSelectedPlayer() {
+		
+		return getTblPlayers().getSelectionModel().getSelectedItems();
+	}
+	
+	public void loadPlayersNotInTournament() {
+		getVm().loadPlayersNotInTournament();
 	}
 	
 }

@@ -5,13 +5,16 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.api.tournament.Match;
+import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.uifxml.vm.MatchEntryViewModel;
+import zur.koeln.kickertool.uifxml.vm.TournamentViewModel;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component
@@ -35,8 +38,11 @@ public class FXMLMatchEntryController {
 	
     @Autowired
     private MatchEntryViewModel vm;
-	
-	public void init(Match currentMatch) {
+    
+    @Autowired
+    private TournamentViewModel tournamentVm;
+  
+	public void init(Match currentMatch, Round currentRound) {
 
 		getLblPlayer1TeamHome().textProperty().bind(getVm().getPlayer1TeamHomeNameProperty());
 		getLblPlayer1TeamVisit().textProperty().bind(getVm().getPlayer1TeamVisitNameProperty());
@@ -47,14 +53,29 @@ public class FXMLMatchEntryController {
 		getBtnFinish().disableProperty().bind(getVm().getBtnFinishMatchDisableProperty());
 		getBtnFinish().visibleProperty().bind(getVm().getBtnFinishMatchVisibleProperty());
 		
-		getVm().init(currentMatch);
+		registerListener();
+		
+		getVm().init(currentMatch, currentRound);
 		
 	}
 	
-	@FXML public void onBtnFinishClicked() {
+	private void registerListener() {
+		
+		getVm().getScoreProperty().addListener((ChangeListener<String>) (observable, oldValue, newValue) -> {
+			getTournamentVm().updateFXMLMatchEntryController();
+		});
+		
+	}
+	
+	@FXML 
+	public void onBtnFinishClicked() {
 		
 		getVm().openScoreEntryDialog();
 		
+	}
+	
+	public void update() {
+		getVm().update();
 	}
 
 }

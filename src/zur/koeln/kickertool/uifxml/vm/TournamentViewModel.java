@@ -2,6 +2,7 @@ package zur.koeln.kickertool.uifxml.vm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,12 +13,14 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import zur.koeln.kickertool.api.BackendController;
+import zur.koeln.kickertool.api.player.Player;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
+import zur.koeln.kickertool.tournament.PlayerTournamentStatisticsImpl;
 import zur.koeln.kickertool.uifxml.FXMLMatchEntryController;
+import zur.koeln.kickertool.uifxml.dialog.AddPlayerDialog;
 import zur.koeln.kickertool.uifxml.service.FXMLGUI;
 import zur.koeln.kickertool.uifxml.service.FXMLGUIservice;
 import zur.koeln.kickertool.uifxml.tools.TournamentStopWatch;
@@ -37,11 +40,17 @@ public class TournamentViewModel {
 	private final ObservableList<PlayerTournamentStatistics> statistics = FXCollections.observableArrayList();
 	private final BooleanProperty stopwatchToggleButtonSelectedProperty = new SimpleBooleanProperty();
 	private final BooleanProperty btnCreateRoundsDisableProperty = new SimpleBooleanProperty(false);
+	private final BooleanProperty btnPausePlayerDisableProperty = new SimpleBooleanProperty(false);
+	private final BooleanProperty btnResumePlayerDisableProperty = new SimpleBooleanProperty(false);
 	
 	public void init() {
 		getRounds().clear();
 		getStopWatch().init(getBackendController().getCurrentTournament().getSettings().getMinutesPerMatch());
 		
+		updateStatisticsTable();
+	}
+	
+	private void updateStatisticsTable() {
 		getStatistics().clear();
 		getStatistics().addAll(getBackendController().getCurrentTable());
 	}
@@ -62,6 +71,14 @@ public class TournamentViewModel {
 		return statistics;
 	}
 	
+	public BooleanProperty getBtnPausePlayerDisableProperty() {
+		return btnPausePlayerDisableProperty;
+	}
+
+	public BooleanProperty getBtnResumePlayerDisableProperty() {
+		return btnResumePlayerDisableProperty;
+	}
+
 	public LongProperty getTimePropertyFromStopWatch() {
 		return getStopWatch().getTimeInSecondsLongProperty();
 	}
@@ -109,7 +126,7 @@ public class TournamentViewModel {
 		return getRounds().size() - 1;
 	}
 	
-	public List<Pane> loadMatchesForRound(Round selectedRound) {
+	public List<Pane> loadMatchesForRound(final Round selectedRound) {
 		
 		getMatchEntryControllerList().clear();
 		final List<Pane> matchPanes = new ArrayList<>();
@@ -118,10 +135,46 @@ public class TournamentViewModel {
 			FXMLLoader fxmlLoader = getFxmlGUIService().getFXMLLoader(FXMLGUI.MATCH_ENTRY);
 			matchPanes.add(fxmlLoader.getRoot());
 			FXMLMatchEntryController matchEntryController = fxmlLoader.getController();
-			matchEntryController.init(eMatch);
+			matchEntryController.init(eMatch, selectedRound);
 			getMatchEntryControllerList().add(matchEntryController);
 		});
 		
 		return matchPanes;
+	}
+
+	public void updateFXMLMatchEntryController() {
+		getMatchEntryControllerList().forEach(FXMLMatchEntryController::update);
+		getBtnCreateRoundsDisableProperty().set(!getBackendController().getCurrentTournament().isCurrentRoundComplete());
+		updateStatisticsTable();
+	}
+
+	private void addLatePlayerToTournament(Player player) {
+		getBackendController().addParticipantToTournament(player);
+		updateStatisticsTable();
+	}
+
+	public void openAddLatePlayerDialog() {
+		AddPlayerDialog<List<Player>> addPlayerDialog = new AddPlayerDialog(getFxmlGUIService());
+		addPlayerDialog.init();
+		Optional<List<Player>> selectedPlayer = addPlayerDialog.showAndWait();
+		
+		if (selectedPlayer.isPresent()) {
+			selectedPlayer.get().forEach(this::addLatePlayerToTournament);
+		}
+	}
+
+	public void pausePlayer(Player selectedPlayer) {
+		getBackendController().pausePlayer(selectedPlayer.getUid());
+		updateStatisticsTable();
+	}
+
+	public void resumePlayer(Player selectedPlayer) {
+		getBackendController().unpausePlayer(selectedPlayer.getUid());
+		updateStatisticsTable();
+	}
+
+	public void enableDisablePauseResumePlayer(PlayerTournamentStatisticsImpl playerTournamentStatisticsImpl) {
+		getBtnPausePlayerDisableProperty().set(playerTournamentStatisticsImpl == null || playerTournamentStatisticsImpl.isPlayerPausing());
+		getBtnResumePlayerDisableProperty().set(playerTournamentStatisticsImpl == null || !playerTournamentStatisticsImpl.isPlayerPausing());
 	}
 }
