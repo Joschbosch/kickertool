@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.PersistenceService;
-import zur.koeln.kickertool.api.ToolState;
 import zur.koeln.kickertool.api.config.TournamentMode;
 import zur.koeln.kickertool.api.config.TournamentSettingsKeys;
 import zur.koeln.kickertool.api.exceptions.MatchException;
@@ -23,7 +22,6 @@ import zur.koeln.kickertool.api.tournament.Match;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.api.tournament.Tournament;
-import zur.koeln.kickertool.api.ui.GUIController;
 import zur.koeln.kickertool.tournament.factory.TournamentFactory;
 import zur.koeln.kickertool.tournament.settings.TournamentSettingsImpl;
 
@@ -247,5 +245,12 @@ public class BasicBackendController
 	public boolean isPlayerPausing(Player selectedPlayer) {
 		return currentTournament.getScoreTable().get(selectedPlayer.getUid()).isPlayerPausing();
 	}
+
+    @Override
+    public void startTournament() {
+        if (currentTournament != null) {
+            currentTournament.startTournament();
+        }
+    }
 
 }

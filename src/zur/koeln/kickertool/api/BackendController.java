@@ -14,7 +14,6 @@ import zur.koeln.kickertool.api.tournament.Match;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.api.tournament.Tournament;
-import zur.koeln.kickertool.api.ui.GUIController;
 
 public interface BackendController {
 
@@ -71,4 +70,6 @@ public interface BackendController {
     List<String> createTournamentsListForImport();
 
 	boolean isPlayerPausing(Player selectedPlayer);
+
+    void startTournament();
 }
