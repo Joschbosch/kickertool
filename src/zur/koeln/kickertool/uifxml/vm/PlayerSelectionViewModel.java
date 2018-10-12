@@ -58,7 +58,7 @@ public class PlayerSelectionViewModel {
 	}
 
 	public void startTournament() {
-		getBackendController().getCurrentTournament().startTournament();
+		getBackendController().startTournament();
 	}
 
 }
