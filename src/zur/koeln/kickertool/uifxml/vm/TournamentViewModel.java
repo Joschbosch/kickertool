@@ -18,7 +18,7 @@ import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.player.Player;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
-import zur.koeln.kickertool.tournament.PlayerTournamentStatisticsImpl;
+import zur.koeln.kickertool.tournament.data.PlayerTournamentStatisticsImpl;
 import zur.koeln.kickertool.uifxml.FXMLMatchEntryController;
 import zur.koeln.kickertool.uifxml.dialog.AddPlayerDialog;
 import zur.koeln.kickertool.uifxml.service.FXMLGUI;
@@ -144,7 +144,7 @@ public class TournamentViewModel {
 
 	public void updateFXMLMatchEntryController() {
 		getMatchEntryControllerList().forEach(FXMLMatchEntryController::update);
-		getBtnCreateRoundsDisableProperty().set(!getBackendController().getCurrentTournament().isCurrentRoundComplete());
+		getBtnCreateRoundsDisableProperty().set(!getBackendController().isCurrentRoundComplete());
 		updateStatisticsTable();
 	}
 

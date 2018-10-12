@@ -5,16 +5,21 @@ package zur.koeln.kickertool.base;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
 import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.PersistenceService;
-import zur.koeln.kickertool.api.ToolState;
 import zur.koeln.kickertool.api.config.TournamentMode;
-import zur.koeln.kickertool.api.config.TournamentSetingsKeys;
+import zur.koeln.kickertool.api.config.TournamentSettingsKeys;
 import zur.koeln.kickertool.api.exceptions.MatchException;
 import zur.koeln.kickertool.api.player.Player;
 import zur.koeln.kickertool.api.player.PlayerPoolService;
@@ -22,7 +27,6 @@ import zur.koeln.kickertool.api.tournament.Match;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.api.tournament.Tournament;
-import zur.koeln.kickertool.api.ui.GUIController;
 import zur.koeln.kickertool.tournament.TournamentService;
 import zur.koeln.kickertool.tournament.settings.TournamentSettingsImpl;
 
@@ -36,9 +40,6 @@ public class BasicBackendController
 
     private final TournamentService tournamentService;
 
-    private GUIController guiController;
-
-
     public BasicBackendController(
         PlayerPoolService playerpool,
         PersistenceService persistenceService,
@@ -46,22 +47,6 @@ public class BasicBackendController
         this.playerpool = playerpool;
         this.persistenceService = persistenceService;
         this.tournamentService = tournamentService;
-    }
-
-    /**
-     * 
-     */
-    @Override
-    public void showPlayerPoolManagement() {
-        guiController.switchToolState(ToolState.PLAYER_POOL);
-    }
-
-    /**
-     * 
-     */
-    @Override
-    public void showMainMenu() {
-        guiController.switchToolState(ToolState.MAIN_MENU);
     }
 
     /**
@@ -94,7 +79,6 @@ public class BasicBackendController
     @Override
     public Tournament createNewTournament(String text) {
         Tournament newTournament = tournamentService.createNewTournament(text);
-        guiController.switchToolState(ToolState.NEW_TOURNAMENT_CONFIG);
         return newTournament;
     }
     @Override
@@ -107,7 +91,7 @@ public class BasicBackendController
      * @param newValue
      */
     @Override
-    public void changedTournamentConfig(TournamentSetingsKeys configKey, Integer newValue) {
+    public void changedTournamentConfig(TournamentSettingsKeys configKey, Integer newValue) {
         switch (configKey) {
             case TABLES :
                 ((TournamentSettingsImpl) tournamentService.getCurrentTournament().getSettings()).setTableCount(newValue.intValue());
@@ -144,25 +128,8 @@ public class BasicBackendController
      * 
      */
     @Override
-    public void showPlayerSelection() {
-        guiController.switchToolState(ToolState.PLAYER_CONFIG);
-    }
-
-    /**
-     * 
-     */
-    @Override
-    public void showTournamentConfig() {
-        guiController.switchToolState(ToolState.NEW_TOURNAMENT_CONFIG);
-    }
-
-    /**
-     * 
-     */
-    @Override
     public void startTournament() {
         tournamentService.startTournament();
-        guiController.switchToolState(ToolState.TOURNAMENT);
     }
 
 
@@ -241,10 +208,6 @@ public class BasicBackendController
         return playerpool.getPlayers();
     }
 
-
-	public void setGuiController(GUIController guiController) {
-        this.guiController = guiController;
-    }
     @Override
     public void createAndAddNewPlayerToPoolAndTournament(String playerName) {
         Player newPlayer = addPlayerToPool(playerName);
@@ -295,8 +258,6 @@ public class BasicBackendController
     @Override
     public void importAndStartTournament(String tournamentNameToImport) throws IOException {
         tournamentService.setCurrentTournament(persistenceService.importTournament(new File("tournament" + tournamentNameToImport + ".json"))); //$NON-NLS-1$ //$NON-NLS-2$
-        guiController.switchToolState(ToolState.TOURNAMENT);
-        guiController.update();
     }
 	@Override
 	public boolean isPlayerPausing(Player selectedPlayer) {
@@ -306,13 +267,6 @@ public class BasicBackendController
     @Override
     public void init() {
         playerpool.loadPlayerPool();
-    }
-
-    @Override
-    public void startTournament() {
-        if (currentTournament != null) {
-            currentTournament.startTournament();
-        }
     }
 
 }

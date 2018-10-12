@@ -28,7 +28,7 @@ import lombok.Getter;
 import zur.koeln.kickertool.api.player.Player;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
-import zur.koeln.kickertool.tournament.PlayerTournamentStatisticsImpl;
+import zur.koeln.kickertool.tournament.data.PlayerTournamentStatisticsImpl;
 import zur.koeln.kickertool.uifxml.converter.RoundConverter;
 import zur.koeln.kickertool.uifxml.converter.TimerStringConverter;
 import zur.koeln.kickertool.uifxml.vm.TournamentViewModel;
