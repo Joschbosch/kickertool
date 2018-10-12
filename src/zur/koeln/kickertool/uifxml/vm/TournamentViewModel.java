@@ -3,6 +3,7 @@ package zur.koeln.kickertool.uifxml.vm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.player.Player;
+import zur.koeln.kickertool.api.tournament.Match;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.tournament.data.PlayerTournamentStatisticsImpl;
@@ -134,20 +136,35 @@ public class TournamentViewModel {
 		return getRounds().size() - 1;
 	}
 	
-	public List<Pane> loadMatchesForRound(final Round selectedRound) {
+	public List<Pane> loadEditableMatchesForRound(final Round selectedRound) {
 		
-		getMatchEntryControllerList().clear();
+		return loadMatchesForRound(selectedRound, getBackendController().getMatchesForRound(selectedRound.getRoundNo()), true);
+	}
+	
+	public List<Pane> loadInfoMatchesForRound(final Round selectedRound) {
+		
+		List<Match> openMatches = getBackendController().getMatchesForRound(selectedRound.getRoundNo()).stream().filter(eMatch -> eMatch.getTableNo() != -1).collect(Collectors.toList());
+		
+		return loadMatchesForRound(selectedRound, openMatches, false);
+	}
+	
+	public List<Pane> loadMatchesForRound(final Round selectedRound, final List<Match> matches, boolean canEnterResult) {
+		
 		final List<Pane> matchPanes = new ArrayList<>();
 		
-		getBackendController().getMatchesForRound(selectedRound.getRoundNo()).forEach(eMatch -> {
+		matches.forEach(eMatch -> {
 			FXMLLoader fxmlLoader = getFxmlGUIService().getFXMLLoader(FXMLGUI.MATCH_ENTRY);
 			matchPanes.add(fxmlLoader.getRoot());
 			FXMLMatchEntryController matchEntryController = fxmlLoader.getController();
-			matchEntryController.init(eMatch, selectedRound);
+			matchEntryController.init(eMatch, selectedRound, canEnterResult);
 			getMatchEntryControllerList().add(matchEntryController);
 		});
 		
 		return matchPanes;
+	}
+	
+	public void onRoundChange() {
+		getMatchEntryControllerList().clear();
 	}
 
 	public void updateFXMLMatchEntryController() {

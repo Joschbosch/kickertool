@@ -16,7 +16,6 @@ import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.tournament.Match;
 import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.uifxml.dialog.ScoreDialog;
-import zur.koeln.kickertool.uifxml.service.FXMLGUI;
 import zur.koeln.kickertool.uifxml.service.FXMLGUIservice;
 
 @Component
@@ -42,7 +41,7 @@ public class MatchEntryViewModel {
 	private final BooleanProperty btnFinishMatchDisableProperty = new SimpleBooleanProperty();
 	private final BooleanProperty btnFinishMatchVisibleProperty = new SimpleBooleanProperty();
 
-	public void init(Match match, Round round) {
+	public void init(Match match, Round round, boolean canEnterResult) {
 		currentMatch = match;
 		currentRound = round;
 
@@ -51,8 +50,8 @@ public class MatchEntryViewModel {
 		getPlayer1TeamVisitNameProperty().set(getCurrentMatch().getVisitingTeam().getPlayer1().getName());
 		getPlayer2TeamVisitNameProperty().set(getCurrentMatch().getVisitingTeam().getPlayer2().getName());
 
-		getBtnFinishMatchVisibleProperty().set(!getCurrentRound().isComplete());
-
+		getBtnFinishMatchVisibleProperty().set(!getCurrentRound().isComplete() && canEnterResult);
+		
 		updateTableAndScoreTexts();
 		updateDisableState();
 	}
@@ -139,6 +138,7 @@ public class MatchEntryViewModel {
 	public void update() {
 		updateTableAndScoreTexts();
 		updateDisableState();
+		getTableNameProperty().set("OOPS");
 	}
 
 }

@@ -47,7 +47,7 @@
             <Font name="System Bold" size="96.0" />
          </font>
       </Label>
-      <ScrollPane fx:id="scrollpane" fitToWidth="true" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="4">
+      <ScrollPane fitToWidth="true" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="4">
          <content>
             <VBox fx:id="stackGames" spacing="5.0" styleClass="matchentries" />
          </content>

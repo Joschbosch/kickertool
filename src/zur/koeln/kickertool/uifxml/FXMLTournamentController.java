@@ -88,7 +88,6 @@ public class FXMLTournamentController {
 	
 	@Autowired
 	private TournamentViewModel vm;
-	
 	@Autowired
 	private FXMLTournamentInfoController fxmlTournamentInfoController;
 	
@@ -139,12 +138,16 @@ public class FXMLTournamentController {
 	}
 	
 	private void fillMatchesForRound(final Round selectedRound) {
-			
-		List<Pane> matchesForRound = getVm().loadMatchesForRound(selectedRound);
+		
+		getVm().onRoundChange();
+		List<Pane> matchesForRound = getVm().loadEditableMatchesForRound(selectedRound);
 		
 		getStackGames().getChildren().clear();
 		getStackGames().getChildren().addAll(matchesForRound);
 		
+		if (!selectedRound.isComplete()) {
+			getFxmlTournamentInfoController().fillMatchesForRound(selectedRound);
+		}
 		
 	}
 
@@ -282,7 +285,6 @@ public class FXMLTournamentController {
 	@FXML public void onBtnCreateRoundClicked() {
 		getVm().createNewRound();
 		getCmbRounds().getSelectionModel().select(getVm().getLastRoundIndex());
-		
 	}
 	
 	@FXML public void onBtnResetStopwatchClicked() {

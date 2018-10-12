@@ -21,6 +21,7 @@ import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
+import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.uifxml.converter.TimerStringConverter;
 import zur.koeln.kickertool.uifxml.vm.TournamentViewModel;
 import javafx.scene.control.ScrollPane;
@@ -61,7 +62,6 @@ public class FXMLTournamentInfoController {
 	TableColumn tblColPoints;
 	
 	private TournamentViewModel vm;
-	@FXML ScrollPane scrollpane;
 	
 	public void init(TournamentViewModel newVm) {
 
@@ -175,15 +175,12 @@ public class FXMLTournamentInfoController {
 		});
 		
 	}
-	
-	public void addMatches(List<Pane> matchesForRound) {
+
+	public void fillMatchesForRound(Round selectedRound) {
+		List<Pane> matchesForRound = getVm().loadInfoMatchesForRound(selectedRound);
+		
 		getStackGames().getChildren().clear();
 		getStackGames().getChildren().addAll(matchesForRound);
-	}
-
-	public void replaceStack(VBox stackGames2) {
-
-		getScrollpane().setContent(stackGames2);
 	}
 	
 }
