@@ -42,7 +42,7 @@ public class FXMLMatchEntryController {
     @Autowired
     private TournamentViewModel tournamentVm;
   
-	public void init(Match currentMatch, Round currentRound) {
+	public void init(Match currentMatch, Round currentRound, boolean canEnterResult) {
 
 		getLblPlayer1TeamHome().textProperty().bind(getVm().getPlayer1TeamHomeNameProperty());
 		getLblPlayer1TeamVisit().textProperty().bind(getVm().getPlayer1TeamVisitNameProperty());
@@ -53,9 +53,9 @@ public class FXMLMatchEntryController {
 		getBtnFinish().disableProperty().bind(getVm().getBtnFinishMatchDisableProperty());
 		getBtnFinish().visibleProperty().bind(getVm().getBtnFinishMatchVisibleProperty());
 		
-		registerListener();
+		getVm().init(currentMatch, currentRound, canEnterResult);
 		
-		getVm().init(currentMatch, currentRound);
+		registerListener();
 		
 	}
 	

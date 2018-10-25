@@ -1,72 +1,75 @@
 package zur.koeln.kickertool.uifxml;
 
-import java.io.IOException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.api.BackendController;
-import zur.koeln.kickertool.api.tournament.Match;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
-import zur.koeln.kickertool.uifxml.service.FXMLGUI;
-import zur.koeln.kickertool.uifxml.tools.TournamentStopWatch;
+import zur.koeln.kickertool.api.tournament.Round;
+import zur.koeln.kickertool.uifxml.converter.TimerStringConverter;
+import zur.koeln.kickertool.uifxml.vm.TournamentViewModel;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component
 public class FXMLTournamentInfoController {
 	
-	@Autowired
-    private BackendController backendController;
-    @Autowired
-    private ConfigurableApplicationContext ctx;
-	
 	@FXML
 	private VBox stackGames;
-	@FXML RowConstraints gridInfo;
-	@FXML Label lblClock;
+	@FXML 
+	RowConstraints gridInfo;
+	@FXML 
+	Label lblClock;
+	@FXML 
+	GridPane gridPane;
+	@FXML 
+	TableView tblStatistics;
+	@FXML 
+	TableColumn tblColNumber;
+	@FXML 
+	TableColumn tblColPlayerName;
+	@FXML 
+	TableColumn tblColPlayedMatched;
+	@FXML 
+	TableColumn tblColMatchesWon;
+	@FXML 
+	TableColumn tblColMatchesLost;
+	@FXML 
+	TableColumn tblColMatchesRemis;
+	@FXML 
+	TableColumn tblColGoals;
+	@FXML 
+	TableColumn tblColGoalsEnemies;
+	@FXML 
+	TableColumn tblColGoalsDifference;
+	@FXML 
+	TableColumn tblColPoints;
 	
-	private TournamentStopWatch timer;
-	private ObservableList<PlayerTournamentStatistics> statistics;
-	@FXML GridPane gridPane;
-	@FXML TableView tblStatistics;
-	@FXML TableColumn tblColNumber;
-	@FXML TableColumn tblColPlayerName;
-	@FXML TableColumn tblColPlayedMatched;
-	@FXML TableColumn tblColMatchesWon;
-	@FXML TableColumn tblColMatchesLost;
-	@FXML TableColumn tblColMatchesRemis;
-	@FXML TableColumn tblColGoals;
-	@FXML TableColumn tblColGoalsEnemies;
-	@FXML TableColumn tblColGoalsDifference;
-	@FXML TableColumn tblColPoints;
+	private TournamentViewModel vm;
 	
-	public void init(TournamentStopWatch refTimer, ObservableList<PlayerTournamentStatistics> refStatistics) {
+	public void init(TournamentViewModel newVm) {
+
+		vm = newVm;
 		
-		timer = refTimer;
-		statistics = refStatistics;
-		
-		getTblStatistics().setItems(getStatistics());
-		//getLblClock().textProperty().bindBidirectional(getTimer().getTimeSeconds(), new TimerStringConverter());
+		getLblClock().textProperty().bindBidirectional(getVm().getTimePropertyFromStopWatch(), new TimerStringConverter());
+		getTblStatistics().setItems(getVm().getStatistics());
+
 		setupColumns();
+		
 	}
 	
 	private void setupColumns() {
@@ -92,9 +95,6 @@ public class FXMLTournamentInfoController {
             public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
 				
 				String playerName = param.getValue().getPlayer().getName();
-				if (backendController.isPlayerPausing(param.getValue().getPlayer())) {
-					playerName += " (Pausing)";
-				}
 				
 				return new SimpleStringProperty(playerName);
 			}
@@ -168,36 +168,17 @@ public class FXMLTournamentInfoController {
 			@Override
             public ObservableValue<String> call(CellDataFeatures<PlayerTournamentStatistics, String> param) {
 				
-				return new SimpleStringProperty(String.valueOf(param.getValue().getPointsForConfiguration(getBackendController().getCurrentTournament().getSettings())));
+				return new SimpleStringProperty(String.valueOf("0"));
 			}
 		});
 		
 	}
-	
-	public void updateMatches(List<Match> matches) {
 
+	public void fillMatchesForRound(Round selectedRound) {
+		List<Pane> matchesForRound = getVm().loadInfoMatchesForRound(selectedRound);
+		
 		getStackGames().getChildren().clear();
-		
-		matches.forEach(eMatch -> {
-			try {
-				FXMLLoader matchEntryLoader = getFXMLLoader(FXMLGUI.MATCH_ENTRY);
-				Parent pane = matchEntryLoader.load();
-				FXMLMatchEntryController matchEntryController = matchEntryLoader.getController();
-//				matchEntryController.setMatch(eMatch);
-//				matchEntryController.hideBtnFinish();
-				getStackGames().getChildren().add(pane);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		});
-		
-	}
-
-	private FXMLLoader getFXMLLoader(FXMLGUI gui) {
-		
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(gui.getFxmlFile()));
-		loader.setControllerFactory(getCtx()::getBean);
-		return loader;
+		getStackGames().getChildren().addAll(matchesForRound);
 	}
 	
 }

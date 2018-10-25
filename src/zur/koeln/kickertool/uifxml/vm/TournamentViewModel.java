@@ -3,6 +3,7 @@ package zur.koeln.kickertool.uifxml.vm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,10 +17,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.player.Player;
+import zur.koeln.kickertool.api.tournament.Match;
 import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.tournament.data.PlayerTournamentStatisticsImpl;
 import zur.koeln.kickertool.uifxml.FXMLMatchEntryController;
+import zur.koeln.kickertool.uifxml.FXMLTournamentInfoController;
 import zur.koeln.kickertool.uifxml.dialog.AddPlayerDialog;
 import zur.koeln.kickertool.uifxml.service.FXMLGUI;
 import zur.koeln.kickertool.uifxml.service.FXMLGUIservice;
@@ -34,6 +37,8 @@ public class TournamentViewModel {
 	private BackendController backendController;
 	@Autowired
 	private FXMLGUIservice fxmlGUIService;
+	@Autowired
+	private FXMLTournamentInfoController fxmlTournamentInfoController;
 	
 	private final List<FXMLMatchEntryController> matchEntryControllerList = new ArrayList<>();
 	private final ObservableList<Round> rounds = FXCollections.observableArrayList();
@@ -64,6 +69,11 @@ public class TournamentViewModel {
 	private FXMLGUIservice getFxmlGUIService() {
 		return fxmlGUIService;
 	}
+	
+	private FXMLTournamentInfoController getFxmlTournamentInfoController() {
+		return fxmlTournamentInfoController;
+	}
+
 	public ObservableList<Round> getRounds() {
 		return rounds;
 	}
@@ -126,20 +136,35 @@ public class TournamentViewModel {
 		return getRounds().size() - 1;
 	}
 	
-	public List<Pane> loadMatchesForRound(final Round selectedRound) {
+	public List<Pane> loadEditableMatchesForRound(final Round selectedRound) {
 		
-		getMatchEntryControllerList().clear();
+		return loadMatchesForRound(selectedRound, getBackendController().getMatchesForRound(selectedRound.getRoundNo()), true);
+	}
+	
+	public List<Pane> loadInfoMatchesForRound(final Round selectedRound) {
+		
+		List<Match> openMatches = getBackendController().getMatchesForRound(selectedRound.getRoundNo()).stream().filter(eMatch -> eMatch.getTableNo() != -1).collect(Collectors.toList());
+		
+		return loadMatchesForRound(selectedRound, openMatches, false);
+	}
+	
+	public List<Pane> loadMatchesForRound(final Round selectedRound, final List<Match> matches, boolean canEnterResult) {
+		
 		final List<Pane> matchPanes = new ArrayList<>();
 		
-		getBackendController().getMatchesForRound(selectedRound.getRoundNo()).forEach(eMatch -> {
+		matches.forEach(eMatch -> {
 			FXMLLoader fxmlLoader = getFxmlGUIService().getFXMLLoader(FXMLGUI.MATCH_ENTRY);
 			matchPanes.add(fxmlLoader.getRoot());
 			FXMLMatchEntryController matchEntryController = fxmlLoader.getController();
-			matchEntryController.init(eMatch, selectedRound);
+			matchEntryController.init(eMatch, selectedRound, canEnterResult);
 			getMatchEntryControllerList().add(matchEntryController);
 		});
 		
 		return matchPanes;
+	}
+	
+	public void onRoundChange() {
+		getMatchEntryControllerList().clear();
 	}
 
 	public void updateFXMLMatchEntryController() {
@@ -176,5 +201,10 @@ public class TournamentViewModel {
 	public void enableDisablePauseResumePlayer(PlayerTournamentStatisticsImpl playerTournamentStatisticsImpl) {
 		getBtnPausePlayerDisableProperty().set(playerTournamentStatisticsImpl == null || playerTournamentStatisticsImpl.isPlayerPausing());
 		getBtnResumePlayerDisableProperty().set(playerTournamentStatisticsImpl == null || !playerTournamentStatisticsImpl.isPlayerPausing());
+	}
+
+	public void showTournamentInfoGUI() {
+		getFxmlGUIService().openAnotherStage(FXMLGUI.TOURMANENT_INFO);
+		getFxmlTournamentInfoController().init(this);
 	}
 }
