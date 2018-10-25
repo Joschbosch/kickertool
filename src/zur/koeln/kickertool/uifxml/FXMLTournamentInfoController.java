@@ -2,7 +2,6 @@ package zur.koeln.kickertool.uifxml;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -24,7 +23,6 @@ import zur.koeln.kickertool.api.tournament.PlayerTournamentStatistics;
 import zur.koeln.kickertool.api.tournament.Round;
 import zur.koeln.kickertool.uifxml.converter.TimerStringConverter;
 import zur.koeln.kickertool.uifxml.vm.TournamentViewModel;
-import javafx.scene.control.ScrollPane;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component
