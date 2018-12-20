@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import zur.koeln.kickertool.api.tournament.Tournament;
+import zur.koeln.kickertool.core.entities.Tournament;
 
 public interface PersistenceService {
 

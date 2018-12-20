@@ -6,7 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
-import zur.koeln.kickertool.api.tournament.Team;
+import zur.koeln.kickertool.core.entities.Team;
 import zur.koeln.kickertool.uifxml.FXMLGUI;
 import zur.koeln.kickertool.uifxml.FXMLGUIController;
 import zur.koeln.kickertool.uifxml.FXMLMatchResultDialogController;

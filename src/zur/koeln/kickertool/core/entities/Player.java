@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.api.player;
+package zur.koeln.kickertool.core.entities;
 
 import java.util.UUID;
 

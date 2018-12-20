@@ -16,15 +16,15 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.api.BackendController;
-import zur.koeln.kickertool.api.player.Player;
+import zur.koeln.kickertool.base.BasicBackendController;
+import zur.koeln.kickertool.core.entities.Player;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component
 public class FXMLPlayerPoolManagementController implements UpdateableUIComponent {
 
     @Autowired
-    private BackendController backendController;
+    private BasicBackendController backendController;
 	@FXML
 	private TableView<Player> tblPlayers;
 	@FXML

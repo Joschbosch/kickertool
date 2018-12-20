@@ -5,24 +5,24 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javafx.collections.FXCollections;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.api.BackendController;
-import javafx.scene.control.ComboBox;
+import zur.koeln.kickertool.base.BasicBackendController;
 
 @Getter(value = AccessLevel.PRIVATE)
 @Component
 public class FXMLMainMenuController implements UpdateableUIComponent {
 
 	@Autowired
-	private BackendController backendController;
+    private BasicBackendController backendController;
 	@FXML
 	private Button btnCreateNewTournament;
 	@FXML

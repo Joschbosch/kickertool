@@ -11,17 +11,17 @@ import javafx.scene.control.TextFormatter;
 import javafx.util.converter.IntegerStringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.api.BackendController;
-import zur.koeln.kickertool.api.config.TournamentSetingsKeys;
-import zur.koeln.kickertool.api.tournament.Tournament;
-import zur.koeln.kickertool.api.tournament.TournamentSettings;
+import zur.koeln.kickertool.base.BasicBackendController;
+import zur.koeln.kickertool.core.entities.Settings;
+import zur.koeln.kickertool.core.entities.Tournament;
+import zur.koeln.kickertool.core.entities.TournamentSetingsKeys;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
 public class FXMLTournamentConfigurationController implements UpdateableUIComponent {
 
     @Autowired
-    private BackendController backendController;
+    private BasicBackendController backendController;
     
 	@FXML
 	private Label lblTournament;
@@ -44,7 +44,7 @@ public class FXMLTournamentConfigurationController implements UpdateableUICompon
 	@FXML
 	private TextField txtRandomRoundsAtStart;
 	
-	private TournamentSettings config;
+    private Settings config;
 	
 	@FXML 
 	public void initialize() {

@@ -15,9 +15,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import zur.koeln.kickertool.api.BackendController;
 import zur.koeln.kickertool.api.ToolState;
-import zur.koeln.kickertool.api.exceptions.MatchException;
+import zur.koeln.kickertool.base.BasicBackendController;
+import zur.koeln.kickertool.core.logic.MatchException;
 import zur.koeln.kickertool.uifxml.FXMLGUIController;
 
 @SpringBootApplication
@@ -54,7 +54,7 @@ public class Main extends Application {
         loader.setControllerFactory(ctx::getBean);
         Parent mainMenu = loader.load();
     	FXMLGUIController fxmlGuiController = new FXMLGUIController(primaryStage, ToolState.MAIN_MENU);
-        BackendController controller = ctx.getBean(BackendController.class);
+        BasicBackendController controller = ctx.getBean(BasicBackendController.class);
         controller.setGuiController(fxmlGuiController);
         fxmlGuiController.init(ctx, mainMenu, 450, 450);
     }

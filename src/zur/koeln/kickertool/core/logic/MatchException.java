@@ -1,7 +1,7 @@
 /**
  * 
  */
-package zur.koeln.kickertool.api.exceptions;
+package zur.koeln.kickertool.core.logic;
 
 @SuppressWarnings("serial")
 public class MatchException extends Exception {

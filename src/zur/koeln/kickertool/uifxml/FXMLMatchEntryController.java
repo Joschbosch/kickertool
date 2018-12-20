@@ -11,8 +11,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.util.Pair;
-import zur.koeln.kickertool.api.BackendController;
-import zur.koeln.kickertool.api.tournament.Match;
+import zur.koeln.kickertool.base.BasicBackendController;
+import zur.koeln.kickertool.core.entities.Match;
 import zur.koeln.kickertool.uifxml.dialog.ScoreDialog;
 
 @Component
@@ -27,7 +27,7 @@ public class FXMLMatchEntryController implements UpdateableUIComponent{
 	Button btnFinish;
 	
 	@Autowired
-    private BackendController backendController;
+    private BasicBackendController backendController;
 	@Autowired
 	private FXMLTournamentController tournamentController;
 	

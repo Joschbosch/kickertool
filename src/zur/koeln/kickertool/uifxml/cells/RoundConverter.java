@@ -1,7 +1,7 @@
 package zur.koeln.kickertool.uifxml.cells;
 
 import javafx.util.StringConverter;
-import zur.koeln.kickertool.api.tournament.Round;
+import zur.koeln.kickertool.core.entities.Round;
 
 public class RoundConverter extends StringConverter<Round>{
 

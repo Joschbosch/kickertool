@@ -1,11 +1,7 @@
-package zur.koeln.kickertool.base;
+package zur.koeln.kickertool.core.entities;
 
 import java.io.Serializable;
 import java.util.UUID;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import zur.koeln.kickertool.api.player.Player;
 
 public class HumanPlayer
     implements Serializable, Player {

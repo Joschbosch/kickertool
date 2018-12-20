@@ -12,14 +12,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import zur.koeln.kickertool.api.BackendController;
-import zur.koeln.kickertool.api.player.Player;
+import zur.koeln.kickertool.base.BasicBackendController;
+import zur.koeln.kickertool.core.entities.Player;
 
 @Component
 public class FXMLAddPlayerDialogController {
 	
     @Autowired
-    private BackendController backendController;
+    private BasicBackendController backendController;
 	@FXML
 	private TableView tblPlayers;
 	@FXML
@@ -54,7 +54,7 @@ public class FXMLAddPlayerDialogController {
 		return getBackendController().getPlayerListNotInTournament();
 	}
 
-	private BackendController getBackendController() {
+    private BasicBackendController getBackendController() {
 		return backendController;
 	}
 
