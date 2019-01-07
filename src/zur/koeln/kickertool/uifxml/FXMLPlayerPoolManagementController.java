@@ -5,27 +5,26 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.api.player.Player;
-import zur.koeln.kickertool.uifxml.service.FXMLGUI;
-import zur.koeln.kickertool.uifxml.service.FXMLGUIservice;
-import zur.koeln.kickertool.uifxml.vm.PlayerPoolManagementViewModel;
+import zur.koeln.kickertool.base.BasicBackendController;
+import zur.koeln.kickertool.core.entities.Player;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Component
-public class FXMLPlayerPoolManagementController {
+public class FXMLPlayerPoolManagementController implements UpdateableUIComponent {
 
+    @Autowired
+    private BasicBackendController backendController;
 	@FXML
 	private TableView<Player> tblPlayers;
 	@FXML
@@ -37,54 +36,73 @@ public class FXMLPlayerPoolManagementController {
 	@FXML
 	private Button btnBack;
 	
-	@Autowired
-	private PlayerPoolManagementViewModel vm;
-	@Autowired
-	private FXMLGUIservice guiService;
-	
+	private final ObservableList<Player> playerData = FXCollections.observableArrayList();
+
 	@FXML
 	public void initialize() {
+		
+		getPlayerData().clear();
 		
 		getTblColName().setCellValueFactory(new PropertyValueFactory<>("name")); //$NON-NLS-1$
 		getTblColName().setCellFactory(TextFieldTableCell.<Player>forTableColumn());
 		
-		getTblPlayers().setItems(getVm().getPlayers());
+		getPlayerData().addAll(loadPlayerData());
+		
+		getTblPlayers().setItems(getPlayerData());
 		getTblPlayers().getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		
-		getBtnAddPlayer().disableProperty().bind(getVm().getTxtPlayerNameProperty().isEmpty());
-		getTxtPlayerName().textProperty().bindBidirectional(getVm().getTxtPlayerNameProperty());
+		getBtnAddPlayer().disableProperty().bind(Bindings.greaterThan(1, getTxtPlayerName().textProperty().length()));
 		
-		getVm().loadPlayers();
 	}
 	
+	private List<Player> loadPlayerData() {
+		
+        return getBackendController().getPlayer();
+	}
+	
+	// Event Listener on Button[#btnAddPlayer].onAction
 	@FXML
 	public void onBtnAddPlayerClicked(ActionEvent event) {
-		getVm().createNewPlayer();
+		
+        Player newPlayer = backendController.addPlayerToPool(getTxtPlayerName().getText());
+        if (newPlayer != null) {
+            getPlayerData().add(newPlayer);
+        }
+		getTxtPlayerName().clear();
 		getTxtPlayerName().requestFocus();
+
+		
 	}
-	
+	// Event Listener on Button[#btnBack].onAction
 	@FXML
 	public void onBackClicked(ActionEvent event) {
-		getGuiService().switchToScene(FXMLGUI.MAIN_MENU);
+        backendController.showMainMenu();
 	}
 	
 	@FXML
 	public void onPlayerDeleteClicked(ActionEvent event) {
-		getVm().deletePlayer(getTblPlayers().getSelectionModel().getSelectedItems());
+		
+		List<Player> selectedPlayers = getTblPlayers().getSelectionModel().getSelectedItems();
+        selectedPlayers.forEach(ePlayer -> backendController.removePlayerFromPool(ePlayer));
+		getPlayerData().removeAll(selectedPlayers);
+		
 	}
 
 	@FXML 
 	public void onPlayerNameChanged(CellEditEvent<Player, String> event) {
-		getVm().changePlayerName(event.getNewValue(), getTblPlayers().getSelectionModel().getSelectedItem());
+			
+		String newName = event.getNewValue();
+		
+        if (!newName.isEmpty()) {
+        	Player selectedPlayer = getTblPlayers().getSelectionModel().getSelectedItem();
+            backendController.changePlayerName(newName, selectedPlayer);
+        }
+		
+	}
+	
+	@Override
+	public void update() {
+		//
 	}
 
-	public List<Player> getSelectedPlayer() {
-		
-		return getTblPlayers().getSelectionModel().getSelectedItems();
-	}
-	
-	public void loadPlayersNotInTournament() {
-		getVm().loadPlayersNotInTournament();
-	}
-	
 }

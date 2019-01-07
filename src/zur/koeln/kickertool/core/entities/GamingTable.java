@@ -1,7 +1,7 @@
 /**
  * 
  */
-package zur.koeln.kickertool.tournament.data;
+package zur.koeln.kickertool.core.entities;
 
 public class GamingTable {
 

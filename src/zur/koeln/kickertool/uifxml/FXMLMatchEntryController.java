@@ -1,81 +1,88 @@
 package zur.koeln.kickertool.uifxml;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import lombok.AccessLevel;
-import lombok.Getter;
-import zur.koeln.kickertool.api.tournament.Match;
-import zur.koeln.kickertool.api.tournament.Round;
-import zur.koeln.kickertool.uifxml.vm.MatchEntryViewModel;
-import zur.koeln.kickertool.uifxml.vm.TournamentViewModel;
+import javafx.util.Pair;
+import zur.koeln.kickertool.base.BasicBackendController;
+import zur.koeln.kickertool.core.entities.Match;
+import zur.koeln.kickertool.uifxml.dialog.ScoreDialog;
 
-@Getter(value=AccessLevel.PRIVATE)
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class FXMLMatchEntryController {
+public class FXMLMatchEntryController implements UpdateableUIComponent{
 
 	@FXML
 	private Label lblScore;
 	@FXML
 	private Label lblTable;
 	@FXML 
-	private Button btnFinish;
-	@FXML 
-	private Label lblPlayer1TeamHome;
-	@FXML 
-	private Label lblPlayer1TeamVisit;
-	@FXML 
-	private Label lblPlayer2TeamHome;
-	@FXML 
-	private Label lblPlayer2TeamVisit;
+	Button btnFinish;
 	
-    @Autowired
-    private MatchEntryViewModel vm;
-    
-    @Autowired
-    private TournamentViewModel tournamentVm;
-  
-	public void init(Match currentMatch, Round currentRound, boolean canEnterResult) {
+	@Autowired
+    private BasicBackendController backendController;
+	@Autowired
+	private FXMLTournamentController tournamentController;
+	
+    private Match match;
+	
+	@FXML Label lblPlayer1TeamHome;
+	@FXML Label lblPlayer1TeamVisit;
+	@FXML Label lblPlayer2TeamHome;
+	@FXML Label lblPlayer2TeamVisit;
+	
+    public void setMatch(Match currentMatch) {
+		match = currentMatch;
+		init();
+	}
 
-		getLblPlayer1TeamHome().textProperty().bind(getVm().getPlayer1TeamHomeNameProperty());
-		getLblPlayer1TeamVisit().textProperty().bind(getVm().getPlayer1TeamVisitNameProperty());
-		getLblPlayer2TeamHome().textProperty().bind(getVm().getPlayer2TeamHomeNameProperty());
-		getLblPlayer2TeamVisit().textProperty().bind(getVm().getPlayer2TeamVisitNameProperty());
-		getLblScore().textProperty().bind(getVm().getScoreProperty());
-		getLblTable().textProperty().bind(getVm().getTableNameProperty());
-		getBtnFinish().disableProperty().bind(getVm().getBtnFinishMatchDisableProperty());
-		getBtnFinish().visibleProperty().bind(getVm().getBtnFinishMatchVisibleProperty());
+	private void init() {
+
+		setPlayerTeamTexts();
+		lblTable.setText(match.getTableNo() == -1 ? "TBA" : String.valueOf(match.getTableNo()));
+
+		if (match.getResult() != null) {
+			
+			lblScore.setText(match.getScoreHome() + ":" + match.getScoreVisiting());
+		} else {
+            lblScore.setText("-:-");
+		}
 		
-		getVm().init(currentMatch, currentRound, canEnterResult);
-		
-		registerListener();
-		
+        btnFinish.setDisable(match.getTableNo() == -1 || match.getRoundNumber().intValue() != backendController.getCurrentTournament().getCurrentRound().getRoundNo());
 	}
 	
-	private void registerListener() {
-		
-		getVm().getScoreProperty().addListener((ChangeListener<String>) (observable, oldValue, newValue) -> {
-			getTournamentVm().updateFXMLMatchEntryController();
-		});
-		
+	public void hideBtnFinish() {
+		btnFinish.setVisible(false);
 	}
 	
-	@FXML 
-	public void onBtnFinishClicked() {
+	private void setPlayerTeamTexts() { 
+		lblPlayer1TeamHome.setText(match.getHomeTeam().getPlayer1().getName());
+		lblPlayer2TeamHome.setText(match.getHomeTeam().getPlayer2().getName());
 		
-		getVm().openScoreEntryDialog();
-		
+		lblPlayer1TeamVisit.setText(match.getVisitingTeam().getPlayer1().getName());
+		lblPlayer2TeamVisit.setText(match.getVisitingTeam().getPlayer2().getName());
 	}
-	
+
+	@FXML public void onBtnFinishClicked() {
+		
+        ScoreDialog<Pair<Integer, Integer>> dialog = new ScoreDialog(match.getHomeTeam(), match.getVisitingTeam(), backendController.getCurrentTournament().getSettings().getGoalsToWin());
+		Optional<Pair<Integer, Integer>> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            backendController.updateMatchResult(match, result.get().getKey(), result.get().getValue());
+    		lblScore.setText(result.get().getKey() + ":" + result.get().getValue());
+    		tournamentController.update();
+        }
+	}
+
+	@Override
 	public void update() {
-		getVm().update();
+		lblTable.setText(match.getTableNo() == -1 ? "TBA" : String.valueOf(match.getTableNo()));
 	}
-
 }

@@ -11,15 +11,18 @@ import javafx.scene.control.TextFormatter;
 import javafx.util.converter.IntegerStringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.api.config.TournamentSettingsKeys;
-import zur.koeln.kickertool.uifxml.service.FXMLGUI;
-import zur.koeln.kickertool.uifxml.service.FXMLGUIservice;
-import zur.koeln.kickertool.uifxml.vm.TournamentConfigurationViewModel;
+import zur.koeln.kickertool.base.BasicBackendController;
+import zur.koeln.kickertool.core.entities.Settings;
+import zur.koeln.kickertool.core.entities.Tournament;
+import zur.koeln.kickertool.core.entities.TournamentSetingsKeys;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLTournamentConfigurationController {
+public class FXMLTournamentConfigurationController implements UpdateableUIComponent {
 
+    @Autowired
+    private BasicBackendController backendController;
+    
 	@FXML
 	private Label lblTournament;
 	@FXML
@@ -28,8 +31,8 @@ public class FXMLTournamentConfigurationController {
 	private Button btnNext;
 	@FXML
 	private TextField txtNumberOfTables;
-    @FXML
-    private TextField txtMatchesToWin;
+    //	@FXML
+    //	private TextField txtMatchesToWin;
 	@FXML
 	private TextField txtGoalsToWin;
 	@FXML
@@ -41,59 +44,82 @@ public class FXMLTournamentConfigurationController {
 	@FXML
 	private TextField txtRandomRoundsAtStart;
 	
-	@Autowired
-	private TournamentConfigurationViewModel vm;
-	@Autowired
-	private FXMLGUIservice guiService;
+    private Settings config;
 	
 	@FXML 
 	public void initialize() {
 		
-		getVm().loadTournamentSettings();
+        Tournament currentTournament = backendController.getCurrentTournament();
+		config = currentTournament.getSettings();
 		
-		getLblTournament().textProperty().bind(getVm().getLblTournamentNameProperty());
 		
-		getTxtNumberOfTables().promptTextProperty().bind(getVm().getStringPromptProperty(TournamentSettingsKeys.TABLES));
-		getTxtGoalsToWin().promptTextProperty().bind(getVm().getStringPromptProperty(TournamentSettingsKeys.GOALS_FOR_WIN));
-		getTxtMatchesToWin().promptTextProperty().bind(getVm().getStringPromptProperty(TournamentSettingsKeys.MATCHES_TO_WIN));
-		getTxtPointsToWin().promptTextProperty().bind(getVm().getStringPromptProperty(TournamentSettingsKeys.POINTS_FOR_WINNER));
-		getTxtPointsForDraw().promptTextProperty().bind(getVm().getStringPromptProperty(TournamentSettingsKeys.POINTS_FOR_DRAW));
-		getTxtMinutesPerMatch().promptTextProperty().bind(getVm().getStringPromptProperty(TournamentSettingsKeys.MINUTES_PER_MATCH));
-		getTxtRandomRoundsAtStart().promptTextProperty().bind(getVm().getStringPromptProperty(TournamentSettingsKeys.RANDOM_ROUNDS));
+        getLblTournament().setText(backendController.getCurrentTournament().getName());
 		
-		getTxtNumberOfTables().textProperty().bindBidirectional(getVm().getStringProperty(TournamentSettingsKeys.TABLES));
-		getTxtGoalsToWin().textProperty().bindBidirectional(getVm().getStringProperty(TournamentSettingsKeys.GOALS_FOR_WIN));
-		getTxtMatchesToWin().textProperty().bindBidirectional(getVm().getStringProperty(TournamentSettingsKeys.MATCHES_TO_WIN));
-		getTxtPointsToWin().textProperty().bindBidirectional(getVm().getStringProperty(TournamentSettingsKeys.POINTS_FOR_WINNER));
-		getTxtPointsForDraw().textProperty().bindBidirectional(getVm().getStringProperty(TournamentSettingsKeys.POINTS_FOR_DRAW));
-		getTxtMinutesPerMatch().textProperty().bindBidirectional(getVm().getStringProperty(TournamentSettingsKeys.MINUTES_PER_MATCH));
-		getTxtRandomRoundsAtStart().textProperty().bindBidirectional(getVm().getStringProperty(TournamentSettingsKeys.RANDOM_ROUNDS));
-		
-		setTextFormatter();
-	}
-	
-	private void setTextFormatter() {
 		getTxtGoalsToWin().setTextFormatter(createIntegerTextFormatter());
 		getTxtNumberOfTables().setTextFormatter(createIntegerTextFormatter());
-        getTxtMatchesToWin().setTextFormatter(createIntegerTextFormatter());
+        //		getTxtMatchesToWin().setTextFormatter(createIntegerTextFormatter());
 		getTxtPointsToWin().setTextFormatter(createIntegerTextFormatter());
 		getTxtPointsForDraw().setTextFormatter(createIntegerTextFormatter());
 		getTxtMinutesPerMatch().setTextFormatter(createIntegerTextFormatter());
 		getTxtRandomRoundsAtStart().setTextFormatter(createIntegerTextFormatter());
+		
+		
+		setDefaultValues();
 	}
 	
 	private TextFormatter<Integer> createIntegerTextFormatter() {
 		return new TextFormatter<>(new IntegerStringConverter());
 	}
 	
+	private void setDefaultValues() {
+		
+		getTxtGoalsToWin().setPromptText(String.valueOf(getConfig().getGoalsToWin()));
+		getTxtNumberOfTables().setPromptText(String.valueOf(getConfig().getTableCount()));
+        //		getTxtMatchesToWin().setPromptText(String.valueOf(getConfig().getMatchesToWin()));
+		getTxtPointsToWin().setPromptText(String.valueOf(getConfig().getPointsForWinner()));
+		getTxtPointsForDraw().setPromptText(String.valueOf(getConfig().getPointsForDraw()));
+		getTxtMinutesPerMatch().setPromptText(String.valueOf(getConfig().getMinutesPerMatch()));
+		getTxtRandomRoundsAtStart().setPromptText(String.valueOf(getConfig().getRandomRounds()));
+		
+	}
+	
 	@FXML 
 	public void onBtnBackClicked() {
-		getGuiService().switchToScene(FXMLGUI.MAIN_MENU);
+        backendController.showMainMenu();
 	}
 	
 	@FXML 
 	public void onBtnNextClicked() {
-		getVm().updateTournamentSettings();
-		getGuiService().switchToScene(FXMLGUI.PLAYER_SELECTION);
+		updateTournamentSettings();
+        backendController.showPlayerSelection();
 	}
+	
+	private void updateTournamentSettings() {
+		
+		getBackendController().changedTournamentConfig(TournamentSetingsKeys.GOALS_FOR_WIN, getValue(getTxtGoalsToWin()));
+		getBackendController().changedTournamentConfig(TournamentSetingsKeys.TABLES, getValue(getTxtNumberOfTables()));
+        //		getBackendController().changedTournamentConfig(TournamentSetingsKeys.MATCHES_TO_WIN, getValue(getTxtMatchesToWin()));
+		getBackendController().changedTournamentConfig(TournamentSetingsKeys.POINTS_FOR_WINNER, getValue(getTxtPointsToWin()));
+		getBackendController().changedTournamentConfig(TournamentSetingsKeys.POINTS_FOR_DRAW, getValue(getTxtPointsForDraw()));
+		getBackendController().changedTournamentConfig(TournamentSetingsKeys.MINUTES_PER_MATCH, getValue(getTxtMinutesPerMatch()));
+		getBackendController().changedTournamentConfig(TournamentSetingsKeys.RANDOM_ROUNDS, getValue(getTxtRandomRoundsAtStart()));
+
+	}
+	
+	private Integer getValue(TextField textfield) {
+		
+		if (!textfield.getText().isEmpty()) {
+			return Integer.valueOf(textfield.getText());
+		}
+		
+		return Integer.valueOf(textfield.getPromptText());
+		
+	}
+	
+	@Override
+	public void update() {
+		//
+	}
+	
+
 }

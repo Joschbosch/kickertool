@@ -8,14 +8,17 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import zur.koeln.kickertool.api.BackendController;
-import zur.koeln.kickertool.api.exceptions.MatchException;
-import zur.koeln.kickertool.uifxml.service.FXMLGUIservice;
+import zur.koeln.kickertool.api.ToolState;
+import zur.koeln.kickertool.base.BasicBackendController;
+import zur.koeln.kickertool.core.logic.MatchException;
+import zur.koeln.kickertool.uifxml.FXMLGUIController;
 
 @SpringBootApplication
 public class Main extends Application {
@@ -30,9 +33,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-    	
-    	ctx.getBean(BackendController.class).init();
-    	
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
             @Override
@@ -49,8 +49,13 @@ public class Main extends Application {
     }
     
     private void startWithGUIFXML(Stage primaryStage) throws IOException {
-    	FXMLGUIservice fxmlGuiService = ctx.getBean(FXMLGUIservice.class); 
-    	fxmlGuiService.init(primaryStage, ctx);
-    	fxmlGuiService.showMainMenu();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("uifxml/MainMenu.fxml"));
+        loader.setControllerFactory(ctx::getBean);
+        Parent mainMenu = loader.load();
+    	FXMLGUIController fxmlGuiController = new FXMLGUIController(primaryStage, ToolState.MAIN_MENU);
+        BasicBackendController controller = ctx.getBean(BasicBackendController.class);
+        controller.setGuiController(fxmlGuiController);
+        fxmlGuiController.init(ctx, mainMenu, 450, 450);
     }
 }

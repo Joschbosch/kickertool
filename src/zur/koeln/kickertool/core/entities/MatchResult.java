@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.api.tournament;
+package zur.koeln.kickertool.core.entities;
 
 
 public enum MatchResult {

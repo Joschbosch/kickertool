@@ -1,17 +1,13 @@
 /**
  * 
  */
-package zur.koeln.kickertool.tournament.data;
+package zur.koeln.kickertool.core.entities;
 
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import zur.koeln.kickertool.api.player.Player;
-import zur.koeln.kickertool.api.tournament.Team;
-
-public class TournamentTeam
-    implements Team {
+public class Team {
 
     private UUID player1Id;
     private UUID player2Id;
@@ -21,11 +17,11 @@ public class TournamentTeam
     @JsonIgnore
     private Player player2;
 
-    public TournamentTeam() {
+    public Team() {
 
     }
 
-    public TournamentTeam(
+    public Team(
         Player p1,
         Player p2) {
         this.setPlayer1Id(p1.getUid());
