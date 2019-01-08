@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.uifxml.converter;
+package zur.koeln.kickertool.uifxml.tools;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

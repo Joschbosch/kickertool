@@ -1,5 +1,6 @@
 package zur.koeln.kickertool.api;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -11,6 +12,6 @@ public interface PersistenceService {
 
     List<String> createTournamentsListForImport();
 
-    Tournament importTournament(String tournamentNameToImport) throws IOException;
+    Tournament importTournament(File tournamentToImport) throws IOException;
 
 }

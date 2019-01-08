@@ -18,8 +18,8 @@
       <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" />
       <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="150.0" />
    </columnConstraints>
-    <rowConstraints>
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" vgrow="NEVER" />
       <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="30.0" />
       <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" />
       <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" />
@@ -42,32 +42,27 @@
             <Insets right="25.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Spiele für Sieg" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+      <Label text="Tore zum Gewinnen" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets right="25.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Tore für Sieg" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+      <Label text="Punkte bei Sieg" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets right="25.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Punkte bei Sieg" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+      <Label text="Punkte bei Unentschieden" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets right="25.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Punkte beim Unentschieden" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+      <Label text="Minuten pro Match" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
          <GridPane.margin>
             <Insets right="25.0" />
          </GridPane.margin>
       </Label>
-      <Label text="Minuten pro Match" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
-         <GridPane.margin>
-            <Insets right="25.0" />
-         </GridPane.margin>
-      </Label>
-      <Label text="Zufallsrunden zu Beginn" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+      <Label text="Zufallsrunden zu Beginn" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
          <GridPane.margin>
             <Insets right="25.0" />
          </GridPane.margin>
@@ -95,37 +90,32 @@
             <Insets left="25.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtMatchesToWin" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+      <TextField fx:id="txtGoalsToWin" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtGoalsToWin" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+      <TextField fx:id="txtPointsToWin" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtPointsToWin" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="5">
+      <TextField fx:id="txtPointsForDraw" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtPointsForDraw" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="6">
+      <TextField fx:id="txtMinutesPerMatch" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="6">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtMinutesPerMatch" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="7">
+      <TextField fx:id="txtRandomRoundsAtStart" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="7">
          <GridPane.margin>
             <Insets left="25.0" />
          </GridPane.margin>
       </TextField>
-      <TextField fx:id="txtRandomRoundsAtStart" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="8">
-         <GridPane.margin>
-            <Insets left="25.0" />
-         </GridPane.margin>
-      </TextField>
-      <ImageView fitHeight="27.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+      <ImageView fitHeight="54.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets right="15.0" top="15.0" />
          </GridPane.margin>
