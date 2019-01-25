@@ -3,8 +3,6 @@ package zur.koeln.kickertool.core.logic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import zur.koeln.kickertool.core.entities.Player;
 import zur.koeln.kickertool.core.entities.PlayerStatistics;
 import zur.koeln.kickertool.core.entities.Settings;
@@ -27,7 +25,6 @@ public class StatisticsService {
 
     }
 
-    @JsonIgnore
     public double getMeanPoints(PlayerStatistics playerStats, Settings config) {
         return getPointsForConfiguration(playerStats, config) / (double) playerStats.getMatches().size();
     }
@@ -79,39 +76,32 @@ public class StatisticsService {
         tournamentStatistics.setUidToMatch(statsToClone.getUidToMatch());
         tournamentStatistics.setPlayer(statsToClone.getPlayer());
     }
-    @JsonIgnore
     public int getMatchesDone(PlayerStatistics playerStats) {
         return playerStats.getMatches().size();
     }
 
-    @JsonIgnore
     public int getGoalsShot(PlayerStatistics playerStats) {
         return playerStats.getMatches().stream().mapToInt(m -> matchService.getGoalsForPlayerInMatch(playerStats.getPlayerId(), playerStats.getUidToMatch().get(m))).sum();
     }
 
-    @JsonIgnore
     public int getGoalsConceded(PlayerStatistics playerStats) {
         return playerStats.getMatches().stream().mapToInt(m -> matchService.getConcededGoalsForPlayer(playerStats.getPlayerId(), playerStats.getUidToMatch().get(m))).sum();
     }
 
-    @JsonIgnore
     public int getGoalDiff(PlayerStatistics playerStats) {
         return getGoalsShot(playerStats) - getGoalsConceded(playerStats);
     }
 
-    @JsonIgnore
     public long getMatchesWonCount(PlayerStatistics playerStats) {
         return playerStats.getMatches().stream().filter(m -> matchService.didPlayerWin(playerStats.getPlayerId(), playerStats.getUidToMatch().get(m))).count();
     }
 
-    @JsonIgnore
     public long getMatchesLostCount(PlayerStatistics playerStats) {
         return playerStats.getMatches().stream()
                 .filter(m -> !matchService.didPlayerWin(playerStats.getPlayerId(), playerStats.getUidToMatch().get(m)) && !matchService.isDraw(playerStats.getUidToMatch().get(m)))
                 .count();
     }
 
-    @JsonIgnore
     public long getMatchesDrawCount(PlayerStatistics playerStats) {
         return playerStats.getMatches().stream().filter(m -> matchService.isDraw(playerStats.getUidToMatch().get(m))).count();
     }

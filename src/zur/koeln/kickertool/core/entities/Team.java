@@ -5,16 +5,12 @@ package zur.koeln.kickertool.core.entities;
 
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class Team {
 
     private UUID player1Id;
     private UUID player2Id;
 
-    @JsonIgnore
     private Player player1;
-    @JsonIgnore
     private Player player2;
 
     public Team() {

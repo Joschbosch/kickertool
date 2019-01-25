@@ -14,7 +14,7 @@ import lombok.Getter;
 import zur.koeln.kickertool.base.BasicBackendController;
 import zur.koeln.kickertool.core.entities.Settings;
 import zur.koeln.kickertool.core.entities.Tournament;
-import zur.koeln.kickertool.core.entities.TournamentSetingsKeys;
+import zur.koeln.kickertool.core.kernl.TournamentSetingsKeys;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)

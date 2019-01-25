@@ -5,6 +5,8 @@ package zur.koeln.kickertool.core.entities;
 
 import java.util.UUID;
 
+import zur.koeln.kickertool.core.kernl.MatchResult;
+
 public class Match {
 
 	private UUID matchID = UUID.randomUUID();

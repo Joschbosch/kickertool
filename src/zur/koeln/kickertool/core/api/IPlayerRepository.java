@@ -5,7 +5,8 @@ import java.util.UUID;
 
 import zur.koeln.kickertool.core.entities.Player;
 
-public interface PlayerPoolService {
+public interface IPlayerRepository
+{
 
     void loadPlayerPool();
 

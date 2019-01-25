@@ -3,7 +3,7 @@
  */
 package zur.koeln.kickertool.core.entities;
 
-public class GamingTable {
+public class GameTable {
 
     private int tableNumber;
 
@@ -11,11 +11,11 @@ public class GamingTable {
 
     private boolean inUse = false;
 
-    public GamingTable() {
+    public GameTable() {
 
     }
 
-    public GamingTable(
+    public GameTable(
         int tableNo) {
         this.tableNumber = tableNo;
     }

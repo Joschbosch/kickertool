@@ -7,11 +7,9 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import zur.koeln.kickertool.core.entities.Match;
-import zur.koeln.kickertool.core.entities.MatchResult;
 import zur.koeln.kickertool.core.entities.Team;
+import zur.koeln.kickertool.core.kernl.MatchResult;
 
 @Service
 public class MatchService {
@@ -114,7 +112,6 @@ public class MatchService {
         return Integer.compare(match1.getMatchNo(), match2.getMatchNo());
     }
 
-    @JsonIgnore
     public boolean isDraw(Match m) {
         return m.getResult() == MatchResult.DRAW;
     }

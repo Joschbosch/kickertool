@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.core.entities;
+package zur.koeln.kickertool.core.kernl;
 
 
 public enum TournamentSetingsKeys {

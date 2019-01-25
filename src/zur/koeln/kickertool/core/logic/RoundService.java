@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import zur.koeln.kickertool.core.entities.*;
+import zur.koeln.kickertool.core.kernl.TournamentMode;
 
 @Service
 public class RoundService {
@@ -98,13 +99,11 @@ public class RoundService {
         return playerId;
     }
 
-    public void addMatchResult(Match m, Round round) throws MatchException {
+    public void addMatchResult(Match m, Round round) {
         if (round.getMatches().contains(m)) {
             round.getMatches().remove(m);
             round.getCompleteMatches().add(m);
 
-        } else {
-            throw new MatchException();
         }
     }
 

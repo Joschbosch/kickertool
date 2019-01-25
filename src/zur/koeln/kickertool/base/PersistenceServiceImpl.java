@@ -18,8 +18,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import zur.koeln.kickertool.api.PersistenceService;
-import zur.koeln.kickertool.core.api.PlayerPoolService;
+import zur.koeln.kickertool.core.api.IPlayerRepository;
 import zur.koeln.kickertool.core.entities.*;
+import zur.koeln.kickertool.core.kernl.MatchResult;
+import zur.koeln.kickertool.core.kernl.TournamentMode;
 import zur.koeln.kickertool.core.logic.MatchService;
 import zur.koeln.kickertool.core.logic.RoundService;
 import zur.koeln.kickertool.core.logic.StatisticsService;
@@ -32,7 +34,7 @@ public class PersistenceServiceImpl
 
 
 	@Autowired
-	private PlayerPoolService playerpool;
+	private IPlayerRepository playerpool;
 
     @Autowired
     private TournamentService tournamentService;
@@ -77,10 +79,10 @@ public class PersistenceServiceImpl
 
 	}
 
-	private Map<Integer, GamingTable> importPlaytables(JsonNode tablesNode) {
-		Map<Integer, GamingTable> tables = new HashMap<>();
+	private Map<Integer, GameTable> importPlaytables(JsonNode tablesNode) {
+		Map<Integer, GameTable> tables = new HashMap<>();
 		tablesNode.elements().forEachRemaining(node -> {
-			GamingTable newTable = new GamingTable();
+			GameTable newTable = new GameTable();
 			newTable.setActive(node.get("active").asBoolean());
 			newTable.setInUse(node.get("inUse").asBoolean());
 			newTable.setTableNumber(node.get("tableNumber").asInt());

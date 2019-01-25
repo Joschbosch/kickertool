@@ -18,7 +18,7 @@ public class Tournament {
 
     private Map<UUID, PlayerStatistics> scoreTable = new HashMap<>();
 
-    private Map<Integer, GamingTable> playtables = new HashMap<>();
+    private Map<Integer, GameTable> playtables = new HashMap<>();
 
     private List<UUID> dummyPlayerActive = new ArrayList<>();
 
@@ -71,7 +71,7 @@ public class Tournament {
         return scoreTable;
     }
 
-    public Map<Integer, GamingTable> getPlaytables() {
+    public Map<Integer, GameTable> getPlaytables() {
         return playtables;
     }
 
@@ -96,7 +96,7 @@ public class Tournament {
         this.scoreTable = scoreTable;
     }
 
-    public void setPlaytables(Map<Integer, GamingTable> playtables) {
+    public void setPlaytables(Map<Integer, GameTable> playtables) {
         this.playtables = playtables;
     }
 

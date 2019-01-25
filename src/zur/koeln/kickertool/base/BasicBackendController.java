@@ -14,9 +14,10 @@ import org.springframework.stereotype.Service;
 import zur.koeln.kickertool.api.PersistenceService;
 import zur.koeln.kickertool.api.ToolState;
 import zur.koeln.kickertool.api.ui.GUIController;
-import zur.koeln.kickertool.core.api.PlayerPoolService;
+import zur.koeln.kickertool.core.api.IPlayerRepository;
 import zur.koeln.kickertool.core.entities.*;
-import zur.koeln.kickertool.core.logic.MatchException;
+import zur.koeln.kickertool.core.kernl.TournamentMode;
+import zur.koeln.kickertool.core.kernl.TournamentSetingsKeys;
 import zur.koeln.kickertool.core.logic.MatchService;
 import zur.koeln.kickertool.core.logic.TournamentService;
 
@@ -24,8 +25,8 @@ import zur.koeln.kickertool.core.logic.TournamentService;
 public class BasicBackendController {
 
     @Autowired
-    private PlayerPoolService playerpool;
-    
+    private IPlayerRepository playerpool;
+
     @Autowired
     private PersistenceService persistenceService;
 
@@ -36,7 +37,6 @@ public class BasicBackendController {
     private MatchService matchService;
 
     private GUIController guiController;
-
 
     /**
      * 
@@ -144,7 +144,6 @@ public class BasicBackendController {
         guiController.switchToolState(ToolState.TOURNAMENT);
     }
 
-
     /**
      * @param p
      */
@@ -183,14 +182,10 @@ public class BasicBackendController {
      * @param value
      */
     public void updateMatchResult(Match match, Integer scoreHome, Integer scoreVisiting) {
-        try {
-            if (match.getResult() == null) {
-                tournamentService.addMatchResult(match);
-            }
-            matchService.setResultScores(match, scoreHome.intValue(), scoreVisiting.intValue());
-        } catch (MatchException e) {
-            e.printStackTrace();
+        if (match.getResult() == null) {
+            tournamentService.addMatchResult(match);
         }
+        matchService.setResultScores(match, scoreHome.intValue(), scoreVisiting.intValue());
         exportTournament();
 
     }
@@ -209,8 +204,7 @@ public class BasicBackendController {
         return playerpool.getPlayers();
     }
 
-
-	public void setGuiController(GUIController guiController) {
+    public void setGuiController(GUIController guiController) {
         this.guiController = guiController;
     }
     public void createAndAddNewPlayerToPoolAndTournament(String playerName) {
@@ -236,7 +230,7 @@ public class BasicBackendController {
         return tournamentService.getTournament();
     }
 
-    public PlayerPoolService getPlayerpool() {
+    public IPlayerRepository getPlayerpool() {
         return playerpool;
     }
     public void changePlayerName(String newName, Player selectedPlayer) {
@@ -255,7 +249,7 @@ public class BasicBackendController {
         guiController.switchToolState(ToolState.TOURNAMENT);
         guiController.update();
     }
-	public boolean isPlayerPausing(Player selectedPlayer) {
+    public boolean isPlayerPausing(Player selectedPlayer) {
         return getCurrentTournament().getScoreTable().get(selectedPlayer.getUid()).isPlayerPausing();
-	}
+    }
 }

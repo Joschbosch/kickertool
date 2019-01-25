@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import zur.koeln.kickertool.core.api.PlayerPoolService;
+import zur.koeln.kickertool.core.api.IPlayerRepository;
 import zur.koeln.kickertool.core.entities.*;
 
 @Service
 public class TournamentService {
 
     @Autowired
-    private PlayerPoolService playerPool;
+    private IPlayerRepository playerPool;
 
     @Autowired
     private StatisticsService staticService;
@@ -95,7 +95,7 @@ public class TournamentService {
     public void startTournament() {
         if (!tournament.isStarted()) {
             for (int i = 1; i <= tournament.getSettings().getTableCount(); i++) {
-                tournament.getPlaytables().put(Integer.valueOf(i), new GamingTable(i));
+                tournament.getPlaytables().put(Integer.valueOf(i), new GameTable(i));
             }
             for (UUID pid : tournament.getParticipants()) {
                 tournament.getScoreTable().put(pid, staticService.createNewStatisticForPlayer(playerPool.getPlayerOrDummyById(pid)));
@@ -129,7 +129,7 @@ public class TournamentService {
         return null;
     }
 
-    public void addMatchResult(Match m) throws MatchException {
+    public void addMatchResult(Match m) {
         roundService.addMatchResult(m, tournament.getCurrentRound());
         tournament.getPlaytables().get(Integer.valueOf(m.getTableNo())).setInUse(false);
         updatePlayTableUsage();
@@ -150,7 +150,7 @@ public class TournamentService {
     private void updatePlayTableUsage() {
         for (Match ongoing : tournament.getCurrentRound().getMatches()) {
             if (ongoing.getTableNo() == -1) {
-                for (GamingTable gameTable : tournament.getPlaytables().values()) {
+                for (GameTable gameTable : tournament.getPlaytables().values()) {
                     if (!gameTable.isInUse() && gameTable.isActive()) {
                         ongoing.setTableNo(gameTable.getTableNumber());
                         gameTable.setInUse(true);

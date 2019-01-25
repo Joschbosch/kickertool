@@ -1,10 +1,9 @@
 package zur.koeln.kickertool.core.entities;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 public class HumanPlayer
-    implements Serializable, Player {
+    implements Player {
 
     private UUID uid;
 

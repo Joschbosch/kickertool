@@ -17,14 +17,13 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import zur.koeln.kickertool.api.ToolState;
 import zur.koeln.kickertool.base.BasicBackendController;
-import zur.koeln.kickertool.core.logic.MatchException;
 import zur.koeln.kickertool.uifxml.FXMLGUIController;
 
 @SpringBootApplication
 public class Main extends Application {
     private static ConfigurableApplicationContext ctx;
 
-    public static void main(String[] args) throws MatchException {
+    public static void main(String[] args) {
         ctx = SpringApplication.run(Main.class);
 
         launch(args);

@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import zur.koeln.kickertool.core.api.PlayerPoolService;
+import zur.koeln.kickertool.core.api.IPlayerRepository;
 import zur.koeln.kickertool.core.entities.HumanPlayer;
 import zur.koeln.kickertool.core.entities.Player;
 
 @Service
 public class SimpleJsonPlayerPool
-    implements PlayerPoolService {
+    implements IPlayerRepository {
 
     private List<Player> players;
 

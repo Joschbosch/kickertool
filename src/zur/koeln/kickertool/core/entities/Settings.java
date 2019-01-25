@@ -1,5 +1,7 @@
 package zur.koeln.kickertool.core.entities;
 
+import zur.koeln.kickertool.core.kernl.TournamentMode;
+
 public class Settings {
 
     private TournamentMode mode = TournamentMode.SWISS_TUPEL;
