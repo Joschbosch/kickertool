@@ -15,7 +15,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import zur.koeln.kickertool.api.ToolState;
 import zur.koeln.kickertool.base.BasicBackendController;
 import zur.koeln.kickertool.uifxml.FXMLGUIController;
 

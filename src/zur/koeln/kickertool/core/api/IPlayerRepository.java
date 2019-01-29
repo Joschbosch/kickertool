@@ -8,28 +8,14 @@ import zur.koeln.kickertool.core.entities.Player;
 public interface IPlayerRepository
 {
 
-    void loadPlayerPool();
-
-    void savePlayerPool();
-
-    Player createAndAddPlayer(String newPlayerName);
-
-    void removePlayer(Player player);
-
-    void clear();
-
-    Player getPlayerOrDummyById(UUID playerId);
-
-    int getNoOfDummyPlayerUsed();
-
-    Player createDummyPlayerWithUUID(UUID id);
-
-    Player useNextDummyPlayer();
-
-    UUID removeLastDummy();
-
-    List<Player> getPlayers();
-
-    void changePlayerName(String newName, Player selectedPlayer);
+	public void insertPlayer(Player player);
+	
+	public void updatePlayer(Player player);
+	
+	public void deletePlayer(Player player);
+	
+	public Player getPlayer(UUID playerUID);
+	
+	public List<Player> getAllPlayer();
 
 }

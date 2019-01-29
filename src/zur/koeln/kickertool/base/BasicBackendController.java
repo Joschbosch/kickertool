@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import zur.koeln.kickertool.ToolState;
 import zur.koeln.kickertool.api.PersistenceService;
-import zur.koeln.kickertool.api.ToolState;
 import zur.koeln.kickertool.api.ui.GUIController;
 import zur.koeln.kickertool.core.api.IPlayerRepository;
 import zur.koeln.kickertool.core.entities.*;

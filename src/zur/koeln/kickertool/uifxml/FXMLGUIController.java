@@ -18,7 +18,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import zur.koeln.kickertool.api.ToolState;
+import zur.koeln.kickertool.ToolState;
 import zur.koeln.kickertool.api.ui.GUIController;
 
 @Getter(value=AccessLevel.PRIVATE)
