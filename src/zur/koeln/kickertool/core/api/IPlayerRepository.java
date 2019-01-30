@@ -8,7 +8,7 @@ import zur.koeln.kickertool.core.entities.Player;
 public interface IPlayerRepository
 {
 
-	public void insertPlayer(Player player);
+	public void addPlayer(Player player);
 	
 	public void updatePlayer(Player player);
 	
