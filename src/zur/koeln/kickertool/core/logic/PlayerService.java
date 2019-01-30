@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import zur.koeln.kickertool.core.api.IDummyPlayerRepository;
 import zur.koeln.kickertool.core.api.IPlayerRepository;
-import zur.koeln.kickertool.core.entities.GameTable;
 import zur.koeln.kickertool.core.entities.Player;
 
 @Service

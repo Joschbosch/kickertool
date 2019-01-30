@@ -3,7 +3,6 @@
  */
 package zur.koeln.kickertool.core.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

@@ -5,9 +5,12 @@ package zur.koeln.kickertool.core.entities;
 
 import java.util.UUID;
 
-import zur.koeln.kickertool.core.kernl.MatchResult;
+import lombok.Getter;
+import lombok.Setter;
 import zur.koeln.kickertool.core.kernl.MatchStatus;
 
+@Getter
+@Setter
 public class Match {
 
 	private UUID matchID;
@@ -25,8 +28,6 @@ public class Match {
 	private int scoreHome;
 
 	private int scoreVisiting;
-
-	private MatchResult result;
 	
 	private MatchStatus status;
 

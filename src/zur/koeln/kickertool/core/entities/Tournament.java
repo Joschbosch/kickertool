@@ -1,6 +1,8 @@
 package zur.koeln.kickertool.core.entities;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +12,8 @@ import zur.koeln.kickertool.core.kernl.TournamentStatus;
 @Setter
 public class Tournament {
 
+    private UUID uid;
+
     private String name;
 
     private TournamentStatus status;
@@ -18,15 +22,13 @@ public class Tournament {
 
     private List<Player> participants = new ArrayList<>();
 
+    private List<Player> dummyPlayer = new ArrayList<>();
+
     private List<Match> matches = new ArrayList<>();
 
+    private List<GameTable> playtables = new ArrayList<>();
+
     private int currentRound;
-
-    private Map<UUID, PlayerStatistics> scoreTable = new HashMap<>();
-
-    private Map<Integer, GameTable> playtables = new HashMap<>();
-
-    private List<UUID> dummyPlayerActive = new ArrayList<>();
 
    
 }

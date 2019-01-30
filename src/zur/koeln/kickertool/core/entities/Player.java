@@ -12,15 +12,24 @@ public class Player{
 
     private UUID uid;
 
-    private String name;
+    private String firstName;
+
+    private String surname;
 
     private boolean dummy;
 
-private PlayerStatus status;
+    private PlayerStatus status;
 
-    public Player(UUID uid, String name, boolean dummy) {
+    private PlayerStatistics statistics;
+
+    public Player(
+        UUID uid,
+        String firstname,
+        String surname,
+        boolean dummy) {
     	this.uid = uid;
-    	this.name = name;
+        this.firstName = firstname;
+        this.surname = surname;
     	this.dummy = dummy;
     	status = PlayerStatus.NOT_IN_TOURNAMENT;
     }
