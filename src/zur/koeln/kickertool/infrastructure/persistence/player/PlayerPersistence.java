@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import zur.koeln.kickertool.application.api.IPlayerPersistence;
 import zur.koeln.kickertool.core.model.Player;
+import zur.koeln.kickertool.infrastructure.persistence.entities.PlayerEntity;
 
 @Component
 public class PlayerPersistence
@@ -19,16 +21,16 @@ public class PlayerPersistence
     private PlayerPersistenceRepository playerRepo;
 
     @Autowired
-    private PlayerPersistenceAdapter adapter;
+    private ModelMapper mapper;
 
     @Override
     public void insert(Player player) {
-        playerRepo.save(adapter.toEntity(player));
+        playerRepo.save(mapper.map(player, PlayerEntity.class));
     }
 
     @Override
     public void update(Player player) {
-        playerRepo.save(adapter.toEntity(player));
+        playerRepo.save(mapper.map(player, PlayerEntity.class));
 
     }
 
@@ -36,7 +38,7 @@ public class PlayerPersistence
     public Player findPlayerByUID(UUID playerUID) {
         Optional<PlayerEntity> findById = playerRepo.findById(playerUID);
         if (findById.isPresent()) {
-            return adapter.fromEntity(findById.get());
+            return mapper.map(findById.get(), Player.class);
 
         } else {
             return null;
@@ -47,7 +49,7 @@ public class PlayerPersistence
     public List<Player> getAllPlayer() {
         Iterable<PlayerEntity> findAll = playerRepo.findAll();
         List<Player> result = new ArrayList<>();
-        findAll.forEach(entity -> result.add(adapter.fromEntity(entity)));
+        findAll.forEach(entity -> result.add(mapper.map(entity, Player.class)));
         return result;
     }
 

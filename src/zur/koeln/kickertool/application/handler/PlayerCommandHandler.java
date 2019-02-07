@@ -22,7 +22,7 @@ public class PlayerCommandHandler
     @Override
     public PlayerDTO createNewPlayer(PlayerDTO dto) {
         Player newPlayer = playerService.createNewPlayer(dto.getFirstName(), dto.getLastName());
-        return new PlayerDTO(newPlayer.getFirstName(), newPlayer.getSurname(), newPlayer.getUid(), newPlayer.getStatus(), newPlayer.isDummy());
+        return new PlayerDTO(newPlayer.getFirstName(), newPlayer.getLastName(), newPlayer.getUid(), newPlayer.getStatus(), newPlayer.isDummy());
     }
 
     @Override
@@ -34,14 +34,14 @@ public class PlayerCommandHandler
     @Override
     public PlayerDTO updatePlayer(PlayerDTO id) {
         Player updatePlayer = playerService.updatePlayer(new Player(id.getUid(), id.getFirstName(), id.getLastName(), false));
-        return new PlayerDTO(updatePlayer.getFirstName(), updatePlayer.getSurname(), updatePlayer.getUid(), updatePlayer.getStatus(), updatePlayer.isDummy());
+        return new PlayerDTO(updatePlayer.getFirstName(), updatePlayer.getLastName(), updatePlayer.getUid(), updatePlayer.getStatus(), updatePlayer.isDummy());
     }
 
     @Override
     public List<PlayerDTO> getAllPlayer() {
         List<Player> allPlayer = playerService.getAllPlayer();
         List<PlayerDTO> allPlayerDTO = new ArrayList<>();
-        allPlayer.forEach(player -> allPlayerDTO.add(new PlayerDTO(player.getFirstName(), player.getSurname(), player.getUid(), player.getStatus(), player.isDummy())));
+        allPlayer.forEach(player -> allPlayerDTO.add(new PlayerDTO(player.getFirstName(), player.getLastName(), player.getUid(), player.getStatus(), player.isDummy())));
         return allPlayerDTO;
     }
 

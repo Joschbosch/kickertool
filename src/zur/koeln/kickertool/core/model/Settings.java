@@ -32,6 +32,4 @@ public class Settings {
 
     private int currentNoOfMatches = 0;
 
- 
-
 }

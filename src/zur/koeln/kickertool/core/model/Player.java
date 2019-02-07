@@ -14,7 +14,7 @@ public class Player{
 
     private String firstName;
 
-    private String surname;
+    private String lastName;
 
     private boolean dummy;
 
@@ -22,14 +22,17 @@ public class Player{
 
     private PlayerStatistics statistics;
 
+    public Player() {
+
+    }
     public Player(
         UUID uid,
         String firstname,
-        String surname,
+        String lastName,
         boolean dummy) {
     	this.uid = uid;
         this.firstName = firstname;
-        this.surname = surname;
+        this.lastName = lastName;
     	this.dummy = dummy;
     	status = PlayerStatus.NOT_IN_TOURNAMENT;
     }

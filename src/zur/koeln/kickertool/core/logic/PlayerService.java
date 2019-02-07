@@ -10,6 +10,7 @@ import zur.koeln.kickertool.core.api.IDummyPlayerRepository;
 import zur.koeln.kickertool.core.api.IPlayerRepository;
 import zur.koeln.kickertool.core.api.IPlayerService;
 import zur.koeln.kickertool.core.model.Player;
+import zur.koeln.kickertool.core.model.PlayerStatistics;
 
 @Service
 public class PlayerService
@@ -24,6 +25,7 @@ public class PlayerService
 
     public Player createNewPlayer(String firstName, String lastName) {
         Player newPlayer = new Player(UUID.randomUUID(), firstName, lastName, false);
+        newPlayer.setStatistics(new PlayerStatistics(newPlayer));
     	playerRepo.createOrUpdatePlayer(newPlayer);
     	return newPlayer;
     }

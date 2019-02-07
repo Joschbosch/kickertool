@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -17,12 +18,15 @@ public class DatabaseSettings {
         DriverManagerDataSource dm = new DriverManagerDataSource("jdbc:derby:db", "admin", "kickern!");
 
         Properties properties = new Properties();
-        //        properties.setProperty("create", "true");
+        properties.setProperty("create", "true");
         dm.setConnectionProperties(properties);
         dm.setDriverClassName("org.apache.derby.jdbc.EmbeddedDriver");
 
         return dm;
     }
-
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 
 }
