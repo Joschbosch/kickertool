@@ -24,9 +24,9 @@ import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.base.BasicBackendController;
-import zur.koeln.kickertool.core.entities.Match;
-import zur.koeln.kickertool.core.entities.PlayerStatistics;
 import zur.koeln.kickertool.core.logic.deprecated.StatisticsService;
+import zur.koeln.kickertool.core.model.Match;
+import zur.koeln.kickertool.core.model.PlayerStatistics;
 import zur.koeln.kickertool.deprecated.uifxml.tools.SimpleTimer;
 import zur.koeln.kickertool.deprecated.uifxml.tools.TimerStringConverter;
 

@@ -11,9 +11,9 @@ import javafx.util.converter.IntegerStringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.base.BasicBackendController;
-import zur.koeln.kickertool.core.entities.Settings;
-import zur.koeln.kickertool.core.entities.Tournament;
 import zur.koeln.kickertool.core.kernl.TournamentSetingsKeys;
+import zur.koeln.kickertool.core.model.Settings;
+import zur.koeln.kickertool.core.model.Tournament;
 
 @Getter(value=AccessLevel.PRIVATE)
 public class FXMLTournamentConfigurationController implements UpdateableUIComponent {

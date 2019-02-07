@@ -1,5 +1,6 @@
 package zur.koeln.kickertool.core.logic;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
 import zur.koeln.kickertool.core.api.IDummyPlayerRepository;
 import zur.koeln.kickertool.core.api.IPlayerRepository;
 import zur.koeln.kickertool.core.api.IPlayerService;
-import zur.koeln.kickertool.core.entities.Player;
+import zur.koeln.kickertool.core.model.Player;
 
 @Service
 public class PlayerService
@@ -23,7 +24,7 @@ public class PlayerService
 
     public Player createNewPlayer(String firstName, String lastName) {
         Player newPlayer = new Player(UUID.randomUUID(), firstName, lastName, false);
-    	playerRepo.addPlayer(newPlayer);
+    	playerRepo.createOrUpdatePlayer(newPlayer);
     	return newPlayer;
     }
     
@@ -33,12 +34,16 @@ public class PlayerService
     }
 
     @Override
-    public void updatePlayer(Player player) {
-        playerRepo.updatePlayer(player);
+    public Player updatePlayer(Player player) {
+        return playerRepo.createOrUpdatePlayer(player);
     }
 
     @Override
-    public void deletePlayer(Player player) {
+    public void deletePlayer(UUID player) {
         playerRepo.deletePlayer(player);
+    }
+    @Override
+    public List<Player> getAllPlayer() {
+        return playerRepo.getAllPlayer();
     }
 }

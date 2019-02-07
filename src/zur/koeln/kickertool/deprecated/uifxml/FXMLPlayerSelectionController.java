@@ -17,7 +17,7 @@ import javafx.scene.input.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.base.BasicBackendController;
-import zur.koeln.kickertool.core.entities.Player;
+import zur.koeln.kickertool.core.model.Player;
 import zur.koeln.kickertool.deprecated.uifxml.cells.PlayerListCell;
 
 @Getter(value=AccessLevel.PRIVATE)

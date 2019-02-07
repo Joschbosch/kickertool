@@ -3,7 +3,7 @@ package zur.koeln.kickertool.core.api;
 import java.util.List;
 import java.util.UUID;
 
-import zur.koeln.kickertool.core.entities.Player;
+import zur.koeln.kickertool.core.model.Player;
 
 public interface IDummyPlayerRepository {
 

@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.application.repos;
+package zur.koeln.kickertool.application.repositories;
 
 import java.util.List;
 import java.util.UUID;
@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import zur.koeln.kickertool.core.api.IDummyPlayerRepository;
-import zur.koeln.kickertool.core.entities.Player;
+import zur.koeln.kickertool.core.model.Player;
 
 @Service
 public class DummyPlayerRepository

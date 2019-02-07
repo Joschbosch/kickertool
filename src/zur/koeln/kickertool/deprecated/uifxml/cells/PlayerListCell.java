@@ -1,7 +1,7 @@
 package zur.koeln.kickertool.deprecated.uifxml.cells;
 
 import javafx.scene.control.ListCell;
-import zur.koeln.kickertool.core.entities.Player;
+import zur.koeln.kickertool.core.model.Player;
 
 public class PlayerListCell
     extends ListCell<Player> {

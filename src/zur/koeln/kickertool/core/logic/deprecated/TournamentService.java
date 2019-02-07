@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import zur.koeln.kickertool.core.api.IPlayerRepository;
-import zur.koeln.kickertool.core.entities.*;
+import zur.koeln.kickertool.core.model.*;
 
 public class TournamentService {
 

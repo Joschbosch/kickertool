@@ -4,3 +4,5 @@ tournament*.json
 /logs/
 /playerpools/
 /tournaments/
+/db/
+/derby.log

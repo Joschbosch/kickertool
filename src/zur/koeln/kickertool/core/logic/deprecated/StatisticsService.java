@@ -2,9 +2,9 @@ package zur.koeln.kickertool.core.logic.deprecated;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import zur.koeln.kickertool.core.entities.Player;
-import zur.koeln.kickertool.core.entities.PlayerStatistics;
-import zur.koeln.kickertool.core.entities.Settings;
+import zur.koeln.kickertool.core.model.Player;
+import zur.koeln.kickertool.core.model.PlayerStatistics;
+import zur.koeln.kickertool.core.model.Settings;
 
 public class StatisticsService {
 

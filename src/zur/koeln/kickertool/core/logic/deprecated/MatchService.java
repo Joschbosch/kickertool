@@ -6,8 +6,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.regex.MatchResult;
 
-import zur.koeln.kickertool.core.entities.Match;
-import zur.koeln.kickertool.core.entities.Team;
+import zur.koeln.kickertool.core.model.Match;
+import zur.koeln.kickertool.core.model.Team;
 
 public class MatchService {
 

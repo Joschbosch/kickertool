@@ -1,12 +1,17 @@
 package zur.koeln.kickertool.core.api;
 
-import zur.koeln.kickertool.core.entities.Player;
+import java.util.List;
+import java.util.UUID;
+
+import zur.koeln.kickertool.core.model.Player;
 
 public interface IPlayerService {
     Player createNewPlayer(String firstName, String lastName);
 
     Player updatePlayer(Player player);
 
-    void deletePlayer(Player player);
+    void deletePlayer(UUID player);
+
+    List<Player> getAllPlayer();
 
 }

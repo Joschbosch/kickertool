@@ -7,8 +7,8 @@ import java.util.Random;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import zur.koeln.kickertool.core.entities.*;
 import zur.koeln.kickertool.core.kernl.TournamentMode;
+import zur.koeln.kickertool.core.model.*;
 
 public class RoundService {
 

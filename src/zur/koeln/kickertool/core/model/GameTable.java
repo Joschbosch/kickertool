@@ -1,7 +1,7 @@
 /**
  * 
  */
-package zur.koeln.kickertool.core.entities;
+package zur.koeln.kickertool.core.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

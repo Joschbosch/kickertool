@@ -11,7 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.util.Pair;
 import zur.koeln.kickertool.base.BasicBackendController;
-import zur.koeln.kickertool.core.entities.Match;
+import zur.koeln.kickertool.core.model.Match;
 import zur.koeln.kickertool.deprecated.uifxml.dialog.ScoreDialog;
 
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
