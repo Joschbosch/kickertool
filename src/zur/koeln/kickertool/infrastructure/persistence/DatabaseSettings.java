@@ -15,12 +15,12 @@ public class DatabaseSettings {
     @Bean
     public DataSource dataSource() {
 
-        DriverManagerDataSource dm = new DriverManagerDataSource("jdbc:derby:db", "admin", "kickern!");
+        DriverManagerDataSource dm = new DriverManagerDataSource("jdbc:derby:db", "admin", "kickern!"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         Properties properties = new Properties();
-        properties.setProperty("create", "true");
+        properties.setProperty("create", "true"); //$NON-NLS-1$ //$NON-NLS-2$
         dm.setConnectionProperties(properties);
-        dm.setDriverClassName("org.apache.derby.jdbc.EmbeddedDriver");
+        dm.setDriverClassName("org.apache.derby.jdbc.EmbeddedDriver"); //$NON-NLS-1$
 
         return dm;
     }

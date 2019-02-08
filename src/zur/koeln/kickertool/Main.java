@@ -16,8 +16,8 @@ public class Main {
         IPlayerCommandHandler playerHandler = ctx.getBean(IPlayerCommandHandler.class);
         
         PlayerDTO playerDTO = new PlayerDTO();
-        playerDTO.setFirstName("Josch");
-        playerDTO.setLastName("Bosch");
+        playerDTO.setFirstName("Josch"); //$NON-NLS-1$
+        playerDTO.setLastName("Bosch"); //$NON-NLS-1$
         
         playerHandler.createNewPlayer(playerDTO);
 
