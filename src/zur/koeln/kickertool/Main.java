@@ -53,7 +53,7 @@ public class Main extends Application {
 		
 		FXMLGuiService.getInstance().initialize(ctx, primaryStage);
 		FXMLGuiService.getInstance().switchScene(Scenes.MAIN_MENU);
-
+		
     }
 
 }
