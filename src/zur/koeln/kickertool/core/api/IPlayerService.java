@@ -18,4 +18,6 @@ public interface IPlayerService {
 
     Map<UUID, PlayerStatistics> getAllPlayerStatistics();
 
+    Player getPlayerById(UUID participant);
+
 }

@@ -1,8 +1,7 @@
-package zur.koeln.kickertool.application.handler.commands.player;
+package zur.koeln.kickertool.application.api.dtos;
 
 import java.util.UUID;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +10,6 @@ import zur.koeln.kickertool.core.kernl.PlayerStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class PlayerDTO {
 
     private String firstName;

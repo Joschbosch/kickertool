@@ -3,11 +3,13 @@ package zur.koeln.kickertool.core.model;
 import java.util.UUID;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import zur.koeln.kickertool.core.kernl.TournamentMode;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Settings {
 
     private UUID uid;
@@ -32,4 +34,10 @@ public class Settings {
 
     private int currentNoOfMatches = 0;
 
+    private Tournament tournament;
+
+    public Settings(
+        UUID uuid) {
+        this.uid = uuid;
+    }
 }

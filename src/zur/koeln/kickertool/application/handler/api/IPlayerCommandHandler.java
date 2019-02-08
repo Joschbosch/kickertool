@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import zur.koeln.kickertool.application.handler.commands.player.PlayerDTO;
-import zur.koeln.kickertool.application.handler.commands.player.PlayerStatisticsDTO;
+import zur.koeln.kickertool.application.api.dtos.PlayerDTO;
+import zur.koeln.kickertool.application.api.dtos.PlayerStatisticsDTO;
 
 public interface IPlayerCommandHandler {
 

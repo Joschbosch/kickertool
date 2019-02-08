@@ -1,23 +1,20 @@
-package zur.koeln.kickertool.infrastructure.persistence.entities;
+package zur.koeln.kickertool.application.api.dtos;
 
 import java.util.UUID;
 
-import javax.persistence.*;
-
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import zur.koeln.kickertool.core.kernl.TournamentMode;
 
-@Entity
-@Table(name = "settings")
+@NoArgsConstructor
 @Getter
 @Setter
-public class SettingsEntity {
+public class SettingsDTO {
 
-    @Id
     private UUID uid;
 
-    private TournamentMode mode = TournamentMode.SWISS_TUPEL;
+    private TournamentMode mode;
 
     private int tableCount;
 
@@ -33,11 +30,10 @@ public class SettingsEntity {
 
     private int pointsForDraw;
 
-    private boolean fixedTeam;
+    private boolean fixedTeams;
 
     private int currentNoOfMatches;
 
-    @OneToOne
-    @JoinColumn(name = "TOURNAMENT_UID")
-    private TournamentEntity tournament;
+    private TournamentDTO tournament;
+
 }

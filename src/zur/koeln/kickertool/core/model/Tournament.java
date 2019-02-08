@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.UUID;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import zur.koeln.kickertool.core.kernl.TournamentStatus;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Tournament {
 
     private UUID uid;
@@ -30,5 +32,13 @@ public class Tournament {
 
     private int currentRound;
 
-   
+    public Tournament(
+        UUID id,
+        Settings newSettings) {
+        this.uid = id;
+        this.settings = newSettings;
+        status = TournamentStatus.PREPARING;
+        currentRound = 0;
+
+    }
 }
