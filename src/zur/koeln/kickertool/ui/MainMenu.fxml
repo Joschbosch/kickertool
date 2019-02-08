@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.ui.controller.FXMLMainMenuController">
    <columnConstraints>
       <ColumnConstraints />
       <ColumnConstraints />
@@ -16,17 +16,17 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Neues Turnier starten" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+      <JFXButton fx:id="btnStartNewTournament" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onStartNewTournamentClicked" text="Neues Turnier starten" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
       </JFXButton>
-      <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Spielerverwaltung" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+      <JFXButton fx:id="btnPlayerManagement" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#onPlayerManagementClicked" text="Spielerverwaltung" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
       </JFXButton>
-      <JFXButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Turnier fortsetzen" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+      <JFXButton fx:id="btnContinueTournament" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#OnContinueTournamentClicked" text="Turnier fortsetzen" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>

@@ -14,6 +14,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import zur.koeln.kickertool.ui.service.FXMLGuiService;
+import zur.koeln.kickertool.ui.service.Scenes;
 
 @SpringBootApplication
 public class Main extends Application {
@@ -42,15 +44,11 @@ public class Main extends Application {
         
 	}
 	
-	private void startWithGUIFXML(Stage primaryStage) throws IOException {
+	private void startWithGUIFXML(Stage primaryStage) {
+		
+		FXMLGuiService.getInstance().initialize(ctx, primaryStage);
+		FXMLGuiService.getInstance().switchScene(Scenes.MAIN_MENU);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/MainMenu.fxml"));
-        loader.setControllerFactory(ctx::getBean);
-        Parent mainMenu = loader.load();
-        
-        Scene mainScene = new Scene(mainMenu, 1024, 768);
-        primaryStage.setScene(mainScene);
-        primaryStage.show();
     }
 
 }
