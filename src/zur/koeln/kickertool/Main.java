@@ -9,13 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import zur.koeln.kickertool.application.handler.api.IPlayerCommandHandler;
+import zur.koeln.kickertool.application.handler.commands.player.PlayerStatisticsDTO;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
 import zur.koeln.kickertool.ui.service.Scenes;
 
