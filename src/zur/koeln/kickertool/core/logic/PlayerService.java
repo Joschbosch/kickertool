@@ -58,4 +58,9 @@ public class PlayerService
     public Map<UUID, PlayerStatistics> getAllPlayerStatistics() {
         return playerRepo.getAllPlayer().stream().collect(Collectors.toMap(Player::getUid, Player::getStatistics));
     }
+
+    @Override
+    public Player getPlayerById(UUID playerId) {
+        return playerRepo.getPlayer(playerId);
+    }
 }
