@@ -52,7 +52,11 @@
 			<artifactId>modelmapper</artifactId>
 			<version>2.3.0</version>
 		</dependency>
-
+		<dependency>
+		    <groupId>com.jfoenix</groupId>
+		    <artifactId>jfoenix</artifactId>
+		    <version>8.0.8</version>
+		</dependency>
 		<dependency>
 			<groupId>org.javatuples</groupId>
 			<artifactId>javatuples</artifactId>

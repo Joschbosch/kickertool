@@ -1,29 +1,56 @@
 package zur.koeln.kickertool;
 
-import java.util.List;
+import java.io.IOException;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 
-import zur.koeln.kickertool.application.handler.api.IPlayerCommandHandler;
-import zur.koeln.kickertool.application.handler.commands.player.PlayerDTO;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.stage.Stage;
 
 @SpringBootApplication
-public class Main {
+public class Main extends Application {
+	
+	private static ConfigurableApplicationContext ctx;
+	
     public static void main(String[] args) {
-        ApplicationContext ctx = SpringApplication.run(Main.class);
-        IPlayerCommandHandler playerHandler = ctx.getBean(IPlayerCommandHandler.class);
+    	
+    	ctx = SpringApplication.run(Main.class);
+        launch(args);
         
-        PlayerDTO playerDTO = new PlayerDTO();
-        playerDTO.setFirstName("Josch"); //$NON-NLS-1$
-        playerDTO.setLastName("Bosch"); //$NON-NLS-1$
-        
-        playerHandler.createNewPlayer(playerDTO);
+    }
 
-        List<PlayerDTO> allPlayer = playerHandler.getAllPlayer();
-        System.out.println(allPlayer);
-        allPlayer.forEach(dto -> playerHandler.deletePlayer(dto.getUid()));
+	@Override
+	public void start(Stage primaryStage) throws IOException {
+		
+		primaryStage.setOnCloseRequest(event -> {
+		    Alert alert = new Alert(AlertType.CONFIRMATION, "Wirklich verlassen?", ButtonType.YES, ButtonType.NO);
+		    alert.showAndWait();
+		    if (alert.getResult() != ButtonType.YES) {
+		        event.consume();
+		    }
+		});
+		
+        startWithGUIFXML(primaryStage);
+        
+	}
+	
+	private void startWithGUIFXML(Stage primaryStage) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/MainMenu.fxml"));
+        loader.setControllerFactory(ctx::getBean);
+        Parent mainMenu = loader.load();
+        
+        Scene mainScene = new Scene(mainMenu, 1024, 768);
+        primaryStage.setScene(mainScene);
+        primaryStage.show();
     }
 
 }
