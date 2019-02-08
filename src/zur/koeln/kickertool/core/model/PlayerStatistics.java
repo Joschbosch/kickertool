@@ -20,12 +20,20 @@ public class PlayerStatistics {
 	
     private Player player;
 
-	private final List<Match> playedMatches = new LinkedList<>();
+    private List<Match> playedMatches = new LinkedList<>();
 
 
     public PlayerStatistics(
         Player player) {
         this.player = player;
         this.uid = UUID.randomUUID();
+    }
+
+    public void addPlayedMatch(Match m) {
+        playedMatches.add(m);
+    }
+
+    public void removedPlayedMatch(Match m) {
+        playedMatches.remove(m);
     }
 }

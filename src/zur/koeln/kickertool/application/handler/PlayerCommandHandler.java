@@ -1,14 +1,14 @@
 package zur.koeln.kickertool.application.handler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import zur.koeln.kickertool.application.handler.api.IPlayerCommandHandler;
 import zur.koeln.kickertool.application.handler.commands.player.PlayerDTO;
+import zur.koeln.kickertool.application.handler.commands.player.PlayerStatisticsDTO;
 import zur.koeln.kickertool.core.api.IPlayerService;
 import zur.koeln.kickertool.core.model.Player;
 
@@ -18,6 +18,9 @@ public class PlayerCommandHandler
 
     @Autowired
     private IPlayerService playerService;
+
+    @Autowired
+    private ModelMapper mapper;
 
     @Override
     public PlayerDTO createNewPlayer(PlayerDTO dto) {
@@ -44,5 +47,14 @@ public class PlayerCommandHandler
         allPlayer.forEach(player -> allPlayerDTO.add(new PlayerDTO(player.getFirstName(), player.getLastName(), player.getUid(), player.getStatus(), player.isDummy())));
         return allPlayerDTO;
     }
+    @Override
+    public Map<UUID, PlayerStatisticsDTO> getAllPlayerStatistics() {
+        Map<UUID, PlayerStatisticsDTO> result = new HashMap<>();
 
+        playerService.getAllPlayerStatistics().entrySet().forEach(entry ->
+        result.put(entry.getKey(), mapper.map(entry.getValue(), PlayerStatisticsDTO.class))
+        );
+
+        return result;
+    }
 }

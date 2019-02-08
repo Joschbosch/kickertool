@@ -24,7 +24,7 @@ public class PlayerEntity {
 
     private PlayerStatus status;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name = "STATS_ID")
     private PlayerStatisticsEntity statistics;
 
