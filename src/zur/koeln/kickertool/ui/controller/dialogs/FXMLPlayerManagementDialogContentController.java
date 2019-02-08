@@ -4,20 +4,10 @@ import org.springframework.stereotype.Component;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.ui.api.IDialogFXMLController;
+import zur.koeln.kickertool.ui.controller.AbstractFXMLController;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLPlayerManagementDialogContentController implements IDialogFXMLController {
-
-	@Override
-	public void applyDialogOKClicked() {
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+public class FXMLPlayerManagementDialogContentController extends AbstractFXMLController {
 
 }

@@ -2,21 +2,19 @@ package zur.koeln.kickertool.ui.controller;
 
 import org.springframework.stereotype.Component;
 
+import com.jfoenix.controls.JFXDialog;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.ui.api.DefaultDialogCallback;
-import zur.koeln.kickertool.ui.api.IDialogCallback;
-import zur.koeln.kickertool.ui.api.IFXMLController;
-import zur.koeln.kickertool.ui.service.FXMLGuiService;
-import zur.koeln.kickertool.ui.service.Scenes;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.GridPane;
+import zur.koeln.kickertool.ui.api.BackgroundTask;
+import zur.koeln.kickertool.ui.api.defaultimpl.DefaultBackgroundTask;
+import zur.koeln.kickertool.ui.service.DialogContent;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLMainMenuController implements IFXMLController{
+public class FXMLMainMenuController extends AbstractFXMLController{
 	
 	@FXML
 	Button btnStartNewTournament;
@@ -27,9 +25,7 @@ public class FXMLMainMenuController implements IFXMLController{
 	@FXML
 	Button btnContinueTournament;
 
-	@FXML 
-	StackPane rootStackPane;
-
+	
 	@FXML 
 	public void onStartNewTournamentClicked() {
 		// TODO implement
@@ -37,7 +33,29 @@ public class FXMLMainMenuController implements IFXMLController{
 
 	@FXML 
 	public void onPlayerManagementClicked() {
-		FXMLGuiService.getInstance().openDialogue(getRootStackPane(), Scenes.PLAYER_MANAGEMENT_DIALOGUE, new DefaultDialogCallback());
+		openDialogue(DialogContent.PLAYER_MANAGEMENT_DIALOGUE, new BackgroundTask<Void>() {
+
+			@Override
+			public Void performTask() {
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return null;
+			}
+
+			@Override
+			public void doOnSucceed(Void result) {
+				System.out.println("Succeed!");
+			}
+
+			@Override
+			public void doOnFailure() {
+				System.out.println("Failure!");
+			}
+		});
 	}
 
 	@FXML 

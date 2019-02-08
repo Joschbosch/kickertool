@@ -6,8 +6,7 @@ import lombok.Getter;
 @SuppressWarnings("nls")
 public enum Scenes {
 	
-	MAIN_MENU("MainMenu.fxml", "Kickertool"),
-	PLAYER_MANAGEMENT_DIALOGUE("PlayerManagementDialogContent.fxml", "Spielerverwaltung");
+	MAIN_MENU("MainMenu.fxml", "Kickertool");
 	
 	private String fxmlFile;
 	private String title;
