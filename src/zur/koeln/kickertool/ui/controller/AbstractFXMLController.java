@@ -18,12 +18,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
 import zur.koeln.kickertool.ui.api.IFXMLController;
 import zur.koeln.kickertool.ui.service.DialogContent;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
 
 @Getter(value=AccessLevel.PRIVATE)
+@Setter(value=AccessLevel.PUBLIC)
 public class AbstractFXMLController implements IFXMLController{
 	
 	@FXML 
@@ -31,14 +33,13 @@ public class AbstractFXMLController implements IFXMLController{
 
 	protected void startBackgroundTask(BackgroundTask backgroundTask) {
 		
-		JFXDialog loadingDialog = getLoadingDialog();
+		JFXDialog loadingDialog = createLoadingDialog();
 		loadingDialog.show();
 		
 		Task<Object> task = new Task<Object>() {
 			
 			@Override
 			protected Object call() throws Exception {
-				
 				return backgroundTask.performTask();
 			}
 		};
@@ -57,7 +58,7 @@ public class AbstractFXMLController implements IFXMLController{
 			@Override
 			public void handle(WorkerStateEvent event) {
 				loadingDialog.close();
-				backgroundTask.doOnFailure();
+				backgroundTask.doOnFailure(task.getException());
 			}
 		});
 	
@@ -67,7 +68,7 @@ public class AbstractFXMLController implements IFXMLController{
 	
 	private void startBackgroundTaskAndCloseDialogOnSucceed(BackgroundTask backgroundTask, JFXDialog dialog) {
 		
-		JFXDialog loadingDialog = getLoadingDialog();
+		JFXDialog loadingDialog = createLoadingDialog();
 		loadingDialog.show();
 		
 		Task<Object> task = new Task<Object>() {
@@ -94,7 +95,7 @@ public class AbstractFXMLController implements IFXMLController{
 			@Override
 			public void handle(WorkerStateEvent event) {
 				loadingDialog.close();
-				backgroundTask.doOnFailure();
+				backgroundTask.doOnFailure(task.getException());
 			}
 		});
 	
@@ -104,11 +105,12 @@ public class AbstractFXMLController implements IFXMLController{
 	
 	protected void openDialogue(DialogContent dialogContent, BackgroundTask taskAfterOkClicked) {
 
-		Pane pane;
 		try {
-			FXMLLoader fxmlSceneLoader = FXMLGuiService.getInstance().getFXMLLoader(dialogContent);
-			pane = fxmlSceneLoader.load();
-
+			FXMLLoader fxmlSceneLoader = FXMLGuiService.getInstance().getFXMLDialogLoader(dialogContent);
+			Pane pane = fxmlSceneLoader.load();
+			AbstractFXMLController dialogContentController = fxmlSceneLoader.getController();
+			dialogContentController.setRootStackPane(getRootStackPane());
+			
 			JFXDialogLayout dialogLayout = new JFXDialogLayout();
 			dialogLayout.setHeading(new Text(dialogContent.getDialogTitle()));
 			dialogLayout.setBody(pane);
@@ -118,13 +120,17 @@ public class AbstractFXMLController implements IFXMLController{
 			JFXButton btnOK = new JFXButton("OK");
 			btnOK.setPrefWidth(100.0);
 			btnOK.setOnAction(event -> startBackgroundTaskAndCloseDialogOnSucceed(taskAfterOkClicked, dialog));
-
+			
 			JFXButton btnCancel = new JFXButton("Abbrechen");
 			btnCancel.setPrefWidth(100.0);
 			btnCancel.setOnAction(event -> dialog.close());
 			
 			dialogLayout.setActions(btnCancel, btnOK);
+			
 			dialog.show();
+			
+			FXMLGuiService.getInstance().startAfterInitializationTask(dialogContentController);
+			
 
 		} catch (IOException e) {
 			// Should not be thrown
@@ -133,7 +139,7 @@ public class AbstractFXMLController implements IFXMLController{
 
 	}
 	
-	private JFXDialog getLoadingDialog() {
+	private JFXDialog createLoadingDialog() {
 
 		JFXDialogLayout dialogContent = new JFXDialogLayout();
 		dialogContent.setBody(new JFXSpinner());

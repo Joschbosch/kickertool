@@ -23,7 +23,7 @@ public class Main extends Application {
     	
     	ctx = SpringApplication.run(Main.class);
         launch(args);
-
+        
     }
 
 	@Override

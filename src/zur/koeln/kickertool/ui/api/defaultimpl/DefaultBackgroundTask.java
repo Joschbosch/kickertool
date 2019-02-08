@@ -14,10 +14,10 @@ public class DefaultBackgroundTask implements BackgroundTask<Object>{
 	public void doOnSucceed(Object result) {
 		// nothing to do
 	}
-
+	
 	@Override
-	public void doOnFailure() {
-		// nothing to do
+	public void doOnFailure(Throwable exception) {
+		//
 	}
 
 }

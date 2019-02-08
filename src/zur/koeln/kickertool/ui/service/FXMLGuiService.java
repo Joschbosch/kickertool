@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.context.ConfigurableApplicationContext;
 
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -11,6 +12,7 @@ import javafx.stage.Stage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import zur.koeln.kickertool.ui.api.IFXMLController;
 
 public class FXMLGuiService {
 
@@ -34,7 +36,6 @@ public class FXMLGuiService {
 	private Stage primaryStage;
 
 	private static final String PREFIX = "../"; //$NON-NLS-1$
-	private static final String FXMLPARTS_PREFIX = "../fxmlparts/"; //$NON-NLS-1$
 
 	public void initialize(ConfigurableApplicationContext ctx, Stage primaryStage) {
 		setCtx(ctx);
@@ -44,24 +45,43 @@ public class FXMLGuiService {
 	public void switchScene(Scenes newScene) {
 
 		try {
-			FXMLLoader fxmlLoader = getFXMLLoader(newScene);
+			FXMLLoader fxmlLoader = getFXMLSceneLoader(newScene);
 			Pane pane = fxmlLoader.load();
-			prepareStage(getPrimaryStage(), pane);
+			prepareStage(getPrimaryStage(), pane, fxmlLoader.getController());
 		} catch (IOException e) {
 			// Should not be thrown
 			throw new IllegalStateException(e);
 		}
 	}
 
-	private void prepareStage(Stage stage, Pane pane) {
+	private void prepareStage(Stage stage, Pane pane, IFXMLController fxmlController) {
 		Scene newScene = new Scene(pane);
 		stage.setScene(newScene);
 		stage.sizeToScene();
 		stage.centerOnScreen();
 		stage.show();
+		
+		startAfterInitializationTask(fxmlController);
+	}
+	
+	public void startAfterInitializationTask(IFXMLController fxmlController) {
+		
+		Task<Void> initTask = new Task<Void>() {
+			
+			@Override
+			protected Void call() throws Exception {
+				// We let the thread sleep so that the GUI can be rendered meanwhile
+				Thread.sleep(250);
+				return null;
+			}
+		};
+		
+		initTask.setOnSucceeded(event -> fxmlController.doAfterInitializationCompleted());
+		
+		new Thread(initTask).start();
 	}
 
-	public FXMLLoader getFXMLLoader(Scenes scene) {
+	public FXMLLoader getFXMLSceneLoader(Scenes scene) {
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(PREFIX + scene.getFxmlFile()));
 		loader.setControllerFactory(getCtx()::getBean);
@@ -69,7 +89,7 @@ public class FXMLGuiService {
 
 	}
 	
-	public FXMLLoader getFXMLLoader(DialogContent dialogContent) {
+	public FXMLLoader getFXMLDialogLoader(DialogContent dialogContent) {
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(PREFIX + dialogContent.getFxmlFile()));
 		loader.setControllerFactory(getCtx()::getBean);

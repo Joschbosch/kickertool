@@ -33,29 +33,7 @@ public class FXMLMainMenuController extends AbstractFXMLController{
 
 	@FXML 
 	public void onPlayerManagementClicked() {
-		openDialogue(DialogContent.PLAYER_MANAGEMENT_DIALOGUE, new BackgroundTask<Void>() {
-
-			@Override
-			public Void performTask() {
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return null;
-			}
-
-			@Override
-			public void doOnSucceed(Void result) {
-				System.out.println("Succeed!");
-			}
-
-			@Override
-			public void doOnFailure() {
-				System.out.println("Failure!");
-			}
-		});
+		openDialogue(DialogContent.PLAYER_MANAGEMENT_DIALOGUE, new DefaultBackgroundTask());
 	}
 
 	@FXML 

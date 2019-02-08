@@ -13,4 +13,9 @@ public interface IFXMLController {
 	default void registerListener() {
 		// default
 	}
+	
+	@FXML
+	default void doAfterInitializationCompleted() {
+		// default
+	}
 }
