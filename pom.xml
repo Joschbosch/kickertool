@@ -86,27 +86,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-shade-plugin</artifactId> 
-				<executions> <execution> <phase>package</phase> <goals> <goal>shade</goal> 
-				</goals> <configuration> <createDependencyReducedPom>false</createDependencyReducedPom> 
-				<filters> <filter> <excludes> <exclude>META-INF/*.SF</exclude> <exclude>META-INF/*.DSA</exclude> 
-				<exclude>META-INF/*.RSA</exclude> <exclude>.settings/**</exclude> <exclude>*.classpath</exclude> 
-				<exclude>*.project</exclude> <exclude>*.txt</exclude> </excludes> </filter> 
-				</filters> </configuration> </execution> </executions> </plugin> <plugin> 
-				<groupId>com.akathist.maven.plugins.launch4j</groupId> <artifactId>launch4j-maven-plugin</artifactId> 
-				<version>1.7.23</version> <executions> <execution> <id>l4j-gui</id> <phase>package</phase> 
-				<goals> <goal>launch4j</goal> </goals> <configuration> <headerType>gui</headerType> 
-				<outfile>target/parcITKickerturnierHelferlein_0.1_RC1.exe</outfile> <jar>target/${project.artifactId}-${project.version}.jar</jar> 
-				<dontWrapJar>false</dontWrapJar> <errTitle>Error</errTitle> <classPath> <mainClass>zur.koeln.kickertool.Main</mainClass> 
-				<addDependencies>true</addDependencies> <preCp>anything</preCp> </classPath> 
-				<jre> <minVersion>1.8.0</minVersion> <initialHeapSize>512</initialHeapSize> 
-				<maxHeapSize>1024</maxHeapSize> </jre> <icon>resources/images/icon.ico</icon> 
-				<versionInfo> <fileVersion>1.0.0.0</fileVersion> <txtFileVersion>1.0.0.0</txtFileVersion> 
-				<fileDescription>des</fileDescription> <companyName>Zumann Entertainment</companyName> 
-				<copyright>None</copyright> <productVersion>0.1.0.0</productVersion> <txtProductVersion>${project.version}</txtProductVersion> 
-				<productName>parcIT Kickerturnier Helferlein</productName> <internalName>parcIT 
-				Kickerturnier Helferlein</internalName> <originalFilename>parcITKickerturnierHelferlein.exe</originalFilename> 
-				</versionInfo> </configuration> </execution> </executions> </plugin> -->
+			
 		</plugins>
 	</build>
 </project>

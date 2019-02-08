@@ -36,7 +36,10 @@ public class PlayerService
     }
 
     @Override
-    public Player updatePlayer(Player player) {
+    public Player updatePlayerName(UUID id, String newFirstName, String newLastName) {
+        Player player = playerRepo.getPlayer(id);
+        player.setFirstName(newFirstName);
+        player.setLastName(newLastName);
         return playerRepo.createOrUpdatePlayer(player);
     }
 

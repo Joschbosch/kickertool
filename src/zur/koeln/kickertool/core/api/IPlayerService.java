@@ -8,7 +8,7 @@ import zur.koeln.kickertool.core.model.Player;
 public interface IPlayerService {
     Player createNewPlayer(String firstName, String lastName);
 
-    Player updatePlayer(Player player);
+    Player updatePlayerName(UUID id, String newFirstName, String newLastName);
 
     void deletePlayer(UUID player);
 

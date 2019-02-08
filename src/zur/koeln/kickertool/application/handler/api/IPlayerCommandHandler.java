@@ -9,7 +9,7 @@ public interface IPlayerCommandHandler {
 
     PlayerDTO createNewPlayer(PlayerDTO dto);
     boolean deletePlayer(UUID id);
-    PlayerDTO updatePlayer(PlayerDTO id);
+    PlayerDTO updatePlayerName(UUID id, String newFirstName, String newLastName);
     List<PlayerDTO> getAllPlayer();
 
 }

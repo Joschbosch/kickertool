@@ -32,8 +32,8 @@ public class PlayerCommandHandler
     }
 
     @Override
-    public PlayerDTO updatePlayer(PlayerDTO id) {
-        Player updatePlayer = playerService.updatePlayer(new Player(id.getUid(), id.getFirstName(), id.getLastName(), false));
+    public PlayerDTO updatePlayerName(UUID id, String newFirstName, String newLastName) {
+        Player updatePlayer = playerService.updatePlayerName(id, newFirstName, newLastName);
         return new PlayerDTO(updatePlayer.getFirstName(), updatePlayer.getLastName(), updatePlayer.getUid(), updatePlayer.getStatus(), updatePlayer.isDummy());
     }
 
