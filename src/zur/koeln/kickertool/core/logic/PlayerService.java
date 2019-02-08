@@ -1,7 +1,9 @@
 package zur.koeln.kickertool.core.logic;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ public class PlayerService
     public Player createNewPlayer(String firstName, String lastName) {
         Player newPlayer = new Player(UUID.randomUUID(), firstName, lastName, false);
         newPlayer.setStatistics(new PlayerStatistics(newPlayer));
+
     	playerRepo.createOrUpdatePlayer(newPlayer);
     	return newPlayer;
     }
@@ -50,5 +53,9 @@ public class PlayerService
     @Override
     public List<Player> getAllPlayer() {
         return playerRepo.getAllPlayer();
+    }
+    @Override
+    public Map<UUID, PlayerStatistics> getAllPlayerStatistics() {
+        return playerRepo.getAllPlayer().stream().collect(Collectors.toMap(Player::getUid, Player::getStatistics));
     }
 }

@@ -6,14 +6,16 @@ package zur.koeln.kickertool.core.model;
 import java.util.UUID;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import zur.koeln.kickertool.core.kernl.MatchStatus;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Match {
 
-	private UUID matchID;
+    private UUID matchID;
 	
 	private Tournament tournament;
 
@@ -32,4 +34,8 @@ public class Match {
 	private MatchStatus status;
 
 
+    public Match(
+        UUID randomUUID) {
+        this.matchID = randomUUID;
+    }
 }

@@ -2,7 +2,9 @@ package zur.koeln.kickertool.infrastructure.persistence.entities;
 
 import java.util.UUID;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,20 +19,20 @@ public class MatchEntity {
     @Id
     private UUID matchID;
 
-    @OneToOne
-    private TournamentEntity tournament;
-
-    @OneToOne
-    @JoinColumn(name = "HOME_UID")
-    private TeamEntity homeTeam;
-
-    @OneToOne
-    @JoinColumn(name = "VISITING_UID")
-    private TeamEntity visitingTeam;
-
-    @OneToOne
-    @JoinColumn(name = "TABLE_ID")
-    private GameTableEntity table;
+    //    @OneToOne
+    //    private TournamentEntity tournament;
+    //
+    //    @OneToOne
+    //    @JoinColumn(name = "HOME_UID")
+    //    private TeamEntity homeTeam;
+    //
+    //    @OneToOne
+    //    @JoinColumn(name = "VISITING_UID")
+    //    private TeamEntity visitingTeam;
+    //
+    //    @OneToOne
+    //    @JoinColumn(name = "TABLE_ID")
+    //    private GameTableEntity table;
 
     private int roundNumber;
 
