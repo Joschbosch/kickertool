@@ -9,7 +9,7 @@ import zur.koeln.kickertool.application.api.dtos.PlayerStatisticsDTO;
 
 public interface IPlayerCommandHandler {
 
-    PlayerDTO createNewPlayer(PlayerDTO dto);
+    PlayerDTO createNewPlayer(String firstName, String lastName);
     boolean deletePlayer(UUID id);
     PlayerDTO updatePlayerName(UUID id, String newFirstName, String newLastName);
     List<PlayerDTO> getAllPlayer();

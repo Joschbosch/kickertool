@@ -23,8 +23,8 @@ public class PlayerCommandHandler
     private ModelMapper mapper;
 
     @Override
-    public PlayerDTO createNewPlayer(PlayerDTO dto) {
-        Player newPlayer = playerService.createNewPlayer(dto.getFirstName(), dto.getLastName());
+    public PlayerDTO createNewPlayer(String firstName, String lastName) {
+        Player newPlayer = playerService.createNewPlayer(firstName, lastName);
         return mapper.map(newPlayer, PlayerDTO.class);
     }
 
