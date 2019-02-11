@@ -6,15 +6,18 @@ public interface IFXMLController {
 	
 	@FXML
 	default void initialize() {
-		registerListener();
+		setupControls();
+		setupBindings();
 	}
 	
-	@FXML
-	default void registerListener() {
+	default void setupControls() {
 		// default
 	}
 	
-	@FXML
+	default void setupBindings() {
+		// default
+	}
+	
 	default void doAfterInitializationCompleted() {
 		// default
 	}

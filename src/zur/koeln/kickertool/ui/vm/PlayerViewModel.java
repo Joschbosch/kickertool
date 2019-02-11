@@ -7,22 +7,20 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import lombok.Getter;
+import lombok.Setter;
 
 public class PlayerViewModel extends RecursiveTreeObject<PlayerViewModel>{
-
-	private UUID id;
+	
+	@Getter
+	@Setter
+	private UUID uid;
 	
 	@Getter
 	private final StringProperty firstNameProperty = new SimpleStringProperty();
 	@Getter
 	private final StringProperty lastNameProperty = new SimpleStringProperty();
 	
-	public UUID getId() {
-		return id;
-	}
-	public void setId(UUID id) {
-		this.id = id;
-	}
+
 	public String getFirstName() {
 		return getFirstNameProperty().get();
 	}

@@ -4,7 +4,7 @@ public interface BackgroundTask<T> {
 	
 	T performTask() throws Exception;
 	
-	void doOnSucceed(T result);
+	void doOnSuccess(T result);
 	
 	void doOnFailure(Throwable exception);
 	

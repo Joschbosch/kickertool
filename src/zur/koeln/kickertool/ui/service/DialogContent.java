@@ -3,6 +3,7 @@ package zur.koeln.kickertool.ui.service;
 import lombok.Getter;
 
 @Getter
+@SuppressWarnings("nls")
 public enum DialogContent {
 
 	PLAYER_MANAGEMENT_DIALOGUE("PlayerManagementDialogContent.fxml", "Spielerverwaltung");
