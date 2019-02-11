@@ -53,14 +53,24 @@
 			<version>2.3.0</version>
 		</dependency>
 		<dependency>
-		    <groupId>com.jfoenix</groupId>
-		    <artifactId>jfoenix</artifactId>
-		    <version>8.0.8</version>
+			<groupId>com.jfoenix</groupId>
+			<artifactId>jfoenix</artifactId>
+			<version>8.0.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.javatuples</groupId>
 			<artifactId>javatuples</artifactId>
 			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>11.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>11.0.2</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -83,7 +93,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			
+
 		</plugins>
 	</build>
 </project>
