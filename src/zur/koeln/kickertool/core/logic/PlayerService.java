@@ -8,13 +8,15 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import zur.koeln.kickertool.core.api.IDummyPlayerRepository;
-import zur.koeln.kickertool.core.api.IPlayerRepository;
+import lombok.Setter;
 import zur.koeln.kickertool.core.api.IPlayerService;
 import zur.koeln.kickertool.core.model.Player;
 import zur.koeln.kickertool.core.model.PlayerStatistics;
+import zur.koeln.kickertool.core.spi.IDummyPlayerRepository;
+import zur.koeln.kickertool.core.spi.IPlayerRepository;
 
 @Service
+@Setter
 public class PlayerService
     implements IPlayerService {
 
@@ -28,7 +30,6 @@ public class PlayerService
     public Player createNewPlayer(String firstName, String lastName) {
         Player newPlayer = new Player(UUID.randomUUID(), firstName, lastName, false);
         newPlayer.setStatistics(new PlayerStatistics(newPlayer));
-
     	playerRepo.createOrUpdatePlayer(newPlayer);
     	return newPlayer;
     }

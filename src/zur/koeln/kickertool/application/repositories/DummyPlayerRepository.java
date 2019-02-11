@@ -4,9 +4,9 @@ import java.util.*;
 
 import org.springframework.stereotype.Service;
 
-import zur.koeln.kickertool.core.api.IDummyPlayerRepository;
 import zur.koeln.kickertool.core.kernl.PlayerStatus;
 import zur.koeln.kickertool.core.model.Player;
+import zur.koeln.kickertool.core.spi.IDummyPlayerRepository;
 
 @Service
 public class DummyPlayerRepository

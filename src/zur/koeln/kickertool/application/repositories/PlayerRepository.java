@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import zur.koeln.kickertool.application.api.IPlayerPersistence;
-import zur.koeln.kickertool.core.api.IPlayerRepository;
 import zur.koeln.kickertool.core.model.Player;
+import zur.koeln.kickertool.core.spi.IPlayerRepository;
 
 @Repository
 public class PlayerRepository

@@ -12,6 +12,7 @@ import zur.koeln.kickertool.core.kernl.MatchStatus;
 import zur.koeln.kickertool.core.kernl.PlayerStatus;
 import zur.koeln.kickertool.core.kernl.TournamentStatus;
 import zur.koeln.kickertool.core.model.*;
+import zur.koeln.kickertool.core.spi.ITournamentRepository;
 
 @Service
 public class TournamentService
