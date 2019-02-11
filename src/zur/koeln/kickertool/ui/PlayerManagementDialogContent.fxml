@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXListView?>
-<?import javafx.geometry.Insets?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -16,13 +16,11 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <JFXListView fx:id="lstViewPlayers" GridPane.columnSpan="2" GridPane.rowSpan="2">
-         <GridPane.margin>
-            <Insets />
-         </GridPane.margin>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </JFXListView>
+      <JFXTreeTableView fx:id="tblPlayers" editable="true" showRoot="false" GridPane.columnSpan="2" GridPane.rowSpan="2">
+         <columns>
+            <JFXTreeTableColumn fx:id="tblColFirstName" minWidth="-1.0" prefWidth="150.0" resizable="false" text="Vorname" />
+            <JFXTreeTableColumn fx:id="tblColLastName" minWidth="-Infinity" prefWidth="150.0" resizable="false" text="Nachname" />
+         </columns>
+      </JFXTreeTableView>
    </children>
 </GridPane>

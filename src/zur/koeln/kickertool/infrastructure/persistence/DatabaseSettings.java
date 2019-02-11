@@ -24,9 +24,5 @@ public class DatabaseSettings {
 
         return dm;
     }
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
-
+    
 }
