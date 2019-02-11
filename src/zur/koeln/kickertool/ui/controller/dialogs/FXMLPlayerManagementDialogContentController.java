@@ -10,9 +10,11 @@ import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
+import javafx.scene.control.TreeTableColumn.CellEditEvent;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.util.Callback;
 import lombok.AccessLevel;
@@ -31,9 +33,10 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 	
 	@FXML JFXTreeTableView tblPlayers;
 
-	@FXML JFXTreeTableColumn tblColFirstName;
+	@FXML TreeTableColumn tblColFirstName;
 
-	@FXML JFXTreeTableColumn tblColLastName;
+	@FXML TreeTableColumn tblColLastName;
+	
 	
 	@Override
 	public void initialize() {
@@ -61,8 +64,28 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 				return param.getValue().getValue().getLastNameProperty();
 			}
 		});
-		
+
 		getTblColFirstName().setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		getTblColFirstName().setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<PlayerViewModel, String>>() {
+
+			@Override
+			public void handle(CellEditEvent<PlayerViewModel, String> event) {
+				PlayerViewModel playerViewModel = event.getRowValue().getValue();
+				playerViewModel.setFirstName(event.getNewValue());
+				startBackgroundTask(updatePlayer(playerViewModel));
+			}
+		});
+		
+		getTblColLastName().setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+		getTblColLastName().setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<PlayerViewModel, String>>() {
+
+			@Override
+			public void handle(CellEditEvent<PlayerViewModel, String> event) {
+				PlayerViewModel playerViewModel = event.getRowValue().getValue();
+				playerViewModel.setLastName(event.getNewValue());
+				startBackgroundTask(updatePlayer(playerViewModel));
+			}
+		});
 	}
 
 	@Override
@@ -75,7 +98,8 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 
 			@Override
 			public Void performTask() throws Exception{
-				return getVm().loadPlayersToList();
+				getVm().loadPlayersToList();
+				return null;
 			}
 
 			@Override
@@ -88,6 +112,27 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 				System.out.println(exception.getMessage());
 			}
 
+		};
+	}
+	
+	private BackgroundTask updatePlayer(PlayerViewModel playerViewModel) {
+		return new BackgroundTask<PlayerViewModel>() {
+
+			@Override
+			public PlayerViewModel performTask() throws Exception {
+				getVm().updatePlayer(playerViewModel);
+				return null;
+			}
+
+			@Override
+			public void doOnSucceed(PlayerViewModel result) {
+				//
+			}
+
+			@Override
+			public void doOnFailure(Throwable exception) {
+				//
+			}
 		};
 	}
 	

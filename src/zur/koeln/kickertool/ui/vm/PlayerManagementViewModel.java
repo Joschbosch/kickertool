@@ -24,13 +24,17 @@ public class PlayerManagementViewModel {
 
 	private final ObservableList<PlayerViewModel> players = FXCollections.observableArrayList();
 	
-	public Void loadPlayersToList() {
+	public void loadPlayersToList() {
 		getPlayers().clear();
 		
 		getPlayers().addAll(getModelMapper().map(getPlayerCommandHandler().getAllPlayer(), PlayerViewModel.class));
-		
-		return null;
 
+	}
+
+	public void updatePlayer(PlayerViewModel playerViewModel) {
+		
+		getPlayerCommandHandler().updatePlayerName(playerViewModel.getUid(), playerViewModel.getFirstName(), playerViewModel.getLastName());
+	
 	}
 	
 }

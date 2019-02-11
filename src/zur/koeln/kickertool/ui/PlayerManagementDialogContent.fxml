@@ -18,8 +18,8 @@
    <children>
       <JFXTreeTableView fx:id="tblPlayers" editable="true" showRoot="false" GridPane.columnSpan="2" GridPane.rowSpan="2">
          <columns>
-            <JFXTreeTableColumn fx:id="tblColFirstName" minWidth="-1.0" prefWidth="150.0" resizable="false" text="Vorname" />
-            <JFXTreeTableColumn fx:id="tblColLastName" minWidth="-Infinity" prefWidth="150.0" resizable="false" text="Nachname" />
+            <TreeTableColumn fx:id="tblColFirstName" minWidth="-1.0" prefWidth="150.0" resizable="false" text="Vorname" />
+            <TreeTableColumn fx:id="tblColLastName" minWidth="-Infinity" prefWidth="150.0" resizable="false" text="Nachname" />
          </columns>
       </JFXTreeTableView>
    </children>
