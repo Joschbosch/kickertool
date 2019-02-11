@@ -1,5 +1,7 @@
 package zur.koeln.kickertool.ui.vm;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,17 +26,12 @@ public class PlayerManagementViewModel {
 
 	private final ObservableList<PlayerViewModel> players = FXCollections.observableArrayList();
 	
-	public void loadPlayersToList() {
-		getPlayers().clear();
-		
-		getPlayers().addAll(getModelMapper().map(getPlayerCommandHandler().getAllPlayer(), PlayerViewModel.class));
-
+	public List<PlayerViewModel> loadPlayersToList() {
+		return getModelMapper().map(getPlayerCommandHandler().getAllPlayer(), PlayerViewModel.class);
 	}
 
 	public void updatePlayer(PlayerViewModel playerViewModel) {
-		
 		getPlayerCommandHandler().updatePlayerName(playerViewModel.getUid(), playerViewModel.getFirstName(), playerViewModel.getLastName());
-	
 	}
 	
 }

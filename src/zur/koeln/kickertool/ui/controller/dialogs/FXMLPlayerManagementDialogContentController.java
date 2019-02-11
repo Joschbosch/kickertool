@@ -1,5 +1,7 @@
 package zur.koeln.kickertool.ui.controller.dialogs;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -113,16 +115,17 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 	}
 
 	private BackgroundTask loadPlayerListTask() {
-		return new BackgroundTask<Void>() {
+		return new BackgroundTask<List<PlayerViewModel>>() {
 
 			@Override
-			public Void performTask() throws Exception{
-				getVm().loadPlayersToList();
-				return null;
+			public List<PlayerViewModel> performTask() throws Exception{
+				return getVm().loadPlayersToList();
 			}
 
 			@Override
-			public void doOnSuccess(Void result) {
+			public void doOnSuccess(List<PlayerViewModel> result) {
+				getVm().getPlayers().clear();
+				getVm().getPlayers().addAll(result);
 				getTblPlayers().setRoot(new RecursiveTreeItem<PlayerViewModel>(getVm().getPlayers(), RecursiveTreeObject::getChildren));
 			}
 
