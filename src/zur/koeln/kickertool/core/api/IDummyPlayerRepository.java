@@ -11,4 +11,6 @@ public interface IDummyPlayerRepository {
 	Player getDummyPlayer(UUID uid);
 	
 	List<Player> getAllDummyPlayer();
+
+    Player getNewOrFreeDummyPlayer();
 }

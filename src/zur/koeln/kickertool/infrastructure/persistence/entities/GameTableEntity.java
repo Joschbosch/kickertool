@@ -1,5 +1,7 @@
 package zur.koeln.kickertool.infrastructure.persistence.entities;
 
+import java.util.UUID;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -15,7 +17,7 @@ import zur.koeln.kickertool.core.kernl.GameTableStatus;
 public class GameTableEntity {
 
     @Id
-    private Long id;
+    private UUID id;
 
     private int tableNumber;
 

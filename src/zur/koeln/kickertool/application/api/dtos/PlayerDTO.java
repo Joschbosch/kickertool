@@ -10,7 +10,8 @@ import zur.koeln.kickertool.core.kernl.PlayerStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PlayerDTO {
+public class PlayerDTO
+    extends DTO {
 
     private String firstName;
     private String lastName;

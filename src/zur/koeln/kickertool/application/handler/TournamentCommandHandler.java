@@ -1,14 +1,16 @@
 package zur.koeln.kickertool.application.handler;
 
+import java.util.List;
 import java.util.UUID;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import zur.koeln.kickertool.application.api.dtos.PlayerDTO;
 import zur.koeln.kickertool.application.api.dtos.TournamentDTO;
 import zur.koeln.kickertool.application.handler.api.ITournamentCommandHandler;
 import zur.koeln.kickertool.core.api.ITournamentService;
+import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
 
 @Component
 public class TournamentCommandHandler
@@ -18,7 +20,7 @@ public class TournamentCommandHandler
     private ITournamentService tournamentService;
 
     @Autowired
-    private ModelMapper mapper;
+    private CustomModelMapper mapper;
 
     @Override
     public TournamentDTO createNewTournament() {
@@ -38,14 +40,14 @@ public class TournamentCommandHandler
     }
 
     @Override
-    public boolean addParticipantToTournament(UUID tournamentIDToAdd, UUID player) {
-        return tournamentService.addParticipantToTournament(tournamentIDToAdd, player);
+    public List<PlayerDTO> addParticipantToTournament(UUID tournamentIDToAdd, UUID player) {
+        return mapper.map(tournamentService.addParticipantToTournament(tournamentIDToAdd, player), PlayerDTO.class);
 
     }
 
     @Override
-    public boolean removeParticipantFromournament(UUID tournamentIDToRemove, UUID participant) {
-        return tournamentService.removeParticipantFromournament(tournamentIDToRemove, participant);
+    public List<PlayerDTO> removeParticipantFromournament(UUID tournamentIDToRemove, UUID participant) {
+        return mapper.map(tournamentService.removeParticipantFromournament(tournamentIDToRemove, participant), PlayerDTO.class);
     }
 
 }

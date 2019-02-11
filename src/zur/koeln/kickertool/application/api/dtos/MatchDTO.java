@@ -10,7 +10,8 @@ import zur.koeln.kickertool.core.kernl.MatchStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MatchDTO {
+public class MatchDTO
+    extends DTO {
 
     private UUID matchID;
 

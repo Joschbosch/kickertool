@@ -10,7 +10,8 @@ import zur.koeln.kickertool.core.kernl.TournamentMode;
 @NoArgsConstructor
 @Getter
 @Setter
-public class SettingsDTO {
+public class SettingsDTO
+    extends DTO {
 
     private UUID uid;
 

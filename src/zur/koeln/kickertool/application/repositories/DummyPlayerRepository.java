@@ -1,27 +1,40 @@
 package zur.koeln.kickertool.application.repositories;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import org.springframework.stereotype.Service;
 
 import zur.koeln.kickertool.core.api.IDummyPlayerRepository;
+import zur.koeln.kickertool.core.kernl.PlayerStatus;
 import zur.koeln.kickertool.core.model.Player;
 
 @Service
 public class DummyPlayerRepository
     implements IDummyPlayerRepository {
 
+    private final Map<UUID, Player> dummyPlayers = new HashMap<>();
+
     @Override
     public Player getDummyPlayer(UUID uid) {
-        // TODO sazu 5.5 2019 Auto-generated method stub
-        return null;
+        return dummyPlayers.get(uid);
+    }
+
+    @Override
+    public Player getNewOrFreeDummyPlayer() {
+        Optional<Player> findFirst = dummyPlayers.values().stream().filter(d -> d.getStatus() == PlayerStatus.NOT_IN_TOURNAMENT).findFirst();
+        Player dummy = null;
+        if (findFirst.isPresent()) {
+            dummy = findFirst.get();
+        } else {
+            dummy = new Player(UUID.randomUUID(), "Dummy Player", String.valueOf(dummyPlayers.size()), true);
+        }
+        dummy.setStatus(PlayerStatus.IN_TOURNAMENT);
+        return dummy;
     }
 
     @Override
     public List<Player> getAllDummyPlayer() {
-        // TODO sazu 5.5 2019 Auto-generated method stub
-        return null;
+        return new ArrayList<>(dummyPlayers.values());
     }
 
 }

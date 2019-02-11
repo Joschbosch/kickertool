@@ -33,11 +33,6 @@ public class PlayerService
     	return newPlayer;
     }
     
-    public Player createDummyPlayer(String firstName, String lastName) {
-        Player newDummyPlayer = new Player(UUID.randomUUID(), firstName, lastName, true);
-    	return newDummyPlayer;
-    }
-
     @Override
     public Player updatePlayerName(UUID id, String newFirstName, String newLastName) {
         Player player = playerRepo.getPlayer(id);
@@ -61,6 +56,15 @@ public class PlayerService
 
     @Override
     public Player getPlayerById(UUID playerId) {
-        return playerRepo.getPlayer(playerId);
+        Player returningPlayer = playerRepo.getPlayer(playerId);
+        if (returningPlayer == null) {
+            dummyPlayerRepo.getDummyPlayer(playerId);
+        }
+        return returningPlayer;
+    }
+
+    @Override
+    public Player getNextOrNewDummyPlayer() {
+        return dummyPlayerRepo.getNewOrFreeDummyPlayer();
     }
 }

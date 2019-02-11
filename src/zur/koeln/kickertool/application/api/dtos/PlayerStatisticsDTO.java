@@ -11,7 +11,8 @@ import zur.koeln.kickertool.core.model.Player;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PlayerStatisticsDTO {
+public class PlayerStatisticsDTO
+    extends DTO {
 
     private UUID uid;
 

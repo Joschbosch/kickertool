@@ -12,7 +12,8 @@ import zur.koeln.kickertool.core.model.Settings;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TournamentDTO {
+public class TournamentDTO
+    extends DTO {
     private UUID uid;
 
     private String name;

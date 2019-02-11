@@ -41,4 +41,9 @@ public class Tournament {
         currentRound = 0;
 
     }
+
+    public void addMatch(Match m) {
+        getMatches().add(m);
+    }
+
 }

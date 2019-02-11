@@ -20,4 +20,6 @@ public interface IPlayerService {
 
     Player getPlayerById(UUID participant);
 
+    Player getNextOrNewDummyPlayer();
+
 }
