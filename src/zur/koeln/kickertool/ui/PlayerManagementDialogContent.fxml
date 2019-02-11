@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -14,6 +16,7 @@
   <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <JFXTreeTableView fx:id="tblPlayers" editable="true" showRoot="false" GridPane.columnSpan="2" GridPane.rowSpan="2">
@@ -22,5 +25,15 @@
             <TreeTableColumn fx:id="tblColLastName" minWidth="-Infinity" prefWidth="150.0" resizable="false" text="Nachname" />
          </columns>
       </JFXTreeTableView>
+      <JFXButton fx:id="btnAddPlayer" onAction="#onAddPlayerClicked" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin>
+      </JFXButton>
+      <JFXButton fx:id="btnDeletePlayer" onAction="#onDeletePlayerClicked" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets left="5.0" />
+         </GridPane.margin>
+      </JFXButton>
    </children>
 </GridPane>

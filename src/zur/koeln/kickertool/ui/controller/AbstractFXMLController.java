@@ -31,6 +31,11 @@ public class AbstractFXMLController implements IFXMLController{
 	@FXML 
 	StackPane rootStackPane;
 
+	@Override
+	public void initialize() {
+		IFXMLController.super.initialize();
+	}
+	
 	protected void startBackgroundTask(BackgroundTask backgroundTask) {
 		
 		JFXDialog loadingDialog = createLoadingDialog();
@@ -49,7 +54,7 @@ public class AbstractFXMLController implements IFXMLController{
 			@Override
 			public void handle(WorkerStateEvent event) {
 				loadingDialog.close();
-				backgroundTask.doOnSucceed(task.getValue());
+				backgroundTask.doOnSuccess(task.getValue());
 			}
 		});
 		
@@ -85,7 +90,7 @@ public class AbstractFXMLController implements IFXMLController{
 			@Override
 			public void handle(WorkerStateEvent event) {
 				loadingDialog.close();
-				backgroundTask.doOnSucceed(task.getValue());
+				backgroundTask.doOnSuccess(task.getValue());
 				dialog.close();
 			}
 		});

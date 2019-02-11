@@ -2,16 +2,16 @@ package zur.koeln.kickertool.ui.api.defaultimpl;
 
 import zur.koeln.kickertool.ui.api.BackgroundTask;
 
-public class DefaultBackgroundTask implements BackgroundTask<Object>{
+public class DefaultBackgroundTask implements BackgroundTask<Void>{
 
 	@Override
-	public Object performTask() {
+	public Void performTask() {
 		// nothing to do
 		return null;
 	}
 
 	@Override
-	public void doOnSucceed(Object result) {
+	public void doOnSuccess(Void result) {
 		// nothing to do
 	}
 	
