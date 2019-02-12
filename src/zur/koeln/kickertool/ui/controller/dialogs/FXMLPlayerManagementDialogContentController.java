@@ -153,7 +153,8 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 
 			@Override
 			public void doOnFailure(Throwable exception) {
-				System.out.println(exception.getMessage());
+				showError(exception.getMessage());
+				startBackgroundTask(loadPlayerListTask());
 			}
 		};
 	}
