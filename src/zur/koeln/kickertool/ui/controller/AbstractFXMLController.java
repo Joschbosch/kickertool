@@ -13,6 +13,7 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
@@ -149,10 +150,29 @@ public class AbstractFXMLController implements IFXMLController{
 		JFXDialogLayout dialogContent = new JFXDialogLayout();
 		dialogContent.setBody(new JFXSpinner());
 
+		return new JFXDialog(getRootStackPane(), dialogContent, DialogTransition.CENTER, false);
+	}
+	
+	protected void showError(String error) {
+		
+		JFXDialogLayout dialogContent = new JFXDialogLayout();
+		
+		Label headerText = new Label("Ein Fehler ist aufgetreten!");
+		headerText.setStyle("-fx-text-fill: red;");
+		
+		dialogContent.setHeading(headerText);
+		dialogContent.setBody(new Text(error));
+
 		JFXDialog dialog = new JFXDialog(getRootStackPane(), dialogContent, DialogTransition.CENTER, false);
-		dialog.setPrefWidth(300);
-		dialog.setPrefHeight(300);
-		return dialog;
+		
+		JFXButton btnOK = new JFXButton("OK");
+		btnOK.setPrefWidth(100.0);
+		btnOK.setOnAction(event -> dialog.close());
+		
+		dialogContent.setActions(btnOK);
+		
+		dialog.show();
+		
 	}
 
 	
