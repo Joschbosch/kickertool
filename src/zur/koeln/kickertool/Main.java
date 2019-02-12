@@ -11,6 +11,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
 import zur.koeln.kickertool.ui.service.Scenes;
 
