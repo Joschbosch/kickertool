@@ -7,10 +7,7 @@ import org.springframework.stereotype.Service;
 
 import zur.koeln.kickertool.application.api.dtos.PlayerDTO;
 import zur.koeln.kickertool.application.api.dtos.PlayerStatisticsDTO;
-import zur.koeln.kickertool.application.api.dtos.base.ListResponseDTO;
-import zur.koeln.kickertool.application.api.dtos.base.MapResponseDTO;
-import zur.koeln.kickertool.application.api.dtos.base.SingleResponseDTO;
-import zur.koeln.kickertool.application.api.dtos.base.StatusDTO;
+import zur.koeln.kickertool.application.api.dtos.base.*;
 import zur.koeln.kickertool.application.handler.api.IPlayerCommandHandler;
 import zur.koeln.kickertool.core.api.IPlayerService;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
@@ -39,9 +36,11 @@ public class PlayerCommandHandler
     }
 
     @Override
-    public boolean deletePlayer(UUID id) {
+    public StatusOnlyDTO deletePlayer(UUID id) {
         playerService.deletePlayer(id);
-        return true;
+        StatusOnlyDTO statusOnlyDTO = new StatusOnlyDTO();
+        statusOnlyDTO.setDtoStatus(StatusDTO.SUCCESS);
+        return statusOnlyDTO;
     }
 
     @Override

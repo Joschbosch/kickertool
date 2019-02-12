@@ -7,11 +7,12 @@ import zur.koeln.kickertool.application.api.dtos.PlayerStatisticsDTO;
 import zur.koeln.kickertool.application.api.dtos.base.ListResponseDTO;
 import zur.koeln.kickertool.application.api.dtos.base.MapResponseDTO;
 import zur.koeln.kickertool.application.api.dtos.base.SingleResponseDTO;
+import zur.koeln.kickertool.application.api.dtos.base.StatusOnlyDTO;
 
 public interface IPlayerCommandHandler {
 
     SingleResponseDTO<PlayerDTO> createNewPlayer(String firstName, String lastName);
-    boolean deletePlayer(UUID id);
+    StatusOnlyDTO deletePlayer(UUID id);
     SingleResponseDTO<PlayerDTO> updatePlayerName(UUID id, String newFirstName, String newLastName);
     ListResponseDTO<PlayerDTO> getAllPlayer();
     MapResponseDTO<PlayerStatisticsDTO> getAllPlayerStatistics();
