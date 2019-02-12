@@ -1,6 +1,7 @@
 package zur.koeln.kickertool.ui.controller.dialogs;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,14 +25,18 @@ import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
+import zur.koeln.kickertool.ui.api.DialogClosedCallback;
+import zur.koeln.kickertool.ui.api.IFXMLDialogContent;
 import zur.koeln.kickertool.ui.controller.AbstractFXMLController;
+import zur.koeln.kickertool.ui.service.DialogContent;
 import zur.koeln.kickertool.ui.service.Icons;
 import zur.koeln.kickertool.ui.vm.PlayerManagementViewModel;
+import zur.koeln.kickertool.ui.vm.PlayerNameEditViewModel;
 import zur.koeln.kickertool.ui.vm.PlayerViewModel;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLPlayerManagementDialogContentController extends AbstractFXMLController {
+public class FXMLPlayerManagementDialogContentController extends AbstractFXMLController implements IFXMLDialogContent<Void> {
 	
 	@Autowired
 	PlayerManagementViewModel vm;
@@ -131,7 +136,7 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 
 			@Override
 			public void doOnFailure(Throwable exception) {
-				showError(exception.getMessage());
+				showError(exception);
 			}
 
 		};
@@ -153,18 +158,78 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 
 			@Override
 			public void doOnFailure(Throwable exception) {
-				showError(exception.getMessage());
+				showError(exception);
 				startBackgroundTask(loadPlayerListTask());
 			}
 		};
 	}
 
 	@FXML public void onAddPlayerClicked() {
-		// TODO
+		openDialogue(DialogContent.PLAYER_NAME_DIALOGUE, new DialogClosedCallback<PlayerNameEditViewModel>() {
+
+			@Override
+			public void doAfterDialogClosed(PlayerNameEditViewModel result) {
+				startBackgroundTask(insertNewPlayerTask(result));
+			}
+
+		});
+	}
+	
+	private BackgroundTask insertNewPlayerTask(PlayerNameEditViewModel newPlayerNameViewModel) {
+		
+		return new BackgroundTask<PlayerViewModel>() {
+
+			@Override
+			public PlayerViewModel performTask() throws Exception {
+				
+				return getVm().insertNewPlayer(newPlayerNameViewModel.getFirstName(), newPlayerNameViewModel.getLastName());
+			}
+
+			@Override
+			public void doOnSuccess(PlayerViewModel result) {
+				getVm().getPlayers().add(result);
+			}
+
+			@Override
+			public void doOnFailure(Throwable exception) {
+				showError(exception);
+			}
+		};
 	}
 
-	@FXML public void onDeletePlayerClicked() {
-		// TODO
+	@FXML 
+	public void onDeletePlayerClicked() {
+		
+		ObservableList<RecursiveTreeItem<PlayerViewModel>> selectedItems = getTblPlayers().getSelectionModel().getSelectedItems();
+		List<PlayerViewModel> playerViewModelsToDelete = selectedItems.stream().map(RecursiveTreeItem<PlayerViewModel>::getValue).collect(Collectors.toList());
+		
+		startBackgroundTask(deletePlayerTask(playerViewModelsToDelete));
+	}
+
+	private BackgroundTask deletePlayerTask(List<PlayerViewModel> selectedItems) {
+		
+		return new BackgroundTask<List<PlayerViewModel>>() {
+
+			@Override
+			public List<PlayerViewModel> performTask() throws Exception {
+				return getVm().deletePlayer(selectedItems);
+			}
+
+			@Override
+			public void doOnSuccess(List<PlayerViewModel> result) {
+				getVm().getPlayers().removeAll(result);
+			}
+
+			@Override
+			public void doOnFailure(Throwable exception) {
+				showError(exception);
+			}
+		};
+	}
+
+	@Override
+	public Void sendResult() {
+		return null;
 	}
 
 }

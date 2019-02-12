@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialog.DialogTransition;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXSpinner;
+import com.jfoenix.controls.base.IFXLabelFloatControl;
 
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -21,7 +22,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
+import zur.koeln.kickertool.ui.api.DialogClosedCallback;
 import zur.koeln.kickertool.ui.api.IFXMLController;
+import zur.koeln.kickertool.ui.api.IFXMLDialogContent;
 import zur.koeln.kickertool.ui.service.DialogContent;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
 
@@ -72,50 +75,17 @@ public class AbstractFXMLController implements IFXMLController{
 		
 	}
 	
-	private void startBackgroundTaskAndCloseDialogOnSucceed(BackgroundTask backgroundTask, JFXDialog dialog) {
-		
-		JFXDialog loadingDialog = createLoadingDialog();
-		loadingDialog.show();
-		
-		Task<Object> task = new Task<Object>() {
-			
-			@Override
-			protected Object call() throws Exception {
-				
-				return backgroundTask.performTask();
-			}
-		};
-		
-		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-			
-			@Override
-			public void handle(WorkerStateEvent event) {
-				loadingDialog.close();
-				backgroundTask.doOnSuccess(task.getValue());
-				dialog.close();
-			}
-		});
-		
-		task.setOnFailed(new EventHandler<WorkerStateEvent>() {
-			
-			@Override
-			public void handle(WorkerStateEvent event) {
-				loadingDialog.close();
-				backgroundTask.doOnFailure(task.getException());
-			}
-		});
-	
-		new Thread(task).start();
-		
-	}
-	
-	protected void openDialogue(DialogContent dialogContent, BackgroundTask taskAfterOkClicked) {
+	protected void openDialogue(DialogContent dialogContent, DialogClosedCallback dialogClosedCallback) {
 
 		try {
 			FXMLLoader fxmlSceneLoader = FXMLGuiService.getInstance().getFXMLDialogLoader(dialogContent);
 			Pane pane = fxmlSceneLoader.load();
 			AbstractFXMLController dialogContentController = fxmlSceneLoader.getController();
 			dialogContentController.setRootStackPane(getRootStackPane());
+				
+			if (!IFXMLDialogContent.class.isInstance(dialogContentController)) {
+				throw new IllegalArgumentException("Der Dialog " + dialogContent + " implementiert nicht das Interface " + IFXMLDialogContent.class.getSimpleName());
+			}
 			
 			JFXDialogLayout dialogLayout = new JFXDialogLayout();
 			dialogLayout.setHeading(new Text(dialogContent.getDialogTitle()));
@@ -125,13 +95,22 @@ public class AbstractFXMLController implements IFXMLController{
 
 			JFXButton btnOK = new JFXButton("OK");
 			btnOK.setPrefWidth(100.0);
-			btnOK.setOnAction(event -> startBackgroundTaskAndCloseDialogOnSucceed(taskAfterOkClicked, dialog));
+			btnOK.setOnAction(event -> {
+				dialog.close();
+				dialogClosedCallback.doAfterDialogClosed(((IFXMLDialogContent) dialogContentController).sendResult());
+			});
 			
 			JFXButton btnCancel = new JFXButton("Abbrechen");
 			btnCancel.setPrefWidth(100.0);
 			btnCancel.setOnAction(event -> dialog.close());
 			
 			dialogLayout.setActions(btnCancel, btnOK);
+			
+			if (dialogContent.getPreferredWidth() != null) {
+				dialogLayout.setMinWidth(dialogContent.getPreferredWidth().doubleValue());
+				dialogLayout.setMaxWidth(dialogContent.getPreferredWidth().doubleValue());
+				dialogLayout.setPrefWidth(dialogContent.getPreferredWidth().doubleValue());
+			}
 			
 			dialog.show();
 			
@@ -150,10 +129,16 @@ public class AbstractFXMLController implements IFXMLController{
 		JFXDialogLayout dialogContent = new JFXDialogLayout();
 		dialogContent.setBody(new JFXSpinner());
 
+		double size = 150.0;
+		
+		dialogContent.setMinWidth(size);
+		dialogContent.setMaxWidth(size);
+		dialogContent.setPrefWidth(size);
+		
 		return new JFXDialog(getRootStackPane(), dialogContent, DialogTransition.CENTER, false);
 	}
 	
-	protected void showError(String error) {
+	protected void showError(Throwable exception) {
 		
 		JFXDialogLayout dialogContent = new JFXDialogLayout();
 		
@@ -161,7 +146,7 @@ public class AbstractFXMLController implements IFXMLController{
 		headerText.setStyle("-fx-text-fill: red;");
 		
 		dialogContent.setHeading(headerText);
-		dialogContent.setBody(new Text(error));
+		dialogContent.setBody(new Text(exception.getMessage()));
 
 		JFXDialog dialog = new JFXDialog(getRootStackPane(), dialogContent, DialogTransition.CENTER, false);
 		
