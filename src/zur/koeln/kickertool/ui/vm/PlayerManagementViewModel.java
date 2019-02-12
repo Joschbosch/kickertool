@@ -20,6 +20,7 @@ import zur.koeln.kickertool.application.handler.api.IPlayerCommandHandler;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
 import zur.koeln.kickertool.ui.exceptions.BackgroundTaskException;
 import zur.koeln.kickertool.ui.vm.base.FXViewModel;
+import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
 @Component
 @Getter
@@ -35,7 +36,7 @@ public class PlayerManagementViewModel extends FXViewModel{
 
 	private final ObservableList<PlayerViewModel> players = FXCollections.observableArrayList();
 	
-	public List<PlayerViewModel> loadPlayersToList() throws BackgroundTaskException{
+	public List<PlayerViewModel> loadAllPlayer() throws BackgroundTaskException{
 		
 		ListResponseDTO<PlayerDTO> response = getPlayerCommandHandler().getAllPlayer();
 		
@@ -79,4 +80,11 @@ public class PlayerManagementViewModel extends FXViewModel{
 		
 		return playerViewModel;
 	}
+
+	@Override
+	public ModelValidationResult validate() {
+		
+		return ModelValidationResult.empty();
+	}
+
 }

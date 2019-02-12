@@ -4,7 +4,7 @@ import zur.koeln.kickertool.application.api.dtos.base.DTO;
 import zur.koeln.kickertool.application.api.dtos.base.StatusDTO;
 import zur.koeln.kickertool.ui.exceptions.BackgroundTaskException;
 
-public class FXViewModel {
+public abstract class FXViewModel {
 	
 	protected void checkResponse(DTO baseDto) throws BackgroundTaskException {
 		
@@ -13,5 +13,7 @@ public class FXViewModel {
 		}
 		
 	}
+	
+	public abstract ModelValidationResult validate();
 	
 }

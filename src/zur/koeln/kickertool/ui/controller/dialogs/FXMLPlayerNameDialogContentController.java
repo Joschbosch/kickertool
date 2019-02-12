@@ -11,6 +11,7 @@ import lombok.Getter;
 import zur.koeln.kickertool.ui.api.IFXMLDialogContent;
 import zur.koeln.kickertool.ui.controller.AbstractFXMLController;
 import zur.koeln.kickertool.ui.vm.PlayerNameEditViewModel;
+import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
@@ -35,4 +36,11 @@ public class FXMLPlayerNameDialogContentController extends AbstractFXMLControlle
 	public PlayerNameEditViewModel sendResult() {
 		return getVm();
 	}
+	
+	@Override
+	public ModelValidationResult validate() {
+		
+		return getVm().validate();
+	}
+
 }

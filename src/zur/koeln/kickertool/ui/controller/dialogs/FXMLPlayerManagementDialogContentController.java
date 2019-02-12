@@ -124,7 +124,7 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 
 			@Override
 			public List<PlayerViewModel> performTask() throws Exception{
-				return getVm().loadPlayersToList();
+				return getVm().loadAllPlayer();
 			}
 
 			@Override
@@ -225,11 +225,6 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 				showError(exception);
 			}
 		};
-	}
-
-	@Override
-	public Void sendResult() {
-		return null;
 	}
 
 }

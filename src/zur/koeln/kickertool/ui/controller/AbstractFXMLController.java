@@ -27,6 +27,7 @@ import zur.koeln.kickertool.ui.api.IFXMLController;
 import zur.koeln.kickertool.ui.api.IFXMLDialogContent;
 import zur.koeln.kickertool.ui.service.DialogContent;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
+import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Setter(value=AccessLevel.PUBLIC)
@@ -96,8 +97,18 @@ public class AbstractFXMLController implements IFXMLController{
 			JFXButton btnOK = new JFXButton("OK");
 			btnOK.setPrefWidth(100.0);
 			btnOK.setOnAction(event -> {
-				dialog.close();
-				dialogClosedCallback.doAfterDialogClosed(((IFXMLDialogContent) dialogContentController).sendResult());
+				
+				IFXMLDialogContent iFxmlDialogContent = (IFXMLDialogContent) dialogContentController;
+				
+				ModelValidationResult validate = iFxmlDialogContent.validate();
+				
+				if (validate.hasValidationMessages()) {
+					showModelValidationError("Unvollständige Eingaben", validate);
+				} else {
+					dialog.close();
+					dialogClosedCallback.doAfterDialogClosed(iFxmlDialogContent.sendResult());
+				}
+				
 			});
 			
 			JFXButton btnCancel = new JFXButton("Abbrechen");
@@ -160,5 +171,23 @@ public class AbstractFXMLController implements IFXMLController{
 		
 	}
 
+	protected void showModelValidationError(String title, ModelValidationResult validationResult) {
+		
+		JFXDialogLayout dialogContent = new JFXDialogLayout();
+		
+		dialogContent.setHeading(new Text(title));
+		dialogContent.setBody(new Text(validationResult.toString()));
+
+		JFXDialog dialog = new JFXDialog(getRootStackPane(), dialogContent, DialogTransition.CENTER, false);
+		
+		JFXButton btnOK = new JFXButton("OK");
+		btnOK.setPrefWidth(100.0);
+		btnOK.setOnAction(event -> dialog.close());
+		
+		dialogContent.setActions(btnOK);
+		
+		dialog.show();
+		
+	}
 	
 }
