@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.application.api.dtos;
+package zur.koeln.kickertool.application.api.dtos.base;
 
 import org.springframework.boot.autoconfigure.ldap.embedded.EmbeddedLdapProperties.Validation;
 

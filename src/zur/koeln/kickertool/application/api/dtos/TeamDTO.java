@@ -9,8 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TeamDTO
-    extends DTO {
+public class TeamDTO {
 
     private UUID uid;
 

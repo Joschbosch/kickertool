@@ -2,14 +2,18 @@ package zur.koeln.kickertool.application.handler;
 
 import java.util.*;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import zur.koeln.kickertool.application.api.dtos.PlayerDTO;
 import zur.koeln.kickertool.application.api.dtos.PlayerStatisticsDTO;
+import zur.koeln.kickertool.application.api.dtos.base.ListResponseDTO;
+import zur.koeln.kickertool.application.api.dtos.base.MapResponseDTO;
+import zur.koeln.kickertool.application.api.dtos.base.SingleResponseDTO;
+import zur.koeln.kickertool.application.api.dtos.base.StatusDTO;
 import zur.koeln.kickertool.application.handler.api.IPlayerCommandHandler;
 import zur.koeln.kickertool.core.api.IPlayerService;
+import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
 import zur.koeln.kickertool.core.model.Player;
 
 @Service
@@ -20,12 +24,18 @@ public class PlayerCommandHandler
     private IPlayerService playerService;
 
     @Autowired
-    private ModelMapper mapper;
+    private CustomModelMapper mapper;
 
     @Override
-    public PlayerDTO createNewPlayer(String firstName, String lastName) {
+    public SingleResponseDTO<PlayerDTO> createNewPlayer(String firstName, String lastName) {
         Player newPlayer = playerService.createNewPlayer(firstName, lastName);
-        return mapper.map(newPlayer, PlayerDTO.class);
+
+        SingleResponseDTO<PlayerDTO> response = new SingleResponseDTO<>();
+        response.setDtoStatus(StatusDTO.SUCCESS);
+        response.setValidation(null);
+        response.setDtoValue(mapper.map(newPlayer, PlayerDTO.class));
+
+        return response;
     }
 
     @Override
@@ -35,25 +45,41 @@ public class PlayerCommandHandler
     }
 
     @Override
-    public PlayerDTO updatePlayerName(UUID id, String newFirstName, String newLastName) {
+    public SingleResponseDTO<PlayerDTO> updatePlayerName(UUID id, String newFirstName, String newLastName) {
         Player updatePlayer = playerService.updatePlayerName(id, newFirstName, newLastName);
-        return mapper.map(updatePlayer, PlayerDTO.class);
+        SingleResponseDTO<PlayerDTO> response = new SingleResponseDTO<>();
+        response.setDtoStatus(StatusDTO.SUCCESS);
+        response.setValidation(null);
+        response.setDtoValue(mapper.map(updatePlayer, PlayerDTO.class));
+
+        return response;
     }
 
     @Override
-    public List<PlayerDTO> getAllPlayer() {
+    public ListResponseDTO<PlayerDTO> getAllPlayer() {
         List<Player> allPlayer = playerService.getAllPlayer();
         List<PlayerDTO> allPlayerDTO = new ArrayList<>();
         allPlayer.forEach(player -> allPlayerDTO.add(mapper.map(player, PlayerDTO.class)));
-        return allPlayerDTO;
+
+        ListResponseDTO<PlayerDTO> response = new ListResponseDTO<>();
+        response.setDtoStatus(StatusDTO.SUCCESS);
+        response.setValidation(null);
+        response.setDtoValueList(mapper.map(allPlayerDTO, PlayerDTO.class));
+
+        return response;
     }
     @Override
-    public Map<UUID, PlayerStatisticsDTO> getAllPlayerStatistics() {
+    public MapResponseDTO<PlayerStatisticsDTO> getAllPlayerStatistics() {
         Map<UUID, PlayerStatisticsDTO> result = new HashMap<>();
 
         playerService.getAllPlayerStatistics().entrySet().forEach(entry ->
         result.put(entry.getKey(), mapper.map(entry.getValue(), PlayerStatisticsDTO.class)));
 
-        return result;
+        MapResponseDTO<PlayerStatisticsDTO> response = new MapResponseDTO<>();
+        response.setDtoStatus(StatusDTO.SUCCESS);
+        response.setValidation(null);
+        response.setMapDTOValue(result);
+
+        return response;
     }
 }

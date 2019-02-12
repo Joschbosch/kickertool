@@ -10,7 +10,7 @@ import zur.koeln.kickertool.core.kernl.GameTableStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-public class GameTableDTO extends DTO{
+public class GameTableDTO {
 
     private UUID id;
 
