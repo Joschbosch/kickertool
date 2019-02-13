@@ -76,7 +76,7 @@ public class AbstractFXMLController implements IFXMLController{
 		
 	}
 	
-	protected void openDialogue(DialogContent dialogContent, DialogClosedCallback dialogClosedCallback) {
+	protected <Content, Result> void openDialog(DialogContent dialogContent, Content initialContent, DialogClosedCallback<Result> dialogClosedCallback) {
 
 		try {
 			FXMLLoader fxmlSceneLoader = FXMLGuiService.getInstance().getFXMLDialogLoader(dialogContent);
@@ -88,6 +88,12 @@ public class AbstractFXMLController implements IFXMLController{
 				throw new IllegalArgumentException("Der Dialog " + dialogContent + " implementiert nicht das Interface " + IFXMLDialogContent.class.getSimpleName());
 			}
 			
+			IFXMLDialogContent<Content, Result> fxmlDialogContent = (IFXMLDialogContent) dialogContentController;
+			
+			if (initialContent != null) {
+				fxmlDialogContent.initContent(initialContent);
+			}
+			
 			JFXDialogLayout dialogLayout = new JFXDialogLayout();
 			dialogLayout.setHeading(new Text(dialogContent.getDialogTitle()));
 			dialogLayout.setBody(pane);
@@ -95,18 +101,17 @@ public class AbstractFXMLController implements IFXMLController{
 			JFXDialog dialog = new JFXDialog(getRootStackPane(), dialogLayout, DialogTransition.CENTER, false);
 
 			JFXButton btnOK = new JFXButton("OK");
+			btnOK.setDefaultButton(true);
 			btnOK.setPrefWidth(100.0);
 			btnOK.setOnAction(event -> {
-				
-				IFXMLDialogContent iFxmlDialogContent = (IFXMLDialogContent) dialogContentController;
-				
-				ModelValidationResult validate = iFxmlDialogContent.validate();
+
+				ModelValidationResult validate = fxmlDialogContent.validate();
 				
 				if (validate.hasValidationMessages()) {
 					showModelValidationError("Unvollständige Eingaben", validate);
 				} else {
 					dialog.close();
-					dialogClosedCallback.doAfterDialogClosed(iFxmlDialogContent.sendResult());
+					dialogClosedCallback.doAfterDialogClosed(fxmlDialogContent.sendResult());
 				}
 				
 			});
@@ -132,6 +137,12 @@ public class AbstractFXMLController implements IFXMLController{
 			// Should not be thrown
 			throw new IllegalStateException(e);
 		}
+
+	}
+	
+	protected <Void, Result> void openDialog(DialogContent dialogContent, DialogClosedCallback<Result> dialogClosedCallback) {
+
+		openDialog(dialogContent, null, dialogClosedCallback);
 
 	}
 	

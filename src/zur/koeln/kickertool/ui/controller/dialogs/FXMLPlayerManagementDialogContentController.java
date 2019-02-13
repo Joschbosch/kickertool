@@ -1,51 +1,48 @@
 package zur.koeln.kickertool.ui.controller.dialogs;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableColumn.CellDataFeatures;
-import javafx.scene.control.TreeTableColumn.CellEditEvent;
-import javafx.scene.control.cell.TextFieldTreeTableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
 import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
 import zur.koeln.kickertool.ui.api.DialogClosedCallback;
 import zur.koeln.kickertool.ui.api.IFXMLDialogContent;
+import zur.koeln.kickertool.ui.api.TableCellClick;
+import zur.koeln.kickertool.ui.cells.ImageEditTableCellFactory;
 import zur.koeln.kickertool.ui.controller.AbstractFXMLController;
 import zur.koeln.kickertool.ui.service.DialogContent;
 import zur.koeln.kickertool.ui.service.Icons;
 import zur.koeln.kickertool.ui.vm.PlayerManagementViewModel;
-import zur.koeln.kickertool.ui.vm.PlayerNameEditViewModel;
 import zur.koeln.kickertool.ui.vm.PlayerViewModel;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLPlayerManagementDialogContentController extends AbstractFXMLController implements IFXMLDialogContent<Void> {
+public class FXMLPlayerManagementDialogContentController extends AbstractFXMLController implements IFXMLDialogContent<Void, Void> {
 	
 	@Autowired
 	PlayerManagementViewModel vm;
 	
-	@FXML JFXTreeTableView tblPlayers;
+	@FXML TableView tblPlayers;
 
-	@FXML TreeTableColumn tblColFirstName;
+	@FXML TableColumn tblColEdit;
+	
+	@FXML TableColumn tblColFirstName;
 
-	@FXML TreeTableColumn tblColLastName;
+	@FXML TableColumn tblColLastName;
 
 	@FXML JFXButton btnAddPlayer;
 
@@ -67,46 +64,39 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 	
 	private void initTableColumns() {
 		
-		getTblColFirstName().setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<PlayerViewModel, String>, ObservableValue<String>>() {
+		getTblColFirstName().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerViewModel, String>, ObservableValue<String>>() {
 
 			@Override
 			public ObservableValue<String> call(CellDataFeatures<PlayerViewModel, String> param) {
 				
-				return param.getValue().getValue().getFirstNameProperty();
+				return param.getValue().getFirstNameProperty();
 			}
 		});
 		
-		
-		getTblColLastName().setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<PlayerViewModel, String>, ObservableValue<String>>() {
+		getTblColLastName().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerViewModel, String>, ObservableValue<String>>() {
 
 			@Override
 			public ObservableValue<String> call(CellDataFeatures<PlayerViewModel, String> param) {
 				
-				return param.getValue().getValue().getLastNameProperty();
-			}
-		});
-
-		getTblColFirstName().setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
-		getTblColFirstName().setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<PlayerViewModel, String>>() {
-
-			@Override
-			public void handle(CellEditEvent<PlayerViewModel, String> event) {
-				PlayerViewModel playerViewModel = event.getRowValue().getValue();
-				playerViewModel.setFirstName(event.getNewValue());
-				startBackgroundTask(updatePlayerTask(playerViewModel));
+				return param.getValue().getLastNameProperty();
 			}
 		});
 		
-		getTblColLastName().setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
-		getTblColLastName().setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<PlayerViewModel, String>>() {
+		getTblColEdit().setCellFactory(new ImageEditTableCellFactory(new TableCellClick() {
 
 			@Override
-			public void handle(CellEditEvent<PlayerViewModel, String> event) {
-				PlayerViewModel playerViewModel = event.getRowValue().getValue();
-				playerViewModel.setLastName(event.getNewValue());
-				startBackgroundTask(updatePlayerTask(playerViewModel));
+			public void doOnClick(int rowIndex) {
+				
+				openDialog(DialogContent.PLAYER_NAME_DIALOGUE, getVm().getPlayers().get(rowIndex), new DialogClosedCallback<PlayerViewModel>() {
+
+					@Override
+					public void doAfterDialogClosed(PlayerViewModel result) {
+						startBackgroundTask(updatePlayerTask(result));
+					}
+				});
+				
 			}
-		});
+		}));
 	}
 	
 	@Override
@@ -131,7 +121,7 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 			public void doOnSuccess(List<PlayerViewModel> result) {
 				getVm().getPlayers().clear();
 				getVm().getPlayers().addAll(result);
-				getTblPlayers().setRoot(new RecursiveTreeItem<PlayerViewModel>(getVm().getPlayers(), RecursiveTreeObject::getChildren));
+				getTblPlayers().setItems(getVm().getPlayers());
 			}
 
 			@Override
@@ -143,17 +133,17 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 	}
 	
 	private BackgroundTask updatePlayerTask(PlayerViewModel playerViewModel) {
-		return new BackgroundTask<Void>() {
+		return new BackgroundTask<PlayerViewModel>() {
 
 			@Override
-			public Void performTask() throws Exception {
-				getVm().updatePlayer(playerViewModel);
-				return null;
+			public PlayerViewModel performTask() throws Exception {
+				
+				return getVm().updatePlayer(playerViewModel);
 			}
 
 			@Override
-			public void doOnSuccess(Void result) {
-				//
+			public void doOnSuccess(PlayerViewModel result) {
+				getVm().updatePlayersList(result);
 			}
 
 			@Override
@@ -165,17 +155,17 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 	}
 
 	@FXML public void onAddPlayerClicked() {
-		openDialogue(DialogContent.PLAYER_NAME_DIALOGUE, new DialogClosedCallback<PlayerNameEditViewModel>() {
+		openDialog(DialogContent.PLAYER_NAME_DIALOGUE, new DialogClosedCallback<PlayerViewModel>() {
 
 			@Override
-			public void doAfterDialogClosed(PlayerNameEditViewModel result) {
+			public void doAfterDialogClosed(PlayerViewModel result) {
 				startBackgroundTask(insertNewPlayerTask(result));
 			}
 
 		});
 	}
 	
-	private BackgroundTask insertNewPlayerTask(PlayerNameEditViewModel newPlayerNameViewModel) {
+	private BackgroundTask insertNewPlayerTask(PlayerViewModel newPlayerNameViewModel) {
 		
 		return new BackgroundTask<PlayerViewModel>() {
 
@@ -200,10 +190,9 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 	@FXML 
 	public void onDeletePlayerClicked() {
 		
-		ObservableList<RecursiveTreeItem<PlayerViewModel>> selectedItems = getTblPlayers().getSelectionModel().getSelectedItems();
-		List<PlayerViewModel> playerViewModelsToDelete = selectedItems.stream().map(RecursiveTreeItem<PlayerViewModel>::getValue).collect(Collectors.toList());
-		
-		startBackgroundTask(deletePlayerTask(playerViewModelsToDelete));
+		ObservableList<PlayerViewModel> selectedItems = getTblPlayers().getSelectionModel().getSelectedItems();
+
+		startBackgroundTask(deletePlayerTask(selectedItems));
 	}
 
 	private BackgroundTask deletePlayerTask(List<PlayerViewModel> selectedItems) {

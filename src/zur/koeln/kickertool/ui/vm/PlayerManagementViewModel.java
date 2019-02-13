@@ -45,11 +45,13 @@ public class PlayerManagementViewModel extends FXViewModel{
 		return getModelMapper().map(response.getDtoValueList(), PlayerViewModel.class);
 	}
 
-	public void updatePlayer(PlayerViewModel playerViewModel) throws BackgroundTaskException {
+	public PlayerViewModel updatePlayer(PlayerViewModel playerViewModel) throws BackgroundTaskException {
 		
 		SingleResponseDTO<PlayerDTO> response = getPlayerCommandHandler().updatePlayerName(playerViewModel.getUid(), playerViewModel.getFirstName(), playerViewModel.getLastName());
 		
 		checkResponse(response);
+		
+		return  getModelMapper().map(response.getDtoValue(), PlayerViewModel.class);
 	}
 	
 	public PlayerViewModel insertNewPlayer(String firstName, String lastName) throws BackgroundTaskException {
@@ -85,6 +87,13 @@ public class PlayerManagementViewModel extends FXViewModel{
 	public ModelValidationResult validate() {
 		
 		return ModelValidationResult.empty();
+	}
+
+	public void updatePlayersList(PlayerViewModel updatedPlayerViewModel) {
+		
+		PlayerViewModel vmToUpdate = getPlayers().get(getPlayers().indexOf(updatedPlayerViewModel));
+		vmToUpdate.setFirstName(updatedPlayerViewModel.getFirstName());
+		vmToUpdate.setLastName(updatedPlayerViewModel.getLastName());
 	}
 
 }

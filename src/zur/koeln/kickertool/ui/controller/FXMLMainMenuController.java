@@ -33,7 +33,7 @@ public class FXMLMainMenuController extends AbstractFXMLController{
 
 	@FXML 
 	public void onPlayerManagementClicked() {
-		openDialogue(DialogContent.PLAYER_MANAGEMENT_DIALOGUE, new DefaultDialogClosedCallback());
+		openDialog(DialogContent.PLAYER_MANAGEMENT_DIALOGUE, new DefaultDialogClosedCallback());
 	}
 
 	@FXML 

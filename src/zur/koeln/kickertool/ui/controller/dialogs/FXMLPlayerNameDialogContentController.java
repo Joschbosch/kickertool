@@ -8,18 +8,22 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import lombok.AccessLevel;
 import lombok.Getter;
+import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
 import zur.koeln.kickertool.ui.api.IFXMLDialogContent;
 import zur.koeln.kickertool.ui.controller.AbstractFXMLController;
-import zur.koeln.kickertool.ui.vm.PlayerNameEditViewModel;
+import zur.koeln.kickertool.ui.vm.PlayerViewModel;
 import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLPlayerNameDialogContentController extends AbstractFXMLController implements IFXMLDialogContent<PlayerNameEditViewModel>{
+public class FXMLPlayerNameDialogContentController extends AbstractFXMLController implements IFXMLDialogContent<PlayerViewModel, PlayerViewModel>{
 
 	@Autowired
-	PlayerNameEditViewModel vm;
+	PlayerViewModel vm;
 
+	@Autowired
+	CustomModelMapper modelMapper;
+	
 	@FXML
 	JFXTextField txtFirstName;
 	
@@ -28,12 +32,17 @@ public class FXMLPlayerNameDialogContentController extends AbstractFXMLControlle
 	
 	@Override
 	public void setupBindings() {
-		vm.getFirstNameProperty().bind(getTxtFirstName().textProperty());
-		vm.getLastNameProperty().bind(getTxtLastName().textProperty());
+		vm.getFirstNameProperty().bindBidirectional(getTxtFirstName().textProperty());
+		vm.getLastNameProperty().bindBidirectional(getTxtLastName().textProperty());
 	}
 
 	@Override
-	public PlayerNameEditViewModel sendResult() {
+	public void doAfterInitializationCompleted() {
+		getTxtFirstName().requestFocus();
+	}
+	
+	@Override
+	public PlayerViewModel sendResult() {
 		return getVm();
 	}
 	
@@ -43,4 +52,10 @@ public class FXMLPlayerNameDialogContentController extends AbstractFXMLControlle
 		return getVm().validate();
 	}
 
+	@Override
+	public void initContent(PlayerViewModel content) {
+		getVm().setFirstName(content.getFirstName());
+		getVm().setLastName(content.getLastName());
+		getVm().setUid(content.getUid());
+	}
 }

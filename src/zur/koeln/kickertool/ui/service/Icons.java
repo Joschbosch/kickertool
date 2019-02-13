@@ -11,7 +11,8 @@ import lombok.Getter;
 public enum Icons {
 	
 	ADD_ITEM("add_item"),
-	DELETE_ITEM("delete_item");
+	DELETE_ITEM("delete_item"),
+	EDIT_ITEM("edit_item");
 	
 	private String fileName;
 
@@ -21,9 +22,15 @@ public enum Icons {
 	
 	public ImageView createIconImageView() {
 		
+		return createIconImageView(25);
+	}
+	
+	public ImageView createIconImageView(double size) {
+		
 		ImageView imgView = new ImageView(new Image("images/" + getFileName() + ".png"));
-		imgView.setFitWidth(25);
-		imgView.setFitHeight(25);
+		imgView.setFitWidth(size);
+		imgView.setFitHeight(size);
+		imgView.setStyle("-fx-cursor: hand;");
 		return imgView;
 	}
 	

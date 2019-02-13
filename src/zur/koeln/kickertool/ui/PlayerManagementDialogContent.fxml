@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -16,15 +16,19 @@
   <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <JFXTreeTableView fx:id="tblPlayers" editable="true" showRoot="false" GridPane.columnSpan="2" GridPane.rowSpan="2">
-         <columns>
-            <TreeTableColumn fx:id="tblColFirstName" minWidth="-1.0" prefWidth="150.0" resizable="false" text="Vorname" />
-            <TreeTableColumn fx:id="tblColLastName" minWidth="-Infinity" prefWidth="150.0" resizable="false" text="Nachname" />
-         </columns>
-      </JFXTreeTableView>
+      <TableView fx:id="tblPlayers" prefHeight="200.0" prefWidth="200.0" stylesheets="@/css/jfx-table-view.css" GridPane.columnSpan="2" GridPane.rowSpan="2">
+        <columns>
+            <TableColumn fx:id="tblColEdit" editable="false" prefWidth="50.0" resizable="false" />
+          <TableColumn fx:id="tblColFirstName" editable="false" minWidth="-1.0" prefWidth="-1.0" text="Vorname" />
+          <TableColumn fx:id="tblColLastName" editable="false" minWidth="-1.0" prefWidth="-1.0" text="Nachname" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
       <JFXButton fx:id="btnAddPlayer" onAction="#onAddPlayerClicked" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets right="5.0" />

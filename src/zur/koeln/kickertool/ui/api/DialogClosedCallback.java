@@ -1,7 +1,7 @@
 package zur.koeln.kickertool.ui.api;
 
-public interface DialogClosedCallback<T> {
+public interface DialogClosedCallback<Result> {
 	
-	void doAfterDialogClosed(T result);
+	void doAfterDialogClosed(Result result);
 	
 }
