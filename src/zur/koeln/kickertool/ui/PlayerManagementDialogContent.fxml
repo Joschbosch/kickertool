@@ -8,10 +8,10 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.ui.controller.dialogs.FXMLPlayerManagementDialogContentController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.ui.controller.dialogs.FXMLPlayerManagementDialogContentController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -19,9 +19,9 @@
       <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TableView fx:id="tblPlayers" prefHeight="200.0" prefWidth="200.0" stylesheets="@/css/jfx-table-view.css" GridPane.columnSpan="2" GridPane.rowSpan="2">
+      <TableView fx:id="tblPlayers" stylesheets="@/css/jfx-table-view.css" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2" GridPane.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="tblColEdit" editable="false" prefWidth="50.0" resizable="false" />
+            <TableColumn fx:id="tblColEdit" editable="false" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
           <TableColumn fx:id="tblColFirstName" editable="false" minWidth="-1.0" prefWidth="-1.0" text="Vorname" />
           <TableColumn fx:id="tblColLastName" editable="false" minWidth="-1.0" prefWidth="-1.0" text="Nachname" />
         </columns>
