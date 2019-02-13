@@ -2,7 +2,7 @@ package zur.koeln.kickertool.ui.api;
 
 import javafx.fxml.FXML;
 
-public interface IFXMLController {
+public interface FXMLController {
 	
 	@FXML
 	default void initialize() {

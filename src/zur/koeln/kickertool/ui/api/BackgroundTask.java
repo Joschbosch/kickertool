@@ -1,10 +1,10 @@
 package zur.koeln.kickertool.ui.api;
 
-public interface BackgroundTask<T> {
+public interface BackgroundTask<Result> {
 	
-	T performTask() throws Exception;
+	Result performTask() throws Exception;
 	
-	void doOnSuccess(T result);
+	void doOnSuccess(Result result);
 	
 	void doOnFailure(Throwable exception);
 	

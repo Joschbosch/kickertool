@@ -19,9 +19,9 @@ import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
-import zur.koeln.kickertool.ui.api.DialogClosedCallback;
-import zur.koeln.kickertool.ui.api.IFXMLDialogContent;
-import zur.koeln.kickertool.ui.api.TableCellClick;
+import zur.koeln.kickertool.ui.api.FXMLDialogContent;
+import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
+import zur.koeln.kickertool.ui.api.events.TableCellClickEvent;
 import zur.koeln.kickertool.ui.cells.ImageEditTableCellFactory;
 import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
 import zur.koeln.kickertool.ui.service.DialogContent;
@@ -31,7 +31,7 @@ import zur.koeln.kickertool.ui.vm.PlayerViewModel;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLPlayerManagementDialogContentController extends AbstractFXMLController implements IFXMLDialogContent<Void, Void> {
+public class FXMLPlayerManagementDialogContentController extends AbstractFXMLController implements FXMLDialogContent<Void, Void> {
 	
 	@Autowired
 	PlayerManagementViewModel vm;
@@ -82,12 +82,12 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 			}
 		});
 		
-		getTblColEdit().setCellFactory(new ImageEditTableCellFactory(new TableCellClick() {
+		getTblColEdit().setCellFactory(new ImageEditTableCellFactory(new TableCellClickEvent() {
 
 			@Override
 			public void doOnClick(int rowIndex) {
 				
-				openDialog(DialogContent.PLAYER_NAME_DIALOGUE, getVm().getPlayers().get(rowIndex), new DialogClosedCallback<PlayerViewModel>() {
+				openDialog(DialogContent.PLAYER_NAME_DIALOGUE, getVm().getPlayers().get(rowIndex), new DialogCloseEvent<PlayerViewModel>() {
 
 					@Override
 					public void doAfterDialogClosed(PlayerViewModel result) {
@@ -155,7 +155,7 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 	}
 
 	@FXML public void onAddPlayerClicked() {
-		openDialog(DialogContent.PLAYER_NAME_DIALOGUE, new DialogClosedCallback<PlayerViewModel>() {
+		openDialog(DialogContent.PLAYER_NAME_DIALOGUE, new DialogCloseEvent<PlayerViewModel>() {
 
 			@Override
 			public void doAfterDialogClosed(PlayerViewModel result) {
@@ -190,7 +190,7 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 	@FXML 
 	public void onDeletePlayerClicked() {
 		
-		showConfirmationDialog("Spieler löschen?", "Wollen Sie folgende Spieler wirklich löschen?", getTblPlayers().getSelectionModel().getSelectedItems(), new DialogClosedCallback<Boolean>() {
+		showConfirmationDialog("Spieler löschen?", "Wollen Sie folgende Spieler wirklich löschen?", getTblPlayers().getSelectionModel().getSelectedItems(), new DialogCloseEvent<Boolean>() {
 			
 			@Override
 			public void doAfterDialogClosed(Boolean result) {

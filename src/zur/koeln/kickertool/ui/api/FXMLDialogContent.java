@@ -2,7 +2,7 @@ package zur.koeln.kickertool.ui.api;
 
 import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
-public interface IFXMLDialogContent<Content, Result> {
+public interface FXMLDialogContent<InitialContent, Result> {
 	
 	default Result sendResult() {
 		return null;
@@ -12,7 +12,7 @@ public interface IFXMLDialogContent<Content, Result> {
 		return ModelValidationResult.empty();
 	}
 	
-	default void initContent(Content content) {
+	default void initContent(InitialContent content) {
 		//
 	}
 }

@@ -16,8 +16,8 @@ import javafx.stage.Stage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import zur.koeln.kickertool.ui.api.DialogClosedCallback;
-import zur.koeln.kickertool.ui.api.IFXMLController;
+import zur.koeln.kickertool.ui.api.FXMLController;
+import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
 
 public class FXMLGuiService {
@@ -55,7 +55,7 @@ public class FXMLGuiService {
 			event.consume();
 			AbstractFXMLController abstrFxmlController = (AbstractFXMLController) stage.getScene().getUserData();
 			
-			abstrFxmlController.showConfirmationDialog("Beenden", "Wollen Sie wirklich beenden?", null, new DialogClosedCallback<Boolean>() {
+			abstrFxmlController.showConfirmationDialog("Beenden", "Wollen Sie wirklich beenden?", null, new DialogCloseEvent<Boolean>() {
 				
 				@Override
 				public void doAfterDialogClosed(Boolean result) {
@@ -82,7 +82,7 @@ public class FXMLGuiService {
 		}
 	}
 
-	private void prepareStage(Stage stage, Scene newScene, IFXMLController fxmlController) {
+	private void prepareStage(Stage stage, Scene newScene, FXMLController fxmlController) {
 		stage.setScene(newScene);
 		stage.sizeToScene();
 		stage.centerOnScreen();
@@ -91,7 +91,7 @@ public class FXMLGuiService {
 		startAfterInitializationTask(fxmlController);
 	}
 	
-	public void startAfterInitializationTask(IFXMLController fxmlController) {
+	public void startAfterInitializationTask(FXMLController fxmlController) {
 		
 		Platform.runLater(fxmlController::doAfterInitializationCompleted);
 		

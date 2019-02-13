@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
-import zur.koeln.kickertool.ui.api.defaultimpl.DefaultDialogClosedCallback;
+import zur.koeln.kickertool.ui.api.defaultimpl.DefaultDialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
 import zur.koeln.kickertool.ui.service.DialogContent;
 
@@ -34,7 +34,7 @@ public class FXMLMainMenuController extends AbstractFXMLController{
 
 	@FXML 
 	public void onPlayerManagementClicked() {
-		openDialog(DialogContent.PLAYER_MANAGEMENT_DIALOGUE, new DefaultDialogClosedCallback());
+		openDialog(DialogContent.PLAYER_MANAGEMENT_DIALOGUE, new DefaultDialogCloseEvent());
 	}
 
 	@FXML 

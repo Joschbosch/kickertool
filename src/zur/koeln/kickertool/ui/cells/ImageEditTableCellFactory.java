@@ -8,15 +8,15 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.ui.api.TableCellClick;
+import zur.koeln.kickertool.ui.api.events.TableCellClickEvent;
 import zur.koeln.kickertool.ui.service.Icons;
 
 @Getter(value=AccessLevel.PRIVATE)
 public class ImageEditTableCellFactory implements Callback<TableColumn, TableCell>{
 
-	private final TableCellClick click;
+	private final TableCellClickEvent click;
 	
-	public ImageEditTableCellFactory(TableCellClick click) {
+	public ImageEditTableCellFactory(TableCellClickEvent click) {
 		super();
 		this.click = click;
 	}

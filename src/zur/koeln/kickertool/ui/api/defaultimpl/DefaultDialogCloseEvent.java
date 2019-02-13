@@ -1,8 +1,8 @@
 package zur.koeln.kickertool.ui.api.defaultimpl;
 
-import zur.koeln.kickertool.ui.api.DialogClosedCallback;
+import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 
-public class DefaultDialogClosedCallback implements DialogClosedCallback<Void>{
+public class DefaultDialogCloseEvent implements DialogCloseEvent<Void>{
 
 	@Override
 	public void doAfterDialogClosed(Void result) {

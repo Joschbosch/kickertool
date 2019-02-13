@@ -24,9 +24,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
-import zur.koeln.kickertool.ui.api.DialogClosedCallback;
-import zur.koeln.kickertool.ui.api.IFXMLController;
-import zur.koeln.kickertool.ui.api.IFXMLDialogContent;
+import zur.koeln.kickertool.ui.api.FXMLController;
+import zur.koeln.kickertool.ui.api.FXMLDialogContent;
+import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 import zur.koeln.kickertool.ui.service.DialogContent;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
 import zur.koeln.kickertool.ui.vm.base.ILabel;
@@ -34,14 +34,14 @@ import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Setter(value=AccessLevel.PUBLIC)
-public class AbstractFXMLController implements IFXMLController{
+public class AbstractFXMLController implements FXMLController{
 	
 	@FXML 
 	StackPane rootStackPane;
 
 	@Override
 	public void initialize() {
-		IFXMLController.super.initialize();
+		FXMLController.super.initialize();
 	}
 	
 	protected void startBackgroundTask(BackgroundTask backgroundTask) {
@@ -79,7 +79,7 @@ public class AbstractFXMLController implements IFXMLController{
 		
 	}
 	
-	protected <Content, Result> void openDialog(DialogContent dialogContent, Content initialContent, DialogClosedCallback<Result> dialogClosedCallback) {
+	protected <Content, Result> void openDialog(DialogContent dialogContent, Content initialContent, DialogCloseEvent<Result> dialogClosedCallback) {
 
 		try {
 			FXMLLoader fxmlSceneLoader = FXMLGuiService.getInstance().getFXMLDialogLoader(dialogContent);
@@ -87,11 +87,11 @@ public class AbstractFXMLController implements IFXMLController{
 			AbstractFXMLController dialogContentController = fxmlSceneLoader.getController();
 			dialogContentController.setRootStackPane(getRootStackPane());
 				
-			if (!IFXMLDialogContent.class.isInstance(dialogContentController)) {
-				throw new IllegalArgumentException("Der Dialog " + dialogContent + " implementiert nicht das Interface " + IFXMLDialogContent.class.getSimpleName());
+			if (!FXMLDialogContent.class.isInstance(dialogContentController)) {
+				throw new IllegalArgumentException("Der Dialog " + dialogContent + " implementiert nicht das Interface " + FXMLDialogContent.class.getSimpleName());
 			}
 			
-			IFXMLDialogContent<Content, Result> fxmlDialogContent = (IFXMLDialogContent) dialogContentController;
+			FXMLDialogContent<Content, Result> fxmlDialogContent = (FXMLDialogContent) dialogContentController;
 			
 			if (initialContent != null) {
 				fxmlDialogContent.initContent(initialContent);
@@ -143,7 +143,7 @@ public class AbstractFXMLController implements IFXMLController{
 
 	}
 	
-	protected <Void, Result> void openDialog(DialogContent dialogContent, DialogClosedCallback<Result> dialogClosedCallback) {
+	protected <Void, Result> void openDialog(DialogContent dialogContent, DialogCloseEvent<Result> dialogClosedCallback) {
 
 		openDialog(dialogContent, null, dialogClosedCallback);
 
@@ -206,7 +206,7 @@ public class AbstractFXMLController implements IFXMLController{
 		
 	}
 	
-	public void showConfirmationDialog(String title, String subTitle, List<ILabel> items, DialogClosedCallback<Boolean> closedCallback) {
+	public void showConfirmationDialog(String title, String subTitle, List<ILabel> items, DialogCloseEvent<Boolean> closedCallback) {
 		
 		JFXDialogLayout dialogContent = new JFXDialogLayout();
 		
