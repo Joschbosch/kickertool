@@ -4,15 +4,21 @@ import java.io.IOException;
 
 import org.springframework.context.ConfigurableApplicationContext;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import zur.koeln.kickertool.ui.api.DialogClosedCallback;
 import zur.koeln.kickertool.ui.api.IFXMLController;
+import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
 
 public class FXMLGuiService {
 
@@ -40,6 +46,26 @@ public class FXMLGuiService {
 	public void initialize(ConfigurableApplicationContext ctx, Stage primaryStage) {
 		setCtx(ctx);
 		setPrimaryStage(primaryStage);
+		registerCloseEvent(primaryStage);
+	}
+	
+	private void registerCloseEvent(Stage stage) {
+		stage.setOnCloseRequest(event -> {
+			
+			event.consume();
+			AbstractFXMLController abstrFxmlController = (AbstractFXMLController) stage.getScene().getUserData();
+			
+			abstrFxmlController.showConfirmationDialog("Beenden", "Wollen Sie wirklich beenden?", null, new DialogClosedCallback<Boolean>() {
+				
+				@Override
+				public void doAfterDialogClosed(Boolean result) {
+					if (result.booleanValue())  {
+						Platform.exit();
+					}
+				}
+			});
+			
+		});
 	}
 
 	public void switchScene(Scenes newScene) {
@@ -47,15 +73,16 @@ public class FXMLGuiService {
 		try {
 			FXMLLoader fxmlLoader = getFXMLSceneLoader(newScene);
 			Pane pane = fxmlLoader.load();
-			prepareStage(getPrimaryStage(), pane, fxmlLoader.getController());
+			Scene scene = new Scene(pane);
+			scene.setUserData(fxmlLoader.getController());
+			prepareStage(getPrimaryStage(), scene, fxmlLoader.getController());
 		} catch (IOException e) {
 			// Should not be thrown
 			throw new IllegalStateException(e);
 		}
 	}
 
-	private void prepareStage(Stage stage, Pane pane, IFXMLController fxmlController) {
-		Scene newScene = new Scene(pane);
+	private void prepareStage(Stage stage, Scene newScene, IFXMLController fxmlController) {
 		stage.setScene(newScene);
 		stage.sizeToScene();
 		stage.centerOnScreen();
@@ -66,19 +93,8 @@ public class FXMLGuiService {
 	
 	public void startAfterInitializationTask(IFXMLController fxmlController) {
 		
-		Task<Void> initTask = new Task<Void>() {
-			
-			@Override
-			protected Void call() throws Exception {
-				// We let the thread sleep so that the GUI can be rendered meanwhile
-				Thread.sleep(250);
-				return null;
-			}
-		};
+		Platform.runLater(fxmlController::doAfterInitializationCompleted);
 		
-		initTask.setOnSucceeded(event -> fxmlController.doAfterInitializationCompleted());
-		
-		new Thread(initTask).start();
 	}
 
 	public FXMLLoader getFXMLSceneLoader(Scenes scene) {

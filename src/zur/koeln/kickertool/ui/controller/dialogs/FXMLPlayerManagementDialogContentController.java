@@ -23,7 +23,7 @@ import zur.koeln.kickertool.ui.api.DialogClosedCallback;
 import zur.koeln.kickertool.ui.api.IFXMLDialogContent;
 import zur.koeln.kickertool.ui.api.TableCellClick;
 import zur.koeln.kickertool.ui.cells.ImageEditTableCellFactory;
-import zur.koeln.kickertool.ui.controller.AbstractFXMLController;
+import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
 import zur.koeln.kickertool.ui.service.DialogContent;
 import zur.koeln.kickertool.ui.service.Icons;
 import zur.koeln.kickertool.ui.vm.PlayerManagementViewModel;
@@ -190,9 +190,18 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 	@FXML 
 	public void onDeletePlayerClicked() {
 		
-		ObservableList<PlayerViewModel> selectedItems = getTblPlayers().getSelectionModel().getSelectedItems();
+		showConfirmationDialog("Spieler löschen?", "Wollen Sie folgende Spieler wirklich löschen?", getTblPlayers().getSelectionModel().getSelectedItems(), new DialogClosedCallback<Boolean>() {
+			
+			@Override
+			public void doAfterDialogClosed(Boolean result) {
+				if (result.booleanValue()) {
+					ObservableList<PlayerViewModel> selectedItems = getTblPlayers().getSelectionModel().getSelectedItems();
 
-		startBackgroundTask(deletePlayerTask(selectedItems));
+					startBackgroundTask(deletePlayerTask(selectedItems));
+				} 
+			}
+		});
+		
 	}
 
 	private BackgroundTask deletePlayerTask(List<PlayerViewModel> selectedItems) {

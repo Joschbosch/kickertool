@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
 import zur.koeln.kickertool.ui.api.defaultimpl.DefaultDialogClosedCallback;
+import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
 import zur.koeln.kickertool.ui.service.DialogContent;
 
 @Component

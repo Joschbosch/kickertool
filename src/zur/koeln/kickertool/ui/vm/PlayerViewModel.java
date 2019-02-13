@@ -9,11 +9,12 @@ import javafx.beans.property.StringProperty;
 import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.ui.vm.base.FXViewModel;
+import zur.koeln.kickertool.ui.vm.base.ILabel;
 import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
 @Component
 @Getter
-public class PlayerViewModel extends FXViewModel {
+public class PlayerViewModel extends FXViewModel implements ILabel {
 	
 	@Getter
 	@Setter
@@ -75,6 +76,11 @@ public class PlayerViewModel extends FXViewModel {
 		} else if (!uid.equals(other.uid))
 			return false;
 		return true;
+	}
+	@Override
+	public String getLabel() {
+		
+		return getFirstName() + " " + getLastName(); 
 	}
 	
 }	

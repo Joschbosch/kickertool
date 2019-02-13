@@ -1,6 +1,7 @@
-package zur.koeln.kickertool.ui.controller;
+package zur.koeln.kickertool.ui.controller.base;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
@@ -17,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,6 +29,7 @@ import zur.koeln.kickertool.ui.api.IFXMLController;
 import zur.koeln.kickertool.ui.api.IFXMLDialogContent;
 import zur.koeln.kickertool.ui.service.DialogContent;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
+import zur.koeln.kickertool.ui.vm.base.ILabel;
 import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
 @Getter(value=AccessLevel.PRIVATE)
@@ -174,6 +177,7 @@ public class AbstractFXMLController implements IFXMLController{
 		
 		JFXButton btnOK = new JFXButton("OK");
 		btnOK.setPrefWidth(100.0);
+		btnOK.setDefaultButton(true);
 		btnOK.setOnAction(event -> dialog.close());
 		
 		dialogContent.setActions(btnOK);
@@ -193,11 +197,50 @@ public class AbstractFXMLController implements IFXMLController{
 		
 		JFXButton btnOK = new JFXButton("OK");
 		btnOK.setPrefWidth(100.0);
+		btnOK.setDefaultButton(true);
 		btnOK.setOnAction(event -> dialog.close());
 		
 		dialogContent.setActions(btnOK);
 		
 		dialog.show();
+		
+	}
+	
+	public void showConfirmationDialog(String title, String subTitle, List<ILabel> items, DialogClosedCallback<Boolean> closedCallback) {
+		
+		JFXDialogLayout dialogContent = new JFXDialogLayout();
+		
+		dialogContent.setHeading(new Text(title));
+		
+		VBox contentBox = new VBox();
+		contentBox.getChildren().add(new Text(subTitle));
+		contentBox.setSpacing(5.0);
+		
+		if (items != null) {
+			items.forEach(item -> contentBox.getChildren().add(new Text("- " + item.getLabel())));
+		}
+		
+		dialogContent.setBody(contentBox);
+		JFXDialog dialog = new JFXDialog(getRootStackPane(), dialogContent, DialogTransition.CENTER, false);
+		
+		JFXButton btnOK = new JFXButton("Ja");
+		btnOK.setPrefWidth(100.0);
+		btnOK.setDefaultButton(true);
+		btnOK.setOnAction(event -> {
+			dialog.close();
+			closedCallback.doAfterDialogClosed(Boolean.TRUE);
+		});
+		
+		JFXButton btnCancel = new JFXButton("Nein");
+		btnCancel.setPrefWidth(100.0);
+		btnCancel.setOnAction(event -> {
+			dialog.close();
+			closedCallback.doAfterDialogClosed(Boolean.FALSE);
+		});
+		
+		dialogContent.setActions(btnCancel, btnOK);
+		
+		dialog.show();	
 		
 	}
 	

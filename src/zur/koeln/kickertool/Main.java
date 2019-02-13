@@ -31,23 +31,9 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		
-		primaryStage.setOnCloseRequest(event -> {
-		    Alert alert = new Alert(AlertType.CONFIRMATION, "Wirklich verlassen?", ButtonType.YES, ButtonType.NO);
-		    alert.showAndWait();
-		    if (alert.getResult() != ButtonType.YES) {
-		        event.consume();
-		    }
-		});
-		
-        startWithGUIFXML(primaryStage);
+		FXMLGuiService.getInstance().initialize(ctx, primaryStage);
+		FXMLGuiService.getInstance().switchScene(Scenes.MAIN_MENU);
         
 	}
 	
-	private void startWithGUIFXML(Stage primaryStage) {
-		
-		FXMLGuiService.getInstance().initialize(ctx, primaryStage);
-		FXMLGuiService.getInstance().switchScene(Scenes.MAIN_MENU);
-		
-    }
-
 }
