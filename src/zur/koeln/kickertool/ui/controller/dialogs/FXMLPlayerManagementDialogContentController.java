@@ -31,6 +31,7 @@ import zur.koeln.kickertool.ui.vm.PlayerViewModel;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
+@SuppressWarnings("nls")
 public class FXMLPlayerManagementDialogContentController extends AbstractFXMLController implements FXMLDialogContent<Void, Void> {
 	
 	@Autowired

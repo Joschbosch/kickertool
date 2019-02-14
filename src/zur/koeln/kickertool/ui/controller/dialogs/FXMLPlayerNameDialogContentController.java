@@ -53,7 +53,7 @@ public class FXMLPlayerNameDialogContentController extends AbstractFXMLControlle
 	}
 
 	@Override
-	public void initContent(PlayerViewModel content) {
+	public void initializeDialogWithContent(PlayerViewModel content) {
 		getVm().setFirstName(content.getFirstName());
 		getVm().setLastName(content.getLastName());
 		getVm().setUid(content.getUid());

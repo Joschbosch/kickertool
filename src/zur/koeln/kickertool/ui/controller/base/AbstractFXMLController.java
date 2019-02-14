@@ -8,11 +8,8 @@ import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialog.DialogTransition;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXSpinner;
-import com.jfoenix.controls.base.IFXLabelFloatControl;
 
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -34,6 +31,7 @@ import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Setter(value=AccessLevel.PUBLIC)
+@SuppressWarnings("nls")
 public class AbstractFXMLController implements FXMLController{
 	
 	@FXML 
@@ -44,6 +42,9 @@ public class AbstractFXMLController implements FXMLController{
 		FXMLController.super.initialize();
 	}
 	
+	/**
+	 * Starts a new background task. You can be sure, that the GUI remains responsive, while performing the task.
+	 */
 	protected void startBackgroundTask(BackgroundTask backgroundTask) {
 		
 		JFXDialog loadingDialog = createLoadingDialog();
@@ -57,28 +58,23 @@ public class AbstractFXMLController implements FXMLController{
 			}
 		};
 		
-		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-			
-			@Override
-			public void handle(WorkerStateEvent event) {
-				loadingDialog.close();
-				backgroundTask.doOnSuccess(task.getValue());
-			}
+		task.setOnSucceeded(event -> {
+			loadingDialog.close();
+			backgroundTask.doOnSuccess(task.getValue());
 		});
 		
-		task.setOnFailed(new EventHandler<WorkerStateEvent>() {
-			
-			@Override
-			public void handle(WorkerStateEvent event) {
-				loadingDialog.close();
-				backgroundTask.doOnFailure(task.getException());
-			}
+		task.setOnFailed(event -> {
+			loadingDialog.close();
+			backgroundTask.doOnFailure(task.getException());
 		});
 	
 		new Thread(task).start();
 		
 	}
 	
+	/**
+	 * Opens a dialog with an initial content. If you don't want to provide any initial content, use {@link #openDialog(DialogContent, DialogCloseEvent)} instead.
+	 */
 	protected <Content, Result> void openDialog(DialogContent dialogContent, Content initialContent, DialogCloseEvent<Result> dialogClosedCallback) {
 
 		try {
@@ -94,7 +90,7 @@ public class AbstractFXMLController implements FXMLController{
 			FXMLDialogContent<Content, Result> fxmlDialogContent = (FXMLDialogContent) dialogContentController;
 			
 			if (initialContent != null) {
-				fxmlDialogContent.initContent(initialContent);
+				fxmlDialogContent.initializeDialogWithContent(initialContent);
 			}
 			
 			JFXDialogLayout dialogLayout = new JFXDialogLayout();
@@ -143,6 +139,9 @@ public class AbstractFXMLController implements FXMLController{
 
 	}
 	
+	/**
+	 * Opens a dialog without any initial content.
+	 */
 	protected <Void, Result> void openDialog(DialogContent dialogContent, DialogCloseEvent<Result> dialogClosedCallback) {
 
 		openDialog(dialogContent, null, dialogClosedCallback);
