@@ -12,7 +12,10 @@ public enum Icons {
 	
 	ADD_ITEM("add_item"),
 	DELETE_ITEM("delete_item"),
-	EDIT_ITEM("edit_item");
+	EDIT_ITEM("edit_item"),
+	ARROW_RIGHT("arrow_right"),
+	ARROW_LEFT("arrow_left"),
+	SETTINGS("settings");
 	
 	private String fileName;
 

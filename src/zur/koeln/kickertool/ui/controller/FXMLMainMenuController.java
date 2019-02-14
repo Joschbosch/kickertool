@@ -29,12 +29,12 @@ public class FXMLMainMenuController extends AbstractFXMLController{
 	
 	@FXML 
 	public void onStartNewTournamentClicked() {
-		// TODO implement
+		openDialog(DialogContent.TOURNAMENT_DIALOG, new DefaultDialogCloseEvent());
 	}
 
 	@FXML 
 	public void onPlayerManagementClicked() {
-		openDialog(DialogContent.PLAYER_MANAGEMENT_DIALOGUE, new DefaultDialogCloseEvent());
+		openDialog(DialogContent.PLAYER_MANAGEMENT_DIALOG, new DefaultDialogCloseEvent());
 	}
 
 	@FXML 
