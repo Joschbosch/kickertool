@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import zur.koeln.kickertool.core.kernl.TournamentStatus;
-import zur.koeln.kickertool.core.model.Settings;
 
 @Getter
 @Setter
@@ -19,7 +18,7 @@ public class TournamentDTO {
 
     private TournamentStatus status;
 
-    private Settings settings;
+    private SettingsDTO settings;
 
     private List<PlayerDTO> participants;
 
