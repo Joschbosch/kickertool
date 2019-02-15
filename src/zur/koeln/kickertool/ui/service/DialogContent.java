@@ -6,8 +6,9 @@ import lombok.Getter;
 @SuppressWarnings("nls")
 public enum DialogContent {
 
-	PLAYER_MANAGEMENT_DIALOGUE("PlayerManagementDialogContent.fxml", "Spielerverwaltung"),
-	PLAYER_NAME_DIALOGUE("PlayerNameDialogContent.fxml", "Spielername", 250.0);
+	PLAYER_MANAGEMENT_DIALOG("PlayerManagementDialogContent.fxml", "Spielerverwaltung"),
+	PLAYER_NAME_DIALOG("PlayerNameDialogContent.fxml", "Spielername", 250.0),
+	TOURNAMENT_DIALOG("TournamentConfigurationDialogContent.fxml", "Neues Turnier");
 	
 	private String fxmlFile;
 	private String dialogTitle;

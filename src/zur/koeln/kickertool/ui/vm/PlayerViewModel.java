@@ -14,7 +14,7 @@ import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
 @Component
 @Getter
-public class PlayerViewModel extends FXViewModel implements ILabel {
+public class PlayerViewModel extends FXViewModel implements ILabel, Comparable<PlayerViewModel> {
 	
 	@Getter
 	@Setter
@@ -81,6 +81,13 @@ public class PlayerViewModel extends FXViewModel implements ILabel {
 	public String getLabel() {
 		
 		return getFirstName() + " " + getLastName(); 
+	}
+	
+	@Override
+	public int compareTo(PlayerViewModel o) {
+		
+		return getLabel().compareToIgnoreCase(o.getLabel());
+		
 	}
 	
 }	

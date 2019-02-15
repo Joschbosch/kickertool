@@ -12,6 +12,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
@@ -88,7 +89,7 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 			@Override
 			public void doOnClick(int rowIndex) {
 				
-				openDialog(DialogContent.PLAYER_NAME_DIALOGUE, getVm().getPlayers().get(rowIndex), new DialogCloseEvent<PlayerViewModel>() {
+				openDialog(DialogContent.PLAYER_NAME_DIALOG, getVm().getPlayers().get(rowIndex), new DialogCloseEvent<PlayerViewModel>() {
 
 					@Override
 					public void doAfterDialogClosed(PlayerViewModel result) {
@@ -156,7 +157,7 @@ public class FXMLPlayerManagementDialogContentController extends AbstractFXMLCon
 	}
 
 	@FXML public void onAddPlayerClicked() {
-		openDialog(DialogContent.PLAYER_NAME_DIALOGUE, new DialogCloseEvent<PlayerViewModel>() {
+		openDialog(DialogContent.PLAYER_NAME_DIALOG, new DialogCloseEvent<PlayerViewModel>() {
 
 			@Override
 			public void doAfterDialogClosed(PlayerViewModel result) {

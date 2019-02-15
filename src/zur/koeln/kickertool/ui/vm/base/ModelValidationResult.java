@@ -24,6 +24,10 @@ public class ModelValidationResult {
 		return !getValidationMessages().isEmpty();
 	}
 	
+	public void addValidationResult(ModelValidationResult valResult) {
+		getValidationMessages().addAll(valResult.getValidationMessages());
+	}
+	
 	@Override
 	public String toString() {
 		return StringUtils.collectionToDelimitedString(getValidationMessages(), "\n");

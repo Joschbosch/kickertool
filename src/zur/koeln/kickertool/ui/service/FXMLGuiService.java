@@ -41,6 +41,7 @@ public class FXMLGuiService {
 	@Setter(value = AccessLevel.PRIVATE)
 	private Stage primaryStage;
 
+	private static final String APP_TITLE = "Kickertool"; //$NON-NLS-1$
 	private static final String PREFIX = "../"; //$NON-NLS-1$
 
 	public void initialize(ConfigurableApplicationContext ctx, Stage primaryStage) {
@@ -87,6 +88,7 @@ public class FXMLGuiService {
 		stage.sizeToScene();
 		stage.centerOnScreen();
 		stage.show();
+		stage.setTitle(APP_TITLE);
 		
 		startAfterInitializationTask(fxmlController);
 	}
