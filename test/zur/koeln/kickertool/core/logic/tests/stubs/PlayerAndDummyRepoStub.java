@@ -16,7 +16,7 @@ public class PlayerAndDummyRepoStub implements IPlayerRepository, IDummyPlayerRe
 
 	@Override
 	public void deletePlayer(UUID player) {
-		
+        // no impl
 	}
 
 	@Override

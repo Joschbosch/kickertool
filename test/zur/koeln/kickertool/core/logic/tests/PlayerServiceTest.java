@@ -32,9 +32,9 @@ public class PlayerServiceTest {
 		
 		IPlayerService playerService = newPlayerService;
 		
-		Player newPlayer = playerService.createNewPlayer("Josch", "Bosch");
-		Assertions.assertTrue(newPlayer.getFirstName().equals("Josch"));
-		Assertions.assertTrue(newPlayer.getLastName().equals("Bosch"));
+        Player newPlayer = playerService.createNewPlayer("Josch", "Bosch"); //$NON-NLS-1$ //$NON-NLS-2$
+        Assertions.assertTrue(newPlayer.getFirstName().equals("Josch")); //$NON-NLS-1$
+        Assertions.assertTrue(newPlayer.getLastName().equals("Bosch")); //$NON-NLS-1$
 		Assertions.assertTrue(newPlayer.getStatus() == PlayerStatus.NOT_IN_TOURNAMENT);
 		PlayerStatistics statistics = newPlayer.getStatistics();
 		Assertions.assertTrue(statistics != null);
@@ -49,7 +49,7 @@ public class PlayerServiceTest {
 		
 		PlayerService newPlayerService = new PlayerService();
 		IDummyPlayerRepository dummyRepoMock = Mockito.mock(IDummyPlayerRepository.class);
-		Player dummyPlayerReturn = new Player(UUID.randomUUID(), "new", "dummy", true);
+        Player dummyPlayerReturn = new Player(UUID.randomUUID(), "new", "dummy", true); //$NON-NLS-1$ //$NON-NLS-2$
 		Mockito.when(dummyRepoMock.getNewOrFreeDummyPlayer()).thenReturn(dummyPlayerReturn);
 		newPlayerService.setDummyPlayerRepo(dummyRepoMock);
 		
@@ -72,12 +72,12 @@ public class PlayerServiceTest {
 		
 		PlayerService newPlayerService = new PlayerService();
 		IDummyPlayerRepository dummyRepoMock = Mockito.mock(IDummyPlayerRepository.class);
-		Player dummyPlayerReturn = new Player(UUID.randomUUID(), "new", "dummy", true);
+        Player dummyPlayerReturn = new Player(UUID.randomUUID(), "new", "dummy", true); //$NON-NLS-1$ //$NON-NLS-2$
 		Mockito.when(dummyRepoMock.getDummyPlayer(dummyPlayerReturn.getUid())).thenReturn(dummyPlayerReturn);
 		newPlayerService.setDummyPlayerRepo(dummyRepoMock);
 		
 		IPlayerRepository playerRepoMock = Mockito.mock(IPlayerRepository.class);
-		Player normalPlayerReturn = new Player(UUID.randomUUID(), "new", "Not dummy", true);
+        Player normalPlayerReturn = new Player(UUID.randomUUID(), "new", "Not dummy", true); //$NON-NLS-1$ //$NON-NLS-2$
 		Mockito.when(playerRepoMock.getPlayer(normalPlayerReturn.getUid())).thenReturn(normalPlayerReturn);
 		newPlayerService.setPlayerRepo(playerRepoMock);
 		

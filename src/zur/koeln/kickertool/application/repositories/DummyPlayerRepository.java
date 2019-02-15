@@ -26,7 +26,7 @@ public class DummyPlayerRepository
         if (findFirst.isPresent()) {
             dummy = findFirst.get();
         } else {
-            dummy = new Player(UUID.randomUUID(), "Dummy Player", String.valueOf(dummyPlayers.size()), true);
+            dummy = new Player(UUID.randomUUID(), "Dummy Player", String.valueOf(dummyPlayers.size()), true); //$NON-NLS-1$
         }
         dummy.setStatus(PlayerStatus.IN_TOURNAMENT);
         return dummy;

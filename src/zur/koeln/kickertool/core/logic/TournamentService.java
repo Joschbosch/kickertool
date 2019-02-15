@@ -6,7 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import zur.koeln.kickertool.core.api.*;
+import zur.koeln.kickertool.core.api.IMatchService;
+import zur.koeln.kickertool.core.api.IPlayerService;
+import zur.koeln.kickertool.core.api.IScoreCalcService;
+import zur.koeln.kickertool.core.api.ITournamentService;
 import zur.koeln.kickertool.core.kernl.GameTableStatus;
 import zur.koeln.kickertool.core.kernl.MatchStatus;
 import zur.koeln.kickertool.core.kernl.PlayerStatus;
@@ -31,13 +34,18 @@ public class TournamentService
     private IScoreCalcService scoreService;
 
     @Override
-    public Tournament createNewTournament() {
+    public Tournament createAndStartNewTournament(String tournamentName, List<Player> participants, Settings settings) {
 
-        Settings newSettings = new Settings(UUID.randomUUID());
-        Tournament newTournament = new Tournament(UUID.randomUUID(), newSettings);
-        newSettings.setTournament(newTournament);
-        checkDummyPlayer(newTournament);
+        Tournament newTournament = new Tournament(UUID.randomUUID(), new Settings());
         tournamentRepo.saveOrUpdateTournament(newTournament);
+
+        renameTournament(newTournament.getUid(), tournamentName);
+        changeTournamentSettings(newTournament.getUid(), settings);
+        settings.setTournament(newTournament);
+        participants.forEach(p -> addParticipantToTournament(newTournament.getUid(), p.getUid()));
+        checkDummyPlayer(newTournament);
+        startTournament(newTournament.getUid());
+
         return newTournament;
     }
     @Override
@@ -76,10 +84,11 @@ public class TournamentService
         return getTournamentParticipants(tournamentIDToRemove);
     }
 
-    public void pauseOrUnpausePlayer(UUID playerToPause, boolean pausing) {
+    @Override
+    public Player pauseOrUnpausePlayer(UUID playerToPause, boolean pausing) {
         Player p = playerService.getPlayerById(playerToPause);
         p.setStatus(pausing ? PlayerStatus.PAUSING_TOURNAMENT : PlayerStatus.IN_TOURNAMENT);
-
+        return p;
     }
 
     @Override
@@ -94,9 +103,14 @@ public class TournamentService
     }
 
     @Override
-    public Settings changeTournamentSettings(Settings settings) {
+    public Settings changeTournamentSettings(UUID uuid, Settings settings) {
+        Tournament tournament = tournamentRepo.getTournament(uuid);
+        tournament.setSettings(settings);
+        settings.setTournament(tournament);
 
-        return null;
+        tournamentRepo.saveOrUpdateTournament(tournament);
+
+        return settings;
     }
     @Override
     public boolean isCurrentRoundComplete(UUID tournamentId) {
@@ -110,15 +124,19 @@ public class TournamentService
     }
 
     @Override
-    public void startNewRound(UUID tournamentToStartNewRound) {
+    public Tournament startNewRound(UUID tournamentToStartNewRound) {
         Tournament tournament = tournamentRepo.getTournament(tournamentToStartNewRound);
         long runningMatches = getNotFinishedMatchesInTournament(tournament).size();
         if (runningMatches > 0) {
-            return;
+            return null;
         }
         tournament.setCurrentRound(tournament.getCurrentRound() + 1);
         roundService.createNextMatches(tournament.getCurrentRound(), tournament.getUid());
         updateGameTableUsage(tournament);
+
+        tournamentRepo.saveOrUpdateTournament(tournament);
+
+        return tournament;
     }
 
     @Override
@@ -274,4 +292,13 @@ public class TournamentService
         }
         return newTables;
     }
+    @Override
+    public Settings getDefaultSettings() {
+        return new Settings();
+    }
+    @Override
+    public Settings getSettings(UUID tournamentUid) {
+        return tournamentRepo.getTournament(tournamentUid).getSettings();
+    }
+
 }

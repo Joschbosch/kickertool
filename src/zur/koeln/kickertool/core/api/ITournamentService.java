@@ -10,7 +10,7 @@ import zur.koeln.kickertool.core.model.Tournament;
 
 public interface ITournamentService {
 
-    Tournament createNewTournament();
+    Tournament createAndStartNewTournament(String tournamentName, List<Player> list, Settings settings);
 
     Tournament startTournament(UUID tournamentIDToStart);
 
@@ -20,11 +20,9 @@ public interface ITournamentService {
 
     List<Player> removeParticipantFromournament(UUID tournamentIDToRemove, UUID participant);
 
-    Settings changeTournamentSettings(Settings settings);
-
     List<Player> getTournamentParticipants(UUID tournamentId);
 
-    void startNewRound(UUID tournamentToStartNewRound);
+    Tournament startNewRound(UUID tournamentToStartNewRound);
 
     boolean isCurrentRoundComplete(UUID tournamentId);
 
@@ -38,6 +36,12 @@ public interface ITournamentService {
 
     void addNewMatchToTournament(UUID uid, Match m);
 
+    Settings changeTournamentSettings(UUID uuid, Settings settings);
 
+    Player pauseOrUnpausePlayer(UUID playerToPause, boolean pausing);
+
+    Settings getDefaultSettings();
+
+    Settings getSettings(UUID tournamentUid);
 
 }

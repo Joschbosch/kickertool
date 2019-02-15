@@ -5,6 +5,7 @@ import java.util.UUID;
 import zur.koeln.kickertool.core.model.Tournament;
 
 public interface ITournamentPersistence {
+
     void insert(Tournament tournament);
 
     void update(Tournament tournament);
