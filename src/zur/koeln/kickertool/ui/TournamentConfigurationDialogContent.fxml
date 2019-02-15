@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tooltip?>
@@ -18,39 +19,41 @@
       <ColumnConstraints hgrow="NEVER" minWidth="10.0" percentWidth="5.0" prefWidth="50.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="60.0" />
+      <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="NEVER" />
+      <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="NEVER" />
+      <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="NEVER" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
    </rowConstraints>
    <children>
-      <JFXButton fx:id="btnOpenSettings" onAction="#onOpenSettingsClicked" GridPane.halignment="LEFT">
+      <JFXButton fx:id="btnOpenSettings" onAction="#onOpenSettingsClicked" GridPane.halignment="LEFT" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets right="5.0" />
          </GridPane.margin>
          <tooltip>
             <Tooltip text="Einstellungen" />
          </tooltip></JFXButton>
-      <Label fx:id="lblSettingsName" text="Default" GridPane.columnIndex="1" GridPane.columnSpan="3">
+      <Label fx:id="lblSettingsName" text="Standardeinstellungen" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets left="5.0" />
          </GridPane.margin></Label>
-      <JFXListView fx:id="lstAvailablePlayers" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.rowSpan="4" GridPane.vgrow="ALWAYS" />
-      <JFXListView fx:id="lstPlayersSelectedForTournament" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.rowSpan="4" GridPane.vgrow="ALWAYS" />
-      <JFXButton fx:id="btnAddPlayer" onAction="#onAddPlayerClicked" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+      <JFXListView fx:id="lstAvailablePlayers" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.rowSpan="4" GridPane.vgrow="ALWAYS" />
+      <JFXListView fx:id="lstPlayersSelectedForTournament" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.rowSpan="4" GridPane.vgrow="ALWAYS" />
+      <JFXButton fx:id="btnAddPlayer" onAction="#onAddPlayerClicked" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets left="5.0" right="5.0" />
          </GridPane.margin></JFXButton>
-      <JFXButton fx:id="btnRemovePlayer" onAction="#onRemovePlayerClicked" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+      <JFXButton fx:id="btnRemovePlayer" onAction="#onRemovePlayerClicked" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets left="5.0" right="5.0" />
          </GridPane.margin></JFXButton>
-      <Label text="Spielerauswahl" GridPane.columnSpan="5" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+      <Label text="Spielerauswahl" GridPane.columnSpan="5" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
          <GridPane.margin>
             <Insets bottom="5.0" />
          </GridPane.margin>
       </Label>
+      <JFXTextField fx:id="txtTournamentName" promptText="Turniername" GridPane.columnSpan="2" />
    </children>
 </GridPane>

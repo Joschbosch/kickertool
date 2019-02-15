@@ -37,6 +37,7 @@ public class AbstractFXMLController implements FXMLController{
 	@FXML 
 	StackPane rootStackPane;
 
+	@FXML
 	@Override
 	public void initialize() {
 		FXMLController.super.initialize();

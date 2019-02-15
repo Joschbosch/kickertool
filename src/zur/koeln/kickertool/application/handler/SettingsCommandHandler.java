@@ -3,6 +3,7 @@ package zur.koeln.kickertool.application.handler;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import zur.koeln.kickertool.application.api.dtos.SettingsDTO;
 import zur.koeln.kickertool.application.api.dtos.base.SingleResponseDTO;
@@ -11,6 +12,7 @@ import zur.koeln.kickertool.application.handler.api.ITournamentSettingsCommandHa
 import zur.koeln.kickertool.core.api.ITournamentService;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
 
+@Service
 public class SettingsCommandHandler
     implements ITournamentSettingsCommandHandler {
 

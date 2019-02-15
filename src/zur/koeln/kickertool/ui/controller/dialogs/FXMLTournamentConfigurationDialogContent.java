@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
 
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -17,17 +18,21 @@ import javafx.scene.control.cell.TextFieldListCell;
 import javafx.util.StringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
+import zur.koeln.kickertool.application.api.dtos.SettingsDTO;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
 import zur.koeln.kickertool.ui.api.FXMLDialogContent;
+import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
+import zur.koeln.kickertool.ui.service.DialogContent;
 import zur.koeln.kickertool.ui.service.Icons;
 import zur.koeln.kickertool.ui.vm.PlayerViewModel;
 import zur.koeln.kickertool.ui.vm.TournamentConfigurationViewModel;
+import zur.koeln.kickertool.ui.vm.TournamentSettingsViewModel;
 import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLTournamentConfigurationDialogContent extends AbstractFXMLController implements FXMLDialogContent<Void, Void>{
+public class FXMLTournamentConfigurationDialogContent extends AbstractFXMLController implements FXMLDialogContent<Void, TournamentConfigurationViewModel>{
 
 	@FXML 
 	JFXListView lstAvailablePlayers;
@@ -46,6 +51,9 @@ public class FXMLTournamentConfigurationDialogContent extends AbstractFXMLContro
 
 	@FXML 
 	Label lblSettingsName;
+	
+	@FXML 
+	JFXTextField txtTournamentName;
 	
 	@Autowired
 	TournamentConfigurationViewModel vm;
@@ -94,6 +102,7 @@ public class FXMLTournamentConfigurationDialogContent extends AbstractFXMLContro
 		
 		getLstAvailablePlayers().setItems(getVm().getAvailablePlayers().sorted());
 		getLstPlayersSelectedForTournament().setItems(getVm().getPlayersForTournament().sorted());
+		getTxtTournamentName().textProperty().bindBidirectional(getVm().getTournamentNameProperty());
 		
 		getBtnAddPlayer().disableProperty().bind(Bindings.size(getLstAvailablePlayers().getSelectionModel().getSelectedItems()).isEqualTo(0));
 		getBtnRemovePlayer().disableProperty().bind(Bindings.size(getLstPlayersSelectedForTournament().getSelectionModel().getSelectedItems()).isEqualTo(0));
@@ -105,8 +114,10 @@ public class FXMLTournamentConfigurationDialogContent extends AbstractFXMLContro
 		getVm().getPlayersForTournament().clear();
 		
 		startBackgroundTask(loadAvailablePlayersTask());
+		startBackgroundTask(loadDefaultSettingsTask());
 	}
-	
+
+
 	private BackgroundTask loadAvailablePlayersTask() {
 		return new BackgroundTask<List<PlayerViewModel>>() {
 
@@ -126,10 +137,38 @@ public class FXMLTournamentConfigurationDialogContent extends AbstractFXMLContro
 			}
 		};
 	}
+	
+	private BackgroundTask loadDefaultSettingsTask() {
+		return new BackgroundTask<TournamentSettingsViewModel>() {
+
+			@Override
+			public TournamentSettingsViewModel performTask() throws Exception {
+				
+				return getVm().loadDefaultSettings();
+			}
+
+			@Override
+			public void doOnSuccess(TournamentSettingsViewModel result) {
+				getVm().setDefaultSettings(result);
+			}
+
+			@Override
+			public void doOnFailure(Throwable exception) {
+				showError(exception);
+			}
+		};
+	}
 
 	@FXML 
 	public void onOpenSettingsClicked() {
-		
+		openDialog(DialogContent.TOURNAMENT_SETTINGS_DIALOG, getVm().getSettingsVm(), new DialogCloseEvent<TournamentSettingsViewModel>() {
+
+			@Override
+			public void doAfterDialogClosed(TournamentSettingsViewModel result) {
+				getVm().setDefaultSettings(result);
+				getLblSettingsName().setText("Eigene Einstellungen");
+			}
+		});
 	}
 	
 	@FXML 
@@ -150,5 +189,10 @@ public class FXMLTournamentConfigurationDialogContent extends AbstractFXMLContro
 	@Override
 	public ModelValidationResult validate() {
 		return getVm().validate();
+	}
+
+	@Override
+	public TournamentConfigurationViewModel sendResult() {
+		return getVm();
 	}
 }
