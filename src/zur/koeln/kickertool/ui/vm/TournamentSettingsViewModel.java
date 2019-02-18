@@ -13,6 +13,7 @@ import javafx.beans.property.StringProperty;
 import javafx.util.converter.IntegerStringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import zur.koeln.kickertool.core.kernl.TournamentMode;
 import zur.koeln.kickertool.ui.vm.base.FXViewModel;
 import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
@@ -32,7 +33,7 @@ public class TournamentSettingsViewModel extends FXViewModel{
 	private final StringProperty pointsForDrawProperty = new SimpleStringProperty();
 	
 	private final BooleanProperty fixedTeamsProperty = new SimpleBooleanProperty();
-	
+	private TournamentMode mode = TournamentMode.SWISS_DYP;
 	
 	@Override
 	public ModelValidationResult validate() {

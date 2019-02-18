@@ -53,6 +53,7 @@ public class FXMLTournamentSettingsDialogContentController extends AbstractFXMLC
 	
 	@Override
 	public TournamentSettingsViewModel sendResult() {
+		
 		return initialSettingsViewModel;
 	}
 	
