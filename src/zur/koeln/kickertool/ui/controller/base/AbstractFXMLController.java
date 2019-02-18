@@ -20,10 +20,13 @@ import javafx.scene.text.Text;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import zur.koeln.kickertool.application.api.dtos.base.DTO;
+import zur.koeln.kickertool.application.api.dtos.base.StatusDTO;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
 import zur.koeln.kickertool.ui.api.FXMLController;
 import zur.koeln.kickertool.ui.api.FXMLDialogContent;
 import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
+import zur.koeln.kickertool.ui.exceptions.BackgroundTaskException;
 import zur.koeln.kickertool.ui.service.DialogContent;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
 import zur.koeln.kickertool.ui.vm.base.ILabel;
@@ -241,6 +244,14 @@ public class AbstractFXMLController implements FXMLController{
 		dialogContent.setActions(btnCancel, btnOK);
 		
 		dialog.show();	
+		
+	}
+	
+	protected void checkResponse(DTO baseDto) throws BackgroundTaskException {
+		
+		if (baseDto.getDtoStatus() != StatusDTO.SUCCESS) {
+			throw new BackgroundTaskException(baseDto.getValidation().toString());
+		}
 		
 	}
 	

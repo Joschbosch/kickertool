@@ -10,6 +10,7 @@ import lombok.Getter;
 import zur.koeln.kickertool.application.api.dtos.TournamentDTO;
 import zur.koeln.kickertool.application.api.dtos.base.SingleResponseDTO;
 import zur.koeln.kickertool.application.handler.api.ITournamentCommandHandler;
+import zur.koeln.kickertool.ui.api.BackgroundTask;
 import zur.koeln.kickertool.ui.api.defaultimpl.DefaultDialogCloseEvent;
 import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
@@ -40,10 +41,32 @@ public class FXMLMainMenuController extends AbstractFXMLController{
 
 			@Override
 			public void doAfterDialogClosed(TournamentConfigurationViewModel result) {
-				SingleResponseDTO<TournamentDTO> createNewTournament = getTournamentCommandHandler().createNewTournament(result.getTournamentName(), result.getPlayerDTOsForTournament(), result.getSettingsDTO());
-				System.out.println(createNewTournament);
+				startBackgroundTask(createNewTournamentTask(result));
 			}
 		});
+	}
+	
+	private BackgroundTask createNewTournamentTask(TournamentConfigurationViewModel tournamentConfig) {
+
+		return new BackgroundTask<TournamentDTO>() {
+
+			@Override
+			public TournamentDTO performTask() throws Exception {
+				SingleResponseDTO<TournamentDTO> createNewTournament = getTournamentCommandHandler().createNewTournament(tournamentConfig.getTournamentName(), tournamentConfig.getPlayerDTOsForTournament(), tournamentConfig.getSettingsDTO());
+				checkResponse(createNewTournament);
+				return createNewTournament.getDtoValue();
+			}
+
+			@Override
+			public void doOnSuccess(TournamentDTO result) {
+				// TODO implement next steps
+			}
+
+			@Override
+			public void doOnFailure(Throwable exception) {
+				showError(exception);
+			}
+		};
 	}
 
 	@FXML 
