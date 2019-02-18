@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +13,6 @@ import lombok.Getter;
 import zur.koeln.kickertool.application.api.dtos.PlayerDTO;
 import zur.koeln.kickertool.application.api.dtos.base.ListResponseDTO;
 import zur.koeln.kickertool.application.api.dtos.base.SingleResponseDTO;
-import zur.koeln.kickertool.application.api.dtos.base.StatusDTO;
 import zur.koeln.kickertool.application.api.dtos.base.StatusOnlyDTO;
 import zur.koeln.kickertool.application.handler.api.IPlayerCommandHandler;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;

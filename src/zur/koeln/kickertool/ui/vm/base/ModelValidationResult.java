@@ -7,6 +7,7 @@ import org.springframework.util.StringUtils;
 
 import lombok.Getter;
 
+@SuppressWarnings("nls")
 @Getter
 public class ModelValidationResult {
 	

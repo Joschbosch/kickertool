@@ -5,12 +5,9 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.util.converter.IntegerStringConverter;
 import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.core.kernl.TournamentMode;

@@ -12,6 +12,7 @@ import zur.koeln.kickertool.ui.vm.base.FXViewModel;
 import zur.koeln.kickertool.ui.vm.base.ILabel;
 import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
+@SuppressWarnings("nls")
 @Component
 @Getter
 public class PlayerViewModel extends FXViewModel implements ILabel, Comparable<PlayerViewModel> {

@@ -3,7 +3,6 @@ package zur.koeln.kickertool.application.api.dtos.base;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.derby.iapi.util.StringUtil;
 import org.springframework.util.StringUtils;
 
 import lombok.Getter;

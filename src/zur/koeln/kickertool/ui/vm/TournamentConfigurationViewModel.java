@@ -23,6 +23,7 @@ import zur.koeln.kickertool.ui.exceptions.BackgroundTaskException;
 import zur.koeln.kickertool.ui.vm.base.FXViewModel;
 import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
+@SuppressWarnings("nls")
 @Component
 @Getter
 public class TournamentConfigurationViewModel extends FXViewModel {

@@ -18,7 +18,6 @@ import javafx.scene.control.cell.TextFieldListCell;
 import javafx.util.StringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.application.api.dtos.SettingsDTO;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
 import zur.koeln.kickertool.ui.api.FXMLDialogContent;
 import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
@@ -30,6 +29,7 @@ import zur.koeln.kickertool.ui.vm.TournamentConfigurationViewModel;
 import zur.koeln.kickertool.ui.vm.TournamentSettingsViewModel;
 import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
+@SuppressWarnings("nls")
 @Component
 @Getter(value=AccessLevel.PRIVATE)
 public class FXMLTournamentConfigurationDialogContent extends AbstractFXMLController implements FXMLDialogContent<Void, TournamentConfigurationViewModel>{
