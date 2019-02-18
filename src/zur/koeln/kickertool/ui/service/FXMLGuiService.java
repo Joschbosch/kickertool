@@ -5,12 +5,8 @@ import java.io.IOException;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.AccessLevel;
@@ -20,6 +16,7 @@ import zur.koeln.kickertool.ui.api.FXMLController;
 import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
 
+@SuppressWarnings("nls")
 public class FXMLGuiService {
 
 	private static FXMLGuiService instance;

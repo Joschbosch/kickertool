@@ -34,7 +34,7 @@ public class ImageEditTableCellFactory implements Callback<TableColumn, TableCel
 				vbox.setAlignment(Pos.CENTER);
 				imageView = Icons.EDIT_ITEM.createIconImageView(20);
 				vbox.getChildren().add(imageView);
-				vbox.setStyle("-fx-cursor: hand;");
+				vbox.setStyle("-fx-cursor: hand;"); //$NON-NLS-1$
 				setGraphic(vbox);
 				
 				vbox.setOnMouseClicked(event -> click.doOnClick(getIndex()));
