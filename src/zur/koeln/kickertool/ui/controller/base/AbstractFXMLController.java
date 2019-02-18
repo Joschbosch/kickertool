@@ -29,6 +29,7 @@ import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 import zur.koeln.kickertool.ui.exceptions.BackgroundTaskException;
 import zur.koeln.kickertool.ui.service.DialogContent;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
+import zur.koeln.kickertool.ui.tools.DTOVerifcationUtils;
 import zur.koeln.kickertool.ui.vm.base.ILabel;
 import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
@@ -249,9 +250,7 @@ public class AbstractFXMLController implements FXMLController{
 	
 	protected void checkResponse(DTO baseDto) throws BackgroundTaskException {
 		
-		if (baseDto.getDtoStatus() != StatusDTO.SUCCESS) {
-			throw new BackgroundTaskException(baseDto.getValidation().toString());
-		}
+		DTOVerifcationUtils.checkResponse(baseDto);
 		
 	}
 	
