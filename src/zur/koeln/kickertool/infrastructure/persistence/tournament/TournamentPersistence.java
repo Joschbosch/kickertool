@@ -1,5 +1,6 @@
 package zur.koeln.kickertool.infrastructure.persistence.tournament;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
@@ -32,7 +33,11 @@ public class TournamentPersistence
 
     @Override
     public Tournament findByUID(UUID tournamentUID) {
-        return mapper.map(repo.findById(tournamentUID), Tournament.class);
+        Optional<TournamentEntity> entityOptional = repo.findById(tournamentUID);
+        if (entityOptional.isPresent()) {
+            return mapper.map(entityOptional.get(), Tournament.class);
+        }
+        return null;
     }
 
 }

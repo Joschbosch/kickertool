@@ -22,23 +22,23 @@ public class TournamentEntity {
 
     private TournamentStatus status;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name = "SETTINGS_UID")
     private SettingsEntity settings;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name = "PARTICIPANTS_UID")
     private List<PlayerEntity> participants;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name = "DUMMY_UID")
     private List<PlayerEntity> dummyPlayer;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name = "MATCH_ID")
     private List<MatchEntity> matches;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name = "TABLE_ID")
     private List<GameTableEntity> playtables;
 

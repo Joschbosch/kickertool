@@ -16,11 +16,11 @@ public class TeamEntity {
     @Id
     private UUID uid;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name = "P1_ID")
     private PlayerEntity player1;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name = "P2_ID")
     private PlayerEntity player2;
 }

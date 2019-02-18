@@ -37,6 +37,7 @@ public class TournamentService
     public Tournament createAndStartNewTournament(String tournamentName, List<Player> participants, Settings settings) {
 
         Tournament newTournament = new Tournament(UUID.randomUUID(), new Settings());
+        newTournament.getSettings().setUid(UUID.randomUUID());
         tournamentRepo.saveOrUpdateTournament(newTournament);
 
         renameTournament(newTournament.getUid(), tournamentName);
@@ -105,6 +106,9 @@ public class TournamentService
     @Override
     public Settings changeTournamentSettings(UUID uuid, Settings settings) {
         Tournament tournament = tournamentRepo.getTournament(uuid);
+        if (settings.getUid() == null) {
+            settings.setUid(UUID.randomUUID());
+        }
         tournament.setSettings(settings);
         settings.setTournament(tournament);
 
