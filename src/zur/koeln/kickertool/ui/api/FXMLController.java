@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
  * 
  * @author Daniel Cleemann
  */
-public interface FXMLController {
+public interface FXMLController<PAYLOAD> {
 	
 	/**
 	 * Initialize method for FXML. Gets always called automatically and should not be overridden. <br>
@@ -51,4 +51,6 @@ public interface FXMLController {
 	default void doAfterInitializationCompleted() {
 		// default
 	}
+	
+	void setPayload(PAYLOAD payload);
 }

@@ -16,4 +16,9 @@ public enum TournamentMode {
     public String getDisplayName() {
         return displayName;
     }
+    
+    @Override
+    public String toString() {
+    	return getDisplayName();
+    }
 }

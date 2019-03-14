@@ -5,7 +5,9 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import lombok.Getter;
@@ -30,7 +32,8 @@ public class TournamentSettingsViewModel extends FXViewModel{
 	private final StringProperty pointsForDrawProperty = new SimpleStringProperty();
 	
 	private final BooleanProperty fixedTeamsProperty = new SimpleBooleanProperty();
-	private TournamentMode mode = TournamentMode.SWISS_DYP;
+	
+	private final ObjectProperty<TournamentMode> modeProperty = new SimpleObjectProperty<>();
 	
 	@Override
 	public ModelValidationResult validate() {
@@ -69,6 +72,10 @@ public class TournamentSettingsViewModel extends FXViewModel{
 		getFixedTeamsProperty().set(fixedTeams);
 	}
 	
+	public void setMode(TournamentMode mode) {
+		getModeProperty().set(mode);
+	}
+	
 	public int getTableCount() {
 		return Integer.valueOf(getTableCountProperty().get()).intValue();
 	}
@@ -100,4 +107,9 @@ public class TournamentSettingsViewModel extends FXViewModel{
 	public boolean getFixedTeams() {
 		return getFixedTeamsProperty().get();
 	}
+	
+	public TournamentMode getMode() {
+		return getModeProperty().get();
+	}
+	
 }

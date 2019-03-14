@@ -15,11 +15,13 @@ import zur.koeln.kickertool.ui.api.defaultimpl.DefaultDialogCloseEvent;
 import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
 import zur.koeln.kickertool.ui.service.DialogContent;
+import zur.koeln.kickertool.ui.service.FXMLGuiService;
+import zur.koeln.kickertool.ui.service.Scenes;
 import zur.koeln.kickertool.ui.vm.TournamentConfigurationViewModel;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLMainMenuController extends AbstractFXMLController{
+public class FXMLMainMenuViewController extends AbstractFXMLController{
 	
 	@Autowired
 	@Getter(value = AccessLevel.PRIVATE)
@@ -59,7 +61,7 @@ public class FXMLMainMenuController extends AbstractFXMLController{
 
 			@Override
 			public void doOnSuccess(TournamentDTO result) {
-				// TODO implement next steps
+				FXMLGuiService.getInstance().switchScene(Scenes.TOURNAMENT_CONTROLLING, result.getUid());
 			}
 
 			@Override

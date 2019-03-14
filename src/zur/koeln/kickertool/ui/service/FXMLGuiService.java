@@ -67,13 +67,23 @@ public class FXMLGuiService {
 
 		});
 	}
-
+	
 	public void switchScene(Scenes newScene) {
+
+		switchScene(newScene, null);
+
+	}
+
+	public void switchScene(Scenes newScene, Object payload) {
 
 		try {
 			FXMLLoader fxmlLoader = getFXMLSceneLoader(newScene);
 			Pane pane = fxmlLoader.load();
 			Scene scene = new Scene(pane);
+			
+			FXMLController controller = fxmlLoader.getController();
+			controller.setPayload(payload);
+			
 			scene.setUserData(fxmlLoader.getController());
 			prepareStage(getPrimaryStage(), scene, fxmlLoader.getController());
 		} catch (IOException e) {
@@ -94,7 +104,7 @@ public class FXMLGuiService {
 
 	public void startAfterInitializationTask(FXMLController fxmlController) {
 
-		// We can't use Platform.runLater() here, because this call is still too early, to focus a control.
+		// We can't use Platform.runLater() here, because this call is still too early for e.g. focus a control.
 		// Thus we use a normal Task instead.
 		
 		Task<Void> initTask = new Task<Void>() {

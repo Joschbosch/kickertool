@@ -3,13 +3,16 @@ package zur.koeln.kickertool.ui.controller.dialogs;
 import org.springframework.stereotype.Component;
 
 import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextFormatter;
 import javafx.util.converter.IntegerStringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
+import zur.koeln.kickertool.core.kernl.TournamentMode;
 import zur.koeln.kickertool.ui.api.FXMLDialogContent;
 import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
 import zur.koeln.kickertool.ui.vm.TournamentSettingsViewModel;
@@ -30,10 +33,12 @@ public class FXMLTournamentSettingsDialogContentController extends AbstractFXMLC
 	@FXML JFXTextField txtRandomRounds;
 
 	@FXML JFXCheckBox chckFixedTeams;
+	@FXML JFXComboBox<TournamentMode> cmbTournamentMode;
 	
 	@Override
 	public void setupControls() {
 		createTextNumberFormatter();
+		getCmbTournamentMode().setItems(FXCollections.observableArrayList(TournamentMode.values()));
 	}
 	
 	private void createTextNumberFormatter() {
@@ -78,7 +83,7 @@ public class FXMLTournamentSettingsDialogContentController extends AbstractFXMLC
 		getTxtPointsForWinner().textProperty().bindBidirectional(getInitialSettingsViewModel().getPointsForWinnerProperty());
 		getTxtPointsForDraw().textProperty().bindBidirectional(getInitialSettingsViewModel().getPointsForDrawProperty());
 		getChckFixedTeams().selectedProperty().bindBidirectional(getInitialSettingsViewModel().getFixedTeamsProperty());
+		getCmbTournamentMode().valueProperty().bindBidirectional(getInitialSettingsViewModel().getModeProperty());
 	}
-	
 	
 }

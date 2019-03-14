@@ -9,7 +9,7 @@ public enum DialogContent {
 	PLAYER_MANAGEMENT_DIALOG("PlayerManagementDialogContent.fxml", "Spielerverwaltung"),
 	PLAYER_NAME_DIALOG("PlayerNameDialogContent.fxml", "Spielername", 250.0),
 	TOURNAMENT_CONFIGURATION_DIALOG("TournamentConfigurationDialogContent.fxml", "Neues Turnier"),
-	TOURNAMENT_SETTINGS_DIALOG("TournamentSettingsDialogContent.fxml", "Einstellungen");
+	TOURNAMENT_SETTINGS_DIALOG("TournamentSettingsDialogContent.fxml", "Einstellungen", 550.0);
 	
 	private String fxmlFile;
 	private String dialogTitle;

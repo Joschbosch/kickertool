@@ -36,10 +36,13 @@ import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 @Getter(value=AccessLevel.PRIVATE)
 @Setter(value=AccessLevel.PUBLIC)
 @SuppressWarnings("nls")
-public class AbstractFXMLController implements FXMLController{
+public class AbstractFXMLController<PAYLOAD> implements FXMLController<PAYLOAD> {
 	
 	@FXML 
 	StackPane rootStackPane;
+	
+	@Getter(value=AccessLevel.PROTECTED)
+	private PAYLOAD payload;
 
 	@FXML
 	@Override
@@ -253,5 +256,9 @@ public class AbstractFXMLController implements FXMLController{
 		DTOVerifcationUtils.checkResponse(baseDto);
 		
 	}
-	
-}
+
+
+	@Override
+	public void setPayload(PAYLOAD payload) {
+		this.payload = payload;
+	}}

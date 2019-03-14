@@ -6,7 +6,8 @@ import lombok.Getter;
 @SuppressWarnings("nls")
 public enum Scenes {
 	
-	MAIN_MENU("MainMenu.fxml", "Kickertool");
+	MAIN_MENU("MainMenuView.fxml", "Kickertool"),
+	TOURNAMENT_CONTROLLING("TournamentMainView.fxml", "Kickertool");
 	
 	private String fxmlFile;
 	private String title;

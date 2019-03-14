@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.ui.controller.dialogs.FXMLTournamentSettingsDialogContentController">
+<GridPane prefWidth="550.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.ui.controller.dialogs.FXMLTournamentSettingsDialogContentController">
    <columnConstraints>
-      <ColumnConstraints minWidth="10.0" prefWidth="200.0" />
-      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" prefWidth="300.0" />
+      <ColumnConstraints minWidth="10.0" prefWidth="250.0" />
    </columnConstraints>
    <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="50.0" />
       <RowConstraints minHeight="10.0" prefHeight="50.0" />
       <RowConstraints minHeight="10.0" prefHeight="50.0" />
       <RowConstraints minHeight="10.0" prefHeight="50.0" />
@@ -31,7 +33,7 @@
       <Label text="Minuten pro Spiel" GridPane.rowIndex="4" />
       <Label text="Punkte für Sieg" GridPane.rowIndex="5" />
       <Label text="Punkte für Unentschieden" GridPane.rowIndex="6" />
-      <JFXCheckBox fx:id="chckFixedTeams" text="Feste Teams" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <JFXCheckBox fx:id="chckFixedTeams" text="Feste Teams" GridPane.columnIndex="1" GridPane.rowIndex="8" />
       <JFXTextField fx:id="txtTableCount" GridPane.columnIndex="1" />
       <JFXTextField fx:id="txtRandomRounds" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <JFXTextField fx:id="txtMatchesToWin" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -39,5 +41,7 @@
       <JFXTextField fx:id="txtMinutesPerMatch" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <JFXTextField fx:id="txtPointsForDraw" GridPane.columnIndex="1" GridPane.rowIndex="6" />
       <JFXTextField fx:id="txtPointsForWinner" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <Label text="Turniermodus" GridPane.rowIndex="7" />
+      <JFXComboBox fx:id="cmbTournamentMode" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="7" />
    </children>
 </GridPane>

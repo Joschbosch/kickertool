@@ -15,7 +15,10 @@ public enum Icons {
 	EDIT_ITEM("edit_item"),
 	ARROW_RIGHT("arrow_right"),
 	ARROW_LEFT("arrow_left"),
-	SETTINGS("settings");
+	SETTINGS("settings"),
+	PLAY("play"),
+	PAUSE("pause"),
+	RESET("reset");
 	
 	private String fileName;
 
