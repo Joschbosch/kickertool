@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import zur.koeln.kickertool.ui.FXMLFileMarker;
 import zur.koeln.kickertool.ui.api.FXMLController;
 import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
@@ -40,7 +41,6 @@ public class FXMLGuiService {
 	private Stage primaryStage;
 
 	private static final String APP_TITLE = "Kickertool"; //$NON-NLS-1$
-	private static final String PREFIX = "../"; //$NON-NLS-1$
 
 	public void initialize(ConfigurableApplicationContext ctx, Stage primaryStage) {
 		setCtx(ctx);
@@ -125,7 +125,7 @@ public class FXMLGuiService {
 
 	public FXMLLoader getFXMLSceneLoader(Scenes scene) {
 
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(PREFIX + scene.getFxmlFile()));
+		FXMLLoader loader = new FXMLLoader(FXMLFileMarker.class.getResource(scene.getFxmlFile()));
 		loader.setControllerFactory(getCtx()::getBean);
 		return loader;
 
@@ -133,7 +133,7 @@ public class FXMLGuiService {
 
 	public FXMLLoader getFXMLDialogLoader(DialogContent dialogContent) {
 
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(PREFIX + dialogContent.getFxmlFile()));
+		FXMLLoader loader = new FXMLLoader(FXMLFileMarker.class.getResource(dialogContent.getFxmlFile()));
 		loader.setControllerFactory(getCtx()::getBean);
 		return loader;
 
