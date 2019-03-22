@@ -32,7 +32,7 @@ import zur.koeln.kickertool.ui.shared.Icons;
 @Component
 @Getter(value=AccessLevel.PRIVATE)
 @SuppressWarnings("nls")
-public class FXMLPlayerManagementDialogContentController extends AbstractFXMLController implements FXMLDialogContent<Void, Void> {
+public class PlayerManagementDialogController extends AbstractFXMLController implements FXMLDialogContent<Void, Void> {
 	
 	@Autowired
 	PlayerManagementViewModel vm;

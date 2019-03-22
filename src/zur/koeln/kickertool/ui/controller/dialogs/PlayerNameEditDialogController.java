@@ -16,7 +16,7 @@ import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLPlayerNameDialogContentController extends AbstractFXMLController implements FXMLDialogContent<PlayerViewModel, PlayerViewModel>{
+public class PlayerNameEditDialogController extends AbstractFXMLController implements FXMLDialogContent<PlayerViewModel, PlayerViewModel>{
 
 	@Autowired
 	PlayerViewModel vm;

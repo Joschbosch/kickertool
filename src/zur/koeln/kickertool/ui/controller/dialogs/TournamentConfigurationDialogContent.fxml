@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane minWidth="750.0" prefHeight="450.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.ui.controller.dialogs.FXMLTournamentConfigurationDialogContent">
+<GridPane minWidth="750.0" prefHeight="450.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.ui.controller.dialogs.TournamentConfigurationDialogController">
    <columnConstraints>
       <ColumnConstraints hgrow="NEVER" minWidth="10.0" percentWidth="5.0" prefWidth="50.0" />
       <ColumnConstraints hgrow="ALWAYS" percentWidth="40.0" />

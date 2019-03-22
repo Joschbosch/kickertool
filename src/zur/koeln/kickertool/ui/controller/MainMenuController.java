@@ -21,7 +21,7 @@ import zur.koeln.kickertool.ui.shared.Scenes;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLMainMenuViewController extends AbstractFXMLController{
+public class MainMenuController extends AbstractFXMLController{
 	
 	@Autowired
 	@Getter(value = AccessLevel.PRIVATE)

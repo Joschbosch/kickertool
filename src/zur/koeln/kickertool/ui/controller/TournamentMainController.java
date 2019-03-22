@@ -21,7 +21,7 @@ import zur.koeln.kickertool.ui.shared.Icons;
 
 @Component
 @Getter(value = AccessLevel.PRIVATE)
-public class FXMLTournamentMainViewController extends AbstractFXMLController<UUID> {
+public class TournamentMainController extends AbstractFXMLController<UUID> {
 
 	@Autowired
 	ITournamentCommandHandler tournamentCommandHandler;

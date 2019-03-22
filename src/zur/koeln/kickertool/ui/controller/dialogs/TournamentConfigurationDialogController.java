@@ -32,7 +32,7 @@ import zur.koeln.kickertool.ui.shared.Icons;
 @SuppressWarnings("nls")
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLTournamentConfigurationDialogContent extends AbstractFXMLController implements FXMLDialogContent<Void, TournamentConfigurationViewModel>{
+public class TournamentConfigurationDialogController extends AbstractFXMLController implements FXMLDialogContent<Void, TournamentConfigurationViewModel>{
 
 	@FXML 
 	JFXListView lstAvailablePlayers;

@@ -1,15 +1,15 @@
 package zur.koeln.kickertool.ui.shared;
 
 import lombok.Getter;
-import zur.koeln.kickertool.ui.controller.FXMLMainMenuViewController;
-import zur.koeln.kickertool.ui.controller.FXMLTournamentMainViewController;
+import zur.koeln.kickertool.ui.controller.MainMenuController;
+import zur.koeln.kickertool.ui.controller.TournamentMainController;
 
 @Getter
 @SuppressWarnings("nls")
 public enum Scenes {
 	
-	MAIN_MENU(FXMLMainMenuViewController.class, "MainMenuView.fxml", "Kickertool"),
-	TOURNAMENT_CONTROLLING(FXMLTournamentMainViewController.class, "TournamentMainView.fxml", "Kickertool");
+	MAIN_MENU(MainMenuController.class, "MainMenu.fxml", "Kickertool"),
+	TOURNAMENT_CONTROLLING(TournamentMainController.class, "TournamentMain.fxml", "Kickertool");
 	
 	private Class fxmlControllerClass;
 	private String fxmlFile;

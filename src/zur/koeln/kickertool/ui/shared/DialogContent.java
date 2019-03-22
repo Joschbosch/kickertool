@@ -1,19 +1,19 @@
 package zur.koeln.kickertool.ui.shared;
 
 import lombok.Getter;
-import zur.koeln.kickertool.ui.controller.dialogs.FXMLPlayerManagementDialogContentController;
-import zur.koeln.kickertool.ui.controller.dialogs.FXMLPlayerNameDialogContentController;
-import zur.koeln.kickertool.ui.controller.dialogs.FXMLTournamentConfigurationDialogContent;
-import zur.koeln.kickertool.ui.controller.dialogs.FXMLTournamentSettingsDialogContentController;
+import zur.koeln.kickertool.ui.controller.dialogs.PlayerManagementDialogController;
+import zur.koeln.kickertool.ui.controller.dialogs.PlayerNameEditDialogController;
+import zur.koeln.kickertool.ui.controller.dialogs.TournamentConfigurationDialogController;
+import zur.koeln.kickertool.ui.controller.dialogs.TournamentSettingsDialogController;
 
 @Getter
 @SuppressWarnings("nls")
 public enum DialogContent {
 
-	PLAYER_MANAGEMENT_DIALOG(FXMLPlayerManagementDialogContentController.class, "PlayerManagementDialogContent.fxml", "Spielerverwaltung"),
-	PLAYER_NAME_DIALOG(FXMLPlayerNameDialogContentController.class, "PlayerNameDialogContent.fxml", "Spielername", 250.0),
-	TOURNAMENT_CONFIGURATION_DIALOG(FXMLTournamentConfigurationDialogContent.class, "TournamentConfigurationDialogContent.fxml", "Neues Turnier"),
-	TOURNAMENT_SETTINGS_DIALOG(FXMLTournamentSettingsDialogContentController.class, "TournamentSettingsDialogContent.fxml", "Einstellungen", 550.0);
+	PLAYER_MANAGEMENT_DIALOG(PlayerManagementDialogController.class, "PlayerManagementDialogContent.fxml", "Spielerverwaltung"),
+	PLAYER_NAME_DIALOG(PlayerNameEditDialogController.class, "PlayerNameDialogContent.fxml", "Spielername", 250.0),
+	TOURNAMENT_CONFIGURATION_DIALOG(TournamentConfigurationDialogController.class, "TournamentConfigurationDialogContent.fxml", "Neues Turnier"),
+	TOURNAMENT_SETTINGS_DIALOG(TournamentSettingsDialogController.class, "TournamentSettingsDialogContent.fxml", "Einstellungen", 550.0);
 	
 	private Class fxmlControllerClass;
 	private String fxmlFile;

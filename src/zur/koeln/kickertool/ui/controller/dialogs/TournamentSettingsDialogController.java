@@ -20,7 +20,7 @@ import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class FXMLTournamentSettingsDialogContentController extends AbstractFXMLController implements FXMLDialogContent<TournamentSettingsViewModel, TournamentSettingsViewModel>{
+public class TournamentSettingsDialogController extends AbstractFXMLController implements FXMLDialogContent<TournamentSettingsViewModel, TournamentSettingsViewModel>{
 
 	private TournamentSettingsViewModel initialSettingsViewModel;
 
