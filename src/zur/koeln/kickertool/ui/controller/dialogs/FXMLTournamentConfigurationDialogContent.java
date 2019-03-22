@@ -22,12 +22,12 @@ import zur.koeln.kickertool.ui.api.BackgroundTask;
 import zur.koeln.kickertool.ui.api.FXMLDialogContent;
 import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
-import zur.koeln.kickertool.ui.service.DialogContent;
-import zur.koeln.kickertool.ui.service.Icons;
-import zur.koeln.kickertool.ui.vm.PlayerViewModel;
-import zur.koeln.kickertool.ui.vm.TournamentConfigurationViewModel;
-import zur.koeln.kickertool.ui.vm.TournamentSettingsViewModel;
-import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
+import zur.koeln.kickertool.ui.controller.vms.PlayerViewModel;
+import zur.koeln.kickertool.ui.controller.vms.TournamentConfigurationViewModel;
+import zur.koeln.kickertool.ui.controller.vms.TournamentSettingsViewModel;
+import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
+import zur.koeln.kickertool.ui.shared.DialogContent;
+import zur.koeln.kickertool.ui.shared.Icons;
 
 @SuppressWarnings("nls")
 @Component

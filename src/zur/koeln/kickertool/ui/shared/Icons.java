@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.ui.service;
+package zur.koeln.kickertool.ui.shared;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

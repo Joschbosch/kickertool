@@ -15,8 +15,8 @@ import lombok.Getter;
 import zur.koeln.kickertool.core.kernl.TournamentMode;
 import zur.koeln.kickertool.ui.api.FXMLDialogContent;
 import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
-import zur.koeln.kickertool.ui.vm.TournamentSettingsViewModel;
-import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
+import zur.koeln.kickertool.ui.controller.vms.TournamentSettingsViewModel;
+import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)

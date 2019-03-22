@@ -9,7 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
-import zur.koeln.kickertool.ui.service.Scenes;
+import zur.koeln.kickertool.ui.shared.Scenes;
 
 @SpringBootApplication
 public class Main extends Application {

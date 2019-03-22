@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.ui.vm;
+package zur.koeln.kickertool.ui.controller.vms;
 
 import java.util.UUID;
 

@@ -24,10 +24,10 @@ import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 import zur.koeln.kickertool.ui.api.events.TableCellClickEvent;
 import zur.koeln.kickertool.ui.cells.ImageEditTableCellFactory;
 import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
-import zur.koeln.kickertool.ui.service.DialogContent;
-import zur.koeln.kickertool.ui.service.Icons;
-import zur.koeln.kickertool.ui.vm.PlayerManagementViewModel;
-import zur.koeln.kickertool.ui.vm.PlayerViewModel;
+import zur.koeln.kickertool.ui.controller.vms.PlayerManagementViewModel;
+import zur.koeln.kickertool.ui.controller.vms.PlayerViewModel;
+import zur.koeln.kickertool.ui.shared.DialogContent;
+import zur.koeln.kickertool.ui.shared.Icons;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)

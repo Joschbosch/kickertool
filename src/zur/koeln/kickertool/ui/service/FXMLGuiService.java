@@ -13,10 +13,11 @@ import javafx.stage.Stage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import zur.koeln.kickertool.ui.FXMLFileMarker;
 import zur.koeln.kickertool.ui.api.FXMLController;
 import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
+import zur.koeln.kickertool.ui.shared.DialogContent;
+import zur.koeln.kickertool.ui.shared.Scenes;
 
 @SuppressWarnings("nls")
 public class FXMLGuiService {
@@ -125,7 +126,7 @@ public class FXMLGuiService {
 
 	public FXMLLoader getFXMLSceneLoader(Scenes scene) {
 
-		FXMLLoader loader = new FXMLLoader(FXMLFileMarker.class.getResource(scene.getFxmlFile()));
+		FXMLLoader loader = new FXMLLoader(scene.getFxmlControllerClass().getResource(scene.getFxmlFile()));
 		loader.setControllerFactory(getCtx()::getBean);
 		return loader;
 
@@ -133,7 +134,7 @@ public class FXMLGuiService {
 
 	public FXMLLoader getFXMLDialogLoader(DialogContent dialogContent) {
 
-		FXMLLoader loader = new FXMLLoader(FXMLFileMarker.class.getResource(dialogContent.getFxmlFile()));
+		FXMLLoader loader = new FXMLLoader(dialogContent.getFxmlControllerClass().getResource(dialogContent.getFxmlFile()));
 		loader.setControllerFactory(getCtx()::getBean);
 		return loader;
 

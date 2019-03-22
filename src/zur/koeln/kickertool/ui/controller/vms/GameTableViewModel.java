@@ -1,12 +1,12 @@
-package zur.koeln.kickertool.ui.vm;
+package zur.koeln.kickertool.ui.controller.vms;
 
 import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.core.kernl.GameTableStatus;
-import zur.koeln.kickertool.ui.vm.base.FXViewModel;
-import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
+import zur.koeln.kickertool.ui.controller.vms.base.FXViewModel;
+import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
 
 @Getter
 @Setter

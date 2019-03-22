@@ -1,12 +1,9 @@
-package zur.koeln.kickertool.ui.vm;
+package zur.koeln.kickertool.ui.controller.vms;
 
 import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
-import zur.koeln.kickertool.application.api.dtos.GameTableDTO;
-import zur.koeln.kickertool.application.api.dtos.TeamDTO;
-import zur.koeln.kickertool.application.api.dtos.TournamentDTO;
 import zur.koeln.kickertool.core.kernl.MatchStatus;
 
 @Getter

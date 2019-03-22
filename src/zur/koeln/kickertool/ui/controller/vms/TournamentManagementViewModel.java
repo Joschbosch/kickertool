@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.ui.vm;
+package zur.koeln.kickertool.ui.controller.vms;
 
 import java.util.UUID;
 
@@ -10,10 +10,10 @@ import lombok.Getter;
 import zur.koeln.kickertool.application.api.dtos.TournamentDTO;
 import zur.koeln.kickertool.application.api.dtos.base.SingleResponseDTO;
 import zur.koeln.kickertool.application.handler.api.ITournamentCommandHandler;
+import zur.koeln.kickertool.ui.controller.vms.base.FXViewModel;
+import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
 import zur.koeln.kickertool.ui.exceptions.BackgroundTaskException;
 import zur.koeln.kickertool.ui.tools.mapper.impl.ViewModelTournamentMapper;
-import zur.koeln.kickertool.ui.vm.base.FXViewModel;
-import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
 @Getter(value = AccessLevel.PRIVATE)
 @Component

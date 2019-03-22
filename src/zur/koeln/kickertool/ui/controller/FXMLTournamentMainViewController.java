@@ -1,23 +1,23 @@
 package zur.koeln.kickertool.ui.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.jfoenix.controls.JFXButton;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.ScrollPane;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import zur.koeln.kickertool.application.api.dtos.TournamentDTO;
-import zur.koeln.kickertool.application.api.dtos.base.SingleResponseDTO;
 import zur.koeln.kickertool.application.handler.api.ITournamentCommandHandler;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
 import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
-import zur.koeln.kickertool.ui.service.Icons;
-import zur.koeln.kickertool.ui.vm.TournamentManagementViewModel;
-import zur.koeln.kickertool.ui.vm.TournamentViewModel;
-import javafx.fxml.FXML;
-import com.jfoenix.controls.JFXButton;
-import javafx.scene.control.ScrollPane;
-import java.util.UUID;
+import zur.koeln.kickertool.ui.controller.vms.TournamentManagementViewModel;
+import zur.koeln.kickertool.ui.controller.vms.TournamentViewModel;
+import zur.koeln.kickertool.ui.shared.Icons;
 
 @Component
 @Getter(value = AccessLevel.PRIVATE)
@@ -75,7 +75,4 @@ public class FXMLTournamentMainViewController extends AbstractFXMLController<UUI
 		};
 	}
 
-	private UUID getCurrentTournamendID() {
-		return getPayload();
-	}
 }

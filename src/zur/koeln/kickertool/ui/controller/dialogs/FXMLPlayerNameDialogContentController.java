@@ -11,8 +11,8 @@ import lombok.Getter;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
 import zur.koeln.kickertool.ui.api.FXMLDialogContent;
 import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
-import zur.koeln.kickertool.ui.vm.PlayerViewModel;
-import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
+import zur.koeln.kickertool.ui.controller.vms.PlayerViewModel;
+import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)

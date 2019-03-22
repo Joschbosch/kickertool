@@ -9,7 +9,7 @@ import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.ui.api.events.TableCellClickEvent;
-import zur.koeln.kickertool.ui.service.Icons;
+import zur.koeln.kickertool.ui.shared.Icons;
 
 @Getter(value=AccessLevel.PRIVATE)
 public class ImageEditTableCellFactory implements Callback<TableColumn, TableCell>{

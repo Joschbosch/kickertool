@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.ui.vm;
+package zur.koeln.kickertool.ui.controller.vms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +16,9 @@ import zur.koeln.kickertool.application.api.dtos.base.SingleResponseDTO;
 import zur.koeln.kickertool.application.api.dtos.base.StatusOnlyDTO;
 import zur.koeln.kickertool.application.handler.api.IPlayerCommandHandler;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
+import zur.koeln.kickertool.ui.controller.vms.base.FXViewModel;
+import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
 import zur.koeln.kickertool.ui.exceptions.BackgroundTaskException;
-import zur.koeln.kickertool.ui.vm.base.FXViewModel;
-import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
 @Component
 @Getter

@@ -14,10 +14,10 @@ import zur.koeln.kickertool.ui.api.BackgroundTask;
 import zur.koeln.kickertool.ui.api.defaultimpl.DefaultDialogCloseEvent;
 import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
-import zur.koeln.kickertool.ui.service.DialogContent;
+import zur.koeln.kickertool.ui.controller.vms.TournamentConfigurationViewModel;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
-import zur.koeln.kickertool.ui.service.Scenes;
-import zur.koeln.kickertool.ui.vm.TournamentConfigurationViewModel;
+import zur.koeln.kickertool.ui.shared.DialogContent;
+import zur.koeln.kickertool.ui.shared.Scenes;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)

@@ -7,9 +7,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.application.api.dtos.TeamDTO;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
+import zur.koeln.kickertool.ui.controller.vms.PlayerViewModel;
+import zur.koeln.kickertool.ui.controller.vms.TeamViewModel;
 import zur.koeln.kickertool.ui.tools.mapper.IViewModelMapper;
-import zur.koeln.kickertool.ui.vm.PlayerViewModel;
-import zur.koeln.kickertool.ui.vm.TeamViewModel;
 
 @Component
 @Getter(value = AccessLevel.PRIVATE)
