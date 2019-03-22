@@ -61,7 +61,7 @@ public class MainMenuController extends AbstractController{
 
 			@Override
 			public void doOnSuccess(TournamentDTO result) {
-				FXMLGuiService.getInstance().switchScene(SceneDefinition.TOURNAMENT_CONTROLLING, result.getUid());
+				FXMLGuiService.getInstance().switchScene(SceneDefinition.TOURNAMENT_CONTROLLING, result);
 			}
 
 			@Override

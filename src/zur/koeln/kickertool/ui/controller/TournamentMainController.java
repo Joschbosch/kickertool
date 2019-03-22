@@ -12,7 +12,7 @@ import javafx.scene.control.ScrollPane;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import zur.koeln.kickertool.application.handler.api.ITournamentCommandHandler;
+import zur.koeln.kickertool.application.api.dtos.TournamentDTO;
 import zur.koeln.kickertool.ui.controller.base.AbstractController;
 import zur.koeln.kickertool.ui.controller.base.BackgroundTask;
 import zur.koeln.kickertool.ui.controller.shared.vms.TournamentDTOViewModel;
@@ -21,10 +21,7 @@ import zur.koeln.kickertool.ui.shared.IconDefinition;
 
 @Component
 @Getter(value = AccessLevel.PRIVATE)
-public class TournamentMainController extends AbstractController<UUID> {
-
-	@Autowired
-	ITournamentCommandHandler tournamentCommandHandler;
+public class TournamentMainController extends AbstractController<TournamentDTO> {
 
 	@Autowired
 	TournamentMainViewModel managementViewModel;
@@ -47,6 +44,11 @@ public class TournamentMainController extends AbstractController<UUID> {
 		getBtnStartPauseStopwatch().setGraphic(IconDefinition.PLAY.createIconImageView());
 		getBtnResetStopwatch().setGraphic(IconDefinition.RESET.createIconImageView());
 	}
+	
+	@Override
+	public void doAfterInitializationCompleted() {
+		setTournamentViewModel(getManagementViewModel().mapFromTournamentDTO(getPayload()));
+	}
 
 	@FXML
 	public void onNewRoundClicked() {
@@ -60,7 +62,7 @@ public class TournamentMainController extends AbstractController<UUID> {
 			@Override
 			public TournamentDTOViewModel performTask() throws Exception {
 
-				return getManagementViewModel().startNewTournamentRound(getCurrentTournamendID());
+				return getManagementViewModel().startNewTournamentRound(getTournamentViewModel().getUid());
 			}
 
 			@Override
@@ -75,8 +77,4 @@ public class TournamentMainController extends AbstractController<UUID> {
 		};
 	}
 	
-	private UUID getCurrentTournamendID() {
-		return getPayload();
-	}
-
 }

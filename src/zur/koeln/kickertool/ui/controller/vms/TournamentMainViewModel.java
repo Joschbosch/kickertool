@@ -31,8 +31,12 @@ public class TournamentMainViewModel extends FXViewModel{
 		
 		checkResponse(dtoResponse);
 		
-		return getTournamentMapper().map(dtoResponse.getDtoValue());
+		return mapFromTournamentDTO(dtoResponse.getDtoValue());
 	}	
+	
+	public TournamentDTOViewModel mapFromTournamentDTO(TournamentDTO tournamentDTO) {
+		return getTournamentMapper().map(tournamentDTO);
+	}
 	
 	@Override
 	public ModelValidationResult validate() {
