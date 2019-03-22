@@ -7,13 +7,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.application.api.dtos.TeamDTO;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
-import zur.koeln.kickertool.ui.tools.mapper.IMapperDtoToVM;
+import zur.koeln.kickertool.ui.tools.mapper.IViewModelMapper;
 import zur.koeln.kickertool.ui.vm.PlayerViewModel;
 import zur.koeln.kickertool.ui.vm.TeamViewModel;
 
 @Component
 @Getter(value = AccessLevel.PRIVATE)
-public class TeamMapper implements IMapperDtoToVM<TeamDTO, TeamViewModel>{
+public class ViewModelTeamMapper implements IViewModelMapper<TeamDTO, TeamViewModel>{
 
 	@Autowired
 	CustomModelMapper mapper;

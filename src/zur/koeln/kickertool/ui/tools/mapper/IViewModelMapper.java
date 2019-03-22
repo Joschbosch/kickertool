@@ -3,7 +3,7 @@ package zur.koeln.kickertool.ui.tools.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public interface IMapperDtoToVM<DTO, VM> {
+public interface IViewModelMapper<DTO, VM> {
 
 	public VM map(DTO dto);
 	

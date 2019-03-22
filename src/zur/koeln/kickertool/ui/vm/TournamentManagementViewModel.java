@@ -11,7 +11,7 @@ import zur.koeln.kickertool.application.api.dtos.TournamentDTO;
 import zur.koeln.kickertool.application.api.dtos.base.SingleResponseDTO;
 import zur.koeln.kickertool.application.handler.api.ITournamentCommandHandler;
 import zur.koeln.kickertool.ui.exceptions.BackgroundTaskException;
-import zur.koeln.kickertool.ui.tools.mapper.impl.TournamentMapper;
+import zur.koeln.kickertool.ui.tools.mapper.impl.ViewModelTournamentMapper;
 import zur.koeln.kickertool.ui.vm.base.FXViewModel;
 import zur.koeln.kickertool.ui.vm.base.ModelValidationResult;
 
@@ -23,7 +23,7 @@ public class TournamentManagementViewModel extends FXViewModel{
 	ITournamentCommandHandler tournamentHandler;
 	
 	@Autowired
-	TournamentMapper tournamentMapper;
+	ViewModelTournamentMapper tournamentMapper;
 	
 	public TournamentViewModel startNewTournamentRound(UUID idTournament) throws BackgroundTaskException {
 		SingleResponseDTO<TournamentDTO> dtoResponse = getTournamentHandler().startNextTournamentRound(idTournament);

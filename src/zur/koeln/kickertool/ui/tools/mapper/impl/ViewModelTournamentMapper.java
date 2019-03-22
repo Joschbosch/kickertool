@@ -7,7 +7,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.application.api.dtos.TournamentDTO;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
-import zur.koeln.kickertool.ui.tools.mapper.IMapperDtoToVM;
+import zur.koeln.kickertool.ui.tools.mapper.IViewModelMapper;
 import zur.koeln.kickertool.ui.vm.GameTableViewModel;
 import zur.koeln.kickertool.ui.vm.PlayerViewModel;
 import zur.koeln.kickertool.ui.vm.TournamentSettingsViewModel;
@@ -15,13 +15,13 @@ import zur.koeln.kickertool.ui.vm.TournamentViewModel;
 
 @Component
 @Getter(value = AccessLevel.PRIVATE)
-public class TournamentMapper implements IMapperDtoToVM<TournamentDTO, TournamentViewModel> {
+public class ViewModelTournamentMapper implements IViewModelMapper<TournamentDTO, TournamentViewModel> {
 
 	@Autowired
 	CustomModelMapper mapper;
 	
 	@Autowired
-	MatchMapper matchMapper;
+	ViewModelMatchMapper matchMapper;
 	
 
 	@Override
