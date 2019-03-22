@@ -60,7 +60,7 @@ public class FXMLTournamentMainViewController extends AbstractFXMLController<UUI
 			@Override
 			public TournamentViewModel performTask() throws Exception {
 
-				return getManagementViewModel().startNewTournamentRound(getPayload());
+				return getManagementViewModel().startNewTournamentRound(getCurrentTournamendID());
 			}
 
 			@Override
@@ -73,6 +73,10 @@ public class FXMLTournamentMainViewController extends AbstractFXMLController<UUI
 				showError(exception);
 			}
 		};
+	}
+	
+	private UUID getCurrentTournamendID() {
+		return getPayload();
 	}
 
 }
