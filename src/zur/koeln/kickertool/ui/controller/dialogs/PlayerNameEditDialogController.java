@@ -9,14 +9,14 @@ import javafx.fxml.FXML;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
-import zur.koeln.kickertool.ui.api.FXMLDialogContent;
-import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
+import zur.koeln.kickertool.ui.api.DialogContent;
+import zur.koeln.kickertool.ui.controller.base.AbstractController;
 import zur.koeln.kickertool.ui.controller.vms.PlayerViewModel;
 import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class PlayerNameEditDialogController extends AbstractFXMLController implements FXMLDialogContent<PlayerViewModel, PlayerViewModel>{
+public class PlayerNameEditDialogController extends AbstractController implements DialogContent<PlayerViewModel, PlayerViewModel>{
 
 	@Autowired
 	PlayerViewModel vm;

@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter(value=AccessLevel.PRIVATE)
 @SuppressWarnings("nls")
-public enum Icons {
+public enum IconDefinition {
 	
 	ADD_ITEM("add_item"),
 	DELETE_ITEM("delete_item"),
@@ -22,7 +22,7 @@ public enum Icons {
 	
 	private String fileName;
 
-	private Icons(String path) {
+	private IconDefinition(String path) {
 		this.fileName = path;
 	}
 	

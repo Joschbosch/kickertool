@@ -13,14 +13,14 @@ import javafx.util.converter.IntegerStringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.core.kernl.TournamentMode;
-import zur.koeln.kickertool.ui.api.FXMLDialogContent;
-import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
+import zur.koeln.kickertool.ui.api.DialogContent;
+import zur.koeln.kickertool.ui.controller.base.AbstractController;
 import zur.koeln.kickertool.ui.controller.vms.TournamentSettingsViewModel;
 import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class TournamentSettingsDialogController extends AbstractFXMLController implements FXMLDialogContent<TournamentSettingsViewModel, TournamentSettingsViewModel>{
+public class TournamentSettingsDialogController extends AbstractController implements DialogContent<TournamentSettingsViewModel, TournamentSettingsViewModel>{
 
 	private TournamentSettingsViewModel initialSettingsViewModel;
 

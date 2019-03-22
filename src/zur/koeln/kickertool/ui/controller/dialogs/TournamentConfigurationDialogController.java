@@ -19,20 +19,20 @@ import javafx.util.StringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
-import zur.koeln.kickertool.ui.api.FXMLDialogContent;
+import zur.koeln.kickertool.ui.api.DialogContent;
 import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
-import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
+import zur.koeln.kickertool.ui.controller.base.AbstractController;
 import zur.koeln.kickertool.ui.controller.vms.PlayerViewModel;
 import zur.koeln.kickertool.ui.controller.vms.TournamentConfigurationViewModel;
 import zur.koeln.kickertool.ui.controller.vms.TournamentSettingsViewModel;
 import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
-import zur.koeln.kickertool.ui.shared.DialogContent;
-import zur.koeln.kickertool.ui.shared.Icons;
+import zur.koeln.kickertool.ui.shared.DialogContentDefinition;
+import zur.koeln.kickertool.ui.shared.IconDefinition;
 
 @SuppressWarnings("nls")
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class TournamentConfigurationDialogController extends AbstractFXMLController implements FXMLDialogContent<Void, TournamentConfigurationViewModel>{
+public class TournamentConfigurationDialogController extends AbstractController implements DialogContent<Void, TournamentConfigurationViewModel>{
 
 	@FXML 
 	JFXListView lstAvailablePlayers;
@@ -60,9 +60,9 @@ public class TournamentConfigurationDialogController extends AbstractFXMLControl
 	
 	@Override
 	public void setupControls() {
-		getBtnOpenSettings().setGraphic(Icons.SETTINGS.createIconImageView());
-		getBtnAddPlayer().setGraphic(Icons.ARROW_RIGHT.createIconImageView());
-		getBtnRemovePlayer().setGraphic(Icons.ARROW_LEFT.createIconImageView());
+		getBtnOpenSettings().setGraphic(IconDefinition.SETTINGS.createIconImageView());
+		getBtnAddPlayer().setGraphic(IconDefinition.ARROW_RIGHT.createIconImageView());
+		getBtnRemovePlayer().setGraphic(IconDefinition.ARROW_LEFT.createIconImageView());
 		
 		setupListCells();
 	}
@@ -161,7 +161,7 @@ public class TournamentConfigurationDialogController extends AbstractFXMLControl
 
 	@FXML 
 	public void onOpenSettingsClicked() {
-		openDialog(DialogContent.TOURNAMENT_SETTINGS_DIALOG, getVm().getSettingsVm(), new DialogCloseEvent<TournamentSettingsViewModel>() {
+		openDialog(DialogContentDefinition.TOURNAMENT_SETTINGS_DIALOG, getVm().getSettingsVm(), new DialogCloseEvent<TournamentSettingsViewModel>() {
 
 			@Override
 			public void doAfterDialogClosed(TournamentSettingsViewModel result) {

@@ -9,7 +9,7 @@ import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
  * 
  * @author Daniel Cleemann
  */
-public interface FXMLDialogContent<InitialContent, Result> {
+public interface DialogContent<InitialContent, Result> {
 	
 	/**
 	 * Specifies the result, the user gets back, when closing the dialog with ok. <br/>

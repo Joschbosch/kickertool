@@ -19,20 +19,20 @@ import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
-import zur.koeln.kickertool.ui.api.FXMLDialogContent;
+import zur.koeln.kickertool.ui.api.DialogContent;
 import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 import zur.koeln.kickertool.ui.api.events.TableCellClickEvent;
 import zur.koeln.kickertool.ui.cells.ImageEditTableCellFactory;
-import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
+import zur.koeln.kickertool.ui.controller.base.AbstractController;
 import zur.koeln.kickertool.ui.controller.vms.PlayerManagementViewModel;
 import zur.koeln.kickertool.ui.controller.vms.PlayerViewModel;
-import zur.koeln.kickertool.ui.shared.DialogContent;
-import zur.koeln.kickertool.ui.shared.Icons;
+import zur.koeln.kickertool.ui.shared.DialogContentDefinition;
+import zur.koeln.kickertool.ui.shared.IconDefinition;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
 @SuppressWarnings("nls")
-public class PlayerManagementDialogController extends AbstractFXMLController implements FXMLDialogContent<Void, Void> {
+public class PlayerManagementDialogController extends AbstractController implements DialogContent<Void, Void> {
 	
 	@Autowired
 	PlayerManagementViewModel vm;
@@ -59,8 +59,8 @@ public class PlayerManagementDialogController extends AbstractFXMLController imp
 	}
 
 	private void setupButtons() {
-		getBtnAddPlayer().setGraphic(Icons.ADD_ITEM.createIconImageView());
-		getBtnDeletePlayer().setGraphic(Icons.DELETE_ITEM.createIconImageView());
+		getBtnAddPlayer().setGraphic(IconDefinition.ADD_ITEM.createIconImageView());
+		getBtnDeletePlayer().setGraphic(IconDefinition.DELETE_ITEM.createIconImageView());
 	}
 	
 	private void initTableColumns() {
@@ -88,7 +88,7 @@ public class PlayerManagementDialogController extends AbstractFXMLController imp
 			@Override
 			public void doOnClick(int rowIndex) {
 				
-				openDialog(DialogContent.PLAYER_NAME_DIALOG, getVm().getPlayers().get(rowIndex), new DialogCloseEvent<PlayerViewModel>() {
+				openDialog(DialogContentDefinition.PLAYER_NAME_DIALOG, getVm().getPlayers().get(rowIndex), new DialogCloseEvent<PlayerViewModel>() {
 
 					@Override
 					public void doAfterDialogClosed(PlayerViewModel result) {
@@ -156,7 +156,7 @@ public class PlayerManagementDialogController extends AbstractFXMLController imp
 	}
 
 	@FXML public void onAddPlayerClicked() {
-		openDialog(DialogContent.PLAYER_NAME_DIALOG, new DialogCloseEvent<PlayerViewModel>() {
+		openDialog(DialogContentDefinition.PLAYER_NAME_DIALOG, new DialogCloseEvent<PlayerViewModel>() {
 
 			@Override
 			public void doAfterDialogClosed(PlayerViewModel result) {

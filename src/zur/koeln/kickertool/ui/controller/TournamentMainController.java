@@ -14,14 +14,14 @@ import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.application.handler.api.ITournamentCommandHandler;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
-import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
+import zur.koeln.kickertool.ui.controller.base.AbstractController;
 import zur.koeln.kickertool.ui.controller.vms.TournamentManagementViewModel;
 import zur.koeln.kickertool.ui.controller.vms.TournamentViewModel;
-import zur.koeln.kickertool.ui.shared.Icons;
+import zur.koeln.kickertool.ui.shared.IconDefinition;
 
 @Component
 @Getter(value = AccessLevel.PRIVATE)
-public class TournamentMainController extends AbstractFXMLController<UUID> {
+public class TournamentMainController extends AbstractController<UUID> {
 
 	@Autowired
 	ITournamentCommandHandler tournamentCommandHandler;
@@ -44,8 +44,8 @@ public class TournamentMainController extends AbstractFXMLController<UUID> {
 
 	@Override
 	public void setupControls() {
-		getBtnStartPauseStopwatch().setGraphic(Icons.PLAY.createIconImageView());
-		getBtnResetStopwatch().setGraphic(Icons.RESET.createIconImageView());
+		getBtnStartPauseStopwatch().setGraphic(IconDefinition.PLAY.createIconImageView());
+		getBtnResetStopwatch().setGraphic(IconDefinition.RESET.createIconImageView());
 	}
 
 	@FXML

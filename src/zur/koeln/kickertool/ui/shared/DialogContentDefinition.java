@@ -8,7 +8,7 @@ import zur.koeln.kickertool.ui.controller.dialogs.TournamentSettingsDialogContro
 
 @Getter
 @SuppressWarnings("nls")
-public enum DialogContent {
+public enum DialogContentDefinition {
 
 	PLAYER_MANAGEMENT_DIALOG(PlayerManagementDialogController.class, "PlayerManagementDialogContent.fxml", "Spielerverwaltung"),
 	PLAYER_NAME_DIALOG(PlayerNameEditDialogController.class, "PlayerNameDialogContent.fxml", "Spielername", 250.0),
@@ -20,13 +20,13 @@ public enum DialogContent {
 	private String dialogTitle;
 	private Double preferredWidth;
 	
-	private DialogContent(Class fxmlControllerClass, String fxmlFile, String dialogTitle) {
+	private DialogContentDefinition(Class fxmlControllerClass, String fxmlFile, String dialogTitle) {
 		this.fxmlControllerClass = fxmlControllerClass;
 		this.fxmlFile = fxmlFile;
 		this.dialogTitle = dialogTitle;
 	}
 	
-	private DialogContent(Class fxmlControllerClass, String fxmlFile, String dialogTitle, double prefWidth) {
+	private DialogContentDefinition(Class fxmlControllerClass, String fxmlFile, String dialogTitle, double prefWidth) {
 		this.fxmlControllerClass = fxmlControllerClass;
 		this.fxmlFile = fxmlFile;
 		this.dialogTitle = dialogTitle;

@@ -13,15 +13,15 @@ import zur.koeln.kickertool.application.handler.api.ITournamentCommandHandler;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
 import zur.koeln.kickertool.ui.api.defaultimpl.DefaultDialogCloseEvent;
 import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
-import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
+import zur.koeln.kickertool.ui.controller.base.AbstractController;
 import zur.koeln.kickertool.ui.controller.vms.TournamentConfigurationViewModel;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
-import zur.koeln.kickertool.ui.shared.DialogContent;
-import zur.koeln.kickertool.ui.shared.Scenes;
+import zur.koeln.kickertool.ui.shared.DialogContentDefinition;
+import zur.koeln.kickertool.ui.shared.SceneDefinition;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
-public class MainMenuController extends AbstractFXMLController{
+public class MainMenuController extends AbstractController{
 	
 	@Autowired
 	@Getter(value = AccessLevel.PRIVATE)
@@ -39,7 +39,7 @@ public class MainMenuController extends AbstractFXMLController{
 	
 	@FXML 
 	public void onStartNewTournamentClicked() {
-		openDialog(DialogContent.TOURNAMENT_CONFIGURATION_DIALOG, new DialogCloseEvent<TournamentConfigurationViewModel>() {
+		openDialog(DialogContentDefinition.TOURNAMENT_CONFIGURATION_DIALOG, new DialogCloseEvent<TournamentConfigurationViewModel>() {
 
 			@Override
 			public void doAfterDialogClosed(TournamentConfigurationViewModel result) {
@@ -61,7 +61,7 @@ public class MainMenuController extends AbstractFXMLController{
 
 			@Override
 			public void doOnSuccess(TournamentDTO result) {
-				FXMLGuiService.getInstance().switchScene(Scenes.TOURNAMENT_CONTROLLING, result.getUid());
+				FXMLGuiService.getInstance().switchScene(SceneDefinition.TOURNAMENT_CONTROLLING, result.getUid());
 			}
 
 			@Override
@@ -73,7 +73,7 @@ public class MainMenuController extends AbstractFXMLController{
 
 	@FXML 
 	public void onPlayerManagementClicked() {
-		openDialog(DialogContent.PLAYER_MANAGEMENT_DIALOG, new DefaultDialogCloseEvent());
+		openDialog(DialogContentDefinition.PLAYER_MANAGEMENT_DIALOG, new DefaultDialogCloseEvent());
 	}
 
 	@FXML 

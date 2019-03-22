@@ -22,20 +22,20 @@ import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.application.api.dtos.base.DTO;
 import zur.koeln.kickertool.ui.api.BackgroundTask;
-import zur.koeln.kickertool.ui.api.FXMLController;
-import zur.koeln.kickertool.ui.api.FXMLDialogContent;
+import zur.koeln.kickertool.ui.api.Controller;
+import zur.koeln.kickertool.ui.api.DialogContent;
 import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.vms.base.ILabel;
 import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
 import zur.koeln.kickertool.ui.exceptions.BackgroundTaskException;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
-import zur.koeln.kickertool.ui.shared.DialogContent;
+import zur.koeln.kickertool.ui.shared.DialogContentDefinition;
 import zur.koeln.kickertool.ui.tools.DTOVerifcationUtils;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Setter(value=AccessLevel.PUBLIC)
 @SuppressWarnings("nls")
-public class AbstractFXMLController<PAYLOAD> implements FXMLController<PAYLOAD> {
+public class AbstractController<PAYLOAD> implements Controller<PAYLOAD> {
 	
 	@FXML 
 	StackPane rootStackPane;
@@ -46,7 +46,7 @@ public class AbstractFXMLController<PAYLOAD> implements FXMLController<PAYLOAD> 
 	@FXML
 	@Override
 	public void initialize() {
-		FXMLController.super.initialize();
+		Controller.super.initialize();
 	}
 	
 	/**
@@ -80,21 +80,21 @@ public class AbstractFXMLController<PAYLOAD> implements FXMLController<PAYLOAD> 
 	}
 	
 	/**
-	 * Opens a dialog with an initial content. If you don't want to provide any initial content, use {@link #openDialog(DialogContent, DialogCloseEvent)} instead.
+	 * Opens a dialog with an initial content. If you don't want to provide any initial content, use {@link #openDialog(DialogContentDefinition, DialogCloseEvent)} instead.
 	 */
-	protected <Content, Result> void openDialog(DialogContent dialogContent, Content initialContent, DialogCloseEvent<Result> dialogClosedCallback) {
+	protected <Content, Result> void openDialog(DialogContentDefinition dialogContent, Content initialContent, DialogCloseEvent<Result> dialogClosedCallback) {
 
 		try {
 			FXMLLoader fxmlSceneLoader = FXMLGuiService.getInstance().getFXMLDialogLoader(dialogContent);
 			Pane pane = fxmlSceneLoader.load();
-			AbstractFXMLController dialogContentController = fxmlSceneLoader.getController();
+			AbstractController dialogContentController = fxmlSceneLoader.getController();
 			dialogContentController.setRootStackPane(getRootStackPane());
 				
-			if (!FXMLDialogContent.class.isInstance(dialogContentController)) {
-				throw new IllegalArgumentException("Der Dialog " + dialogContent + " implementiert nicht das Interface " + FXMLDialogContent.class.getSimpleName());
+			if (!DialogContent.class.isInstance(dialogContentController)) {
+				throw new IllegalArgumentException("Der Dialog " + dialogContent + " implementiert nicht das Interface " + DialogContent.class.getSimpleName());
 			}
 			
-			FXMLDialogContent<Content, Result> fxmlDialogContent = (FXMLDialogContent) dialogContentController;
+			DialogContent<Content, Result> fxmlDialogContent = (DialogContent) dialogContentController;
 			
 			if (initialContent != null) {
 				fxmlDialogContent.initializeDialogWithContent(initialContent);
@@ -149,7 +149,7 @@ public class AbstractFXMLController<PAYLOAD> implements FXMLController<PAYLOAD> 
 	/**
 	 * Opens a dialog without any initial content.
 	 */
-	protected <Void, Result> void openDialog(DialogContent dialogContent, DialogCloseEvent<Result> dialogClosedCallback) {
+	protected <Void, Result> void openDialog(DialogContentDefinition dialogContent, DialogCloseEvent<Result> dialogClosedCallback) {
 
 		openDialog(dialogContent, null, dialogClosedCallback);
 

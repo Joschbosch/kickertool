@@ -9,7 +9,7 @@ import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.ui.api.events.TableCellClickEvent;
-import zur.koeln.kickertool.ui.shared.Icons;
+import zur.koeln.kickertool.ui.shared.IconDefinition;
 
 @Getter(value=AccessLevel.PRIVATE)
 public class ImageEditTableCellFactory implements Callback<TableColumn, TableCell>{
@@ -32,7 +32,7 @@ public class ImageEditTableCellFactory implements Callback<TableColumn, TableCel
 			{
 				vbox = new VBox();
 				vbox.setAlignment(Pos.CENTER);
-				imageView = Icons.EDIT_ITEM.createIconImageView(20);
+				imageView = IconDefinition.EDIT_ITEM.createIconImageView(20);
 				vbox.getChildren().add(imageView);
 				vbox.setStyle("-fx-cursor: hand;"); //$NON-NLS-1$
 				setGraphic(vbox);

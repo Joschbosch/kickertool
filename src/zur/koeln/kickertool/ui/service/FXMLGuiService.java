@@ -13,11 +13,11 @@ import javafx.stage.Stage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import zur.koeln.kickertool.ui.api.FXMLController;
+import zur.koeln.kickertool.ui.api.Controller;
 import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
-import zur.koeln.kickertool.ui.controller.base.AbstractFXMLController;
-import zur.koeln.kickertool.ui.shared.DialogContent;
-import zur.koeln.kickertool.ui.shared.Scenes;
+import zur.koeln.kickertool.ui.controller.base.AbstractController;
+import zur.koeln.kickertool.ui.shared.DialogContentDefinition;
+import zur.koeln.kickertool.ui.shared.SceneDefinition;
 
 @SuppressWarnings("nls")
 public class FXMLGuiService {
@@ -53,7 +53,7 @@ public class FXMLGuiService {
 		stage.setOnCloseRequest(event -> {
 
 			event.consume();
-			AbstractFXMLController abstrFxmlController = (AbstractFXMLController) stage.getScene().getUserData();
+			AbstractController abstrFxmlController = (AbstractController) stage.getScene().getUserData();
 
 			abstrFxmlController.showConfirmationDialog("Beenden", "Wollen Sie wirklich beenden?", null,
 					new DialogCloseEvent<Boolean>() {
@@ -69,20 +69,20 @@ public class FXMLGuiService {
 		});
 	}
 	
-	public void switchScene(Scenes newScene) {
+	public void switchScene(SceneDefinition newScene) {
 
 		switchScene(newScene, null);
 
 	}
 
-	public void switchScene(Scenes newScene, Object payload) {
+	public void switchScene(SceneDefinition newScene, Object payload) {
 
 		try {
 			FXMLLoader fxmlLoader = getFXMLSceneLoader(newScene);
 			Pane pane = fxmlLoader.load();
 			Scene scene = new Scene(pane);
 			
-			FXMLController controller = fxmlLoader.getController();
+			Controller controller = fxmlLoader.getController();
 			controller.setPayload(payload);
 			
 			scene.setUserData(fxmlLoader.getController());
@@ -93,7 +93,7 @@ public class FXMLGuiService {
 		}
 	}
 
-	private void prepareStage(Stage stage, Scene newScene, FXMLController fxmlController) {
+	private void prepareStage(Stage stage, Scene newScene, Controller fxmlController) {
 		stage.setScene(newScene);
 		stage.sizeToScene();
 		stage.centerOnScreen();
@@ -103,7 +103,7 @@ public class FXMLGuiService {
 		startAfterInitializationTask(fxmlController);
 	}
 
-	public void startAfterInitializationTask(FXMLController fxmlController) {
+	public void startAfterInitializationTask(Controller fxmlController) {
 
 		// We can't use Platform.runLater() here, because this call is still too early for e.g. focus a control.
 		// Thus we use a normal Task instead.
@@ -124,7 +124,7 @@ public class FXMLGuiService {
 
 	}
 
-	public FXMLLoader getFXMLSceneLoader(Scenes scene) {
+	public FXMLLoader getFXMLSceneLoader(SceneDefinition scene) {
 
 		FXMLLoader loader = new FXMLLoader(scene.getFxmlControllerClass().getResource(scene.getFxmlFile()));
 		loader.setControllerFactory(getCtx()::getBean);
@@ -132,7 +132,7 @@ public class FXMLGuiService {
 
 	}
 
-	public FXMLLoader getFXMLDialogLoader(DialogContent dialogContent) {
+	public FXMLLoader getFXMLDialogLoader(DialogContentDefinition dialogContent) {
 
 		FXMLLoader loader = new FXMLLoader(dialogContent.getFxmlControllerClass().getResource(dialogContent.getFxmlFile()));
 		loader.setControllerFactory(getCtx()::getBean);

@@ -9,7 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
-import zur.koeln.kickertool.ui.shared.Scenes;
+import zur.koeln.kickertool.ui.shared.SceneDefinition;
 
 @SpringBootApplication
 public class Main extends Application {
@@ -27,7 +27,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws IOException {
 		
 		FXMLGuiService.getInstance().initialize(ctx, primaryStage);
-		FXMLGuiService.getInstance().switchScene(Scenes.MAIN_MENU);
+		FXMLGuiService.getInstance().switchScene(SceneDefinition.MAIN_MENU);
         
 	}
 	
