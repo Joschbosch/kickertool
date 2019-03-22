@@ -7,13 +7,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.application.api.dtos.MatchDTO;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
-import zur.koeln.kickertool.ui.controller.vms.GameTableViewModel;
-import zur.koeln.kickertool.ui.controller.vms.MatchViewModel;
+import zur.koeln.kickertool.ui.controller.shared.vms.GameTableDTOViewModel;
+import zur.koeln.kickertool.ui.controller.shared.vms.MatchDTOViewModel;
 import zur.koeln.kickertool.ui.tools.mapper.IViewModelMapper;
 
 @Component
 @Getter(value = AccessLevel.PRIVATE)
-public class ViewModelMatchMapper implements IViewModelMapper<MatchDTO, MatchViewModel>{
+public class ViewModelMatchMapper implements IViewModelMapper<MatchDTO, MatchDTOViewModel>{
 
 	@Autowired
 	CustomModelMapper mapper;
@@ -22,8 +22,8 @@ public class ViewModelMatchMapper implements IViewModelMapper<MatchDTO, MatchVie
 	ViewModelTeamMapper teamMapper;
 	
 	@Override
-	public MatchViewModel map(MatchDTO dto) {
-		MatchViewModel vm = new MatchViewModel();
+	public MatchDTOViewModel map(MatchDTO dto) {
+		MatchDTOViewModel vm = new MatchDTOViewModel();
 		
 		vm.setMatchID(dto.getMatchID());
 		vm.setRoundNumber(dto.getRoundNumber());
@@ -33,7 +33,7 @@ public class ViewModelMatchMapper implements IViewModelMapper<MatchDTO, MatchVie
 		vm.setTournamentId(dto.getTournament().getUid());
 		vm.setHomeTeam(getTeamMapper().map(dto.getHomeTeam()));
 		vm.setVisitingTeam(getTeamMapper().map(dto.getVisitingTeam()));
-		vm.setTable(getMapper().map(dto.getTable(), GameTableViewModel.class));
+		vm.setTable(getMapper().map(dto.getTable(), GameTableDTOViewModel.class));
 		
 		return vm;
 	}

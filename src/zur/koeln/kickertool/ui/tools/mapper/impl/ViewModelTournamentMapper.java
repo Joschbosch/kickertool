@@ -7,15 +7,15 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.application.api.dtos.TournamentDTO;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
-import zur.koeln.kickertool.ui.controller.vms.GameTableViewModel;
-import zur.koeln.kickertool.ui.controller.vms.PlayerViewModel;
-import zur.koeln.kickertool.ui.controller.vms.TournamentSettingsViewModel;
-import zur.koeln.kickertool.ui.controller.vms.TournamentViewModel;
+import zur.koeln.kickertool.ui.controller.dialogs.vms.TournamentSettingsViewModel;
+import zur.koeln.kickertool.ui.controller.shared.vms.GameTableDTOViewModel;
+import zur.koeln.kickertool.ui.controller.shared.vms.PlayerDTOViewModel;
+import zur.koeln.kickertool.ui.controller.shared.vms.TournamentDTOViewModel;
 import zur.koeln.kickertool.ui.tools.mapper.IViewModelMapper;
 
 @Component
 @Getter(value = AccessLevel.PRIVATE)
-public class ViewModelTournamentMapper implements IViewModelMapper<TournamentDTO, TournamentViewModel> {
+public class ViewModelTournamentMapper implements IViewModelMapper<TournamentDTO, TournamentDTOViewModel> {
 
 	@Autowired
 	CustomModelMapper mapper;
@@ -25,8 +25,8 @@ public class ViewModelTournamentMapper implements IViewModelMapper<TournamentDTO
 	
 
 	@Override
-	public TournamentViewModel map(TournamentDTO dto) {
-		TournamentViewModel vm = new TournamentViewModel();
+	public TournamentDTOViewModel map(TournamentDTO dto) {
+		TournamentDTOViewModel vm = new TournamentDTOViewModel();
 
 		vm.setUid(dto.getUid());
 		vm.setName(dto.getName());
@@ -34,10 +34,10 @@ public class ViewModelTournamentMapper implements IViewModelMapper<TournamentDTO
 		vm.setCurrentRoundIndex(dto.getCurrentRound());
 
 		vm.setSettings(getMapper().map(dto.getSettings(), TournamentSettingsViewModel.class));
-		vm.setPlayers(getMapper().map(dto.getParticipants(), PlayerViewModel.class));
-		vm.setDummyPlayers(getMapper().map(dto.getDummyPlayer(), PlayerViewModel.class));
+		vm.setPlayers(getMapper().map(dto.getParticipants(), PlayerDTOViewModel.class));
+		vm.setDummyPlayers(getMapper().map(dto.getDummyPlayer(), PlayerDTOViewModel.class));
 		vm.setMatches(matchMapper.map(dto.getMatches()));
-		vm.setPlaytables(getMapper().map(dto.getPlaytables(), GameTableViewModel.class));
+		vm.setPlaytables(getMapper().map(dto.getPlaytables(), GameTableDTOViewModel.class));
 		
 		return vm;
 	}

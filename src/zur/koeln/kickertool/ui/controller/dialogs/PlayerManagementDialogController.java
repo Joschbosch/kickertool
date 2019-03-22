@@ -18,14 +18,14 @@ import javafx.scene.control.TableView;
 import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.ui.api.BackgroundTask;
-import zur.koeln.kickertool.ui.api.DialogContent;
-import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
-import zur.koeln.kickertool.ui.api.events.TableCellClickEvent;
 import zur.koeln.kickertool.ui.cells.ImageEditTableCellFactory;
+import zur.koeln.kickertool.ui.cells.TableCellClickEvent;
 import zur.koeln.kickertool.ui.controller.base.AbstractController;
-import zur.koeln.kickertool.ui.controller.vms.PlayerManagementViewModel;
-import zur.koeln.kickertool.ui.controller.vms.PlayerViewModel;
+import zur.koeln.kickertool.ui.controller.base.BackgroundTask;
+import zur.koeln.kickertool.ui.controller.base.DialogCloseEvent;
+import zur.koeln.kickertool.ui.controller.base.DialogContent;
+import zur.koeln.kickertool.ui.controller.dialogs.vms.PlayerManagementViewModel;
+import zur.koeln.kickertool.ui.controller.shared.vms.PlayerDTOViewModel;
 import zur.koeln.kickertool.ui.shared.DialogContentDefinition;
 import zur.koeln.kickertool.ui.shared.IconDefinition;
 
@@ -65,19 +65,19 @@ public class PlayerManagementDialogController extends AbstractController impleme
 	
 	private void initTableColumns() {
 		
-		getTblColFirstName().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerViewModel, String>, ObservableValue<String>>() {
+		getTblColFirstName().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerDTOViewModel, String>, ObservableValue<String>>() {
 
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<PlayerViewModel, String> param) {
+			public ObservableValue<String> call(CellDataFeatures<PlayerDTOViewModel, String> param) {
 				
 				return param.getValue().getFirstNameProperty();
 			}
 		});
 		
-		getTblColLastName().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerViewModel, String>, ObservableValue<String>>() {
+		getTblColLastName().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerDTOViewModel, String>, ObservableValue<String>>() {
 
 			@Override
-			public ObservableValue<String> call(CellDataFeatures<PlayerViewModel, String> param) {
+			public ObservableValue<String> call(CellDataFeatures<PlayerDTOViewModel, String> param) {
 				
 				return param.getValue().getLastNameProperty();
 			}
@@ -88,10 +88,10 @@ public class PlayerManagementDialogController extends AbstractController impleme
 			@Override
 			public void doOnClick(int rowIndex) {
 				
-				openDialog(DialogContentDefinition.PLAYER_NAME_DIALOG, getVm().getPlayers().get(rowIndex), new DialogCloseEvent<PlayerViewModel>() {
+				openDialog(DialogContentDefinition.PLAYER_NAME_DIALOG, getVm().getPlayers().get(rowIndex), new DialogCloseEvent<PlayerDTOViewModel>() {
 
 					@Override
-					public void doAfterDialogClosed(PlayerViewModel result) {
+					public void doAfterDialogClosed(PlayerDTOViewModel result) {
 						startBackgroundTask(updatePlayerTask(result));
 					}
 				});
@@ -111,15 +111,15 @@ public class PlayerManagementDialogController extends AbstractController impleme
 	}
 
 	private BackgroundTask loadPlayerListTask() {
-		return new BackgroundTask<List<PlayerViewModel>>() {
+		return new BackgroundTask<List<PlayerDTOViewModel>>() {
 
 			@Override
-			public List<PlayerViewModel> performTask() throws Exception{
+			public List<PlayerDTOViewModel> performTask() throws Exception{
 				return getVm().loadAllPlayer();
 			}
 
 			@Override
-			public void doOnSuccess(List<PlayerViewModel> result) {
+			public void doOnSuccess(List<PlayerDTOViewModel> result) {
 				getVm().getPlayers().clear();
 				getVm().getPlayers().addAll(result);
 				getTblPlayers().setItems(getVm().getPlayers());
@@ -133,17 +133,17 @@ public class PlayerManagementDialogController extends AbstractController impleme
 		};
 	}
 	
-	private BackgroundTask updatePlayerTask(PlayerViewModel playerViewModel) {
-		return new BackgroundTask<PlayerViewModel>() {
+	private BackgroundTask updatePlayerTask(PlayerDTOViewModel playerViewModel) {
+		return new BackgroundTask<PlayerDTOViewModel>() {
 
 			@Override
-			public PlayerViewModel performTask() throws Exception {
+			public PlayerDTOViewModel performTask() throws Exception {
 				
 				return getVm().updatePlayer(playerViewModel);
 			}
 
 			@Override
-			public void doOnSuccess(PlayerViewModel result) {
+			public void doOnSuccess(PlayerDTOViewModel result) {
 				getVm().updatePlayersList(result);
 			}
 
@@ -156,28 +156,28 @@ public class PlayerManagementDialogController extends AbstractController impleme
 	}
 
 	@FXML public void onAddPlayerClicked() {
-		openDialog(DialogContentDefinition.PLAYER_NAME_DIALOG, new DialogCloseEvent<PlayerViewModel>() {
+		openDialog(DialogContentDefinition.PLAYER_NAME_DIALOG, new DialogCloseEvent<PlayerDTOViewModel>() {
 
 			@Override
-			public void doAfterDialogClosed(PlayerViewModel result) {
+			public void doAfterDialogClosed(PlayerDTOViewModel result) {
 				startBackgroundTask(insertNewPlayerTask(result));
 			}
 
 		});
 	}
 	
-	private BackgroundTask insertNewPlayerTask(PlayerViewModel newPlayerNameViewModel) {
+	private BackgroundTask insertNewPlayerTask(PlayerDTOViewModel newPlayerNameViewModel) {
 		
-		return new BackgroundTask<PlayerViewModel>() {
+		return new BackgroundTask<PlayerDTOViewModel>() {
 
 			@Override
-			public PlayerViewModel performTask() throws Exception {
+			public PlayerDTOViewModel performTask() throws Exception {
 				
 				return getVm().insertNewPlayer(newPlayerNameViewModel.getFirstName(), newPlayerNameViewModel.getLastName());
 			}
 
 			@Override
-			public void doOnSuccess(PlayerViewModel result) {
+			public void doOnSuccess(PlayerDTOViewModel result) {
 				getVm().getPlayers().add(result);
 			}
 
@@ -196,7 +196,7 @@ public class PlayerManagementDialogController extends AbstractController impleme
 			@Override
 			public void doAfterDialogClosed(Boolean result) {
 				if (result.booleanValue()) {
-					ObservableList<PlayerViewModel> selectedItems = getTblPlayers().getSelectionModel().getSelectedItems();
+					ObservableList<PlayerDTOViewModel> selectedItems = getTblPlayers().getSelectionModel().getSelectedItems();
 
 					startBackgroundTask(deletePlayerTask(selectedItems));
 				} 
@@ -205,17 +205,17 @@ public class PlayerManagementDialogController extends AbstractController impleme
 		
 	}
 
-	private BackgroundTask deletePlayerTask(List<PlayerViewModel> selectedItems) {
+	private BackgroundTask deletePlayerTask(List<PlayerDTOViewModel> selectedItems) {
 		
-		return new BackgroundTask<List<PlayerViewModel>>() {
+		return new BackgroundTask<List<PlayerDTOViewModel>>() {
 
 			@Override
-			public List<PlayerViewModel> performTask() throws Exception {
+			public List<PlayerDTOViewModel> performTask() throws Exception {
 				return getVm().deletePlayer(selectedItems);
 			}
 
 			@Override
-			public void doOnSuccess(List<PlayerViewModel> result) {
+			public void doOnSuccess(List<PlayerDTOViewModel> result) {
 				getVm().getPlayers().removeAll(result);
 			}
 

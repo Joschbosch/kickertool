@@ -8,7 +8,6 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.ui.api.events.TableCellClickEvent;
 import zur.koeln.kickertool.ui.shared.IconDefinition;
 
 @Getter(value=AccessLevel.PRIVATE)

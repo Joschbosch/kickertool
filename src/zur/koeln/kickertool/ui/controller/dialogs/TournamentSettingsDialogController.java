@@ -13,10 +13,10 @@ import javafx.util.converter.IntegerStringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.core.kernl.TournamentMode;
-import zur.koeln.kickertool.ui.api.DialogContent;
 import zur.koeln.kickertool.ui.controller.base.AbstractController;
-import zur.koeln.kickertool.ui.controller.vms.TournamentSettingsViewModel;
-import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
+import zur.koeln.kickertool.ui.controller.base.DialogContent;
+import zur.koeln.kickertool.ui.controller.base.vm.ModelValidationResult;
+import zur.koeln.kickertool.ui.controller.dialogs.vms.TournamentSettingsViewModel;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)

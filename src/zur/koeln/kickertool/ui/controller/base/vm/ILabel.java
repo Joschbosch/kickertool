@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.ui.controller.vms.base;
+package zur.koeln.kickertool.ui.controller.base.vm;
 
 public interface ILabel {
 

@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.ui.api;
+package zur.koeln.kickertool.ui.controller.base;
 
 /**
  * Used for background threads. Defines a workflow where you perform a task in the background (thread) and

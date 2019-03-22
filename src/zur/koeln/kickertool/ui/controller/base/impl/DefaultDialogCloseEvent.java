@@ -1,6 +1,6 @@
-package zur.koeln.kickertool.ui.api.defaultimpl;
+package zur.koeln.kickertool.ui.controller.base.impl;
 
-import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
+import zur.koeln.kickertool.ui.controller.base.DialogCloseEvent;
 
 public class DefaultDialogCloseEvent implements DialogCloseEvent<Void>{
 

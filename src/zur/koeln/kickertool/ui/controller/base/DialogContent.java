@@ -1,6 +1,6 @@
-package zur.koeln.kickertool.ui.api;
+package zur.koeln.kickertool.ui.controller.base;
 
-import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
+import zur.koeln.kickertool.ui.controller.base.vm.ModelValidationResult;
 
 /**
  * Interface for dialogs. Every dialog <b>has</b> to implement this.

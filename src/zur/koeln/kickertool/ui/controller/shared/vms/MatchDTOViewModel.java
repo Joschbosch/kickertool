@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.ui.controller.vms;
+package zur.koeln.kickertool.ui.controller.shared.vms;
 
 import java.util.UUID;
 
@@ -8,7 +8,7 @@ import zur.koeln.kickertool.core.kernl.MatchStatus;
 
 @Getter
 @Setter
-public class MatchViewModel {
+public class MatchDTOViewModel {
 
     private UUID matchID;
 
@@ -22,10 +22,10 @@ public class MatchViewModel {
 
     private UUID tournamentId;
 
-    private TeamViewModel homeTeam;
+    private TeamDTOViewModel homeTeam;
 
-    private TeamViewModel visitingTeam;
+    private TeamDTOViewModel visitingTeam;
 
-    private GameTableViewModel table;
+    private GameTableDTOViewModel table;
 	
 }

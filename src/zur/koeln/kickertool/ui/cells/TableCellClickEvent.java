@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.ui.api.events;
+package zur.koeln.kickertool.ui.cells;
 
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableRow;

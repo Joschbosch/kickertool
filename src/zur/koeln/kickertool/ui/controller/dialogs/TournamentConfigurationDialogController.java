@@ -18,14 +18,14 @@ import javafx.scene.control.cell.TextFieldListCell;
 import javafx.util.StringConverter;
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.ui.api.BackgroundTask;
-import zur.koeln.kickertool.ui.api.DialogContent;
-import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.base.AbstractController;
-import zur.koeln.kickertool.ui.controller.vms.PlayerViewModel;
-import zur.koeln.kickertool.ui.controller.vms.TournamentConfigurationViewModel;
-import zur.koeln.kickertool.ui.controller.vms.TournamentSettingsViewModel;
-import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
+import zur.koeln.kickertool.ui.controller.base.BackgroundTask;
+import zur.koeln.kickertool.ui.controller.base.DialogCloseEvent;
+import zur.koeln.kickertool.ui.controller.base.DialogContent;
+import zur.koeln.kickertool.ui.controller.base.vm.ModelValidationResult;
+import zur.koeln.kickertool.ui.controller.dialogs.vms.TournamentConfigurationViewModel;
+import zur.koeln.kickertool.ui.controller.dialogs.vms.TournamentSettingsViewModel;
+import zur.koeln.kickertool.ui.controller.shared.vms.PlayerDTOViewModel;
 import zur.koeln.kickertool.ui.shared.DialogContentDefinition;
 import zur.koeln.kickertool.ui.shared.IconDefinition;
 
@@ -69,29 +69,29 @@ public class TournamentConfigurationDialogController extends AbstractController 
 
 	private void setupListCells() {
 		getLstAvailablePlayers().getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		getLstAvailablePlayers().setCellFactory(TextFieldListCell.forListView(new StringConverter<PlayerViewModel>() {
+		getLstAvailablePlayers().setCellFactory(TextFieldListCell.forListView(new StringConverter<PlayerDTOViewModel>() {
 
 			@Override
-			public String toString(PlayerViewModel object) {
+			public String toString(PlayerDTOViewModel object) {
 				return object.getLabel();
 			}
 
 			@Override
-			public PlayerViewModel fromString(String string) {
+			public PlayerDTOViewModel fromString(String string) {
 				return null;
 			}
 		}));
 		
 		getLstPlayersSelectedForTournament().getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		getLstPlayersSelectedForTournament().setCellFactory(TextFieldListCell.forListView(new StringConverter<PlayerViewModel>() {
+		getLstPlayersSelectedForTournament().setCellFactory(TextFieldListCell.forListView(new StringConverter<PlayerDTOViewModel>() {
 
 			@Override
-			public String toString(PlayerViewModel object) {
+			public String toString(PlayerDTOViewModel object) {
 				return object.getLabel();
 			}
 
 			@Override
-			public PlayerViewModel fromString(String string) {
+			public PlayerDTOViewModel fromString(String string) {
 				return null;
 			}
 		}));
@@ -119,15 +119,15 @@ public class TournamentConfigurationDialogController extends AbstractController 
 
 
 	private BackgroundTask loadAvailablePlayersTask() {
-		return new BackgroundTask<List<PlayerViewModel>>() {
+		return new BackgroundTask<List<PlayerDTOViewModel>>() {
 
 			@Override
-			public List<PlayerViewModel> performTask() throws Exception {
+			public List<PlayerDTOViewModel> performTask() throws Exception {
 				return getVm().loadAllPlayer();
 			}
 
 			@Override
-			public void doOnSuccess(List<PlayerViewModel> result) {
+			public void doOnSuccess(List<PlayerDTOViewModel> result) {
 				getVm().getAvailablePlayers().addAll(result);
 			}
 

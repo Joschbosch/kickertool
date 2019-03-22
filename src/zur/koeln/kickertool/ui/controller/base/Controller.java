@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.ui.api;
+package zur.koeln.kickertool.ui.controller.base;
 
 import javafx.fxml.FXML;
 

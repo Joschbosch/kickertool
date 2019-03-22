@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.ui.api.events;
+package zur.koeln.kickertool.ui.controller.base;
 
 /**
  * Whenever a dialog is closed by clicking on ok, this interface is used.

@@ -13,10 +13,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.application.handler.api.ITournamentCommandHandler;
-import zur.koeln.kickertool.ui.api.BackgroundTask;
 import zur.koeln.kickertool.ui.controller.base.AbstractController;
-import zur.koeln.kickertool.ui.controller.vms.TournamentManagementViewModel;
-import zur.koeln.kickertool.ui.controller.vms.TournamentViewModel;
+import zur.koeln.kickertool.ui.controller.base.BackgroundTask;
+import zur.koeln.kickertool.ui.controller.shared.vms.TournamentDTOViewModel;
+import zur.koeln.kickertool.ui.controller.vms.TournamentMainViewModel;
 import zur.koeln.kickertool.ui.shared.IconDefinition;
 
 @Component
@@ -27,10 +27,10 @@ public class TournamentMainController extends AbstractController<UUID> {
 	ITournamentCommandHandler tournamentCommandHandler;
 
 	@Autowired
-	TournamentManagementViewModel managementViewModel;
+	TournamentMainViewModel managementViewModel;
 
 	@Setter(value = AccessLevel.PRIVATE)
-	TournamentViewModel tournamentViewModel;
+	TournamentDTOViewModel tournamentViewModel;
 	
 	@FXML
 	JFXButton btnStartPauseStopwatch;
@@ -55,16 +55,16 @@ public class TournamentMainController extends AbstractController<UUID> {
 
 	private BackgroundTask createNewRoundTask() {
 
-		return new BackgroundTask<TournamentViewModel>() {
+		return new BackgroundTask<TournamentDTOViewModel>() {
 
 			@Override
-			public TournamentViewModel performTask() throws Exception {
+			public TournamentDTOViewModel performTask() throws Exception {
 
 				return getManagementViewModel().startNewTournamentRound(getCurrentTournamendID());
 			}
 
 			@Override
-			public void doOnSuccess(TournamentViewModel result) {
+			public void doOnSuccess(TournamentDTOViewModel result) {
 				setTournamentViewModel(result);
 			}
 

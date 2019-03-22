@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.ui.controller.vms;
+package zur.koeln.kickertool.ui.controller.dialogs.vms;
 
 import java.util.UUID;
 
@@ -13,8 +13,8 @@ import javafx.beans.property.StringProperty;
 import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.core.kernl.TournamentMode;
-import zur.koeln.kickertool.ui.controller.vms.base.FXViewModel;
-import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
+import zur.koeln.kickertool.ui.controller.base.vm.FXViewModel;
+import zur.koeln.kickertool.ui.controller.base.vm.ModelValidationResult;
 
 @Component
 @Getter

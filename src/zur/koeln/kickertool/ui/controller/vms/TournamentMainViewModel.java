@@ -10,14 +10,15 @@ import lombok.Getter;
 import zur.koeln.kickertool.application.api.dtos.TournamentDTO;
 import zur.koeln.kickertool.application.api.dtos.base.SingleResponseDTO;
 import zur.koeln.kickertool.application.handler.api.ITournamentCommandHandler;
-import zur.koeln.kickertool.ui.controller.vms.base.FXViewModel;
-import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
+import zur.koeln.kickertool.ui.controller.base.vm.FXViewModel;
+import zur.koeln.kickertool.ui.controller.base.vm.ModelValidationResult;
+import zur.koeln.kickertool.ui.controller.shared.vms.TournamentDTOViewModel;
 import zur.koeln.kickertool.ui.exceptions.BackgroundTaskException;
 import zur.koeln.kickertool.ui.tools.mapper.impl.ViewModelTournamentMapper;
 
 @Getter(value = AccessLevel.PRIVATE)
 @Component
-public class TournamentManagementViewModel extends FXViewModel{
+public class TournamentMainViewModel extends FXViewModel{
 
 	@Autowired
 	ITournamentCommandHandler tournamentHandler;
@@ -25,7 +26,7 @@ public class TournamentManagementViewModel extends FXViewModel{
 	@Autowired
 	ViewModelTournamentMapper tournamentMapper;
 	
-	public TournamentViewModel startNewTournamentRound(UUID idTournament) throws BackgroundTaskException {
+	public TournamentDTOViewModel startNewTournamentRound(UUID idTournament) throws BackgroundTaskException {
 		SingleResponseDTO<TournamentDTO> dtoResponse = getTournamentHandler().startNextTournamentRound(idTournament);
 		
 		checkResponse(dtoResponse);

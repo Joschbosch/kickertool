@@ -13,9 +13,9 @@ import javafx.stage.Stage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import zur.koeln.kickertool.ui.api.Controller;
-import zur.koeln.kickertool.ui.api.events.DialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.base.AbstractController;
+import zur.koeln.kickertool.ui.controller.base.Controller;
+import zur.koeln.kickertool.ui.controller.base.DialogCloseEvent;
 import zur.koeln.kickertool.ui.shared.DialogContentDefinition;
 import zur.koeln.kickertool.ui.shared.SceneDefinition;
 

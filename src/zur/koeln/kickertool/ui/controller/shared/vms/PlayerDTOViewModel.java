@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.ui.controller.vms;
+package zur.koeln.kickertool.ui.controller.shared.vms;
 
 import java.util.UUID;
 
@@ -8,14 +8,14 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import lombok.Getter;
 import lombok.Setter;
-import zur.koeln.kickertool.ui.controller.vms.base.FXViewModel;
-import zur.koeln.kickertool.ui.controller.vms.base.ILabel;
-import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
+import zur.koeln.kickertool.ui.controller.base.vm.FXViewModel;
+import zur.koeln.kickertool.ui.controller.base.vm.ILabel;
+import zur.koeln.kickertool.ui.controller.base.vm.ModelValidationResult;
 
 @SuppressWarnings("nls")
 @Component
 @Getter
-public class PlayerViewModel extends FXViewModel implements ILabel, Comparable<PlayerViewModel> {
+public class PlayerDTOViewModel extends FXViewModel implements ILabel, Comparable<PlayerDTOViewModel> {
 	
 	@Getter
 	@Setter
@@ -70,7 +70,7 @@ public class PlayerViewModel extends FXViewModel implements ILabel, Comparable<P
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PlayerViewModel other = (PlayerViewModel) obj;
+		PlayerDTOViewModel other = (PlayerDTOViewModel) obj;
 		if (uid == null) {
 			if (other.uid != null)
 				return false;
@@ -85,7 +85,7 @@ public class PlayerViewModel extends FXViewModel implements ILabel, Comparable<P
 	}
 	
 	@Override
-	public int compareTo(PlayerViewModel o) {
+	public int compareTo(PlayerDTOViewModel o) {
 		
 		return getLabel().compareToIgnoreCase(o.getLabel());
 		

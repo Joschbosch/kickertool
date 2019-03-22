@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.ui.controller.vms.base;
+package zur.koeln.kickertool.ui.controller.base.vm;
 
 import zur.koeln.kickertool.application.api.dtos.base.DTO;
 import zur.koeln.kickertool.ui.exceptions.BackgroundTaskException;

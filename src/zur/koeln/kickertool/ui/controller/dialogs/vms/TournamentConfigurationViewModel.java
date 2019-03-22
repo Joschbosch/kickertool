@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.ui.controller.vms;
+package zur.koeln.kickertool.ui.controller.dialogs.vms;
 
 import java.util.List;
 
@@ -19,8 +19,9 @@ import zur.koeln.kickertool.application.api.dtos.base.SingleResponseDTO;
 import zur.koeln.kickertool.application.handler.api.IPlayerCommandHandler;
 import zur.koeln.kickertool.application.handler.api.ITournamentSettingsCommandHandler;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
-import zur.koeln.kickertool.ui.controller.vms.base.FXViewModel;
-import zur.koeln.kickertool.ui.controller.vms.base.ModelValidationResult;
+import zur.koeln.kickertool.ui.controller.base.vm.FXViewModel;
+import zur.koeln.kickertool.ui.controller.base.vm.ModelValidationResult;
+import zur.koeln.kickertool.ui.controller.shared.vms.PlayerDTOViewModel;
 import zur.koeln.kickertool.ui.exceptions.BackgroundTaskException;
 
 @SuppressWarnings("nls")
@@ -46,8 +47,8 @@ public class TournamentConfigurationViewModel extends FXViewModel {
 
 	private StringProperty tournamentNameProperty = new SimpleStringProperty();
 	
-	private final ObservableList<PlayerViewModel> availablePlayers = FXCollections.observableArrayList();
-	private final ObservableList<PlayerViewModel> playersForTournament = FXCollections.observableArrayList();
+	private final ObservableList<PlayerDTOViewModel> availablePlayers = FXCollections.observableArrayList();
+	private final ObservableList<PlayerDTOViewModel> playersForTournament = FXCollections.observableArrayList();
 
 	@Override
 	public ModelValidationResult validate() {
@@ -67,13 +68,13 @@ public class TournamentConfigurationViewModel extends FXViewModel {
 		return validation;
 	}
 
-	public List<PlayerViewModel> loadAllPlayer() throws BackgroundTaskException {
+	public List<PlayerDTOViewModel> loadAllPlayer() throws BackgroundTaskException {
 
 		ListResponseDTO<PlayerDTO> response = getPlayerCommandHandler().getAllPlayer();
 
 		checkResponse(response);
 
-		return getModelMapper().map(response.getDtoValueList(), PlayerViewModel.class);
+		return getModelMapper().map(response.getDtoValueList(), PlayerDTOViewModel.class);
 	}
 	
 	public String getTournamentName() {
