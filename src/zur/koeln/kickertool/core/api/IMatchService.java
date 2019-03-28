@@ -1,13 +1,12 @@
 package zur.koeln.kickertool.core.api;
 
-import java.util.UUID;
-
 import zur.koeln.kickertool.core.model.Match;
 import zur.koeln.kickertool.core.model.Player;
+import zur.koeln.kickertool.core.model.Tournament;
 
 public interface IMatchService {
 
-    void createNextMatches(int newRoundNumber, UUID tournamentUID);
+    void createNextMatches(int newRoundNumber, Tournament tournamentUID);
 
     boolean hasPlayerWon(Match m, Player player);
 

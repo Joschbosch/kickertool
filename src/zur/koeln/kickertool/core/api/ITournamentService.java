@@ -30,9 +30,8 @@ public interface ITournamentService {
 
     Tournament getTournamentById(UUID tournamentUID);
 
-    List<Player> getTournamentStandingsForRound(UUID tournamentUID, int roundNo);
+    List<Player> getTournamentStandingsForRound(Tournament tournament, int roundNo);
 
-    List<Player> getCurrentTournamentStandings(UUID tournamentUID);
 
     void addNewMatchToTournament(UUID uid, Match m);
 

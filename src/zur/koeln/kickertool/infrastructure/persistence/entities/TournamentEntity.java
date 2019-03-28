@@ -31,10 +31,6 @@ public class TournamentEntity {
     private List<PlayerEntity> participants;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "DUMMY_UID")
-    private List<PlayerEntity> dummyPlayer;
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name = "MATCH_ID")
     private List<MatchEntity> matches;
 

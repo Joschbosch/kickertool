@@ -32,7 +32,6 @@ public class TournamentCommandHandler
     @Override
     public SingleResponseDTO<TournamentDTO> createNewTournament(String tournamentName, List<PlayerDTO> participants, SettingsDTO settings) {
         Tournament newTournament = tournamentService.createAndStartNewTournament(tournamentName, mapper.map(participants, Player.class), mapper.map(settings, Settings.class));
-
         return createSuccessfullDTO(newTournament);
     }
 

@@ -29,9 +29,9 @@ public class MatchService
     private final Random randomGenerator = new Random();
 
     @Override
-    public void createNextMatches(int newRoundNumber, UUID tournamentUID) {
-        Tournament tournament = tournamentService.getTournamentById(tournamentUID);
-        List<Player> currentStandings = tournamentService.getCurrentTournamentStandings(tournamentUID);
+    public void createNextMatches(int newRoundNumber, Tournament tournament) {
+        List<Player> currentStandings = tournamentService.getTournamentStandingsForRound(tournament, newRoundNumber);
+
         currentStandings.removeIf(p -> p.getStatus() == PlayerStatus.PAUSING_TOURNAMENT);
 
         if (newRoundNumber <= tournament.getSettings().getRandomRounds()) {
