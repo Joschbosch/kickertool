@@ -28,7 +28,7 @@ public enum IconDefinition {
 	
 	public ImageView createIconImageView() {
 		
-		return createIconImageView(25);
+		return createIconImageView(24);
 	}
 	
 	public ImageView createIconImageView(double size) {
