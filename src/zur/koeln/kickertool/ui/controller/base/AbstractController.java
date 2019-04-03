@@ -21,6 +21,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.application.api.dtos.base.DTO;
+import zur.koeln.kickertool.ui.controller.base.impl.IDialogConfirmationCloseEvent;
 import zur.koeln.kickertool.ui.controller.base.vm.ILabel;
 import zur.koeln.kickertool.ui.controller.base.vm.ModelValidationResult;
 import zur.koeln.kickertool.ui.exceptions.BackgroundTaskException;
@@ -208,7 +209,7 @@ public class AbstractController<PAYLOAD> implements Controller<PAYLOAD> {
 		
 	}
 	
-	public void showConfirmationDialog(String title, String subTitle, List<ILabel> items, DialogCloseEvent<Boolean> closedCallback) {
+	public void showConfirmationDialog(String title, String subTitle, List<ILabel> items, IDialogConfirmationCloseEvent closedCallback) {
 		
 		JFXDialogLayout dialogContent = new JFXDialogLayout();
 		
@@ -230,14 +231,14 @@ public class AbstractController<PAYLOAD> implements Controller<PAYLOAD> {
 		btnOK.setDefaultButton(true);
 		btnOK.setOnAction(event -> {
 			dialog.close();
-			closedCallback.doAfterDialogClosed(Boolean.TRUE);
+			closedCallback.doAfterDialogClosed(new DialogConfirmationResponse(true));
 		});
 		
 		JFXButton btnCancel = new JFXButton("Nein");
 		btnCancel.setPrefWidth(100.0);
 		btnCancel.setOnAction(event -> {
 			dialog.close();
-			closedCallback.doAfterDialogClosed(Boolean.FALSE);
+			closedCallback.doAfterDialogClosed(new DialogConfirmationResponse(false));
 		});
 		
 		dialogContent.setActions(btnCancel, btnOK);

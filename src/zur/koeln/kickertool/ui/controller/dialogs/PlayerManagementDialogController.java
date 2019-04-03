@@ -23,7 +23,9 @@ import zur.koeln.kickertool.ui.cells.TableCellClickEvent;
 import zur.koeln.kickertool.ui.controller.base.AbstractController;
 import zur.koeln.kickertool.ui.controller.base.BackgroundTask;
 import zur.koeln.kickertool.ui.controller.base.DialogCloseEvent;
+import zur.koeln.kickertool.ui.controller.base.DialogConfirmationResponse;
 import zur.koeln.kickertool.ui.controller.base.DialogContent;
+import zur.koeln.kickertool.ui.controller.base.impl.IDialogConfirmationCloseEvent;
 import zur.koeln.kickertool.ui.controller.dialogs.vms.PlayerManagementViewModel;
 import zur.koeln.kickertool.ui.controller.shared.vms.PlayerDTOViewModel;
 import zur.koeln.kickertool.ui.shared.DialogContentDefinition;
@@ -191,15 +193,16 @@ public class PlayerManagementDialogController extends AbstractController impleme
 	@FXML 
 	public void onDeletePlayerClicked() {
 		
-		showConfirmationDialog("Spieler löschen?", "Wollen Sie folgende Spieler wirklich löschen?", getTblPlayers().getSelectionModel().getSelectedItems(), new DialogCloseEvent<Boolean>() {
+		showConfirmationDialog("Spieler löschen?", "Wollen Sie folgende Spieler wirklich löschen?", getTblPlayers().getSelectionModel().getSelectedItems(), new IDialogConfirmationCloseEvent() {
 			
 			@Override
-			public void doAfterDialogClosed(Boolean result) {
-				if (result.booleanValue()) {
+			public void doAfterDialogClosed(DialogConfirmationResponse response) {
+				if (response.isAccepted()) {
 					ObservableList<PlayerDTOViewModel> selectedItems = getTblPlayers().getSelectionModel().getSelectedItems();
 
 					startBackgroundTask(deletePlayerTask(selectedItems));
 				} 
+				
 			}
 		});
 		

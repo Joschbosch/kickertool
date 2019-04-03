@@ -16,6 +16,8 @@ import lombok.Setter;
 import zur.koeln.kickertool.ui.controller.base.AbstractController;
 import zur.koeln.kickertool.ui.controller.base.Controller;
 import zur.koeln.kickertool.ui.controller.base.DialogCloseEvent;
+import zur.koeln.kickertool.ui.controller.base.DialogConfirmationResponse;
+import zur.koeln.kickertool.ui.controller.base.impl.IDialogConfirmationCloseEvent;
 import zur.koeln.kickertool.ui.shared.DialogContentDefinition;
 import zur.koeln.kickertool.ui.shared.SceneDefinition;
 
@@ -55,16 +57,15 @@ public class FXMLGuiService {
 			event.consume();
 			AbstractController abstrFxmlController = (AbstractController) stage.getScene().getUserData();
 
-			abstrFxmlController.showConfirmationDialog("Beenden", "Wollen Sie wirklich beenden?", null,
-					new DialogCloseEvent<Boolean>() {
-
-						@Override
-						public void doAfterDialogClosed(Boolean result) {
-							if (result.booleanValue()) {
-								Platform.exit();
-							}
-						}
-					});
+			abstrFxmlController.showConfirmationDialog("Beenden", "Wollen Sie wirklich beenden?", null, new IDialogConfirmationCloseEvent() {
+				
+				@Override
+				public void doAfterDialogClosed(DialogConfirmationResponse response) {
+					if (response.isAccepted()) {
+						Platform.exit();
+					}
+				}
+			});
 
 		});
 	}
