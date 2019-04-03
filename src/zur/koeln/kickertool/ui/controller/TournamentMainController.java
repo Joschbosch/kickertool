@@ -22,10 +22,10 @@ import zur.koeln.kickertool.ui.shared.IconDefinition;
 public class TournamentMainController extends AbstractController<TournamentDTO> {
 
 	@Autowired
-	TournamentMainViewModel managementViewModel;
+	TournamentMainViewModel tournamentMainViewModel;
 
 	@Setter(value = AccessLevel.PRIVATE)
-	TournamentDTOViewModel tournamentViewModel;
+	TournamentDTOViewModel tournamentDtoViewModel;
 	
 	@FXML
 	JFXButton btnStartPauseStopwatch;
@@ -45,7 +45,7 @@ public class TournamentMainController extends AbstractController<TournamentDTO> 
 	
 	@Override
 	public void doAfterInitializationCompleted() {
-		setTournamentViewModel(getManagementViewModel().mapFromTournamentDTO(getPayload()));
+		setTournamentDtoViewModel(getTournamentMainViewModel().mapFromTournamentDTO(getPayload()));
 	}
 
 	@FXML
@@ -60,12 +60,12 @@ public class TournamentMainController extends AbstractController<TournamentDTO> 
 			@Override
 			public TournamentDTOViewModel performTask() throws Exception {
 
-				return getManagementViewModel().startNewTournamentRound(getTournamentViewModel().getUid());
+				return getTournamentMainViewModel().startNewTournamentRound(getTournamentDtoViewModel().getUid());
 			}
 
 			@Override
 			public void doOnSuccess(TournamentDTOViewModel result) {
-				setTournamentViewModel(result);
+				setTournamentDtoViewModel(result);
 			}
 
 			@Override
