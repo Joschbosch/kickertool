@@ -22,7 +22,6 @@ public class ViewModelTeamMapper implements IViewModelMapper<TeamDTO, TeamDTOVie
 	public TeamDTOViewModel map(TeamDTO dto) {
 		TeamDTOViewModel vm = new TeamDTOViewModel();
 		
-		vm.setUid(dto.getUid());
 		vm.setPlayer1(getMapper().map(dto.getPlayer1(), PlayerDTOViewModel.class));
 		vm.setPlayer2(getMapper().map(dto.getPlayer2(), PlayerDTOViewModel.class));
 		

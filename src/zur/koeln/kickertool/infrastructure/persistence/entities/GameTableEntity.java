@@ -23,4 +23,7 @@ public class GameTableEntity {
 
     private GameTableStatus status;
 
+    public GameTableEntity() {
+        id = UUID.randomUUID();
+    }
 }

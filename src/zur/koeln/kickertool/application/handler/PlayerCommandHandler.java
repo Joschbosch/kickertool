@@ -1,17 +1,21 @@
 package zur.koeln.kickertool.application.handler;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import zur.koeln.kickertool.application.api.dtos.PlayerDTO;
-import zur.koeln.kickertool.application.api.dtos.PlayerStatisticsDTO;
-import zur.koeln.kickertool.application.api.dtos.base.*;
+import zur.koeln.kickertool.application.api.dtos.base.ListResponseDTO;
+import zur.koeln.kickertool.application.api.dtos.base.SingleResponseDTO;
+import zur.koeln.kickertool.application.api.dtos.base.StatusDTO;
+import zur.koeln.kickertool.application.api.dtos.base.StatusOnlyDTO;
 import zur.koeln.kickertool.application.handler.api.IPlayerCommandHandler;
 import zur.koeln.kickertool.core.api.IPlayerService;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
-import zur.koeln.kickertool.core.model.Player;
+import zur.koeln.kickertool.core.model.aggregates.Player;
 
 @Service
 public class PlayerCommandHandler
@@ -68,17 +72,11 @@ public class PlayerCommandHandler
         return response;
     }
     @Override
-    public MapResponseDTO<PlayerStatisticsDTO> getAllPlayerStatistics() {
-        Map<UUID, PlayerStatisticsDTO> result = new HashMap<>();
-
-        playerService.getAllPlayerStatistics().entrySet().forEach(entry ->
-        result.put(entry.getKey(), mapper.map(entry.getValue(), PlayerStatisticsDTO.class)));
-
-        MapResponseDTO<PlayerStatisticsDTO> response = new MapResponseDTO<>();
+    public SingleResponseDTO<PlayerDTO> pauseOrUnpausePlayer(UUID playerId, boolean pausing) {
+        Player player = playerService.pauseOrUnpausePlayer(playerId, pausing);
+        SingleResponseDTO response = new SingleResponseDTO<>();
         response.setDtoStatus(StatusDTO.SUCCESS);
-        response.setValidation(null);
-        response.setMapDTOValue(result);
-
+        response.setDtoValue(mapper.map(player, PlayerDTO.class));
         return response;
     }
 }

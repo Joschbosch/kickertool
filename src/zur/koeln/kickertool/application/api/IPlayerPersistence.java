@@ -3,7 +3,7 @@ package zur.koeln.kickertool.application.api;
 import java.util.List;
 import java.util.UUID;
 
-import zur.koeln.kickertool.core.model.Player;
+import zur.koeln.kickertool.core.model.aggregates.Player;
 
 public interface IPlayerPersistence {
 

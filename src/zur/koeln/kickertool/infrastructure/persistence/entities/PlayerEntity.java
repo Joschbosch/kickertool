@@ -1,5 +1,6 @@
 package zur.koeln.kickertool.infrastructure.persistence.entities;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.*;
@@ -24,8 +25,8 @@ public class PlayerEntity {
 
     private PlayerStatus status;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "STATS_ID")
-    private PlayerStatisticsEntity statistics;
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @JoinColumn(name = "TOURNAMENT_ID")
+    private List<TournamentEntity> playedTournaments;
 
 }

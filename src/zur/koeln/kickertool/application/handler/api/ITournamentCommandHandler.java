@@ -23,5 +23,4 @@ public interface ITournamentCommandHandler {
 
     SingleResponseDTO<TournamentDTO> startNextTournamentRound(UUID tournamentUUID);
 
-    SingleResponseDTO<PlayerDTO> pauseOrUnpausePlayer(UUID playerId, boolean pausing);
 }

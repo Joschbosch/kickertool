@@ -15,9 +15,9 @@ import zur.koeln.kickertool.application.api.dtos.base.StatusDTO;
 import zur.koeln.kickertool.application.handler.api.ITournamentCommandHandler;
 import zur.koeln.kickertool.core.api.ITournamentService;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
-import zur.koeln.kickertool.core.model.Player;
-import zur.koeln.kickertool.core.model.Settings;
-import zur.koeln.kickertool.core.model.Tournament;
+import zur.koeln.kickertool.core.model.aggregates.Player;
+import zur.koeln.kickertool.core.model.aggregates.Tournament;
+import zur.koeln.kickertool.core.model.entities.Settings;
 
 @Component
 public class TournamentCommandHandler
@@ -31,7 +31,8 @@ public class TournamentCommandHandler
 
     @Override
     public SingleResponseDTO<TournamentDTO> createNewTournament(String tournamentName, List<PlayerDTO> participants, SettingsDTO settings) {
-        Tournament newTournament = tournamentService.createAndStartNewTournament(tournamentName, mapper.map(participants, Player.class), mapper.map(settings, Settings.class));
+        Tournament newTournament = tournamentService.createNewTournament(tournamentName, mapper.map(participants, Player.class), mapper.map(settings, Settings.class));
+        newTournament = tournamentService.startTournament(newTournament.getUid());
         return createSuccessfullDTO(newTournament);
     }
 
@@ -59,7 +60,7 @@ public class TournamentCommandHandler
 
     @Override
     public ListResponseDTO<PlayerDTO> removeParticipantFromournament(UUID tournamentIDToRemove, UUID participant) {
-        List<Player> participants = tournamentService.removeParticipantFromournament(tournamentIDToRemove, participant);
+        List<Player> participants = tournamentService.removeParticipantFromTournament(tournamentIDToRemove, participant);
         return createSuccessfulListResponse(participants);
     }
     
@@ -69,14 +70,7 @@ public class TournamentCommandHandler
         return createSuccessfullDTO(tournament);
     }
 
-    @Override
-    public SingleResponseDTO<PlayerDTO> pauseOrUnpausePlayer(UUID playerId, boolean pausing) {
-        Player player = tournamentService.pauseOrUnpausePlayer(playerId, pausing);
-        SingleResponseDTO response = new SingleResponseDTO<>();
-        response.setDtoStatus(StatusDTO.SUCCESS);
-        response.setDtoValue(mapper.map(player, PlayerDTO.class));
-        return response;
-    }
+
     private SingleResponseDTO<TournamentDTO> createSuccessfullDTO(Tournament tournament){
         SingleResponseDTO returnDTO = new SingleResponseDTO<>();
         returnDTO.setDtoStatus(StatusDTO.SUCCESS);

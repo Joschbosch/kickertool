@@ -15,6 +15,7 @@ import zur.koeln.kickertool.core.kernl.TournamentMode;
 public class SettingsEntity {
 
     @Id
+    @GeneratedValue
     private UUID uid;
 
     private TournamentMode mode = TournamentMode.SWISS_TUPEL;
@@ -40,4 +41,6 @@ public class SettingsEntity {
     @OneToOne
     @JoinColumn(name = "TOURNAMENT_UID")
     private TournamentEntity tournament;
+
+
 }

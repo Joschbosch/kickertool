@@ -1,11 +1,9 @@
 package zur.koeln.kickertool.core.api;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import zur.koeln.kickertool.core.model.Player;
-import zur.koeln.kickertool.core.model.PlayerStatistics;
+import zur.koeln.kickertool.core.model.aggregates.Player;
 
 public interface IPlayerService {
     Player createNewPlayer(String firstName, String lastName);
@@ -16,10 +14,10 @@ public interface IPlayerService {
 
     List<Player> getAllPlayer();
 
-    Map<UUID, PlayerStatistics> getAllPlayerStatistics();
-
     Player getPlayerById(UUID participant);
 
-    Player getNextOrNewDummyPlayer();
+    Player getDummyPlayer();
+
+    Player pauseOrUnpausePlayer(UUID playerToPause, boolean pausing);
 
 }

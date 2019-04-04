@@ -1,18 +1,15 @@
-package zur.koeln.kickertool.core.model;
-
-import java.util.UUID;
+package zur.koeln.kickertool.core.model.entities;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import zur.koeln.kickertool.core.kernl.TournamentMode;
+import zur.koeln.kickertool.core.model.aggregates.Tournament;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class Settings {
-
-    private UUID uid;
 
     private TournamentMode mode = TournamentMode.SWISS_TUPEL;
 
@@ -36,8 +33,4 @@ public class Settings {
 
     private Tournament tournament;
 
-    public Settings(
-        UUID uuid) {
-        this.uid = uuid;
-    }
 }

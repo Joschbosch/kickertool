@@ -3,9 +3,7 @@ package zur.koeln.kickertool.application.handler.api;
 import java.util.UUID;
 
 import zur.koeln.kickertool.application.api.dtos.PlayerDTO;
-import zur.koeln.kickertool.application.api.dtos.PlayerStatisticsDTO;
 import zur.koeln.kickertool.application.api.dtos.base.ListResponseDTO;
-import zur.koeln.kickertool.application.api.dtos.base.MapResponseDTO;
 import zur.koeln.kickertool.application.api.dtos.base.SingleResponseDTO;
 import zur.koeln.kickertool.application.api.dtos.base.StatusOnlyDTO;
 
@@ -15,6 +13,6 @@ public interface IPlayerCommandHandler {
     StatusOnlyDTO deletePlayer(UUID id);
     SingleResponseDTO<PlayerDTO> updatePlayerName(UUID id, String newFirstName, String newLastName);
     ListResponseDTO<PlayerDTO> getAllPlayer();
-    MapResponseDTO<PlayerStatisticsDTO> getAllPlayerStatistics();
 
+    SingleResponseDTO<PlayerDTO> pauseOrUnpausePlayer(UUID playerId, boolean pausing);
 }

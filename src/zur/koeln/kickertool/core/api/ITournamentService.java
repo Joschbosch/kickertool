@@ -3,14 +3,14 @@ package zur.koeln.kickertool.core.api;
 import java.util.List;
 import java.util.UUID;
 
-import zur.koeln.kickertool.core.model.Match;
-import zur.koeln.kickertool.core.model.Player;
-import zur.koeln.kickertool.core.model.Settings;
-import zur.koeln.kickertool.core.model.Tournament;
+import zur.koeln.kickertool.core.model.aggregates.Player;
+import zur.koeln.kickertool.core.model.aggregates.Tournament;
+import zur.koeln.kickertool.core.model.entities.Match;
+import zur.koeln.kickertool.core.model.entities.Settings;
 
 public interface ITournamentService {
 
-    Tournament createAndStartNewTournament(String tournamentName, List<Player> list, Settings settings);
+    Tournament createNewTournament(String tournamentName, List<Player> list, Settings settings);
 
     Tournament startTournament(UUID tournamentIDToStart);
 
@@ -18,7 +18,7 @@ public interface ITournamentService {
 
     List<Player> addParticipantToTournament(UUID tournamentIDToAdd, UUID participant);
 
-    List<Player> removeParticipantFromournament(UUID tournamentIDToRemove, UUID participant);
+    List<Player> removeParticipantFromTournament(UUID tournamentIDToRemove, UUID participant);
 
     List<Player> getTournamentParticipants(UUID tournamentId);
 
@@ -30,17 +30,9 @@ public interface ITournamentService {
 
     Tournament getTournamentById(UUID tournamentUID);
 
-    List<Player> getTournamentStandingsForRound(Tournament tournament, int roundNo);
-
-
-    void addNewMatchToTournament(UUID uid, Match m);
-
-    Settings changeTournamentSettings(UUID uuid, Settings settings);
-
-    Player pauseOrUnpausePlayer(UUID playerToPause, boolean pausing);
-
     Settings getDefaultSettings();
 
     Settings getSettings(UUID tournamentUid);
+
 
 }

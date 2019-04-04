@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import zur.koeln.kickertool.application.api.ITournamentPersistence;
-import zur.koeln.kickertool.core.model.Tournament;
+import zur.koeln.kickertool.core.model.aggregates.Tournament;
 import zur.koeln.kickertool.infrastructure.persistence.entities.TournamentEntity;
 
 @Component

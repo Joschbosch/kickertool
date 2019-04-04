@@ -3,14 +3,14 @@ package zur.koeln.kickertool.core.logic.tests.stubs;
 import java.util.List;
 import java.util.UUID;
 
-import zur.koeln.kickertool.core.model.Player;
-import zur.koeln.kickertool.core.spi.IDummyPlayerRepository;
+import zur.koeln.kickertool.core.model.aggregates.Player;
 import zur.koeln.kickertool.core.spi.IPlayerRepository;
 
-public class PlayerAndDummyRepoStub implements IPlayerRepository, IDummyPlayerRepository{
+public class PlayerRepoStub
+    implements IPlayerRepository {
 
 	@Override
-	public Player createOrUpdatePlayer(Player player) {
+	public Player storeOrUpdatePlayer(Player player) {
 		return null;
 	}
 
@@ -30,18 +30,14 @@ public class PlayerAndDummyRepoStub implements IPlayerRepository, IDummyPlayerRe
 	}
 
 	@Override
-	public Player getDummyPlayer(UUID uid) {
-		return null;
-	}
-
-	@Override
-	public List<Player> getAllDummyPlayer() {
-		return null;
-	}
-
-	@Override
 	public Player getNewOrFreeDummyPlayer() {
 		return null;
 	}
+
+    @Override
+    public Player createNewPlayer(String firstName, String lastName) {
+        // TODO sazu 5.5 2019 Auto-generated method stub
+        return null;
+    }
 
 }

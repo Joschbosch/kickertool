@@ -1,18 +1,15 @@
 package zur.koeln.kickertool.core.logic;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.Setter;
 import zur.koeln.kickertool.core.api.IPlayerService;
-import zur.koeln.kickertool.core.model.Player;
-import zur.koeln.kickertool.core.model.PlayerStatistics;
-import zur.koeln.kickertool.core.spi.IDummyPlayerRepository;
+import zur.koeln.kickertool.core.kernl.PlayerStatus;
+import zur.koeln.kickertool.core.model.aggregates.Player;
 import zur.koeln.kickertool.core.spi.IPlayerRepository;
 
 @Service
@@ -22,24 +19,24 @@ public class PlayerService
 
 	@Autowired
     private IPlayerRepository playerRepo;
-	
-	@Autowired
-	private IDummyPlayerRepository dummyPlayerRepo;
-    
 
     public Player createNewPlayer(String firstName, String lastName) {
-        Player newPlayer = new Player(UUID.randomUUID(), firstName, lastName, false);
-        newPlayer.setStatistics(new PlayerStatistics(newPlayer));
-    	playerRepo.createOrUpdatePlayer(newPlayer);
-    	return newPlayer;
+
+        return playerRepo.createNewPlayer(firstName, lastName);
     }
     
     @Override
     public Player updatePlayerName(UUID id, String newFirstName, String newLastName) {
         Player player = playerRepo.getPlayer(id);
-        player.setFirstName(newFirstName);
-        player.setLastName(newLastName);
-        return playerRepo.createOrUpdatePlayer(player);
+        player.changeName(newFirstName, newLastName);
+        return playerRepo.storeOrUpdatePlayer(player);
+    }
+
+    @Override
+    public Player pauseOrUnpausePlayer(UUID playerToPause, boolean pausing) {
+        Player p = playerRepo.getPlayer(playerToPause);
+        p.setStatus(pausing ? PlayerStatus.PAUSING_TOURNAMENT : PlayerStatus.IN_TOURNAMENT);
+        return p;
     }
 
     @Override
@@ -50,22 +47,15 @@ public class PlayerService
     public List<Player> getAllPlayer() {
         return playerRepo.getAllPlayer();
     }
-    @Override
-    public Map<UUID, PlayerStatistics> getAllPlayerStatistics() {
-        return playerRepo.getAllPlayer().stream().collect(Collectors.toMap(Player::getUid, Player::getStatistics));
-    }
 
     @Override
     public Player getPlayerById(UUID playerId) {
-        Player returningPlayer = playerRepo.getPlayer(playerId);
-        if (returningPlayer == null) {
-            dummyPlayerRepo.getDummyPlayer(playerId);
-        }
-        return returningPlayer;
+        return playerRepo.getPlayer(playerId);
     }
 
     @Override
-    public Player getNextOrNewDummyPlayer() {
-        return dummyPlayerRepo.getNewOrFreeDummyPlayer();
+    public Player getDummyPlayer() {
+        return playerRepo.getNewOrFreeDummyPlayer();
     }
+
 }

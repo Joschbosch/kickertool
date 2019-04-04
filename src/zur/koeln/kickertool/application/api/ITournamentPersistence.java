@@ -2,7 +2,7 @@ package zur.koeln.kickertool.application.api;
 
 import java.util.UUID;
 
-import zur.koeln.kickertool.core.model.Tournament;
+import zur.koeln.kickertool.core.model.aggregates.Tournament;
 
 public interface ITournamentPersistence {
 
