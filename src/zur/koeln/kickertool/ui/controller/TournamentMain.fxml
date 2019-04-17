@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
 <StackPane fx:id="rootStackPane" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zur.koeln.kickertool.ui.controller.TournamentMainController">
    <children>
@@ -32,12 +33,16 @@
             <Label alignment="CENTER" text="Statistiken" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="4">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                <TableColumn maxWidth="50.0" prefWidth="50.0" resizable="false" text="Rang" />
+                <TableColumn prefWidth="75.0" text="Name" />
+                  <TableColumn prefWidth="75.0" text="Punkte" />
               </columns>
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
                <children>
@@ -65,10 +70,13 @@
                   <JFXButton fx:id="btnNewRound" onAction="#onNewRoundClicked" text="Neue Runde" />
                </children>
             </HBox>
-            <ScrollPane fx:id="pnlMatches" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" GridPane.rowSpan="2">
+            <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" GridPane.rowSpan="2">
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
+               <content>
+                  <VBox fx:id="vboxMatches" />
+               </content>
             </ScrollPane>
          </children>
       </GridPane>

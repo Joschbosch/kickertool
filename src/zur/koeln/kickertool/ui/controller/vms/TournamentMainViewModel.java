@@ -43,5 +43,4 @@ public class TournamentMainViewModel extends FXViewModel{
 		return new ModelValidationResult();
 	}
 	
-	
 }

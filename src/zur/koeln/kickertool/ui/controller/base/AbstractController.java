@@ -168,11 +168,13 @@ public class AbstractController<PAYLOAD> implements Controller<PAYLOAD> {
 	
 	protected void showError(Throwable exception) {
 		
+		exception.printStackTrace();
+		
 		JFXDialogLayout dialogContent = new JFXDialogLayout();
 		
 		Label headerText = new Label("Ein Fehler ist aufgetreten!");
 		headerText.setStyle("-fx-text-fill: red;");
-		
+			
 		dialogContent.setHeading(headerText);
 		dialogContent.setBody(new Text(exception.getMessage()));
 

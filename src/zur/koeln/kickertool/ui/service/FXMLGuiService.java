@@ -19,6 +19,7 @@ import zur.koeln.kickertool.ui.controller.base.DialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.base.DialogConfirmationResponse;
 import zur.koeln.kickertool.ui.controller.base.impl.IDialogConfirmationCloseEvent;
 import zur.koeln.kickertool.ui.shared.DialogContentDefinition;
+import zur.koeln.kickertool.ui.shared.ListContentDefinition;
 import zur.koeln.kickertool.ui.shared.SceneDefinition;
 
 @SuppressWarnings("nls")
@@ -124,6 +125,25 @@ public class FXMLGuiService {
 		new Thread(initTask).start();
 
 	}
+	
+	public FXMLLoader getLoadedFXMLLoader(ListContentDefinition listContent, Object payLoad) {
+
+		FXMLLoader loader = new FXMLLoader(listContent.getFxmlControllerClass().getResource(listContent.getFxmlFile()));
+		loader.setControllerFactory(getCtx()::getBean);
+		
+		try {
+			loader.load();
+			Controller controller = loader.getController();
+			controller.setPayload(payLoad);
+		} catch (IOException e) {
+			// Should not be thrown
+			throw new IllegalStateException(e);
+		}
+		
+		return loader;
+
+	}
+
 
 	public FXMLLoader getFXMLSceneLoader(SceneDefinition scene) {
 

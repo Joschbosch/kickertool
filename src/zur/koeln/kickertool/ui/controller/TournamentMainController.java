@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.jfoenix.controls.JFXButton;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ScrollPane;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,9 +14,13 @@ import lombok.Setter;
 import zur.koeln.kickertool.application.handler.dtos.TournamentDTO;
 import zur.koeln.kickertool.ui.controller.base.AbstractController;
 import zur.koeln.kickertool.ui.controller.base.BackgroundTask;
+import zur.koeln.kickertool.ui.controller.shared.vms.MatchDTOViewModel;
 import zur.koeln.kickertool.ui.controller.shared.vms.TournamentDTOViewModel;
 import zur.koeln.kickertool.ui.controller.vms.TournamentMainViewModel;
+import zur.koeln.kickertool.ui.service.FXMLGuiService;
 import zur.koeln.kickertool.ui.shared.IconDefinition;
+import zur.koeln.kickertool.ui.shared.ListContentDefinition;
+import javafx.scene.layout.VBox;
 
 @Component
 @Getter(value = AccessLevel.PRIVATE)
@@ -34,8 +39,7 @@ public class TournamentMainController extends AbstractController<TournamentDTO> 
 	@FXML
 	JFXButton btnNewRound;
 
-	@FXML
-	ScrollPane pnlMatches;
+	@FXML VBox vboxMatches;
 
 	@Override
 	public void setupControls() {
@@ -66,6 +70,7 @@ public class TournamentMainController extends AbstractController<TournamentDTO> 
 			@Override
 			public void doOnSuccess(TournamentDTOViewModel result) {
 				setTournamentDtoViewModel(result);
+				fillMatchesList();
 			}
 
 			@Override
@@ -75,4 +80,14 @@ public class TournamentMainController extends AbstractController<TournamentDTO> 
 		};
 	}
 	
+	private void fillMatchesList() {
+		
+		getVboxMatches().getChildren().clear();
+		
+		for (MatchDTOViewModel matchDTOViewModel : getTournamentDtoViewModel().getMatches()) {
+			FXMLLoader loadedFXMLLoader = FXMLGuiService.getInstance().getLoadedFXMLLoader(ListContentDefinition.MATCH, matchDTOViewModel);
+			getVboxMatches().getChildren().add(loadedFXMLLoader.getRoot());
+		}
+		
+	}
 }
