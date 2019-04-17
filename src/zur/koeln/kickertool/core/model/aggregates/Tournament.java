@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.javatuples.Pair;
 
@@ -217,11 +218,39 @@ public class Tournament {
         return standings.remove(random);
     }
 
-    public long getScoreForPlayerInRound(Player player, int roundForScoring) {
-        List<Match> matchesWithPlayerUntilGivenRound = getMatchesWithPlayer(player).stream().filter(m -> m.getRoundNumber() <= roundForScoring).collect(Collectors.toList());
+    private Stream<Match> getFinishedMatchesForPlayerUntilRound(Player player, int round) {
+        return getMatchesWithPlayer(player).stream().filter(m -> m.getRoundNumber() <= round && m.getStatus() == MatchStatus.FINISHED);
+    }
+
+    public long getScoreForPlayerInRound(Player player, int round) {
+        List<Match> matchesWithPlayerUntilGivenRound = getFinishedMatchesForPlayerUntilRound(player, round).collect(Collectors.toList());
         long wonMatches = matchesWithPlayerUntilGivenRound.stream().filter(m -> m.hasPlayerWon(player)).count();
         long drawMatches = matchesWithPlayerUntilGivenRound.stream().filter(Match::isDraw).count();
-        return wonMatches * settings.getPointsForWinner() + drawMatches + settings.getPointsForDraw();
+        return wonMatches * settings.getPointsForWinner() + drawMatches * settings.getPointsForDraw();
+    }
+
+    public long getMatchesWonForPlayerInRound(Player player, int round) {
+        List<Match> matchesWithPlayerUntilGivenRound = getFinishedMatchesForPlayerUntilRound(player, round).collect(Collectors.toList());
+        return matchesWithPlayerUntilGivenRound.stream().filter(m -> m.hasPlayerWon(player)).count();
+    }
+
+    public long getMatchesDrawForPlayerInRound(Player player, int round) {
+        List<Match> matchesWithPlayerUntilGivenRound = getFinishedMatchesForPlayerUntilRound(player, round).collect(Collectors.toList());
+        return matchesWithPlayerUntilGivenRound.stream().filter(Match::isDraw).count();
+    }
+
+    public long getNoOfFinishedMatchesForPlayerInRound(Player player, int round) {
+        List<Match> matchesWithPlayerUntilGivenRound = getFinishedMatchesForPlayerUntilRound(player, round).collect(Collectors.toList());
+        return matchesWithPlayerUntilGivenRound.size();
+    }
+
+    public long getGoalsForPlayerInRound(Player player, int round) {
+        List<Match> matchesWithPlayerUntilGivenRound = getFinishedMatchesForPlayerUntilRound(player, round).collect(Collectors.toList());
+        return matchesWithPlayerUntilGivenRound.stream().collect(Collectors.summarizingInt(m -> m.getGoalsForPlayer(player))).getSum();
+    }
+    public long getConcededGoalsForPlayerInRound(Player player, int round) {
+        List<Match> matchesWithPlayerUntilGivenRound = getFinishedMatchesForPlayerUntilRound(player, round).collect(Collectors.toList());
+        return matchesWithPlayerUntilGivenRound.stream().collect(Collectors.summarizingInt(m -> m.getGoalsAgainstPlayer(player))).getSum();
     }
 
     public int getActivePlayerCount() {
@@ -236,5 +265,17 @@ public class Tournament {
     public void addDummyPlayer(Player dummyPlayer) {
         getDummyPlayer().add(dummyPlayer);
         dummyPlayer.setStatus(PlayerStatus.IN_TOURNAMENT);
+    }
+
+    public void addMatchResult(UUID matchID, int scoreHome, int scoreVisiting) {
+        if (scoreHome <= getSettings().getGoalsToWin() && scoreVisiting <= getSettings().getGoalsToWin()) {
+            for (Match m : getMatches()) {
+                if (m.getMatchID().equals(matchID)) {
+                    m.setScoreHome(scoreHome);
+                    m.setScoreVisiting(scoreVisiting);
+                    m.setStatus(MatchStatus.FINISHED);
+                }
+            }
+        }
     }
 }

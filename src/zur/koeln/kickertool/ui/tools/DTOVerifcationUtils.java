@@ -1,7 +1,7 @@
 package zur.koeln.kickertool.ui.tools;
 
-import zur.koeln.kickertool.application.api.dtos.base.DTO;
-import zur.koeln.kickertool.application.api.dtos.base.StatusDTO;
+import zur.koeln.kickertool.application.handler.dtos.base.DTO;
+import zur.koeln.kickertool.application.handler.dtos.base.StatusDTO;
 import zur.koeln.kickertool.ui.exceptions.BackgroundTaskException;
 
 public class DTOVerifcationUtils {

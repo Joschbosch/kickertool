@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.application.api.dtos;
+package zur.koeln.kickertool.application.handler.dtos;
 
 import java.util.List;
 import java.util.UUID;

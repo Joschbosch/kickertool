@@ -1,5 +1,7 @@
 package zur.koeln.kickertool.core.logic;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import zur.koeln.kickertool.core.api.IPlayerService;
 import zur.koeln.kickertool.core.api.ITournamentService;
+import zur.koeln.kickertool.core.kernl.PlayerRankingComparator;
 import zur.koeln.kickertool.core.model.aggregates.Player;
 import zur.koeln.kickertool.core.model.aggregates.Tournament;
 import zur.koeln.kickertool.core.model.entities.Match;
@@ -116,6 +119,40 @@ public class TournamentService
         }
     }
 
+    public List<PlayerRankingRow> getRankingByRound(UUID tournamentUID, int round) {
+        Tournament tournament = tournamentRepo.getTournament(tournamentUID);
+        List<Player> allParticipants = tournament.getAllParticipants();
+        Collections.sort(allParticipants, new PlayerRankingComparator(tournament, round));
+
+        List<PlayerRankingRow> ranking = new ArrayList<>();
+        for (int i = 0; i < allParticipants.size(); i++) {
+            PlayerRankingRow newRow = new PlayerRankingRow();
+            Player player = allParticipants.get(i);
+            newRow.setPlayer(player);
+            newRow.setRank(i + 1);
+            newRow.setScore((int) tournament.getScoreForPlayerInRound(player, round));
+
+            newRow.setMatchesPlayed((int) tournament.getNoOfFinishedMatchesForPlayerInRound(player, round));
+            newRow.setMatchesWon((int) tournament.getMatchesWonForPlayerInRound(player, round));
+            newRow.setMatchesDraw((int) tournament.getMatchesDrawForPlayerInRound(player, round));
+            newRow.setMatchesLost(newRow.getMatchesPlayed() - newRow.getMatchesWon() - newRow.getMatchesDraw());
+
+            newRow.setGoals((int) tournament.getGoalsForPlayerInRound(player, round));
+            newRow.setConcededGoals((int) tournament.getConcededGoalsForPlayerInRound(player, round));
+            newRow.setGoaldiff(newRow.getGoals() - newRow.getConcededGoals());
+
+            ranking.add(newRow);
+
+        }
+        return ranking;
+    }
+
+    @Override
+    public void enterOrChangeMatchResult(UUID tournamentId, UUID matchID, int scoreHome, int scoreVisiting) {
+        Tournament tournament = tournamentRepo.getTournament(tournamentId);
+        tournament.addMatchResult(matchID, scoreHome, scoreVisiting);
+        tournamentRepo.saveOrUpdateTournament(tournament);
+    }
     @Override
     public Tournament getTournamentById(UUID tournamentUID) {
         return tournamentRepo.getTournament(tournamentUID);

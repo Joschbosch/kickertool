@@ -10,7 +10,7 @@ import javafx.scene.control.ScrollPane;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import zur.koeln.kickertool.application.api.dtos.TournamentDTO;
+import zur.koeln.kickertool.application.handler.dtos.TournamentDTO;
 import zur.koeln.kickertool.ui.controller.base.AbstractController;
 import zur.koeln.kickertool.ui.controller.base.BackgroundTask;
 import zur.koeln.kickertool.ui.controller.shared.vms.TournamentDTOViewModel;

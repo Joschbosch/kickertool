@@ -3,6 +3,7 @@ package zur.koeln.kickertool.core.api;
 import java.util.List;
 import java.util.UUID;
 
+import zur.koeln.kickertool.core.logic.PlayerRankingRow;
 import zur.koeln.kickertool.core.model.aggregates.Player;
 import zur.koeln.kickertool.core.model.aggregates.Tournament;
 import zur.koeln.kickertool.core.model.entities.Match;
@@ -34,5 +35,8 @@ public interface ITournamentService {
 
     Settings getSettings(UUID tournamentUid);
 
+    List<PlayerRankingRow> getRankingByRound(UUID tournamentUID, int round);
+
+    void enterOrChangeMatchResult(UUID tournamentId, UUID matchID, int scoreHome, int scoreVisiting);
 
 }

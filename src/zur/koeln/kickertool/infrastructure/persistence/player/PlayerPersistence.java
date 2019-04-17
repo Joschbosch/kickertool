@@ -9,7 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import zur.koeln.kickertool.application.api.IPlayerPersistence;
+import zur.koeln.kickertool.application.repositories.persistence.IPlayerPersistence;
 import zur.koeln.kickertool.core.model.aggregates.Player;
 import zur.koeln.kickertool.infrastructure.persistence.entities.PlayerEntity;
 

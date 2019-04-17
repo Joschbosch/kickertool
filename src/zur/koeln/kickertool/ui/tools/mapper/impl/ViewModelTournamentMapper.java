@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.application.api.dtos.TournamentDTO;
+import zur.koeln.kickertool.application.handler.dtos.TournamentDTO;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
 import zur.koeln.kickertool.ui.controller.dialogs.vms.TournamentSettingsViewModel;
 import zur.koeln.kickertool.ui.controller.shared.vms.GameTableDTOViewModel;

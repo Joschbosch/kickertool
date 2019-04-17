@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package zur.koeln.kickertool.core.model.entities;
 
@@ -19,7 +19,7 @@ import zur.koeln.kickertool.core.model.valueobjects.Team;
 public class Match {
 
     private UUID matchID;
-	
+
 	private Tournament tournament;
 
 	private Team homeTeam;
@@ -27,13 +27,13 @@ public class Match {
 	private Team visitingTeam;
 
 	private GameTable table;
-	
+
 	private int roundNumber;
-	
+
 	private int scoreHome;
 
 	private int scoreVisiting;
-	
+
 	private MatchStatus status;
 
 
@@ -55,8 +55,30 @@ public class Match {
         return false;
     }
 
+    public int getGoalsForPlayer(Player player) {
+        if (homeTeam.hasPlayer(player)) {
+            return scoreHome;
+        }
+        if (visitingTeam.hasPlayer(player)) {
+            return scoreVisiting;
+        }
+        return 0;
+    }
+
+    public int getGoalsAgainstPlayer(Player player) {
+        if (homeTeam.hasPlayer(player)) {
+            return scoreVisiting;
+        }
+        if (visitingTeam.hasPlayer(player)) {
+            return scoreHome;
+        }
+        return 0;
+    }
     public boolean isDraw() {
         return status == MatchStatus.FINISHED && scoreHome == scoreVisiting;
     }
+
+
+
 
 }

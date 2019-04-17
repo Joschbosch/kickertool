@@ -7,12 +7,12 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import zur.koeln.kickertool.application.api.dtos.PlayerDTO;
-import zur.koeln.kickertool.application.api.dtos.base.ListResponseDTO;
-import zur.koeln.kickertool.application.api.dtos.base.SingleResponseDTO;
-import zur.koeln.kickertool.application.api.dtos.base.StatusDTO;
-import zur.koeln.kickertool.application.api.dtos.base.StatusOnlyDTO;
 import zur.koeln.kickertool.application.handler.api.IPlayerCommandHandler;
+import zur.koeln.kickertool.application.handler.dtos.PlayerDTO;
+import zur.koeln.kickertool.application.handler.dtos.base.ListResponseDTO;
+import zur.koeln.kickertool.application.handler.dtos.base.SingleResponseDTO;
+import zur.koeln.kickertool.application.handler.dtos.base.StatusDTO;
+import zur.koeln.kickertool.application.handler.dtos.base.StatusOnlyDTO;
 import zur.koeln.kickertool.core.api.IPlayerService;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
 import zur.koeln.kickertool.core.model.aggregates.Player;

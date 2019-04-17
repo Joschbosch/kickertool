@@ -6,6 +6,7 @@ import java.util.UUID;
 import zur.koeln.kickertool.core.model.aggregates.Player;
 
 public interface IPlayerService {
+
     Player createNewPlayer(String firstName, String lastName);
 
     Player updatePlayerName(UUID id, String newFirstName, String newLastName);

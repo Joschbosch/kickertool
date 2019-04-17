@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import zur.koeln.kickertool.application.api.IPlayerPersistence;
+import zur.koeln.kickertool.application.repositories.persistence.IPlayerPersistence;
 import zur.koeln.kickertool.core.kernl.PlayerStatus;
 import zur.koeln.kickertool.core.model.aggregates.Player;
 import zur.koeln.kickertool.core.spi.IPlayerRepository;

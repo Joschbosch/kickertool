@@ -43,22 +43,22 @@ public class PlayerRankingComparator
             return -Long.compare(tournament.getScoreForPlayerInRound(player1, roundForScoring), tournament.getScoreForPlayerInRound(player2, roundForScoring));
         }
 
-        long p1GoalDiff = tournament.getScoreForPlayerInRound(player1, roundForScoring);
-        long p2GoalDiff = tournament.getScoreForPlayerInRound(player2, roundForScoring);
+        long p1GoalDiff = tournament.getGoalsForPlayerInRound(player1, roundForScoring);
+        long p2GoalDiff = tournament.getGoalsForPlayerInRound(player2, roundForScoring);
         long goalDiff = p1GoalDiff - p2GoalDiff;
         if (goalDiff != 0) {
             return -Long.compare(p1GoalDiff, p2GoalDiff);
         }
 
-        long p1MatchesWon = tournament.getScoreForPlayerInRound(player1, roundForScoring);
-        long p2MatchesWon = tournament.getScoreForPlayerInRound(player2, roundForScoring);
+        long p1MatchesWon = tournament.getMatchesWonForPlayerInRound(player1, roundForScoring);
+        long p2MatchesWon = tournament.getMatchesWonForPlayerInRound(player2, roundForScoring);
         long wonDiff = p1MatchesWon - p2MatchesWon;
         if (wonDiff != 0) {
             return -Long.compare(p1MatchesWon, p2MatchesWon);
         }
 
-        long p1MatchesDraw = tournament.getScoreForPlayerInRound(player1, roundForScoring);
-        long p2MatchesDraw = tournament.getScoreForPlayerInRound(player2, roundForScoring);
+        long p1MatchesDraw = tournament.getMatchesDrawForPlayerInRound(player1, roundForScoring);
+        long p2MatchesDraw = tournament.getMatchesDrawForPlayerInRound(player2, roundForScoring);
         long drawDiff = p1MatchesDraw - p2MatchesDraw;
         if (drawDiff != 0) {
             return -Long.compare(p1MatchesDraw, p2MatchesDraw);

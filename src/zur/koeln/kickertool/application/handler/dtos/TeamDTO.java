@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.application.api.dtos;
+package zur.koeln.kickertool.application.handler.dtos;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

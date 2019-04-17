@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.application.api.dtos.TeamDTO;
+import zur.koeln.kickertool.application.handler.dtos.TeamDTO;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
 import zur.koeln.kickertool.ui.controller.shared.vms.PlayerDTOViewModel;
 import zur.koeln.kickertool.ui.controller.shared.vms.TeamDTOViewModel;

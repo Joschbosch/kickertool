@@ -5,6 +5,9 @@ import java.util.UUID;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.core.kernl.TournamentStatus;
@@ -26,11 +29,13 @@ public class TournamentEntity {
     @JoinColumn(name = "SETTINGS_UID")
     private SettingsEntity settings;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "PARTICIPANTS_UID")
     private List<PlayerEntity> participants;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "MATCH_ID")
     private List<MatchEntity> matches;
 

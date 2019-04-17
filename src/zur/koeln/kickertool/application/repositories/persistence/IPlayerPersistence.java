@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.application.api;
+package zur.koeln.kickertool.application.repositories.persistence;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.application.api.dtos.base;
+package zur.koeln.kickertool.application.handler.dtos.base;
 
 
 public enum StatusDTO {

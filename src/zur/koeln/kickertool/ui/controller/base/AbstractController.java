@@ -20,7 +20,7 @@ import javafx.scene.text.Text;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import zur.koeln.kickertool.application.api.dtos.base.DTO;
+import zur.koeln.kickertool.application.handler.dtos.base.DTO;
 import zur.koeln.kickertool.ui.controller.base.impl.IDialogConfirmationCloseEvent;
 import zur.koeln.kickertool.ui.controller.base.vm.ILabel;
 import zur.koeln.kickertool.ui.controller.base.vm.ModelValidationResult;
@@ -111,7 +111,7 @@ public class AbstractController<PAYLOAD> implements Controller<PAYLOAD> {
 				ModelValidationResult validate = fxmlDialogContent.validate();
 				
 				if (validate.hasValidationMessages()) {
-					showModelValidationError("Unvollständige Eingaben", validate);
+					showModelValidationError("Unvollstï¿½ndige Eingaben", validate);
 				} else {
 					dialog.close();
 					dialogClosedCallback.doAfterDialogClosed(fxmlDialogContent.sendResult());
