@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.core.logic;
+package zur.koeln.kickertool.core.kernl;
 
 import lombok.Getter;
 import lombok.Setter;

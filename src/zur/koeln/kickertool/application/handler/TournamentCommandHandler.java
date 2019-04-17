@@ -12,13 +12,10 @@ import zur.koeln.kickertool.application.handler.dtos.PlayerDTO;
 import zur.koeln.kickertool.application.handler.dtos.PlayerRankingRowDTO;
 import zur.koeln.kickertool.application.handler.dtos.SettingsDTO;
 import zur.koeln.kickertool.application.handler.dtos.TournamentDTO;
-import zur.koeln.kickertool.application.handler.dtos.base.ListResponseDTO;
-import zur.koeln.kickertool.application.handler.dtos.base.SingleResponseDTO;
-import zur.koeln.kickertool.application.handler.dtos.base.StatusDTO;
-import zur.koeln.kickertool.application.handler.dtos.base.StatusOnlyDTO;
+import zur.koeln.kickertool.application.handler.dtos.base.*;
 import zur.koeln.kickertool.core.api.ITournamentService;
+import zur.koeln.kickertool.core.kernl.PlayerRankingRow;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
-import zur.koeln.kickertool.core.logic.PlayerRankingRow;
 import zur.koeln.kickertool.core.model.aggregates.Player;
 import zur.koeln.kickertool.core.model.aggregates.Tournament;
 import zur.koeln.kickertool.core.model.entities.Settings;
@@ -81,6 +78,15 @@ public class TournamentCommandHandler
     @Override
     public SingleResponseDTO<TournamentDTO> startNextTournamentRound(UUID tournamentUUID) {
         Tournament tournament = tournamentService.startNewRound(tournamentUUID);
+        if (tournament == null) {
+            SingleResponseDTO<TournamentDTO> failedDTO = new SingleResponseDTO<>();
+            failedDTO.setDtoValue(null);
+            failedDTO.setDtoStatus(StatusDTO.VALIDATION_ERROR);
+            ValidationDTO validation = new ValidationDTO();
+            validation.addErrorMsg("Die aktuelle Runde ist noch nicht abgeschlossen.");
+            failedDTO.setValidation(validation);
+            return failedDTO;
+        }
         return createSuccessfullDTO(tournament);
     }
 

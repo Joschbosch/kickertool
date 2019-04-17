@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import zur.koeln.kickertool.core.api.IPlayerService;
 import zur.koeln.kickertool.core.api.ITournamentService;
 import zur.koeln.kickertool.core.kernl.PlayerRankingComparator;
+import zur.koeln.kickertool.core.kernl.PlayerRankingRow;
 import zur.koeln.kickertool.core.model.aggregates.Player;
 import zur.koeln.kickertool.core.model.aggregates.Tournament;
 import zur.koeln.kickertool.core.model.entities.Match;
