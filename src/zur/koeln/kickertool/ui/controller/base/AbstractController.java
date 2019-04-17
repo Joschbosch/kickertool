@@ -105,10 +105,10 @@ public class AbstractController<PAYLOAD> implements Controller<PAYLOAD> {
 			btnOK.setPrefWidth(100.0);
 			btnOK.setOnAction(event -> {
 
-				ModelValidationResult validate = fxmlDialogContent.validate();
+				ModelValidationResult validate = fxmlDialogContent.validateBeforeClose();
 				
 				if (validate.hasValidationMessages()) {
-					showModelValidationError("Unvollstï¿½ndige Eingaben", validate);
+					showModelValidationError("Unvollständige Eingaben", validate);
 				} else {
 					dialog.close();
 					dialogClosedCallback.doAfterDialogClosed(fxmlDialogContent.sendResult());

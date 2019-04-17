@@ -13,7 +13,7 @@ public interface DialogContent<InitialContent, Result> {
 	
 	/**
 	 * Specifies the result, the user gets back, when closing the dialog with ok. <br/>
-	 * Before sending the result, you might want to validate ({@link #validate()}) the result content.
+	 * Before sending the result, you might want to validate ({@link #validateBeforeClose()}) the result content.
 	 */
 	default Result sendResult() {
 		return null;
@@ -23,7 +23,7 @@ public interface DialogContent<InitialContent, Result> {
 	 * The validation takes place, before the user closes the dialog with ok. If the validation fails,
 	 * the dialog remains open and the user can correct his entries.
 	 */
-	default ModelValidationResult validate() {
+	default ModelValidationResult validateBeforeClose() {
 		return ModelValidationResult.empty();
 	}
 	

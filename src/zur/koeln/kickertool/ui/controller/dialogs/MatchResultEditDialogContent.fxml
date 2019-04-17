@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+
+<GridPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="zur.koeln.kickertool.ui.controller.dialogs.MatchResultEditDialogController">
+   <columnConstraints>
+      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+   </rowConstraints>
+   <children>
+      <Label text="Team 1" />
+      <Label text="Team 2" GridPane.rowIndex="1" />
+      <JFXTextField fx:id="txtResultTeam1" promptText="0" GridPane.columnIndex="1" />
+      <JFXTextField fx:id="txtResultTeam2" promptText="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+   </children>
+</GridPane>

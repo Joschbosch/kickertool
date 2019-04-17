@@ -1,6 +1,7 @@
 package zur.koeln.kickertool.ui.shared;
 
 import lombok.Getter;
+import zur.koeln.kickertool.ui.controller.dialogs.MatchResultEditDialogController;
 import zur.koeln.kickertool.ui.controller.dialogs.PlayerManagementDialogController;
 import zur.koeln.kickertool.ui.controller.dialogs.PlayerNameEditDialogController;
 import zur.koeln.kickertool.ui.controller.dialogs.TournamentConfigurationDialogController;
@@ -13,7 +14,8 @@ public enum DialogContentDefinition {
 	PLAYER_MANAGEMENT_DIALOG(PlayerManagementDialogController.class, "PlayerManagementDialogContent.fxml", "Spielerverwaltung"),
 	PLAYER_NAME_DIALOG(PlayerNameEditDialogController.class, "PlayerNameDialogContent.fxml", "Spielername", 250.0),
 	TOURNAMENT_CONFIGURATION_DIALOG(TournamentConfigurationDialogController.class, "TournamentConfigurationDialogContent.fxml", "Neues Turnier"),
-	TOURNAMENT_SETTINGS_DIALOG(TournamentSettingsDialogController.class, "TournamentSettingsDialogContent.fxml", "Einstellungen", 550.0);
+	TOURNAMENT_SETTINGS_DIALOG(TournamentSettingsDialogController.class, "TournamentSettingsDialogContent.fxml", "Einstellungen", 550.0),
+	MATCH_RESULT_DIALOG(MatchResultEditDialogController.class, "MatchResultEditDialogContent.fxml", "Ergebnis");
 	
 	private Class fxmlControllerClass;
 	private String fxmlFile;

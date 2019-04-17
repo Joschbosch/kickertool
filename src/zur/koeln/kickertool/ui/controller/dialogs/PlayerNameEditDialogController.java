@@ -47,7 +47,7 @@ public class PlayerNameEditDialogController extends AbstractController implement
 	}
 	
 	@Override
-	public ModelValidationResult validate() {
+	public ModelValidationResult validateBeforeClose() {
 		
 		return getVm().validate();
 	}

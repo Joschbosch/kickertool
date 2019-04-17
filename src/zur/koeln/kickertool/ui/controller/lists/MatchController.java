@@ -10,7 +10,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.ui.controller.base.AbstractController;
+import zur.koeln.kickertool.ui.controller.base.DialogCloseEvent;
+import zur.koeln.kickertool.ui.controller.dialogs.vms.MatchResultViewModel;
 import zur.koeln.kickertool.ui.controller.shared.vms.MatchDTOViewModel;
+import zur.koeln.kickertool.ui.shared.DialogContentDefinition;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
@@ -29,14 +32,24 @@ public class MatchController extends AbstractController<MatchDTOViewModel>{
 	
 	@FXML public void onEnterScoreClicked() {
 		
+		openDialog(DialogContentDefinition.MATCH_RESULT_DIALOG, getVm(), new DialogCloseEvent<MatchResultViewModel>() {
+
+			@Override
+			public void doAfterDialogClosed(MatchResultViewModel result) {
+				
+				getVm().setScoreHome(result.getScoreHomeTeam());
+				getVm().setScoreVisiting(result.getScoreVisitingTeam());
+				
+			}
+		});
 	}
 	
 	@Override
 	public void doAfterInitializationCompleted(MatchDTOViewModel payload) {
 
 		setVm(payload);
-		
 		setLabelTexts();
+		
 	}
 
 	private void setLabelTexts() {

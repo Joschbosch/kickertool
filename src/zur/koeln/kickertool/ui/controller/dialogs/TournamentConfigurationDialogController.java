@@ -187,7 +187,7 @@ public class TournamentConfigurationDialogController extends AbstractController 
 	}
 
 	@Override
-	public ModelValidationResult validate() {
+	public ModelValidationResult validateBeforeClose() {
 		return getVm().validate();
 	}
 

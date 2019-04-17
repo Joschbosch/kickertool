@@ -63,7 +63,7 @@ public class TournamentSettingsDialogController extends AbstractController imple
 	}
 	
 	@Override
-	public ModelValidationResult validate() {
+	public ModelValidationResult validateBeforeClose() {
 		return initialSettingsViewModel.validate();
 	}
 	
