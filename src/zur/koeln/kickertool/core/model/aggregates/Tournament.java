@@ -104,6 +104,9 @@ public class Tournament {
 
 
 
+    private List<Match> getPlannedMatchesInTournament() {
+        return getMatchesInCurrentRound().stream().filter(m -> m.getStatus() == MatchStatus.PLANNED).collect(Collectors.toList());
+    }
 
     private List<Match> getOngoingMatchesInTournament() {
         return getMatchesInCurrentRound().stream().filter(m -> m.getStatus() == MatchStatus.ONGOING).collect(Collectors.toList());
@@ -115,7 +118,7 @@ public class Tournament {
     }
 
     public void updateGameTableUsage() {
-        for (Match ongoing : getOngoingMatchesInTournament()) {
+        for (Match ongoing : getPlannedMatchesInTournament()) {
             for (GameTable gameTable : getPlaytables()) {
                 if (gameTable.getStatus() == GameTableStatus.ACTIVE) {
                     ongoing.setTable(gameTable);

@@ -3,7 +3,7 @@ package zur.koeln.kickertool.core.api;
 import java.util.List;
 import java.util.UUID;
 
-import zur.koeln.kickertool.core.logic.PlayerRankingRow;
+import zur.koeln.kickertool.core.kernl.PlayerRankingRow;
 import zur.koeln.kickertool.core.model.aggregates.Player;
 import zur.koeln.kickertool.core.model.aggregates.Tournament;
 import zur.koeln.kickertool.core.model.entities.Match;
