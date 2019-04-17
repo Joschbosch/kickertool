@@ -37,9 +37,6 @@ public class AbstractController<PAYLOAD> implements Controller<PAYLOAD> {
 	@FXML 
 	StackPane rootStackPane;
 	
-	@Getter(value=AccessLevel.PROTECTED)
-	private PAYLOAD payload;
-
 	@FXML
 	@Override
 	public void initialize() {
@@ -133,7 +130,7 @@ public class AbstractController<PAYLOAD> implements Controller<PAYLOAD> {
 			
 			dialog.show();
 			
-			FXMLGuiService.getInstance().startAfterInitializationTask(dialogContentController);
+			FXMLGuiService.getInstance().startAfterInitializationTask(dialogContentController, initialContent);
 			
 
 		} catch (IOException e) {
@@ -255,8 +252,4 @@ public class AbstractController<PAYLOAD> implements Controller<PAYLOAD> {
 		
 	}
 
-
-	@Override
-	public void setPayload(PAYLOAD payload) {
-		this.payload = payload;
-	}}
+}

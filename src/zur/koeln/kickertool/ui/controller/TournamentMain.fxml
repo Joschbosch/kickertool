@@ -70,7 +70,7 @@
                   <JFXButton fx:id="btnNewRound" onAction="#onNewRoundClicked" text="Neue Runde" />
                </children>
             </HBox>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" GridPane.rowSpan="2">
+            <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" GridPane.rowSpan="2">
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>

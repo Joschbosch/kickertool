@@ -106,9 +106,9 @@ public class PlayerManagementDialogController extends AbstractController impleme
 	public void setupBindings() {
 		getBtnDeletePlayer().disableProperty().bind(Bindings.size(getTblPlayers().getSelectionModel().getSelectedItems()).isEqualTo(0));
 	}
-
+	
 	@Override
-	public void doAfterInitializationCompleted() {
+	public void doAfterInitializationCompleted(Object payload) {
 		startBackgroundTask(loadPlayerListTask());
 	}
 

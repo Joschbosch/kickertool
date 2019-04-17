@@ -5,10 +5,10 @@ import java.util.stream.Collectors;
 
 public interface IViewModelMapper<DTO, VM> {
 
-	public VM map(DTO dto);
+	public VM map(DTO dto, List<?>... optionalMatchLists);
 	
-	public default List<VM> map(List<DTO> dtos) {
-		return dtos.stream().map(dto -> map(dto)).collect(Collectors.toList());
+	public default List<VM> map(List<DTO> dtos, List<?>... optionalMatchLists) {
+		return dtos.stream().map(dto -> map(dto, optionalMatchLists)).collect(Collectors.toList());
 	}
 	
 }

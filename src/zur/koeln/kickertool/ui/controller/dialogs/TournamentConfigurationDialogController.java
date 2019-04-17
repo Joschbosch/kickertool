@@ -109,7 +109,7 @@ public class TournamentConfigurationDialogController extends AbstractController 
 	}
 	
 	@Override
-	public void doAfterInitializationCompleted() {
+	public void doAfterInitializationCompleted(Object payload) {
 		getVm().getAvailablePlayers().clear();
 		getVm().getPlayersForTournament().clear();
 		

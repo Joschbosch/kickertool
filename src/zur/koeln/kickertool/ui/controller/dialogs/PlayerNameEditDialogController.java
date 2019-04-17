@@ -37,7 +37,7 @@ public class PlayerNameEditDialogController extends AbstractController implement
 	}
 
 	@Override
-	public void doAfterInitializationCompleted() {
+	public void doAfterInitializationCompleted(Object payload) {
 		getTxtFirstName().requestFocus();
 	}
 	

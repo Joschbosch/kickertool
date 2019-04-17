@@ -48,8 +48,8 @@ public class TournamentMainController extends AbstractController<TournamentDTO> 
 	}
 	
 	@Override
-	public void doAfterInitializationCompleted() {
-		setTournamentDtoViewModel(getTournamentMainViewModel().mapFromTournamentDTO(getPayload()));
+	public void doAfterInitializationCompleted(TournamentDTO payload) {
+		setTournamentDtoViewModel(getTournamentMainViewModel().mapFromTournamentDTO(payload));
 	}
 
 	@FXML

@@ -83,29 +83,25 @@ public class FXMLGuiService {
 			FXMLLoader fxmlLoader = getFXMLSceneLoader(newScene);
 			Pane pane = fxmlLoader.load();
 			Scene scene = new Scene(pane);
-			
-			Controller controller = fxmlLoader.getController();
-			controller.setPayload(payload);
-			
 			scene.setUserData(fxmlLoader.getController());
-			prepareStage(getPrimaryStage(), scene, fxmlLoader.getController());
+			prepareStage(getPrimaryStage(), scene, fxmlLoader.getController(), payload);
 		} catch (IOException e) {
 			// Should not be thrown
 			throw new IllegalStateException(e);
 		}
 	}
 
-	private void prepareStage(Stage stage, Scene newScene, Controller fxmlController) {
+	private void prepareStage(Stage stage, Scene newScene, Controller fxmlController, Object payload) {
 		stage.setScene(newScene);
 		stage.sizeToScene();
 		stage.centerOnScreen();
 		stage.show();
 		stage.setTitle(APP_TITLE);
 
-		startAfterInitializationTask(fxmlController);
+		startAfterInitializationTask(fxmlController, payload);
 	}
 
-	public void startAfterInitializationTask(Controller fxmlController) {
+	public void startAfterInitializationTask(Controller fxmlController, Object payload) {
 
 		// We can't use Platform.runLater() here, because this call is still too early for e.g. focus a control.
 		// Thus we use a normal Task instead.
@@ -120,7 +116,7 @@ public class FXMLGuiService {
 			}
 		};
 
-		initTask.setOnSucceeded(event -> fxmlController.doAfterInitializationCompleted());
+		initTask.setOnSucceeded(event -> fxmlController.doAfterInitializationCompleted(payload));
 
 		new Thread(initTask).start();
 
@@ -134,7 +130,9 @@ public class FXMLGuiService {
 		try {
 			loader.load();
 			Controller controller = loader.getController();
-			controller.setPayload(payLoad);
+			
+			startAfterInitializationTask(controller, payLoad);
+			
 		} catch (IOException e) {
 			// Should not be thrown
 			throw new IllegalStateException(e);

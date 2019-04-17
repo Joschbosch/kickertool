@@ -48,9 +48,8 @@ public interface Controller<PAYLOAD> {
 	 * Gets called <b>after</b> {@link #initialize()} is done and the FXML document and the controller is fully
 	 * loaded/initialized. This method is great, if you want for example request a focus to a control or load data from the backend.
 	 */
-	default void doAfterInitializationCompleted() {
+	default void doAfterInitializationCompleted(PAYLOAD payload) {
 		// default
 	}
 	
-	void setPayload(PAYLOAD payload);
 }
