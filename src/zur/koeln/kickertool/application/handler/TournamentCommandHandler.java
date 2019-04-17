@@ -1,5 +1,6 @@
 package zur.koeln.kickertool.application.handler;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,9 +36,10 @@ public class TournamentCommandHandler
     @Override
     public SingleResponseDTO<TournamentDTO> createNewTournament(String tournamentName, List<PlayerDTO> participants, SettingsDTO settings) {
         Tournament newTournament = tournamentService.createNewTournament(tournamentName, mapper.map(participants, Player.class), mapper.map(settings, Settings.class));
+        newTournament = tournamentService.startTournament(newTournament.getUid());
         return createSuccessfullDTO(newTournament);
     }
-
+    @Override
     public SingleResponseDTO<TournamentDTO> createAndStartNewTournament(String tournamentName, List<PlayerDTO> participants, SettingsDTO settings) {
         Tournament newTournament = tournamentService.createNewTournament(tournamentName, mapper.map(participants, Player.class), mapper.map(settings, Settings.class));
         newTournament = tournamentService.startTournament(newTournament.getUid());
@@ -98,6 +100,9 @@ public class TournamentCommandHandler
         SingleResponseDTO returnDTO = new SingleResponseDTO<>();
         returnDTO.setDtoStatus(StatusDTO.SUCCESS);
         returnDTO.setDtoValue(mapper.map(tournament, TournamentDTO.class));
+        if (((TournamentDTO) returnDTO.getDtoValue()).getDummyPlayer() == null) {
+            ((TournamentDTO) returnDTO.getDtoValue()).setDummyPlayer(new ArrayList<>());
+        }
         return returnDTO;
     }
 

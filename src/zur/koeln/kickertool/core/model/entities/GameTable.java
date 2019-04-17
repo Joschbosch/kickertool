@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package zur.koeln.kickertool.core.model.entities;
 

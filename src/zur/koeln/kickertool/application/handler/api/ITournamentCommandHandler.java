@@ -26,4 +26,6 @@ public interface ITournamentCommandHandler {
 
     ListResponseDTO<PlayerRankingRowDTO> getRankingForRound(UUID tournamentUUID, int round);
 
+    SingleResponseDTO<TournamentDTO> createAndStartNewTournament(String tournamentName, List<PlayerDTO> participants, SettingsDTO settings);
+
 }

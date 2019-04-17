@@ -17,14 +17,14 @@ public class ViewModelMatchMapper implements IViewModelMapper<MatchDTO, MatchDTO
 
 	@Autowired
 	CustomModelMapper mapper;
-	
+
 	@Autowired
 	ViewModelTeamMapper teamMapper;
-	
+
 	@Override
 	public MatchDTOViewModel map(MatchDTO dto) {
 		MatchDTOViewModel vm = new MatchDTOViewModel();
-		
+
 		vm.setMatchID(dto.getMatchID());
 		vm.setRoundNumber(dto.getRoundNumber());
 		vm.setScoreHome(dto.getScoreHome());
@@ -33,8 +33,10 @@ public class ViewModelMatchMapper implements IViewModelMapper<MatchDTO, MatchDTO
 		vm.setTournamentId(dto.getTournament().getUid());
 		vm.setHomeTeam(getTeamMapper().map(dto.getHomeTeam()));
 		vm.setVisitingTeam(getTeamMapper().map(dto.getVisitingTeam()));
-		vm.setTable(getMapper().map(dto.getTable(), GameTableDTOViewModel.class));
-		
+        if (dto.getTable() != null) {
+            vm.setTable(getMapper().map(dto.getTable(), GameTableDTOViewModel.class));
+        }
+
 		return vm;
 	}
 
