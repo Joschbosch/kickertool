@@ -18,6 +18,7 @@ import zur.koeln.kickertool.ui.controller.shared.vms.MatchDTOViewModel;
 import zur.koeln.kickertool.ui.controller.shared.vms.TournamentDTOViewModel;
 import zur.koeln.kickertool.ui.controller.vms.TournamentMainViewModel;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
+import zur.koeln.kickertool.ui.shared.GUIEvents;
 import zur.koeln.kickertool.ui.shared.IconDefinition;
 import zur.koeln.kickertool.ui.shared.ListContentDefinition;
 import javafx.scene.layout.VBox;
@@ -90,4 +91,18 @@ public class TournamentMainController extends AbstractController<TournamentDTO> 
 		}
 		
 	}
+	
+	@Override
+	public void handleEvent(GUIEvents guiEvents, Object content) {
+		if (guiEvents == GUIEvents.MATCH_RESULT_ENTERED) {
+			MatchDTOViewModel matchDTOViewModel = (MatchDTOViewModel) content;
+			// TODO Insert update methode here
+			// TODO Update View
+		}
+	}
+
+	@Override
+	protected void registerEvents() {
+		registerEvent(GUIEvents.MATCH_RESULT_ENTERED);
+	} 
 }

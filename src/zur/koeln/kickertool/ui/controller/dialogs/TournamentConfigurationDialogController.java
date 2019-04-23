@@ -27,6 +27,7 @@ import zur.koeln.kickertool.ui.controller.dialogs.vms.TournamentConfigurationVie
 import zur.koeln.kickertool.ui.controller.dialogs.vms.TournamentSettingsViewModel;
 import zur.koeln.kickertool.ui.controller.shared.vms.PlayerDTOViewModel;
 import zur.koeln.kickertool.ui.shared.DialogContentDefinition;
+import zur.koeln.kickertool.ui.shared.GUIEvents;
 import zur.koeln.kickertool.ui.shared.IconDefinition;
 
 @SuppressWarnings("nls")
@@ -195,4 +196,14 @@ public class TournamentConfigurationDialogController extends AbstractController 
 	public TournamentConfigurationViewModel sendResult() {
 		return getVm();
 	}
+	
+	@Override
+	public void handleEvent(GUIEvents guiEvents, Object content) {
+		// nothing to do here
+	}
+
+	@Override
+	protected void registerEvents() {
+		// nothing to do here
+	} 
 }

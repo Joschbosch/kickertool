@@ -14,6 +14,7 @@ import zur.koeln.kickertool.ui.controller.base.DialogContent;
 import zur.koeln.kickertool.ui.controller.base.vm.ModelValidationResult;
 import zur.koeln.kickertool.ui.controller.dialogs.vms.MatchResultViewModel;
 import zur.koeln.kickertool.ui.controller.shared.vms.MatchDTOViewModel;
+import zur.koeln.kickertool.ui.shared.GUIEvents;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
@@ -51,7 +52,6 @@ public class MatchResultEditDialogController extends AbstractController implemen
 		int scoreVisiting = Integer.valueOf(getTxtResultTeam2().getText()).intValue();
 		
 		return new MatchResultViewModel(scoreHome, scoreVisiting);
-		
 	}
 	
 	@Override
@@ -70,4 +70,14 @@ public class MatchResultEditDialogController extends AbstractController implemen
 		return valResult;
 		
 	}
+	
+	@Override
+	public void handleEvent(GUIEvents guiEvents, Object content) {
+		// nothing to do here
+	}
+
+	@Override
+	protected void registerEvents() {
+		// nothing to do here
+	} 
 }

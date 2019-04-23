@@ -17,6 +17,7 @@ import zur.koeln.kickertool.ui.controller.base.AbstractController;
 import zur.koeln.kickertool.ui.controller.base.DialogContent;
 import zur.koeln.kickertool.ui.controller.base.vm.ModelValidationResult;
 import zur.koeln.kickertool.ui.controller.dialogs.vms.TournamentSettingsViewModel;
+import zur.koeln.kickertool.ui.shared.GUIEvents;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
@@ -85,5 +86,15 @@ public class TournamentSettingsDialogController extends AbstractController imple
 		getChckFixedTeams().selectedProperty().bindBidirectional(getInitialSettingsViewModel().getFixedTeamsProperty());
 		getCmbTournamentMode().valueProperty().bindBidirectional(getInitialSettingsViewModel().getModeProperty());
 	}
+	
+	@Override
+	public void handleEvent(GUIEvents guiEvents, Object content) {
+		// nothing to do here
+	}
+
+	@Override
+	protected void registerEvents() {
+		// nothing to do here
+	} 
 	
 }

@@ -13,6 +13,7 @@ import zur.koeln.kickertool.ui.controller.base.AbstractController;
 import zur.koeln.kickertool.ui.controller.base.DialogContent;
 import zur.koeln.kickertool.ui.controller.base.vm.ModelValidationResult;
 import zur.koeln.kickertool.ui.controller.shared.vms.PlayerDTOViewModel;
+import zur.koeln.kickertool.ui.shared.GUIEvents;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
@@ -58,4 +59,14 @@ public class PlayerNameEditDialogController extends AbstractController implement
 		getVm().setLastName(content.getLastName());
 		getVm().setUid(content.getUid());
 	}
+	
+	@Override
+	public void handleEvent(GUIEvents guiEvents, Object content) {
+		// nothing to do here
+	}
+
+	@Override
+	protected void registerEvents() {
+		// nothing to do here
+	} 
 }

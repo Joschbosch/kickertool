@@ -17,6 +17,7 @@ import zur.koeln.kickertool.ui.controller.base.impl.DefaultDialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.dialogs.vms.TournamentConfigurationViewModel;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
 import zur.koeln.kickertool.ui.shared.DialogContentDefinition;
+import zur.koeln.kickertool.ui.shared.GUIEvents;
 import zur.koeln.kickertool.ui.shared.SceneDefinition;
 
 @Component
@@ -79,6 +80,16 @@ public class MainMenuController extends AbstractController{
 	@FXML 
 	public void OnContinueTournamentClicked() {
 		// TODO implement
+	}
+
+	@Override
+	public void handleEvent(GUIEvents guiEvents, Object content) {
+		// nothing to do here
+	}
+
+	@Override
+	protected void registerEvents() {
+		// nothing to do here
 	} 
 	
 

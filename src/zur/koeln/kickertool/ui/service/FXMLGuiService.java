@@ -80,6 +80,8 @@ public class FXMLGuiService {
 	public void switchScene(SceneDefinition newScene, Object payload) {
 
 		try {
+			closeCurrentController();
+			
 			FXMLLoader fxmlLoader = getFXMLSceneLoader(newScene);
 			Pane pane = fxmlLoader.load();
 			Scene scene = new Scene(pane);
@@ -88,6 +90,15 @@ public class FXMLGuiService {
 		} catch (IOException e) {
 			// Should not be thrown
 			throw new IllegalStateException(e);
+		}
+	}
+
+	private void closeCurrentController() {
+		Scene currentScene = getPrimaryStage().getScene();
+	
+		if (currentScene != null) {
+			Controller currentController = (Controller) currentScene.getUserData();
+			currentController.close();
 		}
 	}
 

@@ -13,7 +13,9 @@ import zur.koeln.kickertool.ui.controller.base.AbstractController;
 import zur.koeln.kickertool.ui.controller.base.DialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.dialogs.vms.MatchResultViewModel;
 import zur.koeln.kickertool.ui.controller.shared.vms.MatchDTOViewModel;
+import zur.koeln.kickertool.ui.service.GUIEventService;
 import zur.koeln.kickertool.ui.shared.DialogContentDefinition;
+import zur.koeln.kickertool.ui.shared.GUIEvents;
 
 @Component
 @Getter(value=AccessLevel.PRIVATE)
@@ -39,17 +41,15 @@ public class MatchController extends AbstractController<MatchDTOViewModel>{
 				
 				getVm().setScoreHome(result.getScoreHomeTeam());
 				getVm().setScoreVisiting(result.getScoreVisitingTeam());
-				
+				GUIEventService.getInstance().fireEvent(GUIEvents.MATCH_RESULT_ENTERED, getVm());
 			}
 		});
 	}
 	
 	@Override
 	public void doAfterInitializationCompleted(MatchDTOViewModel payload) {
-
 		setVm(payload);
 		setLabelTexts();
-		
 	}
 
 	private void setLabelTexts() {
@@ -60,4 +60,14 @@ public class MatchController extends AbstractController<MatchDTOViewModel>{
 		getLbl_tableNo().setText(getVm().getTable() == null ? "ND" : String.valueOf(getVm().getTable().getTableNumber()));
 	}
 
+	@Override
+	public void handleEvent(GUIEvents guiEvents, Object content) {
+		// nothing to do here
+	}
+
+	@Override
+	protected void registerEvents() {
+		// nothing to do here
+	} 
+	
 }

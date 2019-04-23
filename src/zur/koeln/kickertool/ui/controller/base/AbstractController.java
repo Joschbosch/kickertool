@@ -1,7 +1,9 @@
 package zur.koeln.kickertool.ui.controller.base;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
@@ -26,13 +28,17 @@ import zur.koeln.kickertool.ui.controller.base.vm.ILabel;
 import zur.koeln.kickertool.ui.controller.base.vm.ModelValidationResult;
 import zur.koeln.kickertool.ui.exceptions.BackgroundTaskException;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
+import zur.koeln.kickertool.ui.service.GUIEventService;
 import zur.koeln.kickertool.ui.shared.DialogContentDefinition;
+import zur.koeln.kickertool.ui.shared.GUIEvents;
 import zur.koeln.kickertool.ui.tools.DTOVerifcationUtils;
 
 @Getter(value=AccessLevel.PRIVATE)
 @Setter(value=AccessLevel.PUBLIC)
 @SuppressWarnings("nls")
-public class AbstractController<PAYLOAD> implements Controller<PAYLOAD> {
+public abstract class AbstractController<PAYLOAD> implements Controller<PAYLOAD> {
+	
+	private final List<GUIEvents> registeredEvents = new ArrayList<>();
 	
 	@FXML 
 	StackPane rootStackPane;
@@ -41,6 +47,7 @@ public class AbstractController<PAYLOAD> implements Controller<PAYLOAD> {
 	@Override
 	public void initialize() {
 		Controller.super.initialize();
+		registerToEventService();
 	}
 	
 	/**
@@ -110,6 +117,7 @@ public class AbstractController<PAYLOAD> implements Controller<PAYLOAD> {
 				if (validate.hasValidationMessages()) {
 					showModelValidationError("Unvollständige Eingaben", validate);
 				} else {
+					dialogContentController.close();
 					dialog.close();
 					dialogClosedCallback.doAfterDialogClosed(fxmlDialogContent.sendResult());
 				}
@@ -118,7 +126,10 @@ public class AbstractController<PAYLOAD> implements Controller<PAYLOAD> {
 			
 			JFXButton btnCancel = new JFXButton("Abbrechen");
 			btnCancel.setPrefWidth(100.0);
-			btnCancel.setOnAction(event -> dialog.close());
+			btnCancel.setOnAction(event -> {
+				dialogContentController.close();
+				dialog.close();
+			});
 			
 			dialogLayout.setActions(btnCancel, btnOK);
 			
@@ -251,5 +262,27 @@ public class AbstractController<PAYLOAD> implements Controller<PAYLOAD> {
 		DTOVerifcationUtils.checkResponse(baseDto);
 		
 	}
+
+	@Override
+	public void registerToEventService() {
+		GUIEventService.getInstance().addControllerToRegister(this);
+	}
+
+	@Override
+	public void deregisterFromEventService() {
+		GUIEventService.getInstance().removeControllerFromRegister(this);
+	}
+
+	protected void registerEvent(GUIEvents guiEvent) {
+		getRegisteredEvents().add(guiEvent);
+	}
+	
+	public boolean hasEventRegistered(GUIEvents guiEvent) {
+		return getRegisteredEvents().contains(guiEvent);
+	}
+	
+	public abstract void handleEvent(GUIEvents guiEvents, Object content);
+	
+	protected abstract void registerEvents();
 
 }

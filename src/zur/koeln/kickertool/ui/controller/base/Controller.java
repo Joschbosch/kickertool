@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
  * 
  * @author Daniel Cleemann
  */
-public interface Controller<PAYLOAD> {
+public interface Controller<PAYLOAD> extends IEventRegister {
 	
 	/**
 	 * Initialize method for FXML. Gets always called automatically and should not be overridden. <br>
@@ -52,4 +52,7 @@ public interface Controller<PAYLOAD> {
 		// default
 	}
 	
+	default void close() {
+		deregisterFromEventService();
+	}
 }
