@@ -1,10 +1,7 @@
 package zur.koeln.kickertool.ui.controller.dialogs.vms;
 
-import org.springframework.stereotype.Component;
-
 import lombok.Getter;
 
-@Component
 @Getter
 public class MatchResultViewModel {
 
