@@ -48,6 +48,7 @@ public abstract class AbstractController<PAYLOAD> implements Controller<PAYLOAD>
 	public void initialize() {
 		Controller.super.initialize();
 		registerToEventService();
+		registerEvents();
 	}
 	
 	/**
