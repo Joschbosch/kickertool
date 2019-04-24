@@ -108,6 +108,7 @@ public class TournamentCommandHandler
         if (((TournamentDTO) returnDTO.getDtoValue()).getDummyPlayer() == null) {
             ((TournamentDTO) returnDTO.getDtoValue()).setDummyPlayer(new ArrayList<>());
         }
+        ((TournamentDTO) returnDTO.getDtoValue()).setCurrentRound(tournament.getCurrentRound());
         return returnDTO;
     }
 
