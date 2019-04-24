@@ -1,10 +1,13 @@
 package zur.koeln.kickertool.ui.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.jfoenix.controls.JFXButton;
 
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ScrollPane;
@@ -15,6 +18,8 @@ import zur.koeln.kickertool.application.handler.dtos.TournamentDTO;
 import zur.koeln.kickertool.ui.controller.base.AbstractController;
 import zur.koeln.kickertool.ui.controller.base.BackgroundTask;
 import zur.koeln.kickertool.ui.controller.shared.vms.MatchDTOViewModel;
+import zur.koeln.kickertool.ui.controller.shared.vms.PlayerDTOViewModel;
+import zur.koeln.kickertool.ui.controller.shared.vms.PlayerRankingRowViewModel;
 import zur.koeln.kickertool.ui.controller.shared.vms.TournamentDTOViewModel;
 import zur.koeln.kickertool.ui.controller.vms.TournamentMainViewModel;
 import zur.koeln.kickertool.ui.service.FXMLGuiService;
@@ -22,6 +27,10 @@ import zur.koeln.kickertool.ui.shared.GUIEvents;
 import zur.koeln.kickertool.ui.shared.IconDefinition;
 import zur.koeln.kickertool.ui.shared.ListContentDefinition;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableColumn;
 
 @Component
 @Getter(value = AccessLevel.PRIVATE)
@@ -34,23 +43,61 @@ public class TournamentMainController extends AbstractController<TournamentDTO> 
 	TournamentDTOViewModel tournamentDtoViewModel;
 	
 	@FXML
-	JFXButton btnStartPauseStopwatch;
-	@FXML
-	JFXButton btnResetStopwatch;
-	@FXML
 	JFXButton btnNewRound;
 
 	@FXML VBox vboxMatches;
 
+	@FXML TableView tblRankings;
+
+	@FXML TableColumn colRank;
+
+	@FXML TableColumn colName;
+
+	@FXML TableColumn colPoints;
+
 	@Override
 	public void setupControls() {
-		getBtnStartPauseStopwatch().setGraphic(IconDefinition.PLAY.createIconImageView());
-		getBtnResetStopwatch().setGraphic(IconDefinition.RESET.createIconImageView());
+//		getBtnStartPauseStopwatch().setGraphic(IconDefinition.PLAY.createIconImageView());
+//		getBtnResetStopwatch().setGraphic(IconDefinition.RESET.createIconImageView());
 	}
 	
 	@Override
 	public void doAfterInitializationCompleted(TournamentDTO payload) {
 		setTournamentDtoViewModel(getTournamentMainViewModel().mapFromTournamentDTO(payload));
+		setupTable();
+		startBackgroundTask(fillRankingsTableTask());
+	}
+
+	private void setupTable() {
+		
+		getColName().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerRankingRowViewModel, String>, ObservableValue<String>>() {
+
+			@Override
+			public ObservableValue<String> call(CellDataFeatures<PlayerRankingRowViewModel, String> param) {
+				
+				return param.getValue().getNameProperty();
+			}
+		});
+		
+		getColRank().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerRankingRowViewModel, Number>, ObservableValue<Number>>() {
+
+			@Override
+			public ObservableValue<Number> call(CellDataFeatures<PlayerRankingRowViewModel, Number> param) {
+				
+				return param.getValue().getRankProperty();
+			}
+		});
+		
+		getColPoints().setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PlayerRankingRowViewModel, Number>, ObservableValue<Number>>() {
+
+			@Override
+			public ObservableValue<Number> call(CellDataFeatures<PlayerRankingRowViewModel, Number> param) {
+				
+				return param.getValue().getScoreProperty();
+			}
+		});
+		
+		getTblRankings().setItems(getTournamentDtoViewModel().getPlayerRankings());
 	}
 
 	@FXML
@@ -92,12 +139,33 @@ public class TournamentMainController extends AbstractController<TournamentDTO> 
 		
 	}
 	
+	private BackgroundTask fillRankingsTableTask() {
+		return new BackgroundTask<List<PlayerRankingRowViewModel>>() {
+
+			@Override
+			public List<PlayerRankingRowViewModel> performTask() throws Exception {
+				return getTournamentMainViewModel().getPlayerRankings(getTournamentDtoViewModel().getUid(), getTournamentDtoViewModel().getCurrentRoundIndex());
+			}
+
+			@Override
+			public void doOnSuccess(List<PlayerRankingRowViewModel> result) {
+				getTournamentDtoViewModel().getPlayerRankings().clear();
+				getTournamentDtoViewModel().getPlayerRankings().addAll(result);
+			}
+
+			@Override
+			public void doOnFailure(Throwable exception) {
+				showError(exception);
+			}
+		};
+	}
+	
 	@Override
 	public void handleEvent(GUIEvents guiEvents, Object content) {
 		if (guiEvents == GUIEvents.MATCH_RESULT_ENTERED) {
 			MatchDTOViewModel matchDTOViewModel = (MatchDTOViewModel) content;
-			// TODO Insert update methode here
-			// TODO Update View
+			getTournamentMainViewModel().upateMatchResult(matchDTOViewModel);
+			startBackgroundTask(fillRankingsTableTask());
 		}
 	}
 

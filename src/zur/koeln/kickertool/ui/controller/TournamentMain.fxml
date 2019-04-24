@@ -31,11 +31,11 @@
          </rowConstraints>
          <children>
             <Label alignment="CENTER" text="Statistiken" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="4">
+            <TableView fx:id="tblRankings" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="4">
               <columns>
-                <TableColumn maxWidth="50.0" prefWidth="50.0" resizable="false" text="Rang" />
-                <TableColumn prefWidth="75.0" text="Name" />
-                  <TableColumn prefWidth="75.0" text="Punkte" />
+                <TableColumn fx:id="colRank" maxWidth="50.0" prefWidth="50.0" resizable="false" text="Rang" />
+                <TableColumn fx:id="colName" prefWidth="75.0" text="Name" />
+                  <TableColumn fx:id="colPoints" prefWidth="75.0" text="Punkte" />
               </columns>
                <GridPane.margin>
                   <Insets right="10.0" />
@@ -45,32 +45,22 @@
                </columnResizePolicy>
             </TableView>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
-               <children>
-                  <JFXButton text="Pausieren" />
-                  <JFXButton text="Aktivieren" />
-                  <JFXButton text="Spieler hinzufügen" />
-               </children>
                <padding>
                   <Insets right="10.0" />
                </padding>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="5">
-               <children>
-                  <JFXButton fx:id="btnStartPauseStopwatch" />
-                  <JFXButton fx:id="btnResetStopwatch" />
-               </children>
                <padding>
                   <Insets left="10.0" />
                </padding>
             </HBox>
-            <Label alignment="CENTER" text="00:00:00.000" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
             <Label text="Runden" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
                <children>
                   <JFXButton fx:id="btnNewRound" onAction="#onNewRoundClicked" text="Neue Runde" />
                </children>
             </HBox>
-            <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" GridPane.rowSpan="2">
+            <ScrollPane fitToWidth="true" prefHeight="607.0" prefWidth="490.0" GridPane.rowIndex="2" GridPane.rowSpan="3">
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>

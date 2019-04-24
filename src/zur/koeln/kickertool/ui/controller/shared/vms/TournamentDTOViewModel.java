@@ -3,6 +3,9 @@ package zur.koeln.kickertool.ui.controller.shared.vms;
 import java.util.List;
 import java.util.UUID;
 
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.core.kernl.TournamentStatus;
@@ -29,6 +32,8 @@ public class TournamentDTOViewModel extends FXViewModel{
     private List<MatchDTOViewModel> matches;
 
     private List<GameTableDTOViewModel> playtables;
+    
+    private final ObservableList<PlayerRankingRowViewModel> playerRankings = FXCollections.observableArrayList();
 
     private int currentRoundIndex;
 	
