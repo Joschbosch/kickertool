@@ -23,22 +23,21 @@ import zur.koeln.kickertool.ui.shared.SceneDefinition;
 @Component
 @Getter(value=AccessLevel.PRIVATE)
 public class MainMenuController extends AbstractController{
-	
+
 	@Autowired
 	@Getter(value = AccessLevel.PRIVATE)
 	ITournamentCommandHandler tournamentCommandHandler;
 
 	@FXML
 	Button btnStartNewTournament;
-	
+
 	@FXML
 	Button btnPlayerManagement;
-	
+
 	@FXML
 	Button btnContinueTournament;
 
-	
-	@FXML 
+    @FXML
 	public void onStartNewTournamentClicked() {
 		openDialog(DialogContentDefinition.TOURNAMENT_CONFIGURATION_DIALOG, new DialogCloseEvent<TournamentConfigurationViewModel>() {
 
@@ -48,14 +47,15 @@ public class MainMenuController extends AbstractController{
 			}
 		});
 	}
-	
+
 	private BackgroundTask createNewTournamentTask(TournamentConfigurationViewModel tournamentConfig) {
 
 		return new BackgroundTask<TournamentDTO>() {
 
 			@Override
 			public TournamentDTO performTask() throws Exception {
-				SingleResponseDTO<TournamentDTO> createNewTournament = getTournamentCommandHandler().createNewTournament(tournamentConfig.getTournamentName(), tournamentConfig.getPlayerDTOsForTournament(), tournamentConfig.getSettingsDTO());
+                SingleResponseDTO<TournamentDTO> createNewTournament = getTournamentCommandHandler().createAndStartNewTournament(tournamentConfig.getTournamentName(),
+                        tournamentConfig.getPlayerDTOsForTournament(), tournamentConfig.getSettingsDTO());
 				checkResponse(createNewTournament);
 				return createNewTournament.getDtoValue();
 			}
@@ -72,12 +72,12 @@ public class MainMenuController extends AbstractController{
 		};
 	}
 
-	@FXML 
+    @FXML
 	public void onPlayerManagementClicked() {
 		openDialog(DialogContentDefinition.PLAYER_MANAGEMENT_DIALOG, new DefaultDialogCloseEvent());
 	}
 
-	@FXML 
+    @FXML
 	public void OnContinueTournamentClicked() {
 		// TODO implement
 	}
@@ -90,7 +90,6 @@ public class MainMenuController extends AbstractController{
 	@Override
 	protected void registerEvents() {
 		// nothing to do here
-	} 
-	
+    }
 
 }

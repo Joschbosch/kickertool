@@ -33,7 +33,6 @@ public class TournamentCommandHandler
     @Override
     public SingleResponseDTO<TournamentDTO> createNewTournament(String tournamentName, List<PlayerDTO> participants, SettingsDTO settings) {
         Tournament newTournament = tournamentService.createNewTournament(tournamentName, mapper.map(participants, Player.class), mapper.map(settings, Settings.class));
-        newTournament = tournamentService.startTournament(newTournament.getUid());
         return createSuccessfullDTO(newTournament);
     }
     @Override
@@ -94,7 +93,7 @@ public class TournamentCommandHandler
     public ListResponseDTO<PlayerRankingRowDTO> getRankingForRound(UUID tournamentUUID, int round) {
         return createSuccessfulRankingListResponse(tournamentService.getRankingByRound(tournamentUUID, round));
     }
-
+    @Override
     public StatusOnlyDTO enterOrChangeMatchResult(UUID tournamentUUID, UUID matchId, int scoreHome, int scoreVisiting) {
         tournamentService.enterOrChangeMatchResult(tournamentUUID, matchId, scoreHome, scoreVisiting);
         StatusOnlyDTO statusOnlyDTO = new StatusOnlyDTO();

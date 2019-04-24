@@ -9,6 +9,7 @@ import zur.koeln.kickertool.application.handler.dtos.SettingsDTO;
 import zur.koeln.kickertool.application.handler.dtos.TournamentDTO;
 import zur.koeln.kickertool.application.handler.dtos.base.ListResponseDTO;
 import zur.koeln.kickertool.application.handler.dtos.base.SingleResponseDTO;
+import zur.koeln.kickertool.application.handler.dtos.base.StatusOnlyDTO;
 
 public interface ITournamentCommandHandler {
 
@@ -27,5 +28,7 @@ public interface ITournamentCommandHandler {
     ListResponseDTO<PlayerRankingRowDTO> getRankingForRound(UUID tournamentUUID, int round);
 
     SingleResponseDTO<TournamentDTO> createAndStartNewTournament(String tournamentName, List<PlayerDTO> participants, SettingsDTO settings);
+
+    StatusOnlyDTO enterOrChangeMatchResult(UUID tournamentUUID, UUID matchId, int scoreHome, int scoreVisiting);
 
 }
