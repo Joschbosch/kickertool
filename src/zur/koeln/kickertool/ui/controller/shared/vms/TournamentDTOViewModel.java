@@ -2,6 +2,7 @@ package zur.koeln.kickertool.ui.controller.shared.vms;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -36,6 +37,10 @@ public class TournamentDTOViewModel extends FXViewModel{
     private final ObservableList<PlayerRankingRowViewModel> playerRankings = FXCollections.observableArrayList();
 
     private int currentRoundIndex;
+    
+    public List<MatchDTOViewModel> getMatchesForCurrentRound() {
+    	return getMatches().stream().filter(match -> match.getRoundNumber() == getCurrentRoundIndex()).collect(Collectors.toList());
+    }
 	
 	@Override
 	public ModelValidationResult validate() {

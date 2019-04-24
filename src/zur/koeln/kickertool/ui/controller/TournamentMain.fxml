@@ -31,7 +31,7 @@
          </rowConstraints>
          <children>
             <Label alignment="CENTER" text="Statistiken" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <TableView fx:id="tblRankings" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="4">
+            <TableView fx:id="tblRankings" stylesheets="@/css/jfx-table-view.css"  prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="4">
               <columns>
                 <TableColumn fx:id="colRank" maxWidth="50.0" prefWidth="50.0" resizable="false" text="Rang" />
                 <TableColumn fx:id="colName" prefWidth="75.0" text="Name" />
