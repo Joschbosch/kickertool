@@ -128,7 +128,7 @@ public class TournamentMainController extends AbstractController<TournamentDTO> 
 
 		getVboxMatches().getChildren().clear();
 
-		for (MatchDTOViewModel matchDTOViewModel : getTournamentDtoViewModel().getMatches()) {
+		for (MatchDTOViewModel matchDTOViewModel : getTournamentDtoViewModel().getMatchesForCurrentRound()) {
 			FXMLLoader loadedFXMLLoader = FXMLGuiService.getInstance().getLoadedFXMLLoader(ListContentDefinition.MATCH, matchDTOViewModel);
 			getVboxMatches().getChildren().add(loadedFXMLLoader.getRoot());
 		}

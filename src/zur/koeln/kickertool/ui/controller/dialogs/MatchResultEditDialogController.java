@@ -30,8 +30,8 @@ public class MatchResultEditDialogController extends AbstractController implemen
 	@Override
 	public void initializeDialogWithContent(MatchDTOViewModel initialContent) {
 		
-		getTxtResultTeam1().setText(String.valueOf(initialContent.getScoreHome()));
-		getTxtResultTeam2().setText(String.valueOf(initialContent.getScoreVisiting()));
+		getTxtResultTeam1().setPromptText(String.valueOf(initialContent.getScoreHome()));
+		getTxtResultTeam2().setPromptText(String.valueOf(initialContent.getScoreVisiting()));
 		createTextNumberFormatter();
 	}
 	
@@ -48,10 +48,14 @@ public class MatchResultEditDialogController extends AbstractController implemen
 	@Override
 	public MatchResultViewModel sendResult() {
 		
-		int scoreHome = Integer.valueOf(getTxtResultTeam1().getText()).intValue();
-		int scoreVisiting = Integer.valueOf(getTxtResultTeam2().getText()).intValue();
+		int scoreHome = Integer.valueOf(getTextFromTextField(getTxtResultTeam1())).intValue();
+		int scoreVisiting = Integer.valueOf(getTextFromTextField(getTxtResultTeam2())).intValue();
 		
 		return new MatchResultViewModel(scoreHome, scoreVisiting);
+	}
+	
+	private String getTextFromTextField(JFXTextField textField) {
+		return textField.getText().isEmpty() ? textField.getPromptText() : textField.getText();
 	}
 	
 	@Override

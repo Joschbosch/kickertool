@@ -42,6 +42,7 @@ public class MatchController extends AbstractController<MatchDTOViewModel>{
 				getVm().setScoreHome(result.getScoreHomeTeam());
 				getVm().setScoreVisiting(result.getScoreVisitingTeam());
 				GUIEventService.getInstance().fireEvent(GUIEvents.MATCH_RESULT_ENTERED, getVm());
+				setLabelTexts();
 			}
 		});
 	}
@@ -57,6 +58,7 @@ public class MatchController extends AbstractController<MatchDTOViewModel>{
 		getLbl_player2_team1().setText(getVm().getHomeTeam().getPlayer2().getFirstName());
 		getLbl_player1_team2().setText(getVm().getVisitingTeam().getPlayer1().getFirstName());
 		getLbl_player2_team2().setText(getVm().getVisitingTeam().getPlayer2().getFirstName());
+		getLbl_result().setText(getVm().getScoreHome() + " : " + getVm().getScoreVisiting());
 		getLbl_tableNo().setText(getVm().getTable() == null ? "ND" : String.valueOf(getVm().getTable().getTableNumber()));
 	}
 
