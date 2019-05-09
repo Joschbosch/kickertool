@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import zur.koeln.kickertool.application.handler.api.IPlayerCommandHandler;
 import zur.koeln.kickertool.application.handler.dtos.PlayerDTO;
@@ -17,15 +17,21 @@ import zur.koeln.kickertool.core.api.IPlayerService;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
 import zur.koeln.kickertool.core.model.aggregates.Player;
 
-@Service
+@Named
 public class PlayerCommandHandler
     implements IPlayerCommandHandler {
 
-    @Autowired
-    private IPlayerService playerService;
+    private final IPlayerService playerService;
 
-    @Autowired
-    private CustomModelMapper mapper;
+    private final CustomModelMapper mapper;
+
+    @Inject
+    public PlayerCommandHandler(
+        IPlayerService playerService,
+        CustomModelMapper mapper) {
+        this.playerService = playerService;
+        this.mapper = mapper;
+    }
 
     @Override
     public SingleResponseDTO<PlayerDTO> createNewPlayer(String firstName, String lastName) {

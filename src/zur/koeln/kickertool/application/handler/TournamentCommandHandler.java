@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import zur.koeln.kickertool.application.handler.api.ITournamentCommandHandler;
 import zur.koeln.kickertool.application.handler.dtos.PlayerDTO;
@@ -20,16 +20,21 @@ import zur.koeln.kickertool.core.model.aggregates.Player;
 import zur.koeln.kickertool.core.model.aggregates.Tournament;
 import zur.koeln.kickertool.core.model.entities.Settings;
 
-@Component
+@Named
 public class TournamentCommandHandler
     implements ITournamentCommandHandler {
 
-    @Autowired
-    private ITournamentService tournamentService;
+    private final ITournamentService tournamentService;
 
-    @Autowired
-    private CustomModelMapper mapper;
+    private final CustomModelMapper mapper;
 
+    @Inject
+    public TournamentCommandHandler(
+        ITournamentService tournamentService,
+        CustomModelMapper mapper) {
+        this.tournamentService = tournamentService;
+        this.mapper = mapper;
+    }
     @Override
     public SingleResponseDTO<TournamentDTO> createNewTournament(String tournamentName, List<PlayerDTO> participants, SettingsDTO settings) {
         Tournament newTournament = tournamentService.createNewTournament(tournamentName, mapper.map(participants, Player.class), mapper.map(settings, Settings.class));

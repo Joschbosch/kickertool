@@ -5,23 +5,30 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import zur.koeln.kickertool.application.repositories.persistence.IPlayerPersistence;
 import zur.koeln.kickertool.core.model.aggregates.Player;
 import zur.koeln.kickertool.infrastructure.persistence.entities.PlayerEntity;
 
-@Component
+@Named
 public class PlayerPersistence
     implements IPlayerPersistence {
 
-    @Autowired
-    private PlayerPersistenceRepository playerRepo;
+    private final PlayerPersistenceRepository playerRepo;
 
-    @Autowired
-    private ModelMapper mapper;
+    private final ModelMapper mapper;
+
+    @Inject
+    public PlayerPersistence(
+        PlayerPersistenceRepository playerRepo,
+        ModelMapper mapper) {
+        this.playerRepo = playerRepo;
+        this.mapper = mapper;
+    }
 
     @Override
     public void insert(Player player) {

@@ -4,20 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import zur.koeln.kickertool.application.repositories.persistence.IPlayerPersistence;
 import zur.koeln.kickertool.core.kernl.PlayerStatus;
 import zur.koeln.kickertool.core.model.aggregates.Player;
 import zur.koeln.kickertool.core.spi.IPlayerRepository;
 
-@Repository
+@Named
 public class PlayerRepository
     implements IPlayerRepository {
 
-    @Autowired
-    private IPlayerPersistence playerPersistence;
+    private final IPlayerPersistence playerPersistence;
+
+    @Inject
+    public PlayerRepository(
+        IPlayerPersistence playerPersistence) {
+        this.playerPersistence = playerPersistence;
+    }
 
     @Override
     public Player storeOrUpdatePlayer(Player player) {

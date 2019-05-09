@@ -3,23 +3,30 @@ package zur.koeln.kickertool.infrastructure.persistence.tournament;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import zur.koeln.kickertool.application.repositories.persistence.ITournamentPersistence;
 import zur.koeln.kickertool.core.model.aggregates.Tournament;
 import zur.koeln.kickertool.infrastructure.persistence.entities.TournamentEntity;
 
-@Component
+@Named
 public class TournamentPersistence
     implements ITournamentPersistence {
 
-    @Autowired
-    private TournamentPersistenceRepository repo;
+    private final TournamentPersistenceRepository repo;
 
-    @Autowired
-    private ModelMapper mapper;
+    private final ModelMapper mapper;
+
+    @Inject
+    public TournamentPersistence(
+        TournamentPersistenceRepository repo,
+        ModelMapper mapper) {
+        this.repo = repo;
+        this.mapper = mapper;
+    }
 
     @Override
     public void insert(Tournament tournament) {

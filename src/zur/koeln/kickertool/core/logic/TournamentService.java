@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import zur.koeln.kickertool.core.api.IPlayerService;
 import zur.koeln.kickertool.core.api.ITournamentService;
@@ -18,16 +18,22 @@ import zur.koeln.kickertool.core.model.entities.Match;
 import zur.koeln.kickertool.core.model.entities.Settings;
 import zur.koeln.kickertool.core.spi.ITournamentRepository;
 
-@Service
+@Named
 public class TournamentService
     implements ITournamentService {
 
-    @Autowired
-    private ITournamentRepository tournamentRepo;
+    private final ITournamentRepository tournamentRepo;
 
-    @Autowired
-    private IPlayerService playerService;
+    private final IPlayerService playerService;
 
+
+    @Inject
+    public TournamentService(
+        ITournamentRepository tournamentRepo,
+        IPlayerService playerService) {
+        this.tournamentRepo = tournamentRepo;
+        this.playerService = playerService;
+    }
     @Override
     public Tournament createNewTournament(String tournamentName, List<Player> participants, Settings settings) {
 

@@ -22,7 +22,6 @@ public class PlayerServiceTest {
     @Test
 	public void testCreatePlayer() {
 
-		PlayerService newPlayerService = new PlayerService();
 
 		IPlayerRepository playerRepoMock = Mockito.mock(IPlayerRepository.class);
         Player player = new Player();
@@ -30,9 +29,7 @@ public class PlayerServiceTest {
         player.setLastName(PLAYER_LASTNAME);
         player.setStatus(PlayerStatus.NOT_IN_TOURNAMENT);
         Mockito.when(playerRepoMock.createNewPlayer(PLAYER_FIRSTNAME, PLAYER_LASTNAME)).thenReturn(player);
-		newPlayerService.setPlayerRepo(playerRepoMock);
-
-		IPlayerService playerService = newPlayerService;
+        IPlayerService playerService = new PlayerService(playerRepoMock);
 
         Player newPlayer = playerService.createNewPlayer(PLAYER_FIRSTNAME, PLAYER_LASTNAME);
         Assertions.assertTrue(newPlayer.getFirstName().equals(PLAYER_FIRSTNAME));

@@ -2,20 +2,25 @@ package zur.koeln.kickertool.application.repositories;
 
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import zur.koeln.kickertool.application.repositories.persistence.ITournamentPersistence;
 import zur.koeln.kickertool.core.kernl.TournamentStatus;
 import zur.koeln.kickertool.core.model.aggregates.Tournament;
 import zur.koeln.kickertool.core.spi.ITournamentRepository;
 
-@Component
+@Named
 public class TournamentRepository
     implements ITournamentRepository {
 
-    @Autowired
-    private ITournamentPersistence tournamentPersistence;
+    private final ITournamentPersistence tournamentPersistence;
+
+    @Inject
+    public TournamentRepository(
+        ITournamentPersistence tournamentPersistence) {
+        this.tournamentPersistence = tournamentPersistence;
+    }
 
     @Override
     public void saveOrUpdateTournament(Tournament newTournament) {
