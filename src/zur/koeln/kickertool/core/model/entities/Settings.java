@@ -11,6 +11,8 @@ import zur.koeln.kickertool.core.model.aggregates.Tournament;
 @NoArgsConstructor
 public class Settings {
 
+    private Tournament tournament;
+
     private TournamentMode mode = TournamentMode.SWISS_TUPEL;
 
     private int tableCount = 2;
@@ -31,6 +33,5 @@ public class Settings {
 
     private int currentNoOfMatches = 0;
 
-    private Tournament tournament;
 
 }

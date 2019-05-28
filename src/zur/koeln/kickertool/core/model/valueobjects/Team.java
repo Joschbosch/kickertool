@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package zur.koeln.kickertool.core.model.valueobjects;
 
@@ -16,13 +16,10 @@ import zur.koeln.kickertool.core.model.aggregates.Player;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Team {
-    //
-    //    private Player player1;
-    //    private Player player2;
 
     private UUID player1Id;
     private UUID player2Id;
-    
+
     public boolean hasPlayer(Player player) {
         return player1Id.equals(player.getUid()) || player2Id.equals(player.getUid());
     }
