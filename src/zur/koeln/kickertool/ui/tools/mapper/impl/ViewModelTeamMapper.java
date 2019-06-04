@@ -8,10 +8,8 @@ import org.springframework.stereotype.Component;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.application.handler.dtos.PlayerDTO;
 import zur.koeln.kickertool.application.handler.dtos.TeamDTO;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
-import zur.koeln.kickertool.ui.controller.shared.vms.PlayerDTOViewModel;
 import zur.koeln.kickertool.ui.controller.shared.vms.TeamDTOViewModel;
 import zur.koeln.kickertool.ui.tools.mapper.IViewModelMapper;
 
@@ -22,21 +20,21 @@ public class ViewModelTeamMapper implements IViewModelMapper<TeamDTO, TeamDTOVie
 	@Autowired
 	CustomModelMapper mapper;
 
-	private PlayerDTO getPlayerDTO(UUID playerUUID, List<PlayerDTO> playerDTOs) {
-		return playerDTOs.stream().filter(player -> player.getUid().equals(playerUUID)).findFirst().get();
+    private UUID getPlayerDTO(UUID playerUUID, List<UUID> playerDTOs) {
+        return playerDTOs.stream().filter(player -> player.equals(playerUUID)).findFirst().get();
 	}
 
 	@Override
 	public TeamDTOViewModel map(TeamDTO dto, List<?>... optionalMatchLists) {
-		
-		List<PlayerDTO> playerDTOs = (List<PlayerDTO>) optionalMatchLists[0];
-		
+
+        List<UUID> playerIds = (List<UUID>) optionalMatchLists[0];
+
 		TeamDTOViewModel vm = new TeamDTOViewModel();
 
-		vm.setPlayer1(getMapper().map(getPlayerDTO(dto.getPlayer1Id(), playerDTOs), PlayerDTOViewModel.class));
-		vm.setPlayer2(getMapper().map(getPlayerDTO(dto.getPlayer2Id(), playerDTOs), PlayerDTOViewModel.class));
+        vm.setPlayer1(dto.getPlayer1Id());
+        vm.setPlayer2(dto.getPlayer2Id());
 
 		return vm;
 	}
-	
+
 }

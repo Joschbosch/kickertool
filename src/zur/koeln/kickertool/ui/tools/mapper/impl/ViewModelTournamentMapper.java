@@ -1,15 +1,14 @@
 package zur.koeln.kickertool.ui.tools.mapper.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import zur.koeln.kickertool.application.handler.dtos.PlayerDTO;
 import zur.koeln.kickertool.application.handler.dtos.TournamentDTO;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
 import zur.koeln.kickertool.ui.controller.dialogs.vms.TournamentSettingsViewModel;
@@ -24,7 +23,7 @@ public class ViewModelTournamentMapper implements IViewModelMapper<TournamentDTO
 
 	@Autowired
 	CustomModelMapper mapper;
-	
+
 	@Autowired
 	ViewModelMatchMapper matchMapper;
 
@@ -39,11 +38,9 @@ public class ViewModelTournamentMapper implements IViewModelMapper<TournamentDTO
 
 		vm.setSettings(getMapper().map(dto.getSettings(), TournamentSettingsViewModel.class));
 		vm.setPlayers(getMapper().map(dto.getParticipants(), PlayerDTOViewModel.class));
-		vm.setDummyPlayers(getMapper().map(dto.getDummyPlayer(), PlayerDTOViewModel.class));
-		
-		List<PlayerDTO> allPlayers = new ArrayList<PlayerDTO>(dto.getParticipants());
-		allPlayers.addAll(dto.getDummyPlayer());
-		
+
+        List<UUID> allPlayers = new ArrayList<>(dto.getParticipants());
+
 		vm.setMatches(matchMapper.map(dto.getMatches(), allPlayers));
 		vm.setPlaytables(getMapper().map(dto.getPlaytables(), GameTableDTOViewModel.class));
 

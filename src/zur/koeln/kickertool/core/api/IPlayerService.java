@@ -3,6 +3,7 @@ package zur.koeln.kickertool.core.api;
 import java.util.List;
 import java.util.UUID;
 
+import zur.koeln.kickertool.core.kernl.PlayerStatus;
 import zur.koeln.kickertool.core.model.aggregates.Player;
 
 public interface IPlayerService {
@@ -20,5 +21,7 @@ public interface IPlayerService {
     Player getDummyPlayer();
 
     Player pauseOrUnpausePlayer(UUID playerToPause, boolean pausing);
+
+    void setPlayerStatus(UUID participant, PlayerStatus inTournament);
 
 }

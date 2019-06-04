@@ -20,9 +20,7 @@ public class TournamentDTO {
 
     private SettingsDTO settings;
 
-    private List<PlayerDTO> participants;
-
-    private List<PlayerDTO> dummyPlayer;
+    private List<UUID> participants;
 
     private List<MatchDTO> matches;
 

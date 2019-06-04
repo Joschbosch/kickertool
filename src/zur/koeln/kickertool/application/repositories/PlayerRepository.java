@@ -18,10 +18,13 @@ public class PlayerRepository
 
     private final IPlayerPersistence playerPersistence;
 
+    private final List<Player> dummyPlayer;
+
     @Inject
     public PlayerRepository(
         IPlayerPersistence playerPersistence) {
         this.playerPersistence = playerPersistence;
+        dummyPlayer = new ArrayList<>();
     }
 
     @Override
@@ -43,6 +46,11 @@ public class PlayerRepository
 
     @Override
     public Player getPlayer(UUID playerUID) {
+        for (Player dummy : dummyPlayer) {
+            if (dummy.getUid().equals(playerUID)) {
+                return dummy;
+            }
+        }
         return playerPersistence.findPlayerByUID(playerUID);
     }
 
@@ -53,21 +61,32 @@ public class PlayerRepository
 
     @Override
     public Player createNewPlayer(String firstName, String lastName) {
+        Player newPlayer = createNewPlayerOrDummy(firstName, lastName, false);
+        playerPersistence.insert(newPlayer);
+        return newPlayer;
+    }
+
+    private Player createNewPlayerOrDummy(String firstName, String lastName, boolean dummy) {
         Player newPlayer = new Player();
-        newPlayer.setDummy(false);
+        newPlayer.setDummy(dummy);
         newPlayer.setFirstName(firstName);
         newPlayer.setLastName(lastName);
         newPlayer.setPlayedTournaments(new ArrayList<>());
         newPlayer.setStatus(PlayerStatus.NOT_IN_TOURNAMENT);
         newPlayer.setUid(UUID.randomUUID());
-        playerPersistence.insert(newPlayer);
         return newPlayer;
     }
 
     @Override
     public Player getNewOrFreeDummyPlayer() {
-        Player dummy = createNewPlayer("Dummy", "i");
-        dummy.setDummy(true);
+        for (Player dummy : dummyPlayer) {
+            if (dummy.getStatus() == PlayerStatus.NOT_IN_TOURNAMENT) {
+                dummy.setStatus(PlayerStatus.IN_TOURNAMENT);
+                return dummy;
+            }
+        }
+        Player dummy = createNewPlayerOrDummy("Dummy", "Player " + dummyPlayer.size(), true);
+        dummyPlayer.add(dummy);
         return dummy;
     }
 

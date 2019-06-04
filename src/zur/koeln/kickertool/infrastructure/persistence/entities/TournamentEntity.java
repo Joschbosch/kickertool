@@ -29,10 +29,10 @@ public class TournamentEntity {
     @JoinColumn(name = "SETTINGS_UID")
     private SettingsEntity settings;
 
-    @OneToMany(cascade = {CascadeType.ALL})
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinColumn(name = "PARTICIPANTS_UID")
-    private List<PlayerEntity> participants;
+    @ElementCollection
+    @CollectionTable(name = "Participants", joinColumns = @JoinColumn(name = "participant_ids"))
+    @Column(name = "participantids")
+    private List<UUID> participants;
 
     @OneToMany(cascade = {CascadeType.ALL})
     @LazyCollection(LazyCollectionOption.FALSE)
