@@ -37,6 +37,6 @@ public interface ITournamentService {
 
     List<PlayerRankingRow> getRankingByRound(UUID tournamentUID, int round);
 
-    void enterOrChangeMatchResult(UUID tournamentId, UUID matchID, int scoreHome, int scoreVisiting);
+    boolean enterOrChangeMatchResult(UUID tournamentId, UUID matchID, int scoreHome, int scoreVisiting);
 
 }

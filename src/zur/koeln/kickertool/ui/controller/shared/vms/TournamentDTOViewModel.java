@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
@@ -28,20 +27,18 @@ public class TournamentDTOViewModel extends FXViewModel{
 
     private List<PlayerDTOViewModel> players;
 
-    private List<PlayerDTOViewModel> dummyPlayers;
-
     private List<MatchDTOViewModel> matches;
 
     private List<GameTableDTOViewModel> playtables;
-    
+
     private final ObservableList<PlayerRankingRowViewModel> playerRankings = FXCollections.observableArrayList();
 
     private int currentRoundIndex;
-    
+
     public List<MatchDTOViewModel> getMatchesForCurrentRound() {
     	return getMatches().stream().filter(match -> match.getRoundNumber() == getCurrentRoundIndex()).collect(Collectors.toList());
     }
-	
+
 	@Override
 	public ModelValidationResult validate() {
 		return new ModelValidationResult();

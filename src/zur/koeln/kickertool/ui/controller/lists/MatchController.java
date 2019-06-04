@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import zur.koeln.kickertool.core.kernl.MatchStatus;
 import zur.koeln.kickertool.ui.controller.base.AbstractController;
 import zur.koeln.kickertool.ui.controller.base.DialogCloseEvent;
 import zur.koeln.kickertool.ui.controller.dialogs.vms.MatchResultViewModel;
@@ -28,17 +29,17 @@ public class MatchController extends AbstractController<MatchDTOViewModel>{
 	@FXML Label lbl_result;
 	@FXML Label lbl_tableNo;
 	@FXML JFXButton btn_enterScore;
-	
+
 	@Setter(value = AccessLevel.PRIVATE)
 	private MatchDTOViewModel vm;
-	
+
 	@FXML public void onEnterScoreClicked() {
-		
+
 		openDialog(DialogContentDefinition.MATCH_RESULT_DIALOG, getVm(), new DialogCloseEvent<MatchResultViewModel>() {
 
 			@Override
 			public void doAfterDialogClosed(MatchResultViewModel result) {
-				
+
 				getVm().setScoreHome(result.getScoreHomeTeam());
 				getVm().setScoreVisiting(result.getScoreVisitingTeam());
 				GUIEventService.getInstance().fireEvent(GUIEvents.MATCH_RESULT_ENTERED, getVm());
@@ -46,7 +47,7 @@ public class MatchController extends AbstractController<MatchDTOViewModel>{
 			}
 		});
 	}
-	
+
 	@Override
 	public void doAfterInitializationCompleted(MatchDTOViewModel payload) {
 		setVm(payload);
@@ -54,12 +55,12 @@ public class MatchController extends AbstractController<MatchDTOViewModel>{
 	}
 
 	private void setLabelTexts() {
-		getLbl_player1_team1().setText(getVm().getHomeTeam().getPlayer1().getFirstName());
-		getLbl_player2_team1().setText(getVm().getHomeTeam().getPlayer2().getFirstName());
-		getLbl_player1_team2().setText(getVm().getVisitingTeam().getPlayer1().getFirstName());
-		getLbl_player2_team2().setText(getVm().getVisitingTeam().getPlayer2().getFirstName());
+        getLbl_player1_team1().setText(getVm().getHomeTeam().getPlayer1().toString());
+        getLbl_player2_team1().setText(getVm().getHomeTeam().getPlayer2().toString());
+        getLbl_player1_team2().setText(getVm().getVisitingTeam().getPlayer1().toString());
+        getLbl_player2_team2().setText(getVm().getVisitingTeam().getPlayer2().toString());
 		getLbl_result().setText(getVm().getScoreHome() + " : " + getVm().getScoreVisiting());
-		getLbl_tableNo().setText(getVm().getTable() == null ? "ND" : String.valueOf(getVm().getTable().getTableNumber()));
+        getLbl_tableNo().setText(getVm().getTable() == null ? (getVm().getStatus() == MatchStatus.FINISHED ? "OVER" : "ND") : String.valueOf(getVm().getTable().getTableNumber()));
 	}
 
 	@Override
@@ -70,6 +71,6 @@ public class MatchController extends AbstractController<MatchDTOViewModel>{
 	@Override
 	protected void registerEvents() {
 		// nothing to do here
-	} 
-	
+    }
+
 }

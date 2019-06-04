@@ -17,7 +17,6 @@ import zur.koeln.kickertool.core.spi.IPlayerRepository;
 public class PlayerService
     implements IPlayerService {
 
-
     private IPlayerRepository playerRepo;
 
     @Inject
@@ -64,4 +63,10 @@ public class PlayerService
         return playerRepo.getNewOrFreeDummyPlayer();
     }
 
+    @Override
+    public void setPlayerStatus(UUID player, PlayerStatus status) {
+        Player p = playerRepo.getPlayer(player);
+        p.setStatus(status);
+        playerRepo.storeOrUpdatePlayer(p);
+    }
 }

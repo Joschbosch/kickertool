@@ -1,6 +1,5 @@
 package zur.koeln.kickertool.application.handler;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,7 +52,7 @@ public class TournamentCommandHandler
 
     @Override
     public SingleResponseDTO<TournamentDTO> startTournament(UUID tournamentIDToStart) {
-        Tournament tournament =tournamentService.startTournament(tournamentIDToStart);
+        Tournament tournament = tournamentService.startTournament(tournamentIDToStart);
         return createSuccessfullDTO(tournament);
 
     }
@@ -100,19 +99,22 @@ public class TournamentCommandHandler
     }
     @Override
     public StatusOnlyDTO enterOrChangeMatchResult(UUID tournamentUUID, UUID matchId, int scoreHome, int scoreVisiting) {
-        tournamentService.enterOrChangeMatchResult(tournamentUUID, matchId, scoreHome, scoreVisiting);
+        boolean accepted = tournamentService.enterOrChangeMatchResult(tournamentUUID, matchId, scoreHome, scoreVisiting);
         StatusOnlyDTO statusOnlyDTO = new StatusOnlyDTO();
-        statusOnlyDTO.setDtoStatus(StatusDTO.SUCCESS);
+        statusOnlyDTO.setDtoStatus(accepted ? StatusDTO.SUCCESS : StatusDTO.VALIDATION_ERROR);
+        if (!accepted) {
+            ValidationDTO validation = new ValidationDTO();
+            validation.addErrorMsg("Das Matchergebnis ist nicht zulässig");
+            statusOnlyDTO.setValidation(validation);
+        }
         return statusOnlyDTO;
     }
 
-    private SingleResponseDTO<TournamentDTO> createSuccessfullDTO(Tournament tournament){
+    private SingleResponseDTO<TournamentDTO> createSuccessfullDTO(Tournament tournament) {
         SingleResponseDTO returnDTO = new SingleResponseDTO<>();
         returnDTO.setDtoStatus(StatusDTO.SUCCESS);
         returnDTO.setDtoValue(mapper.map(tournament, TournamentDTO.class));
-        if (((TournamentDTO) returnDTO.getDtoValue()).getDummyPlayer() == null) {
-            ((TournamentDTO) returnDTO.getDtoValue()).setDummyPlayer(new ArrayList<>());
-        }
+
         ((TournamentDTO) returnDTO.getDtoValue()).setCurrentRound(tournament.getCurrentRound());
         return returnDTO;
     }

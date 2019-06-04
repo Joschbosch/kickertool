@@ -1,5 +1,7 @@
 package zur.koeln.kickertool.application.repositories;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -16,10 +18,13 @@ public class TournamentRepository
 
     private final ITournamentPersistence tournamentPersistence;
 
+    private final Map<UUID, Tournament> cachedTournaments;
+
     @Inject
     public TournamentRepository(
         ITournamentPersistence tournamentPersistence) {
         this.tournamentPersistence = tournamentPersistence;
+        cachedTournaments = new HashMap<>();
     }
 
     @Override
@@ -34,6 +39,9 @@ public class TournamentRepository
 
     @Override
     public Tournament getTournament(UUID tournamentID) {
+        if (cachedTournaments.containsKey(tournamentID)) {
+            return cachedTournaments.get(tournamentID);
+        }
         return tournamentPersistence.findByUID(tournamentID);
     }
 
@@ -43,6 +51,7 @@ public class TournamentRepository
         newTournament.setName(tournamentName);
         newTournament.setUid(UUID.randomUUID());
         newTournament.setStatus(TournamentStatus.PREPARING);
+        cachedTournaments.put(newTournament.getUid(), newTournament);
         return newTournament;
     }
 

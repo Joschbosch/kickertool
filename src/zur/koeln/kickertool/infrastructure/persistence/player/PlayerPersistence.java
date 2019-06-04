@@ -32,12 +32,16 @@ public class PlayerPersistence
 
     @Override
     public void insert(Player player) {
-        playerRepo.save(mapper.map(player, PlayerEntity.class));
+        if (!player.isDummy()) {
+            playerRepo.save(mapper.map(player, PlayerEntity.class));
+        }
     }
 
     @Override
     public void update(Player player) {
-        playerRepo.save(mapper.map(player, PlayerEntity.class));
+        if (!player.isDummy()) {
+            playerRepo.save(mapper.map(player, PlayerEntity.class));
+        }
 
     }
 
@@ -62,7 +66,9 @@ public class PlayerPersistence
 
     @Override
     public void removePlayer(Player player) {
-        playerRepo.deleteById(player.getUid());
+        if (!player.isDummy()) {
+            playerRepo.deleteById(player.getUid());
+        }
     }
 
 }
