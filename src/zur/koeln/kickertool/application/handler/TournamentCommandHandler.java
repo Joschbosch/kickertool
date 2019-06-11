@@ -34,11 +34,7 @@ public class TournamentCommandHandler
         this.tournamentService = tournamentService;
         this.mapper = mapper;
     }
-    @Override
-    public SingleResponseDTO<TournamentDTO> createNewTournament(String tournamentName, List<PlayerDTO> participants, SettingsDTO settings) {
-        Tournament newTournament = tournamentService.createNewTournament(tournamentName, mapper.map(participants, Player.class), mapper.map(settings, Settings.class));
-        return createSuccessfullDTO(newTournament);
-    }
+
     @Override
     public SingleResponseDTO<TournamentDTO> createAndStartNewTournament(String tournamentName, List<PlayerDTO> participants, SettingsDTO settings) {
         Tournament newTournament = tournamentService.createNewTournament(tournamentName, mapper.map(participants, Player.class), mapper.map(settings, Settings.class));
@@ -51,20 +47,6 @@ public class TournamentCommandHandler
     }
 
     @Override
-    public SingleResponseDTO<TournamentDTO> startTournament(UUID tournamentIDToStart) {
-        Tournament tournament = tournamentService.startTournament(tournamentIDToStart);
-        return createSuccessfullDTO(tournament);
-
-    }
-
-    @Override
-    public SingleResponseDTO<TournamentDTO> renameTournament(UUID tournamentIDToRename, String name) {
-        Tournament tournament = tournamentService.renameTournament(tournamentIDToRename, name);
-        return createSuccessfullDTO(tournament);
-
-    }
-
-    @Override
     public ListResponseDTO<PlayerDTO> addParticipantToTournament(UUID tournamentIDToAdd, UUID player) {
         List<Player> participants = tournamentService.addParticipantToTournament(tournamentIDToAdd, player);
 
@@ -73,7 +55,7 @@ public class TournamentCommandHandler
     }
 
     @Override
-    public ListResponseDTO<PlayerDTO> removeParticipantFromournament(UUID tournamentIDToRemove, UUID participant) {
+    public ListResponseDTO<PlayerDTO> removeParticipantFromTournament(UUID tournamentIDToRemove, UUID participant) {
         List<Player> participants = tournamentService.removeParticipantFromTournament(tournamentIDToRemove, participant);
         return createSuccessfulListResponse(participants);
     }

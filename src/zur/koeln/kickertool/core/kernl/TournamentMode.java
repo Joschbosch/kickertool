@@ -1,8 +1,7 @@
 /**
- * 
+ *
  */
 package zur.koeln.kickertool.core.kernl;
-
 
 public enum TournamentMode {
 
@@ -16,7 +15,7 @@ public enum TournamentMode {
     public String getDisplayName() {
         return displayName;
     }
-    
+
     @Override
     public String toString() {
     	return getDisplayName();

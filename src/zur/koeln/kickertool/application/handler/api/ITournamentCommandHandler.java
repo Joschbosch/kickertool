@@ -13,21 +13,15 @@ import zur.koeln.kickertool.application.handler.dtos.base.StatusOnlyDTO;
 
 public interface ITournamentCommandHandler {
 
-    SingleResponseDTO<TournamentDTO> startTournament(UUID tournamentIDToStart);
-
-    SingleResponseDTO<TournamentDTO> renameTournament(UUID tournamentIDToRename, String name);
+    SingleResponseDTO<TournamentDTO> createAndStartNewTournament(String tournamentName, List<PlayerDTO> participants, SettingsDTO settings);
 
     ListResponseDTO<PlayerDTO> addParticipantToTournament(UUID tournamentIDToAdd, UUID participant);
 
-    ListResponseDTO<PlayerDTO> removeParticipantFromournament(UUID tournamentIDToRemove, UUID participant);
-
-    SingleResponseDTO<TournamentDTO> createNewTournament(String tournamentName, List<PlayerDTO> participants, SettingsDTO settings);
+    ListResponseDTO<PlayerDTO> removeParticipantFromTournament(UUID tournamentIDToRemove, UUID participant);
 
     SingleResponseDTO<TournamentDTO> startNextTournamentRound(UUID tournamentUUID);
 
     ListResponseDTO<PlayerRankingRowDTO> getRankingForRound(UUID tournamentUUID, int round);
-
-    SingleResponseDTO<TournamentDTO> createAndStartNewTournament(String tournamentName, List<PlayerDTO> participants, SettingsDTO settings);
 
     StatusOnlyDTO enterOrChangeMatchResult(UUID tournamentUUID, UUID matchId, int scoreHome, int scoreVisiting);
 

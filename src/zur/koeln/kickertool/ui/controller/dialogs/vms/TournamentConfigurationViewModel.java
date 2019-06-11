@@ -13,7 +13,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import zur.koeln.kickertool.application.handler.api.IPlayerCommandHandler;
-import zur.koeln.kickertool.application.handler.api.ITournamentSettingsCommandHandler;
+import zur.koeln.kickertool.application.handler.api.ITournamentConfigCommandHandler;
 import zur.koeln.kickertool.application.handler.dtos.PlayerDTO;
 import zur.koeln.kickertool.application.handler.dtos.SettingsDTO;
 import zur.koeln.kickertool.application.handler.dtos.base.ListResponseDTO;
@@ -35,7 +35,7 @@ public class TournamentConfigurationViewModel extends FXViewModel {
 	
 	@Autowired
 	@Getter(value = AccessLevel.PRIVATE)
-	ITournamentSettingsCommandHandler settingsCommandHandler;
+	ITournamentConfigCommandHandler settingsCommandHandler;
 
 	@Autowired
 	@Getter(value = AccessLevel.PRIVATE)
