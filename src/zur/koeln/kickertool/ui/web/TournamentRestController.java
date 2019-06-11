@@ -34,8 +34,8 @@ public class TournamentRestController {
         return tournamentCommandHandler.getRankingForRound(tournamentId, roundNo);
     }
 
-    @GetMapping("/getranking")
-    public StatusOnlyDTO getRankingForRound(UUID tournamentId, UUID matchId, int scoreHome, int scoreVisiting) {
+    @GetMapping("/enterresult")
+    public StatusOnlyDTO enterOrChangeMatchResult(UUID tournamentId, UUID matchId, int scoreHome, int scoreVisiting) {
         return tournamentCommandHandler.enterOrChangeMatchResult(tournamentId, tournamentId, scoreHome, scoreVisiting);
     }
 
