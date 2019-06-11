@@ -24,7 +24,7 @@ public class TournamentRestController {
     @Getter(value = AccessLevel.PRIVATE)
     private ITournamentCommandHandler tournamentCommandHandler;
 
-    @GetMapping("/createandstart")
+    @PostMapping("/createandstart")
     public SingleResponseDTO<TournamentDTO> createAndStartTournament(@RequestBody TournamentConfigurationDTO tournamentConfigDTO) {
         return tournamentCommandHandler.createAndStartNewTournament(tournamentConfigDTO.getName(), tournamentConfigDTO.getSelectedPlayer(), tournamentConfigDTO.getSettings());
     }
@@ -34,17 +34,17 @@ public class TournamentRestController {
         return tournamentCommandHandler.getRankingForRound(tournamentId, roundNo);
     }
 
-    @GetMapping("/enterresult")
+    @PutMapping("/postmatchresult")
     public StatusOnlyDTO enterOrChangeMatchResult(UUID tournamentId, UUID matchId, int scoreHome, int scoreVisiting) {
         return tournamentCommandHandler.enterOrChangeMatchResult(tournamentId, tournamentId, scoreHome, scoreVisiting);
     }
 
-    @GetMapping("/addplayer")
+    @PutMapping("/addplayer")
     public ListResponseDTO<PlayerDTO> addPlayerToTournament(UUID tournamentId, UUID playerId) {
         return tournamentCommandHandler.addParticipantToTournament(tournamentId, playerId);
     }
 
-    @GetMapping("/removeplayer")
+    @DeleteMapping("/removeplayer")
     public ListResponseDTO<PlayerDTO> removePlayerFromTournament(UUID tournamentId, UUID playerId) {
         return tournamentCommandHandler.removeParticipantFromTournament(tournamentId, playerId);
     }
