@@ -15,6 +15,8 @@ public interface ITournamentCommandHandler {
 
     SingleResponseDTO<TournamentDTO> createAndStartNewTournament(String tournamentName, List<PlayerDTO> participants, SettingsDTO settings);
 
+    SingleResponseDTO<TournamentDTO> getTournamentById(UUID tournamentId);
+
     ListResponseDTO<PlayerDTO> addParticipantToTournament(UUID tournamentIDToAdd, UUID participant);
 
     ListResponseDTO<PlayerDTO> removeParticipantFromTournament(UUID tournamentIDToRemove, UUID participant);

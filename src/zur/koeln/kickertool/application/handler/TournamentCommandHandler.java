@@ -46,6 +46,11 @@ public class TournamentCommandHandler
         return createSuccessfullDTO(tournamentService.getTournamentById(tournamentUID));
     }
 
+	@Override
+	public SingleResponseDTO<TournamentDTO> getTournamentById(UUID tournamentId) {
+		return getTournament(tournamentId);
+	}
+
     @Override
     public ListResponseDTO<PlayerDTO> addParticipantToTournament(UUID tournamentIDToAdd, UUID player) {
         List<Player> participants = tournamentService.addParticipantToTournament(tournamentIDToAdd, player);

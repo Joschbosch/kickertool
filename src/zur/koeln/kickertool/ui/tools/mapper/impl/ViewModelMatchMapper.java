@@ -25,14 +25,14 @@ public class ViewModelMatchMapper implements IViewModelMapper<MatchDTO, MatchDTO
 
 	@Override
 	public MatchDTOViewModel map(MatchDTO dto, List<?>... optionalMatchLists) {
-		
+
 		MatchDTOViewModel vm = new MatchDTOViewModel();
 		vm.setMatchID(dto.getMatchID());
 		vm.setRoundNumber(dto.getRoundNumber());
 		vm.setScoreHome(dto.getScoreHome());
 		vm.setScoreVisiting(dto.getScoreVisiting());
 		vm.setStatus(dto.getStatus());
-		vm.setTournamentId(dto.getTournament().getUid());
+		vm.setTournamentId(null);
 		vm.setHomeTeam(getTeamMapper().map(dto.getHomeTeam(), optionalMatchLists));
 		vm.setVisitingTeam(getTeamMapper().map(dto.getVisitingTeam(), optionalMatchLists));
         if (dto.getTable() != null) {
@@ -40,7 +40,7 @@ public class ViewModelMatchMapper implements IViewModelMapper<MatchDTO, MatchDTO
         }
 
 		return vm;
-		
+
 	}
 
 }

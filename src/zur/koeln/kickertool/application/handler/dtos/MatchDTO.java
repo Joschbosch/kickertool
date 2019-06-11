@@ -22,8 +22,6 @@ public class MatchDTO {
 
     private MatchStatus status;
 
-    private TournamentDTO tournament;
-
     private TeamDTO homeTeam;
 
     private TeamDTO visitingTeam;

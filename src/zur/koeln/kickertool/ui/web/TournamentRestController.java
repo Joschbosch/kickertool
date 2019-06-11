@@ -29,6 +29,11 @@ public class TournamentRestController {
         return tournamentCommandHandler.createAndStartNewTournament(tournamentConfigDTO.getName(), tournamentConfigDTO.getSelectedPlayer(), tournamentConfigDTO.getSettings());
     }
 
+    @GetMapping("/{uuid}")
+    public SingleResponseDTO<TournamentDTO> getCurrentTournament(@PathVariable UUID uuid) {
+    	return getTournamentCommandHandler().getTournamentById(uuid);
+    }
+
     @GetMapping("/getranking")
     public ListResponseDTO<PlayerRankingRowDTO> getRankingForRound(UUID tournamentId, int roundNo) {
         return tournamentCommandHandler.getRankingForRound(tournamentId, roundNo);
@@ -48,8 +53,9 @@ public class TournamentRestController {
     public ListResponseDTO<PlayerDTO> removePlayerFromTournament(UUID tournamentId, UUID playerId) {
         return tournamentCommandHandler.removeParticipantFromTournament(tournamentId, playerId);
     }
+
     @GetMapping("/nextround")
-    public SingleResponseDTO<TournamentDTO> startNextRound(UUID tournamentId) {
-        return tournamentCommandHandler.startNextTournamentRound(tournamentId);
+    public SingleResponseDTO<TournamentDTO> startNextRound(@RequestParam String uuidString) {
+        return tournamentCommandHandler.startNextTournamentRound(UUID.fromString(uuidString));
     }
 }
