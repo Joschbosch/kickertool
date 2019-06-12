@@ -54,8 +54,14 @@ public class TournamentCommandHandler
     @Override
     public ListResponseDTO<PlayerDTO> addParticipantToTournament(UUID tournamentIDToAdd, UUID player) {
         List<Player> participants = tournamentService.addParticipantToTournament(tournamentIDToAdd, player);
-
-        return createSuccessfulListResponse(participants);
+        if (participants != null) {
+            return createSuccessfulListResponse(participants);
+        }
+        ListResponseDTO<PlayerDTO> response = new ListResponseDTO<>();
+        response.setDtoStatus(StatusDTO.VALIDATION_ERROR);
+        response.setValidation(new ValidationDTO());
+        response.getValidation().addErrorMsg("Spieler ist schon im Turnier.");
+        return response;
 
     }
 
