@@ -20,8 +20,6 @@ public interface IPlayerService {
 
     Player getDummyPlayer();
 
-    Player pauseOrUnpausePlayer(UUID playerToPause, boolean pausing);
-
     void setPlayerStatus(UUID participant, PlayerStatus inTournament);
 
 }

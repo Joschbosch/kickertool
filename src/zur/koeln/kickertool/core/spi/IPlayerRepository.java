@@ -9,15 +9,17 @@ public interface IPlayerRepository
 {
 
     public Player storeOrUpdatePlayer(Player player);
-	
+
     public void deletePlayer(UUID player);
-	
-	public Player getPlayer(UUID playerUID);
-	
+
+	public Player getPlayerOrNewDummyWithId(UUID playerUID);
+
 	public List<Player> getAllPlayer();
 
     public Player createNewPlayer(String firstName, String lastName);
 
     public Player getNewOrFreeDummyPlayer();
+
+    Player getPlayer(UUID playerUID);
 
 }

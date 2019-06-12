@@ -200,4 +200,9 @@ public class Tournament {
         }
         return false;
     }
+
+    public void updateParticipantsStatus() {
+        // TODO sazu 5.5 2019 Auto-generated method stub
+
+    }
 }

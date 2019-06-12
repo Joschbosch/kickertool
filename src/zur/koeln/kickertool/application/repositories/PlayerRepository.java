@@ -41,7 +41,21 @@ public class PlayerRepository
     @Override
     public void deletePlayer(UUID playerUid) {
 
-        playerPersistence.removePlayer(getPlayer(playerUid));
+        playerPersistence.removePlayer(getPlayerOrNewDummyWithId(playerUid));
+    }
+
+    @Override
+    public Player getPlayerOrNewDummyWithId(UUID playerUID) {
+        for (Player dummy : dummyPlayer) {
+            if (dummy.getUid().equals(playerUID)) {
+                return dummy;
+            }
+        }
+        Player findPlayerByUID = playerPersistence.findPlayerByUID(playerUID);
+        if (findPlayerByUID == null) {
+            findPlayerByUID = createDummyWithUID(playerUID);
+        }
+        return findPlayerByUID;
     }
 
     @Override
@@ -82,6 +96,18 @@ public class PlayerRepository
         newPlayer.setPlayedTournaments(new ArrayList<>());
         newPlayer.setStatus(PlayerStatus.NOT_IN_TOURNAMENT);
         newPlayer.setUid(UUID.randomUUID());
+        return newPlayer;
+    }
+
+    private Player createDummyWithUID(UUID id) {
+        Player newPlayer = new Player();
+        newPlayer.setDummy(true);
+        newPlayer.setFirstName("Dummy");
+        newPlayer.setLastName("Player" + dummyPlayer.size());
+        newPlayer.setPlayedTournaments(new ArrayList<>());
+        newPlayer.setStatus(PlayerStatus.IN_TOURNAMENT);
+        newPlayer.setUid(id);
+        dummyPlayer.add(newPlayer);
         return newPlayer;
     }
 

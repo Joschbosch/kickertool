@@ -77,12 +77,5 @@ public class PlayerCommandHandler
 
         return response;
     }
-    @Override
-    public SingleResponseDTO<PlayerDTO> pauseOrUnpausePlayer(UUID playerId, boolean pausing) {
-        Player player = playerService.pauseOrUnpausePlayer(playerId, pausing);
-        SingleResponseDTO response = new SingleResponseDTO<>();
-        response.setDtoStatus(StatusDTO.SUCCESS);
-        response.setDtoValue(mapper.map(player, PlayerDTO.class));
-        return response;
-    }
+
 }

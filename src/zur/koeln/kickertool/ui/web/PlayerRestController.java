@@ -32,15 +32,6 @@ public class PlayerRestController {
 		return getCommandHandler().createNewPlayer(playerDTO.getFirstName(), playerDTO.getLastName());
 	}
 
-    @PutMapping("/pauseplayer/{playerId}")
-    public SingleResponseDTO<PlayerDTO> pausePlayer(@PathVariable UUID playerId) {
-        return getCommandHandler().pauseOrUnpausePlayer(playerId, true);
-    }
-
-    @PutMapping("/unpauseplayer/{playerId}")
-    public SingleResponseDTO<PlayerDTO> unpausePlayer(@PathVariable UUID playerId) {
-        return getCommandHandler().pauseOrUnpausePlayer(playerId, false);
-    }
 	@DeleteMapping("/{uuid}")
 	public @ResponseBody StatusOnlyDTO deletePlayer(@PathVariable UUID uuid) {
 		return getCommandHandler().deletePlayer(uuid);

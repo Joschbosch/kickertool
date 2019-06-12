@@ -126,4 +126,12 @@ public class TournamentCommandHandler
         return response;
     }
 
+    @Override
+    public SingleResponseDTO<TournamentDTO> pauseOrUnpausePlayer(UUID tournamentUUID, UUID playerId, boolean pausing) {
+        SingleResponseDTO response = new SingleResponseDTO<>();
+        Tournament tournament = tournamentService.pauseOrUnpausePlayer(tournamentUUID, playerId, pausing);
+        response.setDtoStatus(StatusDTO.SUCCESS);
+        response.setDtoValue(mapper.map(tournament, TournamentDTO.class));
+        return response;
+    }
 }

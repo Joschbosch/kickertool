@@ -17,5 +17,4 @@ public interface IPlayerCommandHandler {
 
     ListResponseDTO<PlayerDTO> getAllPlayer();
 
-    SingleResponseDTO<PlayerDTO> pauseOrUnpausePlayer(UUID playerId, boolean pausing);
 }

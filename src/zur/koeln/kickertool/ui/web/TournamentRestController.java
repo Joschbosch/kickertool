@@ -56,4 +56,14 @@ public class TournamentRestController {
     public SingleResponseDTO<TournamentDTO> startNextRound(@PathVariable UUID tournamentId) {
         return tournamentCommandHandler.startNextTournamentRound(tournamentId);
     }
+
+    @PutMapping("/pauseplayer/{tournamentId}/{playerId}")
+    public SingleResponseDTO<TournamentDTO> pausePlayer(@PathVariable UUID tournamentId, @PathVariable UUID playerId) {
+        return getTournamentCommandHandler().pauseOrUnpausePlayer(tournamentId, playerId, true);
+    }
+
+    @PutMapping("/unpauseplayer/{tournamentId}/{playerId}")
+    public SingleResponseDTO<TournamentDTO> unpausePlayer(@PathVariable UUID tournamentId, @PathVariable UUID playerId) {
+        return getTournamentCommandHandler().pauseOrUnpausePlayer(tournamentId, playerId, false);
+    }
 }

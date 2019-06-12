@@ -39,4 +39,6 @@ public interface ITournamentService {
 
     boolean enterOrChangeMatchResult(UUID tournamentId, UUID matchID, int scoreHome, int scoreVisiting);
 
+    Tournament pauseOrUnpausePlayer(UUID tournamentId, UUID playerToPause, boolean pausing);
+
 }

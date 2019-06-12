@@ -38,13 +38,6 @@ public class PlayerService
     }
 
     @Override
-    public Player pauseOrUnpausePlayer(UUID playerToPause, boolean pausing) {
-        Player p = playerRepo.getPlayer(playerToPause);
-        p.setStatus(pausing ? PlayerStatus.PAUSING_TOURNAMENT : PlayerStatus.IN_TOURNAMENT);
-        return p;
-    }
-
-    @Override
     public void deletePlayer(UUID player) {
         playerRepo.deletePlayer(player);
     }
@@ -55,7 +48,7 @@ public class PlayerService
 
     @Override
     public Player getPlayerById(UUID playerId) {
-        return playerRepo.getPlayer(playerId);
+        return playerRepo.getPlayerOrNewDummyWithId(playerId);
     }
 
     @Override
@@ -65,7 +58,7 @@ public class PlayerService
 
     @Override
     public void setPlayerStatus(UUID player, PlayerStatus status) {
-        Player p = playerRepo.getPlayer(player);
+        Player p = playerRepo.getPlayerOrNewDummyWithId(player);
         p.setStatus(status);
         playerRepo.storeOrUpdatePlayer(p);
     }

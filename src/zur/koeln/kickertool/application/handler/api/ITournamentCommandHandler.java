@@ -27,4 +27,6 @@ public interface ITournamentCommandHandler {
 
     StatusOnlyDTO enterOrChangeMatchResult(UUID tournamentUUID, UUID matchId, int scoreHome, int scoreVisiting);
 
+    SingleResponseDTO<TournamentDTO> pauseOrUnpausePlayer(UUID tournamentUUID, UUID playerId, boolean pausing);
+
 }
