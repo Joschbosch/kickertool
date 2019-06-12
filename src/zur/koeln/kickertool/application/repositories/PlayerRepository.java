@@ -69,8 +69,16 @@ public class PlayerRepository
     private Player createNewPlayerOrDummy(String firstName, String lastName, boolean dummy) {
         Player newPlayer = new Player();
         newPlayer.setDummy(dummy);
-        newPlayer.setFirstName(firstName);
-        newPlayer.setLastName(lastName);
+        if (firstName != null) {
+            newPlayer.setFirstName(firstName);
+        } else {
+            newPlayer.setFirstName(""); //$NON-NLS-1$
+        }
+        if (lastName != null) {
+            newPlayer.setLastName(lastName);
+        } else {
+            newPlayer.setLastName(""); //$NON-NLS-1$
+        }
         newPlayer.setPlayedTournaments(new ArrayList<>());
         newPlayer.setStatus(PlayerStatus.NOT_IN_TOURNAMENT);
         newPlayer.setUid(UUID.randomUUID());

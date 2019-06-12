@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import zur.koeln.kickertool.application.handler.api.ITournamentCommandHandler;
-import zur.koeln.kickertool.application.handler.dtos.PlayerDTO;
-import zur.koeln.kickertool.application.handler.dtos.PlayerRankingRowDTO;
-import zur.koeln.kickertool.application.handler.dtos.TournamentConfigurationDTO;
-import zur.koeln.kickertool.application.handler.dtos.TournamentDTO;
+import zur.koeln.kickertool.application.handler.dtos.*;
 import zur.koeln.kickertool.application.handler.dtos.base.ListResponseDTO;
 import zur.koeln.kickertool.application.handler.dtos.base.SingleResponseDTO;
 import zur.koeln.kickertool.application.handler.dtos.base.StatusOnlyDTO;
@@ -20,6 +17,7 @@ import zur.koeln.kickertool.application.handler.dtos.base.StatusOnlyDTO;
 @RestController
 @RequestMapping("/api/tournament")
 public class TournamentRestController {
+
     @Autowired
     @Getter(value = AccessLevel.PRIVATE)
     private ITournamentCommandHandler tournamentCommandHandler;
@@ -31,31 +29,31 @@ public class TournamentRestController {
 
     @GetMapping("/{uuid}")
     public SingleResponseDTO<TournamentDTO> getCurrentTournament(@PathVariable UUID uuid) {
-    	return getTournamentCommandHandler().getTournamentById(uuid);
+        return getTournamentCommandHandler().getTournamentById(uuid);
     }
 
-    @GetMapping("/getranking")
-    public ListResponseDTO<PlayerRankingRowDTO> getRankingForRound(UUID tournamentId, int roundNo) {
+    @GetMapping("/getranking/{tournamentId}/{roundNo}")
+    public ListResponseDTO<PlayerRankingRowDTO> getRankingForRound(@PathVariable UUID tournamentId, @PathVariable int roundNo) {
         return tournamentCommandHandler.getRankingForRound(tournamentId, roundNo);
     }
 
-    @PutMapping("/postmatchresult")
-    public StatusOnlyDTO enterOrChangeMatchResult(UUID tournamentId, UUID matchId, int scoreHome, int scoreVisiting) {
-        return tournamentCommandHandler.enterOrChangeMatchResult(tournamentId, tournamentId, scoreHome, scoreVisiting);
+    @PostMapping("/postmatchresult/{tournamentId}")
+    public StatusOnlyDTO enterOrChangeMatchResult(@PathVariable UUID tournamentId, @RequestBody MatchResultDTO result) {
+        return tournamentCommandHandler.enterOrChangeMatchResult(tournamentId, result.getMatchId(), result.getHomeScore(), result.getVisitingScore());
     }
 
-    @PutMapping("/addplayer")
-    public ListResponseDTO<PlayerDTO> addPlayerToTournament(UUID tournamentId, UUID playerId) {
+    @PutMapping("/addplayer/{tournamentId}/{playerId}")
+    public ListResponseDTO<PlayerDTO> addPlayerToTournament(@PathVariable UUID tournamentId, @PathVariable UUID playerId) {
         return tournamentCommandHandler.addParticipantToTournament(tournamentId, playerId);
     }
 
-    @DeleteMapping("/removeplayer")
-    public ListResponseDTO<PlayerDTO> removePlayerFromTournament(UUID tournamentId, UUID playerId) {
+    @DeleteMapping("/removeplayer/{tournamentId}/{playerId}")
+    public ListResponseDTO<PlayerDTO> removePlayerFromTournament(@PathVariable UUID tournamentId, @PathVariable UUID playerId) {
         return tournamentCommandHandler.removeParticipantFromTournament(tournamentId, playerId);
     }
 
-    @GetMapping("/nextround")
-    public SingleResponseDTO<TournamentDTO> startNextRound(@RequestParam String uuidString) {
-        return tournamentCommandHandler.startNextTournamentRound(UUID.fromString(uuidString));
+    @GetMapping("/nextround/{tournamentId}")
+    public SingleResponseDTO<TournamentDTO> startNextRound(@PathVariable UUID tournamentId) {
+        return tournamentCommandHandler.startNextTournamentRound(tournamentId);
     }
 }

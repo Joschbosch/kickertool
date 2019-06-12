@@ -190,7 +190,9 @@ public class Tournament {
                     m.setScoreHome(scoreHome);
                     m.setScoreVisiting(scoreVisiting);
                     m.setStatus(MatchStatus.FINISHED);
-                    m.getTable().setStatus(GameTableStatus.ACTIVE);
+                    if (m.getTable() != null) {
+                        m.getTable().setStatus(GameTableStatus.ACTIVE);
+                    }
                     m.setTable(null);
                     return true;
                 }
