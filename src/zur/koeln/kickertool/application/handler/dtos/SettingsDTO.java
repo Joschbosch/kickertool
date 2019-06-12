@@ -30,6 +30,4 @@ public class SettingsDTO {
 
     private int currentNoOfMatches;
 
-    private TournamentDTO tournament;
-
 }

@@ -20,8 +20,6 @@ public class TournamentDTO {
 
     private SettingsDTO settings;
 
-    private List<UUID> participants;
-
     private List<MatchDTO> matches;
 
     private List<GameTableDTO> playtables;

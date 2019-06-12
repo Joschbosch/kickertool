@@ -6,18 +6,19 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.modelmapper.Converter;
+
 import zur.koeln.kickertool.application.handler.api.ITournamentCommandHandler;
-import zur.koeln.kickertool.application.handler.dtos.PlayerDTO;
-import zur.koeln.kickertool.application.handler.dtos.PlayerRankingRowDTO;
-import zur.koeln.kickertool.application.handler.dtos.SettingsDTO;
-import zur.koeln.kickertool.application.handler.dtos.TournamentDTO;
+import zur.koeln.kickertool.application.handler.dtos.*;
 import zur.koeln.kickertool.application.handler.dtos.base.*;
+import zur.koeln.kickertool.core.api.IPlayerService;
 import zur.koeln.kickertool.core.api.ITournamentService;
 import zur.koeln.kickertool.core.kernl.PlayerRankingRow;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
 import zur.koeln.kickertool.core.model.aggregates.Player;
 import zur.koeln.kickertool.core.model.aggregates.Tournament;
 import zur.koeln.kickertool.core.model.entities.Settings;
+import zur.koeln.kickertool.core.model.valueobjects.Team;
 
 @Named
 public class TournamentCommandHandler
@@ -27,12 +28,17 @@ public class TournamentCommandHandler
 
     private final CustomModelMapper mapper;
 
+    private final IPlayerService playerService;
+
     @Inject
     public TournamentCommandHandler(
         ITournamentService tournamentService,
+        IPlayerService playerService,
         CustomModelMapper mapper) {
         this.tournamentService = tournamentService;
+        this.playerService = playerService;
         this.mapper = mapper;
+
     }
 
     @Override
@@ -46,10 +52,10 @@ public class TournamentCommandHandler
         return createSuccessfullDTO(tournamentService.getTournamentById(tournamentUID));
     }
 
-	@Override
-	public SingleResponseDTO<TournamentDTO> getTournamentById(UUID tournamentId) {
-		return getTournament(tournamentId);
-	}
+    @Override
+    public SingleResponseDTO<TournamentDTO> getTournamentById(UUID tournamentId) {
+        return getTournament(tournamentId);
+    }
 
     @Override
     public ListResponseDTO<PlayerDTO> addParticipantToTournament(UUID tournamentIDToAdd, UUID player) {
@@ -106,8 +112,19 @@ public class TournamentCommandHandler
     private SingleResponseDTO<TournamentDTO> createSuccessfullDTO(Tournament tournament) {
         SingleResponseDTO returnDTO = new SingleResponseDTO<>();
         returnDTO.setDtoStatus(StatusDTO.SUCCESS);
-        returnDTO.setDtoValue(mapper.map(tournament, TournamentDTO.class));
 
+        if (mapper.getTypeMap(Team.class, TeamDTO.class) == null) {
+            Converter<Team, TeamDTO> teamConverter = context -> {
+                TeamDTO newDTO = new TeamDTO();
+                newDTO.setPlayer1(mapper.map(playerService.getPlayerById(context.getSource().getPlayer1Id()), PlayerDTO.class));
+                newDTO.setPlayer2(mapper.map(playerService.getPlayerById(context.getSource().getPlayer2Id()), PlayerDTO.class));
+                return newDTO;
+            };
+
+            mapper.createTypeMap(Team.class, TeamDTO.class).setConverter(teamConverter);
+        }
+
+        returnDTO.setDtoValue(mapper.map(tournament, TournamentDTO.class));
         ((TournamentDTO) returnDTO.getDtoValue()).setCurrentRound(tournament.getCurrentRound());
         return returnDTO;
     }
@@ -128,10 +145,7 @@ public class TournamentCommandHandler
 
     @Override
     public SingleResponseDTO<TournamentDTO> pauseOrUnpausePlayer(UUID tournamentUUID, UUID playerId, boolean pausing) {
-        SingleResponseDTO response = new SingleResponseDTO<>();
         Tournament tournament = tournamentService.pauseOrUnpausePlayer(tournamentUUID, playerId, pausing);
-        response.setDtoStatus(StatusDTO.SUCCESS);
-        response.setDtoValue(mapper.map(tournament, TournamentDTO.class));
-        return response;
+        return createSuccessfullDTO(tournament);
     }
 }

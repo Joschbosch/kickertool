@@ -48,7 +48,11 @@ public class PlayerService
 
     @Override
     public Player getPlayerById(UUID playerId) {
-        return playerRepo.getPlayerOrNewDummyWithId(playerId);
+        if (playerId != null) {
+            return playerRepo.getPlayerOrNewDummyWithId(playerId);
+        }
+        return null;
+
     }
 
     @Override
