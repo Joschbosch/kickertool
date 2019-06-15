@@ -17,4 +17,6 @@ public interface IPlayerCommandHandler {
 
     ListResponseDTO<PlayerDTO> getAllPlayer();
 
+    ListResponseDTO<PlayerDTO> getAllPlayerNotInTournament(UUID tournamendId);
+
 }

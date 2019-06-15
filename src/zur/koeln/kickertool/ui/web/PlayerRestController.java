@@ -20,20 +20,25 @@ public class PlayerRestController {
 
 	@Autowired
 	@Getter(value = AccessLevel.PRIVATE)
-	private IPlayerCommandHandler commandHandler;
+	private IPlayerCommandHandler playerCommandHandler;
 
 	@GetMapping("/getall")
 	public ListResponseDTO<PlayerDTO> getAllPlayer() {
-		return getCommandHandler().getAllPlayer();
+		return getPlayerCommandHandler().getAllPlayer();
+	}
+
+	@GetMapping("/getall-not-in-tournament/{tournamendId}")
+	public ListResponseDTO<PlayerDTO> getAllPlayerNotInTournament(@PathVariable UUID tournamendId) {
+		return getPlayerCommandHandler().getAllPlayerNotInTournament(tournamendId);
 	}
 
 	@PostMapping()
 	public SingleResponseDTO<PlayerDTO> insertNewPlayer(@RequestBody PlayerDTO playerDTO) {
-		return getCommandHandler().createNewPlayer(playerDTO.getFirstName(), playerDTO.getLastName());
+		return getPlayerCommandHandler().createNewPlayer(playerDTO.getFirstName(), playerDTO.getLastName());
 	}
 
 	@DeleteMapping("/{uuid}")
 	public @ResponseBody StatusOnlyDTO deletePlayer(@PathVariable UUID uuid) {
-		return getCommandHandler().deletePlayer(uuid);
+		return getPlayerCommandHandler().deletePlayer(uuid);
 	}
 }
