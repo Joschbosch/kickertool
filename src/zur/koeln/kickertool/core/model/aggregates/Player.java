@@ -25,7 +25,7 @@ public class Player{
 
     public void changeName(String newFirstName, String newLastName) {
         if (newFirstName.isEmpty() || newLastName.isEmpty()) {
-            throw new IllegalArgumentException("Names can not be empty");
+            throw new IllegalArgumentException("Names can not be empty"); //$NON-NLS-1$
         }
         firstName = newFirstName;
         lastName = newLastName;

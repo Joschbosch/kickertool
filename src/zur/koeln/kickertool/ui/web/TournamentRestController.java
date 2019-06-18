@@ -1,5 +1,6 @@
 package zur.koeln.kickertool.ui.web;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,11 @@ public class TournamentRestController {
     @PutMapping("/addplayer/{tournamentId}/{playerId}")
     public ListResponseDTO<PlayerDTO> addPlayerToTournament(@PathVariable UUID tournamentId, @PathVariable UUID playerId) {
         return tournamentCommandHandler.addParticipantToTournament(tournamentId, playerId);
+    }
+
+    @PutMapping("/addplayers/{tournamentId}/")
+    public ListResponseDTO<PlayerDTO> addPlayerToTournament(@PathVariable UUID tournamentId, @RequestBody List<UUID> playerIds) {
+        return tournamentCommandHandler.addParticipantsToTournament(tournamentId, playerIds);
     }
 
     @DeleteMapping("/removeplayer/{tournamentId}/{playerId}")

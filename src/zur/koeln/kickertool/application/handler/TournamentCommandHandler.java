@@ -1,5 +1,6 @@
 package zur.koeln.kickertool.application.handler;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,9 +67,25 @@ public class TournamentCommandHandler
         ListResponseDTO<PlayerDTO> response = new ListResponseDTO<>();
         response.setDtoStatus(StatusDTO.VALIDATION_ERROR);
         response.setValidation(new ValidationDTO());
-        response.getValidation().addErrorMsg("Spieler ist schon im Turnier.");
+        response.getValidation().addErrorMsg("Spieler ist schon im Turnier."); //$NON-NLS-1$
         return response;
 
+    }
+
+    @Override
+    public ListResponseDTO<PlayerDTO> addParticipantsToTournament(UUID tournamentId, List<UUID> playerIds) {
+        List<Player> participants = new ArrayList<>();
+        for (UUID uuid : playerIds) {
+            participants = tournamentService.addParticipantToTournament(tournamentId, uuid);
+            if (participants == null) {
+                ListResponseDTO<PlayerDTO> response = new ListResponseDTO<>();
+                response.setDtoStatus(StatusDTO.VALIDATION_ERROR);
+                response.setValidation(new ValidationDTO());
+                response.getValidation().addErrorMsg("Spieler ist schon im Turnier."); //$NON-NLS-1$
+                return response;
+            }
+        }
+        return createSuccessfulListResponse(participants);
     }
 
     @Override
@@ -85,7 +102,7 @@ public class TournamentCommandHandler
             failedDTO.setDtoValue(null);
             failedDTO.setDtoStatus(StatusDTO.VALIDATION_ERROR);
             ValidationDTO validation = new ValidationDTO();
-            validation.addErrorMsg("Die aktuelle Runde ist noch nicht abgeschlossen.");
+            validation.addErrorMsg("Die aktuelle Runde ist noch nicht abgeschlossen."); //$NON-NLS-1$
             failedDTO.setValidation(validation);
             return failedDTO;
         }
@@ -103,7 +120,7 @@ public class TournamentCommandHandler
         statusOnlyDTO.setDtoStatus(accepted ? StatusDTO.SUCCESS : StatusDTO.VALIDATION_ERROR);
         if (!accepted) {
             ValidationDTO validation = new ValidationDTO();
-            validation.addErrorMsg("Das Matchergebnis ist nicht zulässig");
+            validation.addErrorMsg("Das Matchergebnis ist nicht zulässig"); //$NON-NLS-1$
             statusOnlyDTO.setValidation(validation);
         }
         return statusOnlyDTO;

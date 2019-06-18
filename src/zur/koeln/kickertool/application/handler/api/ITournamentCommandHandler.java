@@ -19,6 +19,8 @@ public interface ITournamentCommandHandler {
 
     ListResponseDTO<PlayerDTO> addParticipantToTournament(UUID tournamentIDToAdd, UUID participant);
 
+    ListResponseDTO<PlayerDTO> addParticipantsToTournament(UUID tournamentId, List<UUID> playerIds);
+
     ListResponseDTO<PlayerDTO> removeParticipantFromTournament(UUID tournamentIDToRemove, UUID participant);
 
     SingleResponseDTO<TournamentDTO> startNextTournamentRound(UUID tournamentUUID);
@@ -28,5 +30,6 @@ public interface ITournamentCommandHandler {
     StatusOnlyDTO enterOrChangeMatchResult(UUID tournamentUUID, UUID matchId, int scoreHome, int scoreVisiting);
 
     SingleResponseDTO<TournamentDTO> pauseOrUnpausePlayer(UUID tournamentUUID, UUID playerId, boolean pausing);
+
 
 }

@@ -26,6 +26,6 @@ public class MatchDTO {
 
     private TeamDTO visitingTeam;
 
-    private GameTableDTO table;
+    private String gameTableDescription;
 
 }

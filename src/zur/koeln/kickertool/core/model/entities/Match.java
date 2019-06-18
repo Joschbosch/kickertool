@@ -28,6 +28,8 @@ public class Match {
 
 	private GameTable table;
 
+    private String gameTableDescription;
+
 	private int roundNumber;
 
 	private int scoreHome;
@@ -40,6 +42,7 @@ public class Match {
     public Match(
         UUID randomUUID) {
         this.matchID = randomUUID;
+        this.gameTableDescription = "TBA"; //$NON-NLS-1$
     }
 
 
