@@ -48,7 +48,7 @@ public class TournamentRestController {
         return tournamentCommandHandler.addParticipantToTournament(tournamentId, playerId);
     }
 
-    @PutMapping("/addplayers/{tournamentId}/")
+    @PutMapping("/addplayers/{tournamentId}")
     public ListResponseDTO<PlayerDTO> addPlayerToTournament(@PathVariable UUID tournamentId, @RequestBody List<UUID> playerIds) {
         return tournamentCommandHandler.addParticipantsToTournament(tournamentId, playerIds);
     }
