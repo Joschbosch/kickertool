@@ -14,10 +14,12 @@ import zur.koeln.kickertool.application.handler.dtos.*;
 import zur.koeln.kickertool.application.handler.dtos.base.*;
 import zur.koeln.kickertool.core.api.IPlayerService;
 import zur.koeln.kickertool.core.api.ITournamentService;
+import zur.koeln.kickertool.core.kernl.MatchStatus;
 import zur.koeln.kickertool.core.kernl.PlayerRankingRow;
 import zur.koeln.kickertool.core.kernl.utils.CustomModelMapper;
 import zur.koeln.kickertool.core.model.aggregates.Player;
 import zur.koeln.kickertool.core.model.aggregates.Tournament;
+import zur.koeln.kickertool.core.model.entities.Match;
 import zur.koeln.kickertool.core.model.entities.Settings;
 import zur.koeln.kickertool.core.model.valueobjects.Team;
 
@@ -142,8 +144,26 @@ public class TournamentCommandHandler
         }
 
         returnDTO.setDtoValue(mapper.map(tournament, TournamentDTO.class));
+        ((TournamentDTO) returnDTO.getDtoValue()).getMatches().forEach(m -> m.setGameTableDescription(createTableDesc(m, tournament)));
         ((TournamentDTO) returnDTO.getDtoValue()).setCurrentRound(tournament.getCurrentRound());
         return returnDTO;
+    }
+
+    private String createTableDesc(MatchDTO m, Tournament tournament) {
+        for( Match tm : tournament.getMatches()) {
+            if (tm.getMatchID().equals(m.getMatchID())) {
+                if (tm.getTable() == null) {
+                    if (m.getStatus() == MatchStatus.PLANNED) {
+                        return "TBA"; //$NON-NLS-1$
+                    } else if (m.getStatus() == MatchStatus.FINISHED) {
+                        return "Finished"; //$NON-NLS-1$
+                    }
+                } else {
+                    return String.valueOf(tm.getTable().getTableNumber());
+                }
+            }
+        }
+        return null;
     }
 
     private ListResponseDTO<PlayerRankingRowDTO> createSuccessfulRankingListResponse(List<PlayerRankingRow> ranking) {

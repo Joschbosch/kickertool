@@ -108,7 +108,6 @@ public class Tournament {
                 if (gameTable.getStatus() == GameTableStatus.ACTIVE) {
                     ongoing.setTable(gameTable);
                     gameTable.setStatus(GameTableStatus.IN_USE);
-                    ongoing.setGameTableDescription(String.valueOf(ongoing.getTable().getTableNumber()));
                     break;
                 }
             }
@@ -193,7 +192,6 @@ public class Tournament {
                     m.setStatus(MatchStatus.FINISHED);
                     if (m.getTable() != null) {
                         m.getTable().setStatus(GameTableStatus.ACTIVE);
-                        m.setGameTableDescription("Finished"); //$NON-NLS-1$
                     }
                     m.setTable(null);
                     return true;
