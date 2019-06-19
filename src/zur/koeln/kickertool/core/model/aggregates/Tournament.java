@@ -104,6 +104,7 @@ public class Tournament {
 
     public void updateGameTableUsage() {
         for (Match ongoing : getPlannedMatchesInTournament()) {
+            if (ongoing.getTable() == null) {
             for (GameTable gameTable : getPlaytables()) {
                 if (gameTable.getStatus() == GameTableStatus.ACTIVE) {
                     ongoing.setTable(gameTable);
@@ -111,6 +112,7 @@ public class Tournament {
                     break;
                 }
             }
+        }
         }
     }
 
@@ -194,6 +196,7 @@ public class Tournament {
                         m.getTable().setStatus(GameTableStatus.ACTIVE);
                     }
                     m.setTable(null);
+                    updateGameTableUsage();
                     return true;
                 }
             }

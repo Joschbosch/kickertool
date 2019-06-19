@@ -152,14 +152,14 @@ public class TournamentCommandHandler
     private String createTableDesc(MatchDTO m, Tournament tournament) {
         for( Match tm : tournament.getMatches()) {
             if (tm.getMatchID().equals(m.getMatchID())) {
-                if (tm.getTable() == null) {
-                    if (m.getStatus() == MatchStatus.PLANNED) {
+                if (tm.getTable() != null) {
+                    return String.valueOf(tm.getTable().getTableNumber());
+                } else {
+                    if (m.getStatus() == MatchStatus.PLANNED || m.getStatus() == MatchStatus.ONGOING) {
                         return "TBA"; //$NON-NLS-1$
                     } else if (m.getStatus() == MatchStatus.FINISHED) {
                         return "Finished"; //$NON-NLS-1$
                     }
-                } else {
-                    return String.valueOf(tm.getTable().getTableNumber());
                 }
             }
         }

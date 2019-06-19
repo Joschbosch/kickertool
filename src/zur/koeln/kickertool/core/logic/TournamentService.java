@@ -182,6 +182,7 @@ public class TournamentService
     public boolean enterOrChangeMatchResult(UUID tournamentId, UUID matchID, int scoreHome, int scoreVisiting) {
         Tournament tournament = tournamentRepo.getTournament(tournamentId);
         boolean accepted = tournament.addMatchResult(matchID, scoreHome, scoreVisiting);
+
         if (accepted) {
             tournamentRepo.saveOrUpdateTournament(tournament);
         }
