@@ -43,8 +43,8 @@ public class PlayerRankingComparator
             return -Long.compare(tournament.getScoreForPlayerInRound(player1, roundForScoring), tournament.getScoreForPlayerInRound(player2, roundForScoring));
         }
 
-        long p1GoalDiff = tournament.getGoalsForPlayerInRound(player1, roundForScoring);
-        long p2GoalDiff = tournament.getGoalsForPlayerInRound(player2, roundForScoring);
+        long p1GoalDiff = tournament.getGoalsForPlayerInRound(player1, roundForScoring) - tournament.getConcededGoalsForPlayerInRound(player1, roundForScoring);
+        long p2GoalDiff = tournament.getGoalsForPlayerInRound(player2, roundForScoring) - tournament.getConcededGoalsForPlayerInRound(player2, roundForScoring);
         long goalDiff = p1GoalDiff - p2GoalDiff;
         if (goalDiff != 0) {
             return -Long.compare(p1GoalDiff, p2GoalDiff);
