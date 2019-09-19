@@ -17,10 +17,10 @@ import zur.koeln.kickertool.core.domain.model.entities.player.PlayerStatus;
 import zur.koeln.kickertool.core.domain.model.entities.tournament.Match;
 import zur.koeln.kickertool.core.domain.model.entities.tournament.Settings;
 import zur.koeln.kickertool.core.domain.model.entities.tournament.Tournament;
-import zur.koeln.kickertool.core.domain.service.tournament.PlayerRankingRow;
 import zur.koeln.kickertool.core.domain.service.tournament.api.ITournamentFactory;
 import zur.koeln.kickertool.core.domain.service.tournament.api.ITournamentParticipantManager;
 import zur.koeln.kickertool.core.domain.service.tournament.api.ITournamentRoundService;
+import zur.koeln.kickertool.core.domain.service.tournament.api.PlayerRankingRow;
 
 @Named
 public class TournamentService

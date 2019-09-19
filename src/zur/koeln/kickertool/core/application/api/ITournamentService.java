@@ -7,7 +7,7 @@ import zur.koeln.kickertool.core.domain.model.entities.player.Player;
 import zur.koeln.kickertool.core.domain.model.entities.tournament.Match;
 import zur.koeln.kickertool.core.domain.model.entities.tournament.Settings;
 import zur.koeln.kickertool.core.domain.model.entities.tournament.Tournament;
-import zur.koeln.kickertool.core.domain.service.tournament.PlayerRankingRow;
+import zur.koeln.kickertool.core.domain.service.tournament.api.PlayerRankingRow;
 
 public interface ITournamentService {
 

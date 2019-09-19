@@ -13,7 +13,7 @@ import zur.koeln.kickertool.core.application.api.IPlayerManagementService;
 import zur.koeln.kickertool.core.application.api.ITournamentService;
 import zur.koeln.kickertool.core.domain.model.entities.player.Player;
 import zur.koeln.kickertool.core.domain.model.entities.tournament.*;
-import zur.koeln.kickertool.core.domain.service.tournament.PlayerRankingRow;
+import zur.koeln.kickertool.core.domain.service.tournament.api.PlayerRankingRow;
 import zur.koeln.kickertool.ui.adapter.cli.api.ITournamentCommandHandler;
 import zur.koeln.kickertool.ui.adapter.common.*;
 import zur.koeln.kickertool.ui.adapter.common.base.*;

@@ -4,7 +4,6 @@ import java.util.List;
 
 import zur.koeln.kickertool.core.domain.model.entities.player.Player;
 import zur.koeln.kickertool.core.domain.model.entities.tournament.Tournament;
-import zur.koeln.kickertool.core.domain.service.tournament.PlayerRankingRow;
 
 public interface ITournamentRoundService {
 
