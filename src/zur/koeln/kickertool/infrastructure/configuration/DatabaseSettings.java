@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.infrastructure.adapter.persistence.orm.configuration;
+package zur.koeln.kickertool.infrastructure.configuration;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

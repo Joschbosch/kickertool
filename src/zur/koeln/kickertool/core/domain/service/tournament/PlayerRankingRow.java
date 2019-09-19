@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.core.domain.model.common;
+package zur.koeln.kickertool.core.domain.service.tournament;
 
 import lombok.Getter;
 import lombok.Setter;

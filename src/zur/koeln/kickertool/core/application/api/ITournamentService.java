@@ -3,21 +3,21 @@ package zur.koeln.kickertool.core.application.api;
 import java.util.List;
 import java.util.UUID;
 
-import zur.koeln.kickertool.core.domain.model.common.PlayerRankingRow;
 import zur.koeln.kickertool.core.domain.model.entities.player.Player;
 import zur.koeln.kickertool.core.domain.model.entities.tournament.Match;
 import zur.koeln.kickertool.core.domain.model.entities.tournament.Settings;
 import zur.koeln.kickertool.core.domain.model.entities.tournament.Tournament;
+import zur.koeln.kickertool.core.domain.service.tournament.PlayerRankingRow;
 
 public interface ITournamentService {
 
-    Tournament createNewTournament(String tournamentName, List<Player> list, Settings settings);
+    Tournament createNewTournamentAndAddParticipants(String tournamentName, List<Player> list, Settings settings);
 
     Tournament startTournament(UUID tournamentIDToStart);
 
     Tournament renameTournament(UUID tournamentIDToRename, String name);
 
-    List<Player> addParticipantToTournament(UUID tournamentIDToAdd, UUID participant);
+    List<Player> addParticipantToTournamentAndReturnParticipants(UUID tournamentIDToAdd, UUID participant);
 
     List<Player> removeParticipantFromTournament(UUID tournamentIDToRemove, UUID participant);
 

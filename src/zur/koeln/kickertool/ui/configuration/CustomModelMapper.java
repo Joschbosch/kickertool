@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.ui.adapter.common.configuration;
+package zur.koeln.kickertool.ui.configuration;
 
 import java.util.List;
 import java.util.stream.Collectors;

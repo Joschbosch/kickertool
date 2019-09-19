@@ -1,28 +1,31 @@
 package zur.koeln.kickertool.core.application.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import lombok.Setter;
-import zur.koeln.kickertool.core.application.api.IPlayerService;
+import zur.koeln.kickertool.core.application.api.IPlayerManagementService;
 import zur.koeln.kickertool.core.application.services.spi.IPlayerRepository;
 import zur.koeln.kickertool.core.domain.model.entities.player.Player;
 import zur.koeln.kickertool.core.domain.model.entities.player.PlayerStatus;
-import zur.koeln.kickertool.core.domain.model.entities.player.api.IPlayerFactory;
+import zur.koeln.kickertool.core.domain.service.player.api.IPlayerFactory;
 
 @Named
 @Setter
-public class PlayerService
-    implements IPlayerService {
+public class PlayerManagementService
+    implements IPlayerManagementService {
 
     private IPlayerRepository playerRepo;
+
     private IPlayerFactory playerFactory;
 
     @Inject
-    public PlayerService(
+    public PlayerManagementService(
         IPlayerRepository repository,
         IPlayerFactory playerFactory) {
         this.playerRepo = repository;
@@ -78,5 +81,10 @@ public class PlayerService
         Player p = playerRepo.getPlayer(player);
         p.setStatus(status);
         playerRepo.storeOrUpdatePlayer(p);
+    }
+
+    @Override
+    public Map<UUID, Player> getPlayersMapByIds(List<UUID> playerList) {
+        return playerList.stream().collect(Collectors.toMap(k -> k, k -> playerRepo.getPlayer(k)));
     }
 }

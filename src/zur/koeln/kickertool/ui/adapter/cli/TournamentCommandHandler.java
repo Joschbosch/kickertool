@@ -9,16 +9,15 @@ import javax.inject.Named;
 
 import org.modelmapper.Converter;
 
-import zur.koeln.kickertool.core.application.api.IPlayerService;
+import zur.koeln.kickertool.core.application.api.IPlayerManagementService;
 import zur.koeln.kickertool.core.application.api.ITournamentService;
-import zur.koeln.kickertool.core.domain.model.common.PlayerRankingRow;
-import zur.koeln.kickertool.core.domain.model.entities.*;
 import zur.koeln.kickertool.core.domain.model.entities.player.Player;
 import zur.koeln.kickertool.core.domain.model.entities.tournament.*;
+import zur.koeln.kickertool.core.domain.service.tournament.PlayerRankingRow;
 import zur.koeln.kickertool.ui.adapter.cli.api.ITournamentCommandHandler;
 import zur.koeln.kickertool.ui.adapter.common.*;
 import zur.koeln.kickertool.ui.adapter.common.base.*;
-import zur.koeln.kickertool.ui.adapter.common.configuration.CustomModelMapper;
+import zur.koeln.kickertool.ui.configuration.CustomModelMapper;
 
 @Named
 public class TournamentCommandHandler
@@ -28,12 +27,12 @@ public class TournamentCommandHandler
 
     private final CustomModelMapper mapper;
 
-    private final IPlayerService playerService;
+    private final IPlayerManagementService playerService;
 
     @Inject
     public TournamentCommandHandler(
         ITournamentService tournamentService,
-        IPlayerService playerService,
+        IPlayerManagementService playerService,
         CustomModelMapper mapper) {
         this.tournamentService = tournamentService;
         this.playerService = playerService;
@@ -43,7 +42,7 @@ public class TournamentCommandHandler
 
     @Override
     public SingleResponseDTO<TournamentDTO> createAndStartNewTournament(String tournamentName, List<PlayerDTO> participants, SettingsDTO settings) {
-        Tournament newTournament = tournamentService.createNewTournament(tournamentName, mapper.map(participants, Player.class), mapper.map(settings, Settings.class));
+        Tournament newTournament = tournamentService.createNewTournamentAndAddParticipants(tournamentName, mapper.map(participants, Player.class), mapper.map(settings, Settings.class));
         newTournament = tournamentService.startTournament(newTournament.getUid());
         return createSuccessfullDTO(newTournament);
     }
@@ -59,7 +58,7 @@ public class TournamentCommandHandler
 
     @Override
     public ListResponseDTO<PlayerDTO> addParticipantToTournament(UUID tournamentIDToAdd, UUID player) {
-        List<Player> participants = tournamentService.addParticipantToTournament(tournamentIDToAdd, player);
+        List<Player> participants = tournamentService.addParticipantToTournamentAndReturnParticipants(tournamentIDToAdd, player);
         if (participants != null) {
             return createSuccessfulListResponse(participants);
         }
@@ -75,7 +74,7 @@ public class TournamentCommandHandler
     public ListResponseDTO<PlayerDTO> addParticipantsToTournament(UUID tournamentId, List<UUID> playerIds) {
         List<Player> participants = new ArrayList<>();
         for (UUID uuid : playerIds) {
-            participants = tournamentService.addParticipantToTournament(tournamentId, uuid);
+            participants = tournamentService.addParticipantToTournamentAndReturnParticipants(tournamentId, uuid);
             if (participants == null) {
                 ListResponseDTO<PlayerDTO> response = new ListResponseDTO<>();
                 response.setDtoStatus(StatusDTO.VALIDATION_ERROR);

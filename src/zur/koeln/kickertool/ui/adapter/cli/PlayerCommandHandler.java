@@ -7,7 +7,7 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import zur.koeln.kickertool.core.application.api.IPlayerService;
+import zur.koeln.kickertool.core.application.api.IPlayerManagementService;
 import zur.koeln.kickertool.core.application.api.ITournamentService;
 import zur.koeln.kickertool.core.domain.model.entities.player.Player;
 import zur.koeln.kickertool.ui.adapter.cli.api.IPlayerCommandHandler;
@@ -16,13 +16,13 @@ import zur.koeln.kickertool.ui.adapter.common.base.ListResponseDTO;
 import zur.koeln.kickertool.ui.adapter.common.base.SingleResponseDTO;
 import zur.koeln.kickertool.ui.adapter.common.base.StatusDTO;
 import zur.koeln.kickertool.ui.adapter.common.base.StatusOnlyDTO;
-import zur.koeln.kickertool.ui.adapter.common.configuration.CustomModelMapper;
+import zur.koeln.kickertool.ui.configuration.CustomModelMapper;
 
 @Named
 public class PlayerCommandHandler
     implements IPlayerCommandHandler {
 
-    private final IPlayerService playerService;
+    private final IPlayerManagementService playerService;
 
     private final ITournamentService tournamentService;
 
@@ -30,7 +30,7 @@ public class PlayerCommandHandler
 
     @Inject
     public PlayerCommandHandler(
-        IPlayerService playerService,
+        IPlayerManagementService playerService,
         ITournamentService tournamentService,
         CustomModelMapper mapper) {
         this.playerService = playerService;

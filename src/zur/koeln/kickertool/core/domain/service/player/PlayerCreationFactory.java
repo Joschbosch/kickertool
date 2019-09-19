@@ -1,11 +1,13 @@
-package zur.koeln.kickertool.core.domain.model.entities.player;
+package zur.koeln.kickertool.core.domain.service.player;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.inject.Named;
 
-import zur.koeln.kickertool.core.domain.model.entities.player.api.IPlayerFactory;
+import zur.koeln.kickertool.core.domain.model.entities.player.Player;
+import zur.koeln.kickertool.core.domain.model.entities.player.PlayerStatus;
+import zur.koeln.kickertool.core.domain.service.player.api.IPlayerFactory;
 
 @Named
 public class PlayerCreationFactory

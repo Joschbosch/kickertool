@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.core.domain.model.entities.player.api;
+package zur.koeln.kickertool.core.domain.service.player.api;
 
 import zur.koeln.kickertool.core.domain.model.entities.player.Player;
 

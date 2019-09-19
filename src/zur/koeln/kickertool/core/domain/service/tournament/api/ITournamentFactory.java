@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.core.domain.model.entities.tournament.api;
+package zur.koeln.kickertool.core.domain.service.tournament.api;
 
 import zur.koeln.kickertool.core.domain.model.entities.tournament.Tournament;
 

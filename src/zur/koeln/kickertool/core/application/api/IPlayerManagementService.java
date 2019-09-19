@@ -1,12 +1,13 @@
 package zur.koeln.kickertool.core.application.api;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import zur.koeln.kickertool.core.domain.model.entities.player.Player;
 import zur.koeln.kickertool.core.domain.model.entities.player.PlayerStatus;
 
-public interface IPlayerService {
+public interface IPlayerManagementService {
 
     Player createNewPlayer(String firstName, String lastName);
 
@@ -21,5 +22,7 @@ public interface IPlayerService {
     Player getDummyPlayer();
 
     void setPlayerStatus(UUID participant, PlayerStatus inTournament);
+
+    Map<UUID, Player> getPlayersMapByIds(List<UUID> allParticipants);
 
 }

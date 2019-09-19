@@ -8,7 +8,7 @@ import zur.koeln.kickertool.ui.adapter.cli.api.ITournamentConfigCommandHandler;
 import zur.koeln.kickertool.ui.adapter.common.SettingsDTO;
 import zur.koeln.kickertool.ui.adapter.common.base.SingleResponseDTO;
 import zur.koeln.kickertool.ui.adapter.common.base.StatusDTO;
-import zur.koeln.kickertool.ui.adapter.common.configuration.CustomModelMapper;
+import zur.koeln.kickertool.ui.configuration.CustomModelMapper;
 
 @Named
 public class ConfigCommandHandler
