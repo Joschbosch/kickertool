@@ -28,20 +28,13 @@ public class PlayerRepository
     }
 
     @Override
-    public List<Player> getFreeDummyPlayers() {
-        List<Player> freeDummyPlayer = new ArrayList<>();
+    public Player getPlayer(UUID playerUID) {
         for (Player dummy : dummyPlayer) {
-            if (dummy.getStatus() == PlayerStatus.NOT_IN_TOURNAMENT) {
-                freeDummyPlayer.add(dummy);
+            if (dummy.getUid().equals(playerUID)) {
+                return dummy;
             }
         }
-        return freeDummyPlayer;
-    }
-
-    @Override
-    public List<Player> getAllDummyPlayers() {
-
-        return dummyPlayer;
+        return playerPersistence.findPlayerByUID(playerUID);
     }
 
     @Override
@@ -65,14 +58,22 @@ public class PlayerRepository
     }
 
     @Override
-    public Player getPlayer(UUID playerUID) {
+    public List<Player> getFreeDummyPlayers() {
+        List<Player> freeDummyPlayer = new ArrayList<>();
         for (Player dummy : dummyPlayer) {
-            if (dummy.getUid().equals(playerUID)) {
-                return dummy;
+            if (dummy.getStatus() == PlayerStatus.NOT_IN_TOURNAMENT) {
+                freeDummyPlayer.add(dummy);
             }
         }
-        return playerPersistence.findPlayerByUID(playerUID);
+        return freeDummyPlayer;
     }
+
+    @Override
+    public List<Player> getAllDummyPlayers() {
+
+        return dummyPlayer;
+    }
+
 
     @Override
     public List<Player> getAllPlayer() {
