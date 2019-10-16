@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.core.application.spi;
+package zur.koeln.kickertool.core.application.spi.persistence;
 
 import java.util.List;
 import java.util.UUID;

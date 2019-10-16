@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import zur.koeln.kickertool.core.application.services.spi.ITournamentRepository;
-import zur.koeln.kickertool.core.application.spi.ITournamentPersistence;
+import zur.koeln.kickertool.core.application.spi.persistence.ITournamentPersistence;
 import zur.koeln.kickertool.core.domain.model.entities.tournament.Tournament;
 
 @Named
