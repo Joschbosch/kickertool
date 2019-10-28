@@ -11,15 +11,10 @@ import lombok.Setter;
 public class Player{
 
     private UUID uid;
-
     private String firstName;
-
     private String lastName;
-
     private boolean dummy;
-
     private PlayerStatus status;
-
     private List<UUID> playedTournaments;
 
     public void changeName(String newFirstName, String newLastName) {

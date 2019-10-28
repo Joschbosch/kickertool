@@ -39,7 +39,11 @@ public class PlayerRepository
 
     @Override
     public Player storeOrUpdatePlayer(Player player) {
+        if (player.isDummy()) {
+            return handleStoreOrUpdateDummy(player);
+        }
         Player oldPlayer = this.getPlayer(player.getUid());
+
         if (oldPlayer == null) {
             playerPersistence.insert(player);
         } else {
@@ -47,6 +51,7 @@ public class PlayerRepository
         }
         return player;
     }
+
 
     @Override
     public void deletePlayer(UUID playerUid) {
@@ -78,6 +83,9 @@ public class PlayerRepository
     @Override
     public List<Player> getAllPlayer() {
         return playerPersistence.getAllPlayer();
+    }
+    private Player handleStoreOrUpdateDummy(Player player) {
+        return player;
     }
 
 }

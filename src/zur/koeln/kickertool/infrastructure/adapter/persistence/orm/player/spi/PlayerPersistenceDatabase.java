@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import zur.koeln.kickertool.infrastructure.adapter.persistence.orm.player.persistencemodel.PlayerPersistenceModelObject;
 
-public interface PlayerPersistenceRepository
+public interface PlayerPersistenceDatabase
     extends CrudRepository<PlayerPersistenceModelObject, UUID> {
     // nothing needed
 }

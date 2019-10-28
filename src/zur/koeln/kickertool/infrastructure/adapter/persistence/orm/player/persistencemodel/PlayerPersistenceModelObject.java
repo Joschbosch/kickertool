@@ -16,14 +16,9 @@ import zur.koeln.kickertool.core.domain.model.entities.player.PlayerStatus;
 @Getter
 @Setter
 public class PlayerPersistenceModelObject {
-
     @Id
     private UUID uid;
-
     private String firstName;
-
     private String lastName;
-
     private PlayerStatus status;
-
 }
