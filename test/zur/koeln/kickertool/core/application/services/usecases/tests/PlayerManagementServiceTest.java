@@ -1,10 +1,10 @@
-package zur.koeln.kickertool.core.logic.tests;
+package zur.koeln.kickertool.core.application.services.usecases.tests;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 @Tag("core-test")
-public class PlayerServiceTest {
+public class PlayerManagementServiceTest {
 
 
 

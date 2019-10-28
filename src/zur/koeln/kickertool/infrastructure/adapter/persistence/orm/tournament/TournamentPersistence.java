@@ -8,7 +8,7 @@ import javax.inject.Named;
 
 import org.modelmapper.ModelMapper;
 
-import zur.koeln.kickertool.core.application.spi.persistence.ITournamentPersistence;
+import zur.koeln.kickertool.core.application.spi.ITournamentPersistence;
 import zur.koeln.kickertool.core.domain.model.entities.tournament.Tournament;
 import zur.koeln.kickertool.infrastructure.adapter.persistence.orm.tournament.persistencemodel.TournamentPersistenceModelObject;
 import zur.koeln.kickertool.infrastructure.adapter.persistence.orm.tournament.spi.TournamentPersistenceRepository;

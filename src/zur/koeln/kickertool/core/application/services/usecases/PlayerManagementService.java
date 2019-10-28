@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.core.application.services;
+package zur.koeln.kickertool.core.application.services.usecases;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,7 @@ import javax.inject.Named;
 
 import lombok.Setter;
 import zur.koeln.kickertool.core.application.api.IPlayerManagementService;
-import zur.koeln.kickertool.core.application.services.spi.IPlayerRepository;
+import zur.koeln.kickertool.core.application.services.usecases.spi.IPlayerRepository;
 import zur.koeln.kickertool.core.domain.model.entities.player.Player;
 import zur.koeln.kickertool.core.domain.model.entities.player.PlayerStatus;
 import zur.koeln.kickertool.core.domain.service.player.api.IPlayerFactory;

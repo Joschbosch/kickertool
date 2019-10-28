@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.core.application.repositories;
+package zur.koeln.kickertool.core.application.services.repositories;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,8 +7,8 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import zur.koeln.kickertool.core.application.services.spi.ITournamentRepository;
-import zur.koeln.kickertool.core.application.spi.persistence.ITournamentPersistence;
+import zur.koeln.kickertool.core.application.services.usecases.spi.ITournamentRepository;
+import zur.koeln.kickertool.core.application.spi.ITournamentPersistence;
 import zur.koeln.kickertool.core.domain.model.entities.tournament.Tournament;
 
 @Named

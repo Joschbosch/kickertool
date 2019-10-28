@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.core.application.repositories;
+package zur.koeln.kickertool.core.application.services.repositories;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,8 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import zur.koeln.kickertool.core.application.services.spi.IPlayerRepository;
-import zur.koeln.kickertool.core.application.spi.persistence.IPlayerPersistence;
+import zur.koeln.kickertool.core.application.services.usecases.spi.IPlayerRepository;
+import zur.koeln.kickertool.core.application.spi.IPlayerPersistence;
 import zur.koeln.kickertool.core.domain.model.entities.player.Player;
 import zur.koeln.kickertool.core.domain.model.entities.player.PlayerStatus;
 

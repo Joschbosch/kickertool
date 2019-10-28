@@ -1,4 +1,4 @@
-package zur.koeln.kickertool.core.application.services;
+package zur.koeln.kickertool.core.application.services.usecases;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import javax.inject.Named;
 
 import zur.koeln.kickertool.core.application.api.IPlayerManagementService;
 import zur.koeln.kickertool.core.application.api.ITournamentService;
-import zur.koeln.kickertool.core.application.services.spi.ITournamentRepository;
+import zur.koeln.kickertool.core.application.services.usecases.spi.ITournamentRepository;
 import zur.koeln.kickertool.core.domain.model.entities.player.Player;
 import zur.koeln.kickertool.core.domain.model.entities.player.PlayerStatus;
 import zur.koeln.kickertool.core.domain.model.entities.tournament.Match;

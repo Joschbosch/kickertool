@@ -10,7 +10,7 @@ import javax.inject.Named;
 
 import org.modelmapper.ModelMapper;
 
-import zur.koeln.kickertool.core.application.spi.persistence.IPlayerPersistence;
+import zur.koeln.kickertool.core.application.spi.IPlayerPersistence;
 import zur.koeln.kickertool.core.domain.model.entities.player.Player;
 import zur.koeln.kickertool.infrastructure.adapter.persistence.orm.player.persistencemodel.PlayerPersistenceModelObject;
 import zur.koeln.kickertool.infrastructure.adapter.persistence.orm.player.spi.PlayerPersistenceRepository;
