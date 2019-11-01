@@ -55,11 +55,13 @@ public class TournamentService
 
         Tournament newTournament = tournamentFactory.createNewTournament(tournamentName);
         newTournament.configureSettings(settings);
+        tournamentRepo.saveOrUpdateTournament(newTournament);
+
         List<UUID> participantIds = participants.stream().map(Player::getUid).collect(Collectors.toList());
         participantIds.forEach(p -> addParticipantToTournamentAndReturnParticipants(newTournament.getUid(), p));
         participantManager.addParticipantsToTournament(participants, newTournament);
         tournamentRepo.saveOrUpdateTournament(newTournament);
-
+        System.out.println(newTournament);
         return newTournament;
     }
 
