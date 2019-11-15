@@ -28,7 +28,7 @@ public class TournamentRoundService
         }
         tournament.increaseRound();
         createNextMatches(tournament, participants);
-        tournament.updateGameTableUsage();
+        tournament.updateGameTableUsage(null);
         return true;
     }
 

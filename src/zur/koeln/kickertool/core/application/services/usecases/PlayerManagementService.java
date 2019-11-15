@@ -87,4 +87,14 @@ public class PlayerManagementService
     public Map<UUID, Player> getPlayersMapByIds(List<UUID> playerList) {
         return playerList.stream().collect(Collectors.toMap(k -> k, k -> playerRepo.getPlayer(k)));
     }
+
+	@Override
+	public void storeNewDummyPlayer(List<Player> newDummyPlayer) {
+		newDummyPlayer.forEach(dummy -> playerRepo.storeOrUpdatePlayer(dummy));
+	}
+
+	@Override
+	public List<Player> getDummyPlayers() {
+		return playerRepo.getFreeDummyPlayers();
+	}
 }

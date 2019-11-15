@@ -85,6 +85,7 @@ public class PlayerRepository
         return playerPersistence.getAllPlayer();
     }
     private Player handleStoreOrUpdateDummy(Player player) {
+    	dummyPlayer.add(player);
         return player;
     }
 

@@ -13,7 +13,7 @@ public interface ITournamentParticipantManager {
 
     void updateParticipantsStatus(Tournament tournament, Map<UUID, Player> playersInTournament);
 
-    void checkDummyPlayer(Tournament tournament, List<Player> dummyPlayer);
+    List<Player> checkDummyPlayer(Tournament tournament, List<Player> dummyPlayer, List<Player> freeDummyPlayer);
 
     void removeFromTournament(Tournament tournament, UUID participantId, List<Player> participants);
 

@@ -57,18 +57,17 @@ public class TournamentService
         newTournament.configureSettings(settings);
         tournamentRepo.saveOrUpdateTournament(newTournament);
 
-        List<UUID> participantIds = participants.stream().map(Player::getUid).collect(Collectors.toList());
-        participantIds.forEach(p -> addParticipantToTournamentAndReturnParticipants(newTournament.getUid(), p));
         participantManager.addParticipantsToTournament(participants, newTournament);
+        List<Player> newDummyPlayer = participantManager.checkDummyPlayer(newTournament, participants, playerService.getDummyPlayers());
+        playerService.storeNewDummyPlayer(newDummyPlayer);
         tournamentRepo.saveOrUpdateTournament(newTournament);
-        System.out.println(newTournament);
         return newTournament;
     }
 
     @Override
     public Tournament startTournament(UUID tournamentIDToStart) {
         Tournament tournament = tournamentRepo.getTournament(tournamentIDToStart);
-        participantManager.checkDummyPlayer(tournament, getTournamentParticipants(tournamentIDToStart));
+        participantManager.checkDummyPlayer(tournament, getTournamentParticipants(tournamentIDToStart), playerService.getDummyPlayers());
         tournament.startTournament();
         tournamentRepo.saveOrUpdateTournament(tournament);
         return tournament;
@@ -96,6 +95,8 @@ public class TournamentService
     public List<Player> removeParticipantFromTournament(UUID tournamentIDToRemove, UUID participantId) {
         Tournament tournament = tournamentRepo.getTournament(tournamentIDToRemove);
         participantManager.removeFromTournament(tournament, participantId, getTournamentParticipants(tournamentIDToRemove));
+        List<Player> newDummyPlayer = participantManager.checkDummyPlayer(tournament, getTournamentParticipants(tournamentIDToRemove), playerService.getDummyPlayers());
+        playerService.storeNewDummyPlayer(newDummyPlayer);
         tournamentRepo.saveOrUpdateTournament(tournament);
         return getTournamentParticipants(tournamentIDToRemove);
     }
@@ -171,7 +172,8 @@ public class TournamentService
     public Tournament pauseOrUnpausePlayer(UUID tournamentId, UUID playerToPause, boolean pausing) {
         playerService.setPlayerStatus(playerToPause, pausing ? PlayerStatus.PAUSING_TOURNAMENT : PlayerStatus.IN_TOURNAMENT);
         Tournament tournament = tournamentRepo.getTournament(tournamentId);
-        participantManager.checkDummyPlayer(tournament, getTournamentParticipants(tournamentId));
+        List<Player> newDummyPlayer = participantManager.checkDummyPlayer(tournament, getTournamentParticipants(tournamentId), playerService.getDummyPlayers());
+        playerService.storeNewDummyPlayer(newDummyPlayer);
         tournamentRepo.saveOrUpdateTournament(tournament);
         return tournament;
     }

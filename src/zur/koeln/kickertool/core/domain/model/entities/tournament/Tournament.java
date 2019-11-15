@@ -96,10 +96,13 @@ public class Tournament {
 
     }
 
-    public void updateGameTableUsage() {
+    public void updateGameTableUsage(GameTable gameTable2) {
         for (Match ongoing : getPlannedMatchesInTournament()) {
             if (ongoing.getTable() == null) {
             for (GameTable gameTable : getPlaytables()) {
+            	if (gameTable2 != null && gameTable.getTableNumber() == gameTable2.getTableNumber()) {
+            		gameTable.setStatus(GameTableStatus.ACTIVE);
+            	}
                 if (gameTable.getStatus() == GameTableStatus.ACTIVE) {
                     ongoing.setTable(gameTable);
                     gameTable.setStatus(GameTableStatus.IN_USE);
@@ -188,9 +191,9 @@ public class Tournament {
                     m.setStatus(MatchStatus.FINISHED);
                     if (m.getTable() != null) {
                         m.getTable().setStatus(GameTableStatus.ACTIVE);
+                        updateGameTableUsage(m.getTable());
                     }
                     m.setTable(null);
-                    updateGameTableUsage();
                     return true;
                 }
             }

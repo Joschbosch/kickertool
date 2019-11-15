@@ -1,5 +1,6 @@
 package zur.koeln.kickertool.core.domain.service.tournament;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -27,19 +28,29 @@ public class TournamentParticipantService
     }
 
     @Override
-    public void checkDummyPlayer(Tournament tournament, List<Player> participants) {
+    public List<Player> checkDummyPlayer(Tournament tournament, List<Player> participants, List<Player> freeDummies) {
         int usedDummies = getDummyPlayerCount(participants);
         int activePlayerCount = getActivePlayerCount(participants);
         int neededDummies = activePlayerCount % 4 == 0 ? 0 : 4 - activePlayerCount % 4;
+        List<Player> newCreatedDummies = new ArrayList<>();
         if (neededDummies < usedDummies) {
             for (int i = neededDummies; i < usedDummies; i++) {
                 removeLastDummyPlayer(tournament, participants);
             }
         } else if (neededDummies > usedDummies) {
             for (int i = usedDummies; i < neededDummies; i++) {
-                tournament.addDummyPlayer(playerFactory.createNewDummyPlayer(usedDummies + i));
+            	if (freeDummies.isEmpty()) {
+            		Player createNewDummyPlayer = playerFactory.createNewDummyPlayer(usedDummies + i);
+	                tournament.addDummyPlayer(createNewDummyPlayer);
+	                newCreatedDummies.add(createNewDummyPlayer);
+            	} else {
+            		Player remove =freeDummies.remove(0);
+					tournament.addDummyPlayer(remove);
+            	}
+
             }
         }
+        return newCreatedDummies;
     }
     @Override
     public boolean addParticipantToTournament(Tournament tournament, Player participant, List<Player> participants) {
@@ -47,7 +58,6 @@ public class TournamentParticipantService
             return false;
         }
         tournament.addParticipant(participant.getUid());
-        checkDummyPlayer(tournament, participants);
         return true;
     }
 
@@ -61,14 +71,15 @@ public class TournamentParticipantService
     }
 
     public void removeLastDummyPlayer(Tournament tournament, List<Player> playersInTournament) {
-        UUID dummyToRemove = null;
+        Player dummyToRemove = null;
+
         for (Player participant : playersInTournament) {
             if (participant.isDummy()) {
-                dummyToRemove = participant.getUid();
+                dummyToRemove = participant;
             }
         }
         if (dummyToRemove != null) {
-            tournament.removeParticipant(dummyToRemove);
+            tournament.removeParticipant(dummyToRemove.getUid());
 
         }
     }
@@ -85,7 +96,6 @@ public class TournamentParticipantService
     @Override
     public void removeFromTournament(Tournament tournament, UUID participantId, List<Player> participants) {
         tournament.removeParticipant(participantId);
-        checkDummyPlayer(tournament, participants);
     }
 
     @Override

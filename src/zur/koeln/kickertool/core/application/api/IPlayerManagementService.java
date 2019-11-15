@@ -25,4 +25,8 @@ public interface IPlayerManagementService {
 
     Map<UUID, Player> getPlayersMapByIds(List<UUID> allParticipants);
 
+	void storeNewDummyPlayer(List<Player> newDummyPlayer);
+
+	List<Player> getDummyPlayers();
+
 }
