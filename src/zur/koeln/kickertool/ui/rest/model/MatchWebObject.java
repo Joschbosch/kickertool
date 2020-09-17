@@ -1,0 +1,33 @@
+package zur.koeln.kickertool.ui.rest.model;
+
+import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import zur.koeln.kickertool.core.bl.model.tournament.MatchStatus;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class MatchWebObject {
+
+    private UUID matchID;
+
+    private int roundNumber;
+
+    private int scoreHome;
+
+    private int scoreVisiting;
+
+    private MatchStatus status;
+
+    private TeamDTO homeTeam;
+
+    private TeamDTO visitingTeam;
+
+    private String gameTableDescription;
+
+}
