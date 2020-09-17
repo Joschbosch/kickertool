@@ -20,7 +20,7 @@ public class TournamentDTO {
 
     private SettingsDTO settings;
 
-    private List<MatchWebObject> matches;
+    private List<MatchDTO> matches;
 
     private List<GameTableDTO> playtables;
 

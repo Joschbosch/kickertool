@@ -26,7 +26,7 @@ import zur.koeln.kickertool.ui.common.StatusOnlyDTO;
 import zur.koeln.kickertool.ui.common.ValidationDTO;
 import zur.koeln.kickertool.ui.rest.adapter.tools.CustomModelMapper;
 import zur.koeln.kickertool.ui.rest.model.MatchResultDTO;
-import zur.koeln.kickertool.ui.rest.model.MatchWebObject;
+import zur.koeln.kickertool.ui.rest.model.MatchDTO;
 import zur.koeln.kickertool.ui.rest.model.PlayerDTO;
 import zur.koeln.kickertool.ui.rest.model.PlayerRankingRowDTO;
 import zur.koeln.kickertool.ui.rest.model.TeamDTO;
@@ -121,7 +121,7 @@ public class TournamentRestAdapter {
 		return returnDTO;
 	}
 
-	private String createTableDesc(MatchWebObject m, Tournament tournament) {
+	private String createTableDesc(MatchDTO m, Tournament tournament) {
 		for (Match tm : tournament.getMatches()) {
 			if (tm.getMatchID().equals(m.getMatchID())) {
 				if (tm.getTable() != null) {

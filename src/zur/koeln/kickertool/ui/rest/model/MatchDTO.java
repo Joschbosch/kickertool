@@ -12,7 +12,7 @@ import zur.koeln.kickertool.core.bl.model.tournament.MatchStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MatchWebObject {
+public class MatchDTO {
 
     private UUID matchID;
 
