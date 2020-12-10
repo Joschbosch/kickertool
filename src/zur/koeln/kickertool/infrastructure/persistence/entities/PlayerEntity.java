@@ -11,6 +11,7 @@ import zur.koeln.kickertool.core.kernl.PlayerStatus;
 
 
 @Entity
+@Embeddable
 @Table(name = "player")
 @Getter
 @Setter

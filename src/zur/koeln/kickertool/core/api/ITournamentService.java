@@ -17,11 +17,13 @@ public interface ITournamentService {
 
     Tournament renameTournament(UUID tournamentIDToRename, String name);
 
-    List<Player> addParticipantToTournament(UUID tournamentIDToAdd, UUID participant);
+    List<Player> addParticipantToTournament(UUID tournamentIDToAdd, Player participant);
 
-    List<Player> removeParticipantFromTournament(UUID tournamentIDToRemove, UUID participant);
+    List<Player> removeParticipantFromTournament(UUID tournamentIDToRemove, Player participant);
 
     List<Player> getTournamentParticipants(UUID tournamentId);
+
+    List<Player> getNotInTournamentParticipants(UUID tournamentId);
 
     Tournament startNewRound(UUID tournamentToStartNewRound);
 
@@ -39,6 +41,6 @@ public interface ITournamentService {
 
     boolean enterOrChangeMatchResult(UUID tournamentId, UUID matchID, int scoreHome, int scoreVisiting);
 
-    Tournament pauseOrUnpausePlayer(UUID tournamentId, UUID playerToPause, boolean pausing);
+    Tournament pauseOrUnpausePlayer(UUID tournamentId, Player playerToPause, boolean pausing);
 
 }

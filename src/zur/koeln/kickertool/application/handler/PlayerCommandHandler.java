@@ -93,6 +93,8 @@ public class PlayerCommandHandler
 		List<PlayerDTO> allPlayerDTO = new ArrayList<>();
         allPlayer.forEach(player -> allPlayerDTO.add(mapper.map(player, PlayerDTO.class)));
 
+        List<Player> notInTournamentParticipants = tournamentService.getNotInTournamentParticipants(tournamentId);
+
         ListResponseDTO<PlayerDTO> response = new ListResponseDTO<>();
         response.setDtoStatus(StatusDTO.SUCCESS);
         response.setValidation(null);

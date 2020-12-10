@@ -5,11 +5,15 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 
 import zur.koeln.kickertool.application.repositories.persistence.ITournamentPersistence;
 import zur.koeln.kickertool.core.model.aggregates.Tournament;
+import zur.koeln.kickertool.infrastructure.persistence.entities.QTournamentEntity;
 import zur.koeln.kickertool.infrastructure.persistence.entities.TournamentEntity;
 
 @Named
@@ -40,7 +44,8 @@ public class TournamentPersistence
 
     @Override
     public Tournament findByUID(UUID tournamentUID) {
-        Optional<TournamentEntity> entityOptional = repo.findById(tournamentUID);
+
+        Optional<TournamentEntity> entityOptional = repo.findOne(QTournamentEntity.tournamentEntity.uid.eq(tournamentUID));
         if (entityOptional.isPresent()) {
             return mapper.map(entityOptional.get(), Tournament.class);
         }

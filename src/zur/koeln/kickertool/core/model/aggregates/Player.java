@@ -21,7 +21,7 @@ public class Player{
 
     private PlayerStatus status;
 
-    private List<UUID> playedTournaments;
+    private List<Tournament> playedTournaments;
 
     public void changeName(String newFirstName, String newLastName) {
         if (newFirstName.isEmpty() || newLastName.isEmpty()) {

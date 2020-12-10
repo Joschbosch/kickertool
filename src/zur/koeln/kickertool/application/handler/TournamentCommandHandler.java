@@ -62,7 +62,7 @@ public class TournamentCommandHandler
 
     @Override
     public ListResponseDTO<PlayerDTO> addParticipantToTournament(UUID tournamentIDToAdd, UUID player) {
-        List<Player> participants = tournamentService.addParticipantToTournament(tournamentIDToAdd, player);
+        List<Player> participants = tournamentService.addParticipantToTournament(tournamentIDToAdd, playerService.getPlayerById(player));
         if (participants != null) {
             return createSuccessfulListResponse(participants);
         }
@@ -78,7 +78,7 @@ public class TournamentCommandHandler
     public ListResponseDTO<PlayerDTO> addParticipantsToTournament(UUID tournamentId, List<UUID> playerIds) {
         List<Player> participants = new ArrayList<>();
         for (UUID uuid : playerIds) {
-            participants = tournamentService.addParticipantToTournament(tournamentId, uuid);
+            participants = tournamentService.addParticipantToTournament(tournamentId, playerService.getPlayerById(uuid));
             if (participants == null) {
                 ListResponseDTO<PlayerDTO> response = new ListResponseDTO<>();
                 response.setDtoStatus(StatusDTO.VALIDATION_ERROR);
@@ -92,7 +92,7 @@ public class TournamentCommandHandler
 
     @Override
     public ListResponseDTO<PlayerDTO> removeParticipantFromTournament(UUID tournamentIDToRemove, UUID participant) {
-        List<Player> participants = tournamentService.removeParticipantFromTournament(tournamentIDToRemove, participant);
+        List<Player> participants = tournamentService.removeParticipantFromTournament(tournamentIDToRemove, playerService.getPlayerById(participant));
         return createSuccessfulListResponse(participants);
     }
 
@@ -182,7 +182,7 @@ public class TournamentCommandHandler
 
     @Override
     public SingleResponseDTO<TournamentDTO> pauseOrUnpausePlayer(UUID tournamentUUID, UUID playerId, boolean pausing) {
-        Tournament tournament = tournamentService.pauseOrUnpausePlayer(tournamentUUID, playerId, pausing);
+        Tournament tournament = tournamentService.pauseOrUnpausePlayer(tournamentUUID, playerService.getPlayerById(playerId), pausing);
         return createSuccessfullDTO(tournament);
     }
 }

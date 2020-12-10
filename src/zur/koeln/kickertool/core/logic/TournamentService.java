@@ -1,6 +1,7 @@
 package zur.koeln.kickertool.core.logic;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -10,8 +11,21 @@ import java.util.stream.IntStream;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.javatuples.Pair;
+
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.SubQueryExpression;
+import com.querydsl.core.types.SubQueryExpressionImpl;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.hibernate.HibernateQuery;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import zur.koeln.kickertool.core.api.IPlayerService;
 import zur.koeln.kickertool.core.api.ITournamentService;
@@ -25,9 +39,16 @@ import zur.koeln.kickertool.core.model.entities.Match;
 import zur.koeln.kickertool.core.model.entities.Settings;
 import zur.koeln.kickertool.core.model.valueobjects.Team;
 import zur.koeln.kickertool.core.spi.ITournamentRepository;
+import zur.koeln.kickertool.infrastructure.persistence.entities.PlayerEntity;
+import zur.koeln.kickertool.infrastructure.persistence.entities.QPlayerEntity;
+import zur.koeln.kickertool.infrastructure.persistence.entities.QTournamentEntity;
+import zur.koeln.kickertool.infrastructure.persistence.entities.TournamentEntity;
 
 @Named
 public class TournamentService implements ITournamentService {
+
+	@PersistenceContext
+ 	private EntityManager entityManager;
 
 	private final ITournamentRepository tournamentRepo;
 
@@ -46,8 +67,7 @@ public class TournamentService implements ITournamentService {
 
 		Tournament newTournament = tournamentRepo.createNewTournament(tournamentName);
 		newTournament.configureSettings(settings);
-		addParticipantsToTournament(newTournament.getUid(),
-				participants.stream().map(Player::getUid).collect(Collectors.toList()));
+		addParticipantsToTournament(newTournament.getUid(), participants);
 		tournamentRepo.saveOrUpdateTournament(newTournament);
 		return newTournament;
 	}
@@ -69,19 +89,19 @@ public class TournamentService implements ITournamentService {
 		return tournament;
 	}
 
-	private void addParticipantsToTournament(UUID uid, List<UUID> participantUIDs) {
+	private void addParticipantsToTournament(UUID uid, List<Player> participantUIDs) {
 		participantUIDs.forEach(p -> addParticipantToTournament(uid, p));
 
 	}
 
 	@Override
-	public List<Player> addParticipantToTournament(UUID tournamentIDToAdd, UUID participant) {
+	public List<Player> addParticipantToTournament(UUID tournamentIDToAdd, Player participant) {
 		Tournament tournament = tournamentRepo.getTournament(tournamentIDToAdd);
 		if (tournament.getAllParticipants().contains(participant)) {
 			return null;
 		}
 		tournament.addParticipant(participant);
-		playerService.setPlayerStatus(participant, PlayerStatus.IN_TOURNAMENT);
+		playerService.setPlayerStatus(participant.getUid(), PlayerStatus.IN_TOURNAMENT);
 		checkDummyPlayer(tournament);
 		updateParticipantsStatus(tournament);
 		tournamentRepo.saveOrUpdateTournament(tournament);
@@ -89,7 +109,7 @@ public class TournamentService implements ITournamentService {
 	}
 
 	@Override
-	public List<Player> removeParticipantFromTournament(UUID tournamentIDToRemove, UUID participantId) {
+	public List<Player> removeParticipantFromTournament(UUID tournamentIDToRemove, Player participantId) {
 		Tournament tournament = tournamentRepo.getTournament(tournamentIDToRemove);
 		tournament.removeParticipant(participantId);
 		checkDummyPlayer(tournament);
@@ -100,15 +120,37 @@ public class TournamentService implements ITournamentService {
 	@Override
 	public List<Player> getTournamentParticipants(UUID tournamentId) {
 		Tournament tournament = tournamentRepo.getTournament(tournamentId);
-		List<UUID> allParticipantIds = tournament.getAllParticipants();
+		List<Player> allParticipantIds = tournament.getAllParticipants();
 		List<Player> participants = new ArrayList<>();
 		allParticipantIds.forEach(id -> {
 
-			Player playerById = playerService.getPlayerById(id);
+			Player playerById = playerService.getPlayerById(id.getUid());
 			if (playerById != null) {
 				participants.add(playerById);
 			} else {
 				tournament.removeParticipant(id);
+			}
+		});
+		return participants;
+	}
+
+	@Override
+	public List<Player> getNotInTournamentParticipants(UUID tournamentId) {
+
+		JPAQueryFactory query = new JPAQueryFactory(entityManager);
+		QPlayerEntity playerentity = QPlayerEntity.playerEntity;
+		QTournamentEntity tournamentEntity = QTournamentEntity.tournamentEntity;
+
+		JPQLQuery<PlayerEntity> subquery = JPAExpressions.select(playerentity).from(tournamentEntity).innerJoin(tournamentEntity.participants, playerentity).where(tournamentEntity.uid.eq(tournamentId));
+
+		List<PlayerEntity> playersNotInTournament = query.selectFrom(playerentity).where(playerentity.notIn(subquery)).fetch();
+
+		List<Player> participants = new ArrayList<>();
+		playersNotInTournament.forEach(entity -> {
+
+			Player playerById = playerService.getPlayerById(entity.getUid());
+			if (playerById != null) {
+				participants.add(playerById);
 			}
 		});
 		return participants;
@@ -142,7 +184,7 @@ public class TournamentService implements ITournamentService {
 	private void checkDummyPlayer(Tournament tournament) {
 		int usedDummies = getDummyPlayerCount(tournament);
 		int activePlayerCount = getActivePlayerCount(tournament);
-		int neededDummies = activePlayerCount % 4 == 0 ? 0 : 4 - activePlayerCount % 4;
+		int neededDummies = 0;
 		if (neededDummies < usedDummies) {
 			for (int i = neededDummies; i < usedDummies; i++) {
 				removeLastDummyPlayer(tournament);
@@ -204,7 +246,7 @@ public class TournamentService implements ITournamentService {
 	private void updateParticipantsStatus(Tournament tournament) {
 		tournament.getAllParticipants().forEach(id -> {
 
-			Player playerById = playerService.getPlayerById(id);
+			Player playerById = playerService.getPlayerById(id.getUid());
 			if (playerById == null) {
 				tournament.removeParticipant(id);
 			}
@@ -222,8 +264,8 @@ public class TournamentService implements ITournamentService {
 	}
 
 	@Override
-	public Tournament pauseOrUnpausePlayer(UUID tournamentId, UUID playerToPause, boolean pausing) {
-		playerService.setPlayerStatus(playerToPause,
+	public Tournament pauseOrUnpausePlayer(UUID tournamentId, Player playerToPause, boolean pausing) {
+		playerService.setPlayerStatus(playerToPause.getUid(),
 				pausing ? PlayerStatus.PAUSING_TOURNAMENT : PlayerStatus.IN_TOURNAMENT);
 		Tournament tournament = tournamentRepo.getTournament(tournamentId);
 		checkDummyPlayer(tournament);
@@ -346,28 +388,29 @@ public class TournamentService implements ITournamentService {
 
 	public int getActivePlayerCount(Tournament tournament) {
 		return (int) tournament.getParticipants().stream()
-				.filter(pId -> (playerService.getPlayerById(pId).getStatus() == PlayerStatus.IN_TOURNAMENT
-						|| playerService.getPlayerById(pId).getStatus() == PlayerStatus.PLAYING)
-						&& !playerService.getPlayerById(pId).isDummy())
+				.filter(pId -> (playerService.getPlayerById(pId.getUid()).getStatus() == PlayerStatus.IN_TOURNAMENT
+						|| playerService.getPlayerById(pId.getUid()).getStatus() == PlayerStatus.PLAYING)
+						&& !playerService.getPlayerById(pId.getUid()).isDummy())
 				.count();
 	}
 
 	public int getDummyPlayerCount(Tournament tournament) {
 		return (int) tournament.getParticipants().stream()
-				.filter(pId -> (playerService.getPlayerById(pId) != null && playerService.getPlayerById(pId).isDummy()))
+				.filter(pId -> (playerService.getPlayerById(pId.getUid()) != null && playerService.getPlayerById(pId.getUid()).isDummy()))
 				.count();
 	}
 
 	public void removeLastDummyPlayer(Tournament tournament) {
-		UUID dummyToRemove = null;
-		for (UUID pId : tournament.getAllParticipants()) {
-			if (playerService.getPlayerById(pId).isDummy()) {
+		Player dummyToRemove = null;
+		for (Player pId : tournament.getAllParticipants()) {
+			if (playerService.getPlayerById(pId.getUid()).isDummy()) {
 				dummyToRemove = pId;
 			}
 		}
 		if (dummyToRemove != null) {
 			tournament.removeParticipant(dummyToRemove);
-			playerService.getPlayerById(dummyToRemove).setStatus(PlayerStatus.NOT_IN_TOURNAMENT);
+			playerService.getPlayerById(dummyToRemove.getUid()).setStatus(PlayerStatus.NOT_IN_TOURNAMENT);
 		}
 	}
+
 }

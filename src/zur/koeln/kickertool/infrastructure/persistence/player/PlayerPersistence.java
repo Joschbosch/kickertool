@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import zur.koeln.kickertool.application.repositories.persistence.IPlayerPersistence;
 import zur.koeln.kickertool.core.model.aggregates.Player;
 import zur.koeln.kickertool.infrastructure.persistence.entities.PlayerEntity;
+import zur.koeln.kickertool.infrastructure.persistence.entities.QPlayerEntity;
 
 @Named
 public class PlayerPersistence
@@ -47,7 +48,8 @@ public class PlayerPersistence
 
     @Override
     public Player findPlayerByUID(UUID playerUID) {
-        Optional<PlayerEntity> findById = playerRepo.findById(playerUID);
+
+    	Optional<PlayerEntity> findById = playerRepo.findOne(QPlayerEntity.playerEntity.uid.eq(playerUID));
         if (findById.isPresent()) {
             return mapper.map(findById.get(), Player.class);
 

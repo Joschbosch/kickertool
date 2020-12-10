@@ -31,7 +31,7 @@ public class Tournament {
 
     private Settings settings;
 
-    private List<UUID> participants = new ArrayList<>();
+    private List<Player> participants = new ArrayList<>();
 
     private List<Match> matches = new ArrayList<>();
 
@@ -72,11 +72,11 @@ public class Tournament {
         setSettings(settings);
     }
 
-    public void addParticipants(List<UUID> participants) {
+    public void addParticipants(List<Player> participants) {
         participants.forEach(this::addParticipant);
     }
 
-    public void addParticipant(UUID participant) {
+    public void addParticipant(Player participant) {
         participants.add(participant);
     }
 
@@ -85,11 +85,11 @@ public class Tournament {
         setStatus(TournamentStatus.RUNNING);
     }
 
-    public void removeParticipant(UUID p) {
+    public void removeParticipant(Player p) {
         participants.remove(p);
     }
 
-    public List<UUID> getAllParticipants() {
+    public List<Player> getAllParticipants() {
         return new ArrayList<>(participants);
     }
 
@@ -182,7 +182,7 @@ public class Tournament {
 
     public void addDummyPlayer(Player dummyPlayer) {
         dummyPlayer.setStatus(PlayerStatus.IN_TOURNAMENT);
-        addParticipant(dummyPlayer.getUid());
+        addParticipant(dummyPlayer);
     }
 
     public boolean addMatchResult(UUID matchID, int scoreHome, int scoreVisiting) {
