@@ -1,18 +1,6 @@
 package zur.koeln.kickertool.core.logic;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.javatuples.Pair;
-
 import zur.koeln.kickertool.core.api.IPlayerService;
 import zur.koeln.kickertool.core.api.ITournamentService;
 import zur.koeln.kickertool.core.kernl.PlayerRankingComparator;
@@ -26,6 +14,17 @@ import zur.koeln.kickertool.core.model.entities.Settings;
 import zur.koeln.kickertool.core.model.valueobjects.Team;
 import zur.koeln.kickertool.core.spi.ITournamentRepository;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 @Named
 public class TournamentService implements ITournamentService {
 
@@ -33,7 +32,7 @@ public class TournamentService implements ITournamentService {
 
 	private final IPlayerService playerService;
 
-	private Random r = new Random();
+	private final Random r = new Random();
 
 	@Inject
 	public TournamentService(ITournamentRepository tournamentRepo, IPlayerService playerService) {
@@ -134,10 +133,16 @@ public class TournamentService implements ITournamentService {
 		}
 		tournament.increaseRound();
 		createNextMatches(tournament);
+//		giveDummyPlayerNames(tournament);
 		tournament.updateGameTableUsage();
 		tournamentRepo.saveOrUpdateTournament(tournament);
 		return tournament;
 	}
+
+//	private void giveDummyPlayerNames(Tournament tournament) {
+//		tournament.getMatchesInCurrentRound().stream().filter(m -> System.out.println("" + playerService.getPlayerById()));
+//
+//	}
 
 	private void checkDummyPlayer(Tournament tournament) {
 		int usedDummies = getDummyPlayerCount(tournament);
@@ -157,7 +162,7 @@ public class TournamentService implements ITournamentService {
 	public List<PlayerRankingRow> getRankingByRound(UUID tournamentUID, int round) {
 		Tournament tournament = tournamentRepo.getTournament(tournamentUID);
 		List<Player> allParticipants = getTournamentParticipants(tournamentUID);
-		Collections.sort(allParticipants, new PlayerRankingComparator(tournament, round));
+		List.sort(allParticipants, new PlayerRankingComparator(tournament, round));
 
 		List<PlayerRankingRow> ranking = new ArrayList<>();
 		for (int i = 0; i < allParticipants.size(); i++) {
@@ -233,7 +238,7 @@ public class TournamentService implements ITournamentService {
 
 	public void createNextMatches(Tournament tournament) {
 		List<Player> currentPlayerRanking = getTournamentParticipants(tournament.getUid());
-		Collections.sort(currentPlayerRanking, new PlayerRankingComparator(tournament, tournament.getCurrentRound()));
+		List.sort(currentPlayerRanking, new PlayerRankingComparator(tournament, tournament.getCurrentRound()));
 
 		currentPlayerRanking.removeIf(p -> p.getStatus() == PlayerStatus.PAUSING_TOURNAMENT);
 
@@ -251,7 +256,7 @@ public class TournamentService implements ITournamentService {
 	}
 
 	private Player getRandomPlayer(List<Player> standings) {
-		int random = new Random().nextInt(standings.size());
+		int random = r.nextInt(standings.size());
 		return standings.remove(random);
 	}
 
@@ -269,26 +274,57 @@ public class TournamentService implements ITournamentService {
 		} else if (tournament.getSettings().getMode() == TournamentMode.SWISS_TUPEL) {
 			createMatchesSwissTupelmode(standings, tournament);
 		} else if (tournament.getSettings().getMode() == TournamentMode.PARCIT_MODE) {
-			int[] permutation = IntStream.range(0, standings.size()).toArray();
-			int[] teamPermutation = IntStream.range(0, (standings.size() + 1) / 2).toArray();
-			for (int i = 0; i < permutation.length / 4; i++) {
-				randomize(permutation, i);
+			createMatchesPITMode(standings, tournament);
+		}
+	}
 
-			}
-			for (int i = 0; i < teamPermutation.length / 4; i++) {
-				randomize(teamPermutation, i);
-			}
-			for (int i = 0; i < teamPermutation.length / 2; i++) {
-				int ht1 = permutation[teamPermutation[i * 2] * 2];
-				int ht2 = permutation[teamPermutation[i * 2 + 1] * 2 + 1];
-				int vt1 = permutation[teamPermutation[i * 2] * 2 + 1];
-				int vt2 = permutation[teamPermutation[i * 2 + 1] * 2];
+	private void createMatchesPITMode(List<Player> standings, Tournament tournament) {
+		int[] permutation = IntStream.range(0, standings.size()).toArray();
+		int[] teamPermutation = IntStream.range(0, (standings.size() + 1) / 2).toArray();
+		for (int i = 0; i < permutation.length / 4; i++) {
+			randomize(permutation, i);
 
-				Team home = new Team(standings.get(ht1).getUid(), standings.get(ht2).getUid());
-				Team visiting = new Team(standings.get(vt1).getUid(), standings.get(vt2).getUid());
-				tournament.createMatch(home, visiting);
+		}
+		for (int i = 0; i < teamPermutation.length / 4; i++) {
+			randomize(teamPermutation, i);
+		}
+		for (int i = 0; i < teamPermutation.length / 2; i++) {
+			int ht1 = permutation[teamPermutation[i * 2] * 2];
+			int ht2 = permutation[teamPermutation[i * 2 + 1] * 2 + 1];
+			int vt1 = permutation[teamPermutation[i * 2] * 2 + 1];
+			int vt2 = permutation[teamPermutation[i * 2 + 1] * 2];
+
+			// mutate if two players already played together last round
+			UUID ht1Uid= standings.get(ht1).getUid();
+			UUID vt1Uid= standings.get(vt1).getUid();
+			if (playedAlreadyTogether(standings, tournament, ht1Uid, ht2) || playedAlreadyTogether(standings, tournament, vt1Uid, vt2)){
+				int temp = vt1;
+				vt1 = ht1;
+				ht1 = temp;
+			}
+			
+			Team home = new Team(standings.get(ht1).getUid(), standings.get(ht2).getUid());
+			Team visiting = new Team(standings.get(vt1).getUid(), standings.get(vt2).getUid());
+			tournament.createMatch(home, visiting);
+		}
+	}
+
+	private static boolean playedAlreadyTogether(List<Player> standings, Tournament tournament, UUID firstPlayer, int other) {
+		if(tournament.getCurrentRound() > 1) {
+			Optional<Match> firstPlayerMath = tournament.findMatchWithPlayer(firstPlayer, tournament.getCurrentRound() - 1);
+			if (firstPlayerMath.isPresent()) {
+				Team homeTeam = firstPlayerMath.get().getHomeTeam();
+				Team visitingTeam = firstPlayerMath.get().getHomeTeam();
+				return ((homeTeam.getPlayer1Id().equals(firstPlayer) || homeTeam.getPlayer2Id().equals(firstPlayer))
+						&& (homeTeam.getPlayer1Id().equals(standings.get(other).getUid())
+						|| homeTeam.getPlayer2Id().equals(standings.get(other).getUid()))
+						|| ((visitingTeam.getPlayer1Id().equals(firstPlayer)
+						|| visitingTeam.getPlayer2Id().equals(firstPlayer))
+						&& (visitingTeam.getPlayer1Id().equals(standings.get(other).getUid())
+						|| visitingTeam.getPlayer2Id().equals(standings.get(other).getUid()))));
 			}
 		}
+		return false;
 	}
 
 	private void randomize(int[] permutation, int j) {

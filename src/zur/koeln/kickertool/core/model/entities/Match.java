@@ -42,6 +42,9 @@ public class Match {
         this.matchID = randomUUID;
     }
 
+    public boolean hasPlayer(UUID playerId){
+        return homeTeam.getPlayer1Id().equals(playerId) || homeTeam.getPlayer2Id().equals(playerId) || visitingTeam.getPlayer1Id().equals(playerId) || visitingTeam.getPlayer2Id().equals(playerId);
+    }
 
     public boolean hasPlayerWon(Player player) {
         if (status == MatchStatus.FINISHED) {

@@ -2,6 +2,7 @@ package zur.koeln.kickertool.core.model.aggregates;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -49,10 +50,6 @@ public class Tournament {
 
     }
 
-    public void addMatch(Match m) {
-        getMatches().add(m);
-    }
-
     public List<Match> getMatchesWithPlayer(Player player) {
 
         return matches.stream().filter(m -> m.getHomeTeam().hasPlayer(player) || m.getVisitingTeam().hasPlayer(player)).collect(Collectors.toList());
@@ -70,10 +67,6 @@ public class Tournament {
 
     public void configureSettings(Settings settings) {
         setSettings(settings);
-    }
-
-    public void addParticipants(List<UUID> participants) {
-        participants.forEach(this::addParticipant);
     }
 
     public void addParticipant(UUID participant) {
@@ -101,7 +94,10 @@ public class Tournament {
         return matches.stream().filter(m -> m.getRoundNumber() == roundNo).collect(Collectors.toList());
 
     }
+    public Optional<Match> findMatchWithPlayer(UUID playerId, int roundNo) {
+        return matches.stream().filter(m -> m.getRoundNumber() == roundNo && m.hasPlayer(playerId)).findFirst();
 
+    }
     public void updateGameTableUsage() {
         for (Match ongoing : getPlannedMatchesInTournament()) {
             if (ongoing.getTable() == null) {
