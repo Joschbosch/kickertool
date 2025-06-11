@@ -162,7 +162,7 @@ public class TournamentService implements ITournamentService {
 	public List<PlayerRankingRow> getRankingByRound(UUID tournamentUID, int round) {
 		Tournament tournament = tournamentRepo.getTournament(tournamentUID);
 		List<Player> allParticipants = getTournamentParticipants(tournamentUID);
-		List.sort(allParticipants, new PlayerRankingComparator(tournament, round));
+		Collections.sort(allParticipants, new PlayerRankingComparator(tournament, round));
 
 		List<PlayerRankingRow> ranking = new ArrayList<>();
 		for (int i = 0; i < allParticipants.size(); i++) {
@@ -238,7 +238,7 @@ public class TournamentService implements ITournamentService {
 
 	public void createNextMatches(Tournament tournament) {
 		List<Player> currentPlayerRanking = getTournamentParticipants(tournament.getUid());
-		List.sort(currentPlayerRanking, new PlayerRankingComparator(tournament, tournament.getCurrentRound()));
+		Collections.sort(currentPlayerRanking, new PlayerRankingComparator(tournament, tournament.getCurrentRound()));
 
 		currentPlayerRanking.removeIf(p -> p.getStatus() == PlayerStatus.PAUSING_TOURNAMENT);
 
